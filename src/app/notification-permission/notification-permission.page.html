@@ -1,0 +1,50 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-top" >
+    <ion-toolbar >
+      <ion-buttons slot="start">
+        <ion-button style="color: #ffffff;"  (click)="goBack()">
+         <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+       </ion-button>
+     </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button style="color: #ffffff;" (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div class="heading">
+    <h1>¿Quieres activar</h1>
+    <p>las notificaciones?</p>
+  </div>
+  <div class="imagenot">
+    <img src="{{ ip_address }}/media/notification-permission/notification.png" alt="notification-imagen"/>
+  </div>
+  <div class="details">
+    <ion-list  [inset]="true" lines="none">
+      <ion-item>
+        <ion-icon name="flash" color="primary"></ion-icon>
+        <ion-label>Recordatorio saludable</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="alarm" color="primary"></ion-icon>
+        <ion-label>Recordatorio Motivacional</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="flame" color="primary"></ion-icon>
+        <ion-label>Programa Personalizado</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div class="buttons">
+    <ion-button (click)="go_Now()">Continuar</ion-button><br>
+  </div>
+  <div class="buttonNotNow">
+    <ion-button (click)="go_notNow()" fill="clear">No ahora</ion-button>
+  </div>
+</ion-content>

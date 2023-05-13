@@ -1,0 +1,48 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-top" >
+    <ion-toolbar>
+      <p class="header-p">PASO 3/8</p>
+      <ion-buttons slot="start">
+        <ion-button  (click)="goBack()">
+          <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button  (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div class="heading">
+    <h1>¿Cuál eres tú?</h1>
+    <p>Escoge uno</p>
+  </div>
+  <ion-radio-group [disabled]="selectedRadioValue === 'custom' || selectedRadioValue === 'custom-checked'" [(ngModel)]="selectedRadioValue">
+    <ion-row >
+      <ion-col>
+        <ion-radio value="custom" style="margin-left: 20%;"></ion-radio>
+        <img src="{{ ip_address }}/media/genders/masculine.png" (click)="selectRadio('custom')" ion-button/>
+      </ion-col>
+      <ion-col>
+        <ion-radio value="custom-checked" style="margin-right: 20%;"style="right: 20%;"></ion-radio>
+        <img src="{{ ip_address }}/media/genders/female.png" (click)="selectRadio('custom-checked')"  ion-button  />
+      </ion-col>
+    </ion-row>
+  </ion-radio-group>
+  <div class="onb-card">
+    <div class="onb-desc ion-text-center">
+      <p class="ion-no-margin">
+        Para brindarle una experiencia personalizada, necesitamos saber su género.
+      </p>
+    </div>
+  </div>
+  <div class="buttonNotNow">
+    <ion-button (click)="prefer_noAnswer()" fill="clear">Prefiero no responder</ion-button>
+  </div>
+</ion-content>

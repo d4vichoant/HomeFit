@@ -1,0 +1,155 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import '@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+@font-face{
+  font-family: Raleway-Black;
+  src: url('assets/fonts/Raleway-Black.ttf');
+}
+@font-face{
+  font-family: Raleway-BlackItalic;
+  src: url('assets/fonts/Raleway-BlackItalic.ttf');
+}
+@font-face{
+  font-family: Raleway-Bold;
+  src: url('assets/fonts/Raleway-Bold.ttf');
+}
+@font-face{
+  font-family: Raleway-BoldItalic ;
+  src: url('assets/fonts/Raleway-BoldItalic.ttf');
+}
+@font-face{
+  font-family: Raleway-ExtraBold ;
+  src: url('assets/fonts/Raleway-ExtraBold.ttf');
+}
+@font-face{
+  font-family: Raleway-ExtraBoldItalic ;
+  src: url('assets/fonts/Raleway-ExtraBoldItalic.ttf');
+}
+@font-face{
+  font-family: Raleway-ExtraLight ;
+  src: url('assets/fonts/Raleway-ExtraLight.ttf');
+}
+@font-face{
+  font-family: Raleway-ExtraLightItalic ;
+  src: url('assets/fonts/Raleway-ExtraLightItalic.ttf');
+}
+@font-face{
+  font-family: Raleway-Italic ;
+  src: url('assets/fonts/Raleway-Italic.ttf');
+}
+@font-face{
+  font-family: Raleway-Light ;
+  src: url('assets/fonts/Raleway-Light.ttf');
+}
+@font-face{
+  font-family: Raleway-LightItalic ;
+  src: url('assets/fonts/Raleway-LightItalic.ttf');
+}
+@font-face{
+  font-family: Raleway-Medium ;
+  src: url('assets/fonts/Raleway-Medium.ttf');
+}
+@font-face{
+  font-family: Raleway-MediumItalic ;
+  src: url('assets/fonts/Raleway-MediumItalic.ttf');
+}
+@font-face{
+  font-family: Raleway-Regular ;
+  src: url('assets/fonts/Raleway-Regular.ttf');
+}
+@font-face{
+  font-family: Raleway-SemiBold ;
+  src: url('assets/fonts/Raleway-SemiBold.ttf');
+}
+@font-face{
+  font-family: Raleway-SemiBoldItalic ;
+  src: url('assets/fonts/Raleway-SemiBoldItalic.ttf');
+}
+@font-face{
+  font-family: Raleway-Thin ;
+  src: url('assets/fonts/Raleway-Thin.ttf');
+}
+@font-face{
+  font-family: Raleway-ThinItalic ;
+  src: url('assets/fonts/Raleway-ThinItalic.ttf');
+}
+*{
+  font-family: Raleway-Regular;
+}
+.onboard-main{
+  ion-slides{
+    .swiper-pagination.swiper-pagination-bullets{
+      left: auto !important;
+      right: auto;
+      text-align: left !important;
+    }
+  }
+}
+
+.toast-custom-danger {
+  --border-radius: 40px; // Aquí establecemos el radio de las esquinas de la alerta
+  --background: #dc354684; // Aquí establecemos el fondo de la alerta
+  --color:rgb(255, 255, 255);
+  position: fixed;
+  top: var(--alert-top);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 300px;
+  font-family:Raleway-Light;
+  text-align: center;
+}
+.toast-custom-success {
+  --border-radius: 40px; // Aquí establecemos el radio de las esquinas de la alerta
+  --background: #28a74684; // Aquí establecemos el fondo de la alerta
+  --color:rgb(255, 255, 255);
+  position: fixed;
+  top: var(--alert-top);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 300px;
+  font-family:Raleway-Bold;
+  text-align: center;
+}
+
+ion-calendar    .calendar-body .calendar-month .calendar-month-grid{
+  display: flex;
+  color: #6069e8;
+  justify-content: space-between;
+  --background: #28a74684;
+  background: #28a74684;
+  background-color: aqua;
+  --background-color: aqua;
+}
+
+ion-datetime{
+  color:#6069e8;
+  background-color: rgb(255, 255, 255);
+  ion-item::part(native){
+    padding-left: 0;
+    background-color:#6069e8;
+  }
+}

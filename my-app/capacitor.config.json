@@ -1,0 +1,11 @@
+{
+  "appId": "com.homefitgo.app",
+  "appName": "HomeFitGo",
+  "bundledWebRuntime": false,
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}

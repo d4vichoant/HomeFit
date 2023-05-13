@@ -1,0 +1,43 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="heading">
+    <div class="onboard-top">
+      <ion-toolbar>
+        <ion-buttons slot="end" class="close-button">
+          <ion-button style="color: #ffffff;" (click)="goHome()">
+            <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </div>
+    <h1>Empezemos</h1>
+    <p>Escoge uno</p>
+  </div>
+  <div class="image-container">
+    <div class="center-box left-box" (click)="mostrarImagenCompleta('imagen1')" *ngIf="!imagenCompleta">
+      <div class="text-container left-text">
+        <p class="text-style" style="  color: #bda6fe;">EN<br>TRE<br>NAN<br>TE</p>
+      </div>
+    </div> <!-- Cuadro izquierdo -->
+    <div class="center-box right-box" (click)="mostrarImagenCompleta('imagen2')" *ngIf="!imagenCompleta" >
+      <div class="text-container right-text">
+        <p class="text-style" style="  color: #ffffff;">EN<br>TRE<br>NA<br>DOR</p>
+      </div>
+    </div>
+    <div class="half-image-container image-left"(click)="mostrarImagenCompleta('imagen1')" *ngIf="!imagenCompleta">
+      <img src="{{ ip_address }}/media/select/entrenador2.jpg" />
+    </div>
+    <div class="half-image-container image-rigth" (click)="mostrarImagenCompleta('imagen2')" *ngIf="!imagenCompleta">
+      <img src="{{ ip_address }}/media/select/entrenador3.jpg" />
+    </div>
+    <div class="fullscreen-image" *ngIf="imagenCompleta">
+      <img src="{{ ip_address }}/media/select/entrenador1.jpg" *ngIf="imagenCompleta && imagenSeleccionada === 'imagen1'" />
+      <img src="{{ ip_address }}/media/select/entrenador4.jpg" *ngIf="imagenCompleta && imagenSeleccionada === 'imagen2'" />
+    </div>
+  </div>
+</ion-content>
+

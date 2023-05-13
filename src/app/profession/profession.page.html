@@ -1,0 +1,88 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-top" >
+    <ion-toolbar>
+      <p class="header-p">PASO 8/8</p>
+      <ion-buttons slot="start">
+        <ion-button (click)="goBack()">
+          <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div class="heading">
+    <h1>Cuentanos a que</h1>
+    <p>te dedicas</p>
+  </div>
+  <ion-grid style="padding: 0% 6% 0% 6%;">
+    <ion-row class="ion-align-items-center">
+      <ion-col>
+        <ion-row>
+          <ion-col size="12" offset="0" [style.background-image]="'url(' + ip_address + '/media/profession/medicina.jpg)'"
+            class="button-image-row button-wrapper" (click)="seleccion(0)">
+            Medicina y salud
+          </ion-col>
+          <ion-col size="12" offset="0" [style.background-image]="'url(' + ip_address + '/media/profession/educacion.jpg)'"
+            class="button-image-row button-wrapper" (click)="seleccion(1)">
+            Educación y enseñanza
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="6" class="button-image-2row" [style.background-image]="'url(' + ip_address + '/media/profession/tecnologias.jpg)'"
+        (click)="seleccion(2)">
+        Tecnología de la información (TI)
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" offset="0" [style.background-image]="'url(' + ip_address + '/media/profession/servicios.jpg)'"
+        class="button-image-row button-wrapper" (click)="seleccion(3)">
+        Servicios de alimentación y hospitalidad
+      </ion-col>
+    </ion-row>
+    <ion-row style="display: flex; justify-content: space-between;">
+      <ion-col size="5" offset="0" style="padding: 10%;"
+        [style.background-image]="'url(' + ip_address + '/media/profession/ingenieria.jpg)'"
+        class="button-image-row button-wrapper" (click)="seleccion(4)">
+        Ingeniería
+      </ion-col>
+      <ion-col size="6.8" offset="0" [style.background-image]="'url(' + ip_address + '/media/profession/finanzas.jpg)'"
+        class="button-image-row button-wrapper" (click)="seleccion(5)">
+        Finanzas y contabilidad
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6" class="button-image-2row" [style.background-image]="'url(' + ip_address + '/media/profession/ventas.jpg)'"
+        (click)="seleccion(6)">
+        Ventas y marketing
+      </ion-col>
+      <ion-col>
+        <ion-row>
+          <ion-col size="12" offset="0" [style.background-image]="'url(' + ip_address + '/media/profession/arte.jpg)'"
+            class="button-image-row button-wrapper" (click)="seleccion(7)">
+            Arte y diseño
+          </ion-col>
+          <ion-col size="12" offset="0" [style.background-image]="'url(' + ip_address + '/media/profession/ciencias.jpg)'"
+            class="button-image-row" (click)="seleccion(8)">
+            Ciencias y investigación
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- <div class="buttons">
+    <ion-button id="continueBtnPB" (click)="go_nextPage()" >Continuar</ion-button>
+  </div> -->
+  <div class="buttonNotNow">
+    <ion-button (click)="goBack()" fill="clear">Atras</ion-button>
+  </div>
+</ion-content>

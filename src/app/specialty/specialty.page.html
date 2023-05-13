@@ -1,0 +1,47 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-top" >
+    <ion-toolbar>
+      <p class="header-p">PASO 5/8</p>
+      <ion-buttons slot="start">
+        <ion-button  (click)="goBack()">
+          <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button  (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div class="heading">
+    <h1>¿Cuál es tu </h1>
+    <p>Especialidada?</p>
+  </div>
+  <ion-grid>
+    <ion-row class="container-ion-col">
+      <ng-container *ngFor="let dato of datos">
+        <ion-col size="5">
+          <div class="image-container" (click)="checkboxChanged(dato)">
+            <ion-checkbox [(ngModel)]="dato.dass.isSelected" class="checkbox-top-right"></ion-checkbox>
+            <div class="image-content">
+              <img [src]="ip_address + '/media/specialty/' + dato.dass.imagenESPECIALIDADENTRENADOR" />
+            </div>
+            <div class="title">{{ dato.dass.tituloESPECIALIDADENTRENADOR }}</div>
+          </div>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+  </ion-grid>
+  <div class="buttons">
+    <ion-button id="continueBtnPB" (click)="go_nextPage()" >Continuar</ion-button>
+  </div>
+  <!-- <div class="buttonNotNow">
+    <ion-button (click)="prefer_noAnswer()" fill="clear">Prefiero no responder</ion-button>
+  </div> -->
+</ion-content>

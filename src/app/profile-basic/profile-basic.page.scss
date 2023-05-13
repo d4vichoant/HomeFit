@@ -1,0 +1,238 @@
+ion-content {
+  --background: linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),
+  var(--background-ip-address)  no-repeat center center / cover;
+  height: 100vh;
+  overflow: hidden;
+  padding: 0% 0% 0% 0%;
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+}
+//css de Spinner de cargando ...
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(130, 123, 123, 0.5); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+// icono de close (X) y back (<)
+.onboard-top{
+  padding: 15% 6% 3% 6%;
+  margin-top:0%;
+  width: 100%;
+  ion-toolbar{
+    --background: linear-gradient(to right, #dfd5ff 12.5%, #eee9fe 12.5%);
+    border-radius: 40px;
+    box-shadow: 0px 2px 4px #ac89fc3f;
+    ion-buttons{
+      ion-button{
+        border-radius: 40px;
+        background-color: #ffffffd7;
+        color: #ac89fc;
+      }
+    }
+
+  }
+}
+
+//css de de barra de estado de proceso
+.line-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-p{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family:Raleway-Medium;
+  color: #9259f9;
+  margin: 0 auto;
+  margin-top: 5%;
+  margin-bottom: 3%;
+}
+
+.line{
+  border-radius: 40px;
+  width: 70%;
+  height: 10px;
+  margin-top: 10%;
+  margin: 0 auto;
+  margin-top: 5%;
+  background-image: linear-gradient(to right, #626be8 12.5%, #d7d7e1 12.5%);
+}
+
+.heading{
+  padding: 5% 0% 3% 0%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  h1{
+    font-family: Raleway-Light;
+    font-size: 1.6rem;
+    color: #535353;
+    margin: 0 auto;
+  }
+  p{
+    font-family: Raleway-Medium;
+    font-size: 1rem;
+    color: #7b7b7b;
+    margin: 0 auto;
+  }
+}
+.heading h1, .heading p {
+  margin: 0;
+}
+
+.line-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form{
+  padding: 6% 6% 0 6%;
+  .form-input{
+    position: relative;
+    margin-bottom: 3%;
+    ion-item::part(native){
+      padding-left: 0;
+    }
+
+    ion-label{
+      margin-bottom: 2%;
+      font-family:Raleway-Light ;
+      color: #535353;
+      padding: 1%;
+      display: none;
+    }
+    ion-label.show {
+      display: block;
+    }
+    ion-input{
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.076);
+      text-align: left;
+      --padding-top: 5%; /* ajusta el valor de acuerdo a tu preferencia */
+      --padding-bottom: 5%;
+      --border-width: 0px;
+      border-radius: 10px;
+      background-color: #f1f5fe;
+      font-size: 1.15rem;
+      color: #999898c2;
+      --padding-start:20px;
+      --padding-end:20px;
+      ion-icon{
+        position: absolute;
+        right: 10px;
+        font-size: 150%;
+        top: 25%;
+        color: #dc35468c;
+        display: none;
+        pointer-events: stroke;
+        z-index: 2;
+      }
+      ion-icon.show{
+        display: block;
+      }
+    }
+  }
+}
+
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5% 6% 0% 6%;
+/*   position: fixed;
+  bottom: 28%;
+  width: 100%; */
+  ion-button {
+    --border-radius: 10px;
+    --background:#6069e8;
+    --padding-top: 7%; /* ajusta el valor de acuerdo a tu preferencia */
+    --padding-bottom: 7%;
+    width: 100%;
+    font-family: Raleway-Light;
+    font-size: 120%;
+    color: #fff;
+  }
+}
+
+/* .buttonNotNow{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6% 6% 0% 6%;
+  position: fixed;
+  bottom: 15%;
+  width: 100%;
+} */
+
+.line-container-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px; /* ajusta según sea necesario */
+  padding-left: 7%;
+  padding-right: 7%;
+}
+
+.line-bottom {
+  width: 100%;
+  height: 1px;
+  background-color: #7b7b7b;
+}
+
+.circle-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px; /* ajusta según sea necesario */
+  width: 30px; /* ajusta según sea necesario */
+  height: 30px; /* ajusta según sea necesario */
+  border-radius: 50%;
+  background-color: white;
+  margin: 0 10px; /* ajusta según sea necesario */
+  color: #7b7b7b;
+}
+.button-container {
+  display: flex;
+  width: 100%;
+  padding-left: 6%;
+  padding-right: 6%;
+  padding-top: 2%;
+  padding-bottom: 6%;
+}
+
+.button {
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+}
+
+.button img {
+  max-width: 100%;
+  max-height: 100%;
+}

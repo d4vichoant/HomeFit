@@ -1,0 +1,169 @@
+ion-content {
+  --background: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)),
+  var(--background-ip-address)  no-repeat center center / cover;
+    --keyboard-offset: 0px; /* Agregar esta propiedad */
+    --keyboard-scroll-padding-top: 0px; /* Agregar esta propiedad */
+  }
+  .keyboard-open {
+    z-index: 9999;
+  }
+.login-section {
+  height: 68vh;
+  width: 100%;
+  overflow: scroll;
+  max-width: 5eepx;
+  background: #ffffff;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  position: fixed;
+  margin: auto;
+  border-top-left-radius: 46px;
+  border-top-right-radius: 46px;
+  .heading{
+    padding: 10% 0 0 10%;
+    h1{
+      font-size: 1.6rem;
+      font-weight: bolder;
+      color: black;
+    }
+    p{
+      font-size: 1rem;
+      color: #7b7b7b;
+    }
+  }
+  .login-form{
+    padding: 3% 6% 0 6%;
+    .form-input{
+      position: relative;
+      margin-bottom: 3%;
+      ion-item::part(native){
+        padding-left: 0;
+      }
+      ion-icon{
+        position: absolute;
+        top: 33%;
+        z-index: 2;
+        font-size: 1.5rem;
+        right: 25px;
+        color: #7b7b7b;
+      }
+      ion-input{
+        text-align: left;
+        --padding-top: 5%; /* ajusta el valor de acuerdo a tu preferencia */
+        --padding-bottom: 5%;
+        --border-width: 0px;
+        border-radius: 10px;
+        background-color: #f1f5fe;
+        font-size: 1.15rem;
+        color: #999898c2;
+        --padding-start:20px;
+        --padding-end:90px;
+      }
+    }
+  }
+  .action-button{
+    padding: 3% 6% 0% 6%;
+    text-align: center;
+    .login-button{
+      --border-radius: 10px;
+      --background:#6069e8;
+      --padding-top: 7%; /* ajusta el valor de acuerdo a tu preferencia */
+      --padding-bottom: 7%;
+      width: 100%;
+      font-family: Raleway-Light;
+      font-size: 120%;
+      color: #fff;
+    }
+    p{
+      margin-top: 7%;
+      font-size: 1rem;
+      color: #7b7b7b;
+
+    }
+    a{
+      text-decoration: none;
+      font-family: Raleway-Medium ;
+    }
+  }
+}
+
+.input-with-icon {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.icon {
+  display: flex;
+  text-align: right;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: (130, 123, 123, 0.5); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.line-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px; /* ajusta según sea necesario */
+  padding-left: 7%;
+  padding-right: 7%;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: #7b7b7b;
+}
+
+.circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px; /* ajusta según sea necesario */
+  width: 30px; /* ajusta según sea necesario */
+  height: 30px; /* ajusta según sea necesario */
+  border-radius: 50%;
+  background-color: white;
+  margin: 0 10px; /* ajusta según sea necesario */
+  color: #7b7b7b;
+}
+
+.button-container {
+  display: flex;
+  width: 100%;
+  padding-left: 6%;
+  padding-right: 6%;
+}
+
+.button {
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+}
+
+.button img {
+  max-width: 100%;
+  max-height: 100%;
+}

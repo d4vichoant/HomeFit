@@ -1,0 +1,57 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-main">
+    <ion-fab vertical="bottom" horizontal="end">
+      <ion-fab-button color="primary" (click)="goNext()">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <div class="onboard-top" >
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button color="primary-contrast" (click)="goBack()">
+            <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button color="primary-contrast" (click)="skipBtn()" fill="clear">
+            Skip
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </div>
+    <div class="icon-imagen">
+      <img  src="{{ ip_address }}/media/iconhome.png" alt="Icono de mi app">
+    </div>
+    <div class="onboard-bot">
+      <swiper-container class="onb-container"
+      #swiper
+      (afterinit)="swiperReady()"
+      (slidechange)="swiperSlideChanged($event)"
+      [loop]="true"
+      [pagination] = "true">
+        <swiper-slide class="onb-slide" *ngFor="let slide of onboardSlides">
+          <div class="onb-card">
+            <div class="onb-desc ion-text-center">
+              <h4 class="ion-text-capitalize ion-no-margin">{{slide.title}}</h4>
+              <p class="ion-no-margin">
+               {{slide.description}}
+              </p>
+            </div>
+          </div>
+          <div class="onb-img">
+            <img src="{{ ip_address }}/media/welcome/{{slide.image}}.png" alt="">
+          </div>
+        </swiper-slide>
+      </swiper-container>
+    </div>
+    <div class="action-button ion-padding">
+      <ion-button size="large" class="register-button" (click)="go_nextPage()">Empezar</ion-button>
+      <p class="login-button">¿Ya tienes una cuenta?, <a routerLink="/login">Iniciar Sesión</a> </p>
+    </div>
+  </div>
+</ion-content>

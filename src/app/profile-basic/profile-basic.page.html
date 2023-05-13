@@ -1,0 +1,84 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-top" >
+    <ion-toolbar>
+      <p class="header-p">PASO 1/8</p>
+      <ion-buttons slot="start">
+         <ion-button (click)="goBack()">
+          <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button  (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+<!--   <div clas="line-container">
+    <div class="line"></div>
+    <p class="header-p">PASO 1/8</p>
+  </div> -->
+  <div class="heading">
+    <h1>Déjanos saber </h1>
+    <p>más de ti</p>
+  </div>
+  <div class="login-form" >
+    <form [formGroup] = "formularioProfileBasic">
+      <div class="form-input">
+          <ion-label >Nickname</ion-label>
+          <ion-input formControlName="nickname" placeholder="Ingrese Nickname"
+          (ionFocus)="showLabel('nickname')"
+          (ionBlur)="hideLabel('nickname')"
+          (ionChange)="checkNickname()">
+          <ion-icon name='close-circle-sharp' (click)="clearNickname('nickname')"></ion-icon></ion-input>
+      </div>
+      <div class="form-input">
+        <ion-label >Nombre</ion-label>
+        <ion-input formControlName="first_name" placeholder="Ingrese Nombre"
+        (ionFocus)="showLabel('first_name')"
+        (ionBlur)="hideLabel('first_name')"></ion-input>
+      </div>
+      <div class="form-input">
+        <ion-label >Apellido</ion-label>
+        <ion-input formControlName="last_name" placeholder="Ingrese Apellido"
+        (ionFocus)="showLabel('last_name')"
+        (ionBlur)="hideLabel('last_name')"></ion-input>
+      </div>
+      <div class="form-input">
+        <ion-label >Correo Electronico</ion-label>
+        <ion-input formControlName="mail_profile" placeholder="Ingrese Correo"
+        (ionFocus)="showLabel('mail_profile')"
+        (ionBlur)="hideLabel('mail_profile')"
+        (ionChange)="checkMail()">
+        <ion-icon name='close-circle-sharp' (click)="clearNickname('mail_profile')"></ion-icon></ion-input>
+      </div>
+
+    </form>
+  </div>
+  <div class="buttons">
+    <ion-button id="continueBtnPB" (click)="go_nextPage()" [disabled]="continueBtnDisabled">Continuar</ion-button>
+  </div>
+  <!-- <div class="buttonNotNow">
+    <ion-button (click)="goBack()" fill="clear">Atras</ion-button>
+  </div> -->
+  <div class="buttonNotNow">
+  <div class="line-container-bottom">
+    <div class="line-bottom"></div>
+      <span class="circle-bottom">o</span>
+      <div class="line-bottom"></div>
+    </div>
+    <div class="button-container">
+      <button class="button" style=" background-color: #1877f2; margin-right: 3%;" (click)="get_into_with_facebook()">
+        <img src="../../assets/icon/facebook.png" alt="Facebook">
+      </button>
+      <button class="button" style=" background-color: #cd1f1e;  margin-left: 3%;" (click)="get_into_with_google()">
+        <img src="../../assets/icon/google.png" alt="Google">
+      </button>
+    </div>
+  </div>
+</ion-content>

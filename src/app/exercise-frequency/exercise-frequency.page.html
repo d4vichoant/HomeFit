@@ -1,0 +1,40 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-top" >
+    <ion-toolbar>
+      <p class="header-p">PASO 6/8</p>
+      <ion-buttons slot="start">
+        <ion-button  (click)="goBack()">
+          <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div class="heading">
+    <h1>¿Cuántas veces haces</h1>
+    <p>ejercicio a la semana?"</p>
+  </div>
+  <div class="button-container" *ngFor="let dato of datos;  let i = index">
+    <button class="custom-button" (click)="buttonClicked(i)" [style.background-color]="dato.BackgroundButton">
+      <div class="button-content">
+        <img  [src]="ip_address  + '/media/exercise-freq/' + dato.BackgroundImageButton" [alt]="'Imagen ' + (i + 1)" [style.background-color]="dato.BackgroundImage">
+        <div class="button-text">
+          <h3>{{ dato.TituloFrecuenciaEjercicio }}</h3>
+          <p>{{ dato.DESCRIPCIONFRECUENCIA }}</p>
+        </div>
+      </div>
+    </button>
+  </div>
+  <div class="buttonNotNow">
+    <ion-button (click)="goBack()" fill="clear">Atras</ion-button>
+  </div>
+</ion-content>

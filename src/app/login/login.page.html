@@ -1,0 +1,45 @@
+<ion-content>
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="login-section ">
+    <div class="heading ">
+      <h1>Bienvenido a Home Fit Go</h1>
+      <p>Inicie Sesión para continuar</p>
+    </div>
+    <div class="login-form" >
+      <form [formGroup] = "formularioLogin">
+        <div class="form-input">
+            <ion-input formControlName="nickname" placeholder="Ingrese Nickname" ></ion-input>
+        </div>
+        <div class="form-input">
+            <ion-input formControlName="password" type="{{ passwordType }}" placeholder="Ingrese Contraseña" >
+              <ion-icon  name="{{ passwordIcon }}"  slot="end" (click)="togglePassword()"></ion-icon>
+            </ion-input>
+        </div>
+      </form>
+    </div>
+    <div class="action-button ">
+      <ion-button  class="login-button" (click)="get_into()">Ingresar</ion-button>
+      <p style="text-align: end;">¿Olvido la contraseña?</p>
+    </div>
+    <div class="line-container">
+      <div class="line"></div>
+      <span class="circle">o</span>
+      <div class="line"></div>
+    </div>
+    <div class="button-container">
+      <button class="button" style=" background-color: #1877f2; margin-right: 3%;" (click)="get_into_with_facebook()">
+        <img src="../../assets/icon/facebook.png" alt="Facebook">
+      </button>
+      <button class="button" style=" background-color: #cd1f1e;  margin-left: 3%;" (click)="get_into_with_google()">
+        <img src="../../assets/icon/google.png" alt="Google">
+      </button>
+    </div>
+    <div class="action-button"  >
+      <p>¿No tienes cuenta?, <a routerLink="/select">Crear Cuenta</a> </p>
+    </div>
+  </div>
+</ion-content>

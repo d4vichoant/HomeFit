@@ -1,0 +1,42 @@
+<ion-content [fullscreen]="true">
+<div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-top" >
+    <ion-toolbar>
+      <p class="header-p">PASO 7/8</p>
+      <ion-buttons slot="start">
+        <ion-button  (click)="goBack()">
+          <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button  (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div class="heading">
+    <h1> Permítenos saber en qué te podemos ayudar </h1>
+    <p>Siempre puedes cambiar esto más tarde</p>
+  </div>
+  <div class="button-container" *ngFor="let dato of datos; let i = index">
+    <ion-checkbox [class]="'custom-checkbox checkbox' + (i + 1)" [(ngModel)]="isChecked[i]" (ionChange)="handleCheckboxChange('checkbox' + (i + 1))">
+      <div class="checkbox-content">
+        <img [src]="ip_address + '/media/objetive/' + dato.BackgroundButton" alt="Imagen" class="checkbox-image">
+        <span class="checkbox-text">{{ dato.DESCRIPCIONOBJETIVOSPERSONALES }}</span>
+      </div>
+    </ion-checkbox>
+  </div>
+
+
+  <div class="buttons">
+    <ion-button id="continueBtnPB" (click)="go_nextPage()" >Continuar</ion-button>
+  </div>
+  <div class="buttonNotNow">
+    <ion-button (click)="goBack()" fill="clear">Atras</ion-button>
+  </div>
+</ion-content>
