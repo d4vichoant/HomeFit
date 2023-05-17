@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiServiceService } from '../api-service.service';
 import { StatusBar } from '@capacitor/status-bar';
+import { ApiServiceService } from '../../../api-service.service';
 import { NavController } from '@ionic/angular';
+import { AnimationController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.page.html',
-  styleUrls: ['./main.page.scss'],
+  selector: 'app-activate-entrenadores',
+  templateUrl: './activate-entrenadores.page.html',
+  styleUrls: ['./activate-entrenadores.page.scss'],
 })
-export class MainPage implements OnInit {
-
-  constructor(private navController: NavController,
-    private apiService: ApiServiceService) { }
+export class ActivateEntrenadoresPage implements OnInit {
   public loading = true;
+  constructor(private navController: NavController,
+    private apiService: ApiServiceService,
+    private animationCtrl: AnimationController) { }
+
   ngOnInit() {
   }
   ionViewDidEnter() {
@@ -37,5 +39,17 @@ export class MainPage implements OnInit {
       this.navController.navigateForward('/errorpage');
     }
   }
-}
 
+  animateOption(option: string) {
+    const buttonElement = document.querySelector(`ion-button:contains(${option})`);
+
+    if (buttonElement) {
+      const animation = this.animationCtrl.create()
+        .addElement(buttonElement)
+        .fromTo('transform', 'translateY(0)', 'translateY(-100%)')
+        .duration(500);
+
+      animation.play();
+    }
+  }
+}

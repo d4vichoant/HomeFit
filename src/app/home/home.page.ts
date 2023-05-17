@@ -58,7 +58,6 @@ export class HomePage implements OnInit {
 
 
   swiperSlideChanged(e: any){
-  console.log('changed:',e);
   }
   swiperReady(){
     this.swiper=this.swiperRef?.nativeElement.swiper;
@@ -93,7 +92,6 @@ export class HomePage implements OnInit {
     });
 
     Promise.all(promises).then(() => {
-      console.log('Todas las imágenes han cargado completamente');
       this.loading = false;
     }).catch((error) => {
       console.error('Error al cargar las imágenes:', error);

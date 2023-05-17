@@ -1,0 +1,93 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-top" >
+    <ion-toolbar>
+      <p class="header-p">PASO 8/8</p>
+      <ion-buttons slot="start">
+        <ion-button  (click)="goBack()">
+          <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button  (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div class="heading">
+    <h1>Chequear </h1>
+    <p>Información</p>
+  </div>
+  <div class="container-details">
+    <div class="first">
+      <p><span class="label">Nickname:</span> {{ allDatos.nickname }}</p>
+      <p><span class="label">Nombre:</span> {{ allDatos.first_name }}</p>
+      <p><span class="label">Apellido:</span> {{ allDatos.last_name }}</p>
+      <div class="grid-container">
+        <div class="grid-item">
+          <span class="label">Genero:</span>
+          <span class="description">{{ allDatos.gender }}</span>
+        </div>
+        <div class="grid-item">
+          <span class="label">Edad:</span>
+          <span class="description">{{ allDatos.birthdayActual }}</span>
+        </div>
+      </div>
+      <p><span class="label">Correo electrónico:</span> {{ allDatos.mail_profile }}</p>
+      <p><span class="label">Usuario creado como:</span> {{ allDatos.rolusuarioNombre }}</p>
+    </div>
+    <div class="second">
+      <p><span class="label">Experiencia:</span> {{ allDatos.experiencia }}</p>
+    </div>
+    <div class="three">
+    <p><span class="label">Certificados</span></p>
+      <div class="three-one" *ngFor="let certificacion of allDatos.certificacion">
+        <p><span class="sub-label">Nombre:</span> {{ certificacion.nombre }}</p>
+        <p><span class="sub-label">Certificador:</span> {{ certificacion.certificador }}</p>
+        <p><span class="sub-label">Horas:</span> {{ certificacion.horas }}</p>
+      </div>
+    </div>
+    <div class="four">
+      <p><span class="label">Especialidad</span></p>
+      <div class="four-one" *ngFor="let especialidad of allDatos.specialty">
+        <p><span class="sub-label">• </span> {{ especialidad.tituloESPECIALIDADENTRENADOR }}</p>
+      </div>
+    </div>
+    <div class="five">
+      <p><span class="label">Acerca de ti:</span> {{ allDatos.about }}</p>
+    </div>
+    <div class="six">
+      <p><span class="label">Tarifa:</span> $ {{ allDatos.tarifa }} USD /mensual</p>
+    </div>
+  </div>
+  <div class="file-container">
+    <div class="file">
+      <form (ngSubmit)="submitForm()">
+        <div class="form-group">
+          <label class="text-file-title" >Suba su Curriculum Vitae <span>(Opcional)</span></label>
+          <label for="fileInput" class="file-label">
+            <img [src]="ip_address + '/media/resume/subir.png'" alt="File Icon" class="file-icon">
+            <span class="file-text">{{ selectedFile ? selectedFile.name : 'Ningún archivo elegido' }}</span>
+            <input type="file" id="fileInput" class="file-input" accept=".pdf" (change)="handleFileChange($event)">
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="container-checkbox">
+    <input type="checkbox" id="termsCheckbox" (click)="showTermsAndConditions()" [(ngModel)]="acceptTerms">
+    <label for="termsCheckbox">Acepto los <a (click)="showTermsAndConditions()">Términos y Condiciones</a></label>
+  </div>
+  <div class="buttons">
+    <ion-button [disabled]="!acceptTerms" (click)="go_Now()">Enviar a revisión</ion-button><br>
+  </div>
+  <div class="buttonNotNow">
+    <ion-button (click)="go_notNow()" fill="clear">Cancelar</ion-button>
+  </div>
+
+</ion-content>

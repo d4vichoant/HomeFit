@@ -1,20 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiServiceService } from '../api-service.service';
+import { IP_ADDRESS } from '../../../constantes';
 import { StatusBar } from '@capacitor/status-bar';
 import { NavController } from '@ionic/angular';
+import { ApiServiceService } from '../../../api-service.service';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.page.html',
-  styleUrls: ['./main.page.scss'],
+  selector: 'app-notactivate',
+  templateUrl: './notactivate.page.html',
+  styleUrls: ['./notactivate.page.scss'],
 })
-export class MainPage implements OnInit {
-
+export class NotactivatePage implements OnInit {
+  public loading = true;
+  public ip_address = IP_ADDRESS;
   constructor(private navController: NavController,
     private apiService: ApiServiceService) { }
-  public loading = true;
+
   ngOnInit() {
   }
+  goHome(){
+    this.navController.navigateForward('/home');
+    localStorage.removeItem('sesion');
+  }
+
   ionViewDidEnter() {
     StatusBar.hide();
     StatusBar.setOverlaysWebView({overlay:true});
@@ -23,7 +30,12 @@ export class MainPage implements OnInit {
     if (sesion){
       this.apiService.protectedRequestWithToken(sesion.token).subscribe(
         (response) => {
-          this.loading = false;
+          const image = new Image();
+          image.src = IP_ADDRESS + '/media/notActivate/notactivate.png';
+          // Cuando la imagen termine de cargar, ocultar el spinner
+          image.onload = () => {
+            this.loading = false;
+          };
         },
         (error) => {
           this.loading = false;
@@ -38,4 +50,3 @@ export class MainPage implements OnInit {
     }
   }
 }
-

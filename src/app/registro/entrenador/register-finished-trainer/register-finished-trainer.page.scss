@@ -1,0 +1,130 @@
+ion-content {
+  --background: linear-gradient(0deg, #ffffff, #8735f2);
+}
+.heading{
+  padding: 0% 0% 3% 0%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  h1{
+    font-family: Raleway-Light;
+    font-size: 1.6rem;
+    color: #ffffff;
+    margin: 0 auto;
+  }
+  p{
+    font-family: Raleway-Medium;
+    font-size: 1rem;
+    color: #ffffff;
+    margin: 0 auto;
+  }
+}
+.heading h1, .heading p {
+  margin: 0;
+}
+
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(130, 123, 123, 0.5); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagenot{
+  padding-top: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0%;
+  img{
+    padding-top: 5%;
+    height: 60%;
+    width: 60%;
+    object-fit: cover;
+  }
+}
+.icon-imagen{
+  padding-bottom: 0%;
+}
+.icon-imagen img{
+  margin: 0 auto;
+  width: 18%;
+  display: block;
+  justify-content: center;
+}
+
+.container-text {
+  font-family: Raleway-Light;
+  font-size: 1rem;
+  text-align: center; /* Centra el texto horizontalmente */
+  color: #8735f2; /* Establece el color de texto a blanco */
+  p{
+    margin: 1%;
+    padding: 0;
+  }
+}
+.onboard-top{
+  padding-top: 10%;
+  padding-bottom: 5%;
+  padding-right: 3%;
+  margin-top:0%;
+  ion-toolbar{
+    --background:transparent;
+  }
+}
+
+.details ion-list{
+  padding: 0% 0% 3% 13%;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  background-color: transparent;
+  ion-item{
+    --background: transparent;
+    ion-icon{
+      padding-right: 5%;
+    }
+    ion-label{
+      font-family: Raleway-Light;
+      font-size: 1rem;
+      color: #3d3d3d;
+      white-space: nowrap;
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5% 6% 0% 6%;
+  position: fixed;
+  bottom: 10%;
+  width: 100%;
+  ion-button {
+    --border-radius: 10px;
+    --background:#6069e8;
+    --padding-top: 7%; /* ajusta el valor de acuerdo a tu preferencia */
+    --padding-bottom: 7%;
+    width: 100%;
+    font-family: Raleway-Light;
+    font-size: 120%;
+    color: #fff;
+  }
+}

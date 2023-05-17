@@ -1,0 +1,350 @@
+ion-content {
+  --background: linear-gradient(0deg, #ffffff, #bea6ff);
+  height: auto;
+}
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(130, 123, 123, 0.5); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+// icono de close (X) y back (<)
+.onboard-top{
+  padding: 15% 6% 5% 6%;
+  margin-top:0%;
+  width: 100%;
+  ion-toolbar{
+    --background: linear-gradient(to right, #dfd5ff 100%, #eee9fe 12.5%);
+    border-radius: 40px;
+    box-shadow: 0px 2px 4px #ac89fc3f;
+    ion-buttons{
+      ion-button{
+        border-radius: 40px;
+        background-color: #ffffffd7;
+        color: #ac89fc;
+      }
+    }
+
+  }
+}
+
+
+.header-p{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family:Raleway-Medium;
+  color: #9259f9;
+  margin: 0 auto;
+  margin-top: 5%;
+  margin-bottom: 3%;
+}
+
+
+.heading{
+  padding: 0% 0% 5% 0%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  h1{
+    font-family: Raleway-Bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 1.6rem;
+    color: #ffffff;
+    margin: 0 auto;
+  }
+  p{
+    font-family: Raleway-Medium;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+    color: #ffffff;
+    margin: 0 auto;
+  }
+}
+
+.heading h1, .heading p {
+  margin: 0;
+}
+
+.container-details {
+  height: 40%;
+  overflow: auto;
+  margin: 0% 6% 0% 6%;
+  padding: 2% 6% 0% 6%;
+  background-color: #eee9fe;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  .first{
+    padding: 2% 6% 3% 6%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    p{
+      font-family: Raleway-Medium ;
+      font-size: .8rem;
+      color: #330e67;
+      span{
+      font-family: Raleway-Bold;
+      font-size: 1rem;
+      color: #7625dc;
+      }
+    }
+  }
+  .second{
+    margin-top: 5%;
+    padding: 2% 6% 3% 6%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  .three{
+    margin-top: 5%;
+    padding: 2% 6% 3% 6%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    .three-one{
+      margin-top: 4%;
+      padding: 2% 3% 3% 3%;
+      background-color: #dfd5ff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      p{
+        margin: 0%;
+        margin-top: 1%;
+        margin-left: 25px;
+      }
+    }
+  }
+  .four{
+    margin-top: 5%;
+    padding: 2% 6% 3% 6%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    p{
+      font-family: Raleway-Medium ;
+      font-size: .8rem;
+      color: #330e67;
+      span{
+      font-family: Raleway-Bold;
+      font-size: 1rem;
+      color: #7625dc;
+      }
+    }
+    .four-one{
+      padding-left: 25px;
+    }
+  }
+  .five{
+    margin-top: 5%;
+    padding: 2% 6% 3% 6%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  .six{
+    margin-top: 5%;
+    margin-bottom: 3%;
+    padding: 2% 6% 2% 6%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.label {
+  font-family: Raleway-Bold;
+  font-size: 1rem;
+  color: #7625dc;
+}
+
+.sub-label {
+  font-family: Raleway-Bold;
+  font-size: .9rem;
+  color: #7625dc;
+}
+
+.description {
+  margin-left: 10px;
+  font-family: Raleway-Medium ;
+  font-size: .8rem;
+  color: #330e67;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 10px;
+}
+
+.grid-item {
+  display: flex;
+  align-items: center;
+}
+
+
+.container-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3% 6% 2% 6%;
+  margin-top: 10px;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+label {
+  display: inline-flex;
+  align-items: center;
+}
+
+label a {
+  color: #8537f0;
+  text-decoration: underline;
+  margin-left: 5px;
+}
+
+input[type="checkbox"] + label:before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+input[type="checkbox"]:checked + label:before {
+  background-color: #c7b4fe;
+  border-color: #c7b4fe;
+}
+
+input[type="checkbox"] + label:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+input[type="checkbox"]:checked + label:after {
+  content: '';
+  position: absolute;
+  display: inline-block;
+  width: 10px;
+  height: 5px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  left: 5px;
+  top: 2px;
+}
+.file{
+
+  padding: 5% 6% 0% 6%;
+
+}
+
+.file-icon{
+  width: 7%;
+  height: auto;
+  margin-right: 20px;
+}
+.file-label{
+  background-color: #330e67;
+}
+
+.file-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+ // border: 1px solid #ccc;
+  background-color: #c7b4fe;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.file-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  opacity: 0;
+  cursor: pointer;
+}
+
+.text-file-title{
+  align-items: start;
+  justify-content: left;
+  text-align: left;
+  margin-bottom: 5px;
+  font-family: Raleway-Bold ;
+  font-size: 1rem;
+  color: #8537f0;
+  span{
+    margin-left: 10px;
+    font-family: Raleway-Medium ;
+    font-size: 1rem;
+    color: #c7b4fe;
+  }
+}
+.file-text {
+  margin-bottom: 5px;
+  font-family: Raleway-Medium ;
+  font-size: 1rem;
+  color: #ffffff;
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5% 6% 0% 6%;
+  position: fixed;
+  bottom: 10%;
+  width: 100%;
+  ion-button {
+    --border-radius: 10px;
+    --background:#6069e8;
+    --padding-top: 7%; /* ajusta el valor de acuerdo a tu preferencia */
+    --padding-bottom: 7%;
+    width: 100%;
+    font-family: Raleway-Light;
+    font-size: 120%;
+    color: #fff;
+  }
+}
+
+.buttonNotNow{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0% 6% 0% 6%;
+  position: fixed;
+  bottom: 5%;
+  width: 100%;
+  ion-button{
+    width: 100%;
+    font-family: Raleway-Medium;
+    font-size: 90%;
+    color: #535353;
+
+  }
+}

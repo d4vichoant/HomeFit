@@ -1,0 +1,53 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-top" >
+    <ion-toolbar>
+      <p class="header-p">PASO 5/8</p>
+      <ion-buttons slot="start">
+        <ion-button  (click)="goBack()">
+          <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <h3  class="unidtexH" (click)="toggleUnit()">{{ isMeters ? textShowH : textShowHInFt }} {{ isMeters ? 'm' : 'ft / in' }}</h3>
+  <div class="heading-top">
+    <h1>¿Cuál es tu Altura?</h1>
+    <p>Clic para cambiar de unidad</p>
+  </div>
+  <div class="pre-wheel-listH" #wheelListH (ps-scroll-y)="handleScrollH($event)">
+    <ion-list lines="none" class="wheel-list">
+      <ion-item *ngFor="let mil of metro">
+        {{ mil }}
+      </ion-item>
+    </ion-list>
+  </div>
+  <h3 class="unidtexW" (click)="convertUnits()">{{ showInLbs ? textShowWInLbs : textShowW }} {{ showInLbs ? 'lb' : 'kg' }}</h3>
+  <div class="heading-bottom">
+    <h1>¿Cuál es tu peso?</h1>
+    <p>Clic para cambiar de unidad</p>
+  </div>
+  <div class="pre-wheel-listW" #wheelListW (ps-scroll-y)="handleScrollW($event)">
+    <ion-list lines="none" class="wheel-list">
+      <ion-item *ngFor="let mil of metro">
+        {{ mil }}
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div class="buttons">
+    <ion-button id="continueBtnPB" (click)="go_nextPage()" >Continuar</ion-button>
+  </div>
+  <div class="buttonNotNow">
+    <ion-button (click)="goBack()" fill="clear">Atras</ion-button>
+  </div>
+</ion-content>

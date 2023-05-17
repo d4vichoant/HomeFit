@@ -53,8 +53,45 @@ export class LoginPage implements OnInit {
     const data = dataLogin;
     this.apiService.consultLogin(data).subscribe(
       (response) => {
-        this.presentCustomToast(response.message,"success");
-        this.navController.navigateForward('/main');
+        var flag = false;
+        if (response.message=="access user"){
+          this.navController.navigateForward('/main');
+          this.presentCustomToast("Bienvenido Usuario Comun","success");
+          flag=true;
+        }else{
+          if (response.message=="all access"){
+            this.navController.navigateForward('/main');
+            this.presentCustomToast("Bienvenido Administrador","success");
+            this.navController.navigateForward('/activate-entrenadores');
+            flag=true;
+          }else {
+            if (response.message=="access trainer"){
+              this.navController.navigateForward('/main');
+              this.presentCustomToast("Bienvenido Entrenador Comun","success");
+              flag=true;
+            }else{
+              if (response.message=="trainer not activated"){
+                 this.presentCustomToast("Bienvenido Entrenador Comun Bloqueado","success");
+                 this.navController.navigateForward('/notactivate');
+                 flag=true;
+              }else{
+                this.presentCustomToast("Error de Ingreso a la APP","danger");
+                flag=false;
+              }
+            }
+          }
+        }
+        if (flag){
+          dataLogin.nickname = '';
+          dataLogin.password = '';
+          var sesion ={
+            token:response.token,
+            nickname:response.nickname
+          }
+          localStorage.setItem('sesion',JSON.stringify(sesion));
+        }else{
+          this.presentCustomToast("Error de Ingreso a la APP","danger");
+        }
       },
       (error) => {
         const errorMessage = error?.error?.message || 'Error desconocido';

@@ -1,0 +1,16 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button (click)="animateOption('option1')">Opción 1</ion-button>
+      <ion-button (click)="animateOption('option2')">Opción 2</ion-button>
+      <ion-button (click)="animateOption('option3')">Opción 3</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

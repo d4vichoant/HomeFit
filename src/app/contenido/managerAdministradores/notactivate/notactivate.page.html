@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-top" >
+    <ion-toolbar >
+ <!--      <ion-buttons slot="start">
+        <ion-button style="color: #ffffff;"  (click)="goBack()">
+         <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+       </ion-button>
+     </ion-buttons> -->
+      <ion-buttons slot="end">
+        <ion-button style="color: #ffffff;" (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div class="imagenot">
+    <img src="{{ ip_address }}/media/notActivate/notactivate.png" alt="notification-imagen"/>
+  </div>
+  <div class="heading">
+    <h1>Tu cuenta aun </h1>
+    <p>no ha sido Activada</p>
+  </div>
+  <div class="container-text">
+    <p>Cuando se active su cuenta</p>
+    <p>sera notificado por correo</p>
+  </div>
+  <div class="buttons">
+    <ion-button (click)="goHome()">Aceptar</ion-button><br>
+  </div>
+</ion-content>

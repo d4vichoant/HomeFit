@@ -4,6 +4,9 @@
   ion-fab{
     bottom: 33%;
     right: 9.5%;
+    ion-fab-button {
+      --background: #6069e8;
+    }
   }
   .onboard-top{
     padding-top: 9%;
@@ -18,7 +21,6 @@
       text-transform: capitalize;
       font-size: 0.9rem;
       color: rgb(0, 0, 0);
-
     }
   }
   .onboard-bot{
@@ -84,6 +86,7 @@
   text-align: center;
   font-size: 15px;
   a{
+    color: #6069e8;
     text-decoration: none;
     font-family: Raleway-Medium ;
   }
