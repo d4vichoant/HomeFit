@@ -4,13 +4,129 @@
       <ion-spinner name="crescent"></ion-spinner>
     </div>
   </div>
+  <ion-toolbar class="toolbar-header">
+    <ion-grid class="container-header">
+      <ion-row>
+        <ion-col size="1.5" class="image-container">
+          <img  class="icono-image" src="{{ ip_address }}/media/iconhomeviolet.png" alt="Icono de mi app">
+        </ion-col>
+        <ion-col size="7.5">
+          <ion-title class="title-text">Home <span style="color: #9259f9;font-family: Raleway-Bold;">Fit</span> Go</ion-title>
+        </ion-col>
+        <ion-col size="1.5" class="image-container">
+          <ion-img class="icono-notificacion" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+        </ion-col>
+        <ion-col size="1.5" class="image-container">
+          <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/bookmark.png"></ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+  <div class="filter" >
+    <div class="filter-text-icon">
+      <img  class="icono-filter" src="{{ ip_address }}/media/images/filter.png" alt="Imagen Subtítulo">
+    </div>
+    <div class="filter-text" *ngFor="let fil of filter" [ngStyle]="{ 'background-color': !fil.iconstatus ? '#ded5ff' : '#7525dc' }" (click)="buttonfilterhabilitate(fil)">
+      <p [ngStyle]="{ 'color': !fil.iconstatus ? '#621eb9' : '#ffffff' }"># {{fil.name}}</p>
+      <ng-container *ngIf="fil.iconstatus">
+        <img class="filter-icon" src="{{ ip_address }}/media/images/close.png" alt="Icono">
+      </ng-container>
+    </div>
+  </div>
+  <div class="container-body">
+    <div class="item-body" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#c7b4fe' : '#ac89fc' }" *ngFor="let item of data">
+      <div class="div-item-body">
+        <div class="div-text-item-body">
+          <h1>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}&nbsp;{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</h1><span class="age">|&nbsp;{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }} años</span>
+          <div class="sub-title">
+            <img  class="icono-item" src="{{ ip_address }}/media/images/portafolio.png" alt="Imagen Subtítulo">
+            <h2>Experiencia</h2>
+            <span>{{item.EXPERIENCIAENTRENADOR}}</span>
+          </div>
+          <div class="details-item-body">
+            <img class="icono-item" src="{{ ip_address }}/media/images/star.png"alt="Imagen Detalles">
+            <p >Especialidad</p>
+          </div>
+          <div class="details-item-body-details">
+            <p>{{truncarTexto(item.tituloESPECIALIDADENTRENADOR)}}</p>
+          </div>
+        </div>
+        <div class="item-body-right-top">
+          <button >
+            <img class="icono-item-top" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"alt="Icono 1">
+          </button>
+          <button>
+            <img class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
+          </button>
+        </div>
+        <div class="item-body-right-bottom" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#fcfee7' : '#fdfec3' }">
+          <div>
+            <img  class="icono-item-botton" src="{{ ip_address }}/media/images/{{ item.ACTIVACIONENTRENADOR ? 'check.png' : 'time.png' }}"alt="Imagen Subtítulo">
+            <h2>{{ item.ACTIVACIONENTRENADOR ? 'Activo' : 'Revisión' }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ion-toolbar class="toolbar-footer">
+    <ion-grid class="container-footer">
+      <ion-row>
+        <ion-col size="4" class="image-container-footer ">
+          <img  class="icono-image" src="{{ ip_address }}/media/images/users.png" alt="Icono de mi app">
+        </ion-col>
+        <ion-col size="2" class="image-container-footer ">
+          <ion-img class="icono-notificacion" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+        </ion-col>
+        <ion-col size="2" class="image-container-footer ">
+          <ion-img class="icono-notificacion" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+        </ion-col>
+        <ion-col size="2" class="image-container-footer ">
+          <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/bookmark.png"></ion-img>
+        </ion-col>
+        <ion-col size="2" class="image-container-footer ">
+          <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/bookmark.png"></ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
 </ion-content>
-<ion-footer>
+
+<!-- <ion-footer>
+
+  <div class="large-div" *ngIf="showDiv">
+    <h3>adasdsa</h3>
+  </div>
+  <div class="container">
+    <div class="mi-elemento">
+      <div class="contenido">
+        <h3>adasdsa</h3>
+      </div>
+      <div class="contenido">
+        <h3>adasdsa</h3>
+      </div>
+      <div class="contenido">
+        <h3>adasdsa</h3>
+      </div>
+      <div class="contenido">
+        <h3>adasdsa</h3>
+      </div>
+      <div class="contenido">
+        <h3>adasdsa</h3>
+      </div>
+      <div class="contenido">
+        <h3>adasdsa</h3>
+      </div>
+    </div>
+  </div>
   <ion-toolbar>
     <ion-buttons>
-      <ion-button (click)="animateOption('option1')">Opción 1</ion-button>
-      <ion-button (click)="animateOption('option2')">Opción 2</ion-button>
-      <ion-button (click)="animateOption('option3')">Opción 3</ion-button>
+      <ion-button class="navbar-option" (click)="toggleDiv()">O 1</ion-button>
+      <ion-button  class="navbar-option" (click)="toggleDiv()">O 2</ion-button>
+      <ion-button class="navbar-option" (click)="toggleShape()">O 3</ion-button>
+      <ion-button  class="navbar-option" (click)="slideDiv()">O 4</ion-button>
+      <ion-button  class="navbar-option" (click)="transformShape()">O 5</ion-button>
+      <ion-button  class="navbar-option" (click)="animateFlip()">O 6</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>
+ -->

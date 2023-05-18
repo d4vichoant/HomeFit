@@ -1,8 +1,84 @@
 ion-content {
-  --background:#fff;
+  --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
   height: 100vh;
   overflow: hidden;
 }
+
+
+.toolbar-header{
+  margin-top: 9%;
+  background: transparent;
+  padding: 0% 6% 0% 6%;
+  --background: transparent;
+  ion-title{
+    background-color: transparent;
+  }
+
+}
+.toolbar-footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f0f0f0;
+  padding: 10px;
+  box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
+}
+.container-header{
+  border-radius: 20px;
+  }
+.container-footer{
+  background-color: transparent;
+}
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+
+.image-container-footer {
+  position: relative;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 4vh;
+}
+
+.icono-image{
+  width: 35px;
+  height: auto;
+}
+.icono-bookmark{
+  padding-top: 3px;
+  width: 20px;
+  height: auto;
+}
+.icono-notificacion{
+  padding-top: 3px;
+  width: 28px;
+  height: auto;
+}
+
+.title-text{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: Raleway-Light;
+  font-size: 1.5rem;
+  color:  #6b6a6b;
+  padding-left: 5px;
+  padding-top: 3px;
+  text-align: left;
+}
+
 //css de Spinner de cargando ...
 .loading-overlay {
   position: fixed;
@@ -21,4 +97,182 @@ ion-content {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.filter{
+  overflow-x: auto; /* Establece el desplazamiento horizontal solo cuando sea necesario */
+  white-space: nowrap;
+  height: 7.5%;
+  .filter-text-icon{
+    background-color: #f2f3f8;
+    position: sticky; /* Fija la posición del elemento */
+    left: 0;
+    z-index: 1;
+    border-radius: 5px;
+    display: inline-block; /* Mantiene los elementos en una línea */
+    margin-right: 10px; /* Espacio entre los elementos */
+    padding: 6% 2% 6% 7%;
+  }
+  .filter-text{
+    align-items: center;
+    border-radius: 10px;
+    display: inline-flex; /* Mantiene los elementos en una línea */
+    margin-right: 10px; /* Espacio entre los elementos */
+    padding: 0px 5px;
+    p{
+      font-family: Raleway-Bold;
+      font-size:0.8rem;
+    }
+  }
+  .icono-filter{
+    width: 20px;
+  }
+}
+.filter-icon{
+  margin-left: 5px;
+  width: 15px;
+}
+
+.container-body{
+  padding: 1% 6% 17% 6%;
+  width: 100%;
+  height: 82%;
+  overflow: auto;// Establece el desplazamiento horizontal solo cuando sea necesario */
+}
+.item-body{
+  padding: 0 5% 0% 5%;
+  margin-bottom: 5%;
+  background-color: #c7b4fe;
+  border-radius: 20px 0px 20px 20px;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.1);
+}
+.div-item-body{
+    display: flex;
+    align-items: center;
+}
+.icono-item{
+  padding-top: 3px;
+  width: 20px;
+  height: auto;
+  background-color: transparent;
+}
+.icono-item-top{
+  width: 22px;
+  height: auto;
+  background-color:transparent ;
+}
+.div-text-item-body{
+  padding: 0px;
+  margin: 0px;
+  flex: 1;
+  h1{
+    margin: 7px 0px 2px 0px;
+    font-family: Raleway-Bold;
+    font-size: 1.2rem;
+    color:  #f1f1f1;
+  }
+  span{
+    font-family: Raleway-Medium;
+    font-size: 1rem;
+    color: #6b6a6b;
+  }
+  .sub-title{
+    display: flex;
+    margin: 7px 0px 2px 0px;
+    padding: 0px;
+    align-items: center;
+    h2{
+      margin: 7px 0px 2px 0px;
+      font-family: Raleway-Medium;
+      font-size: .9rem;
+      color:  #f1f1f1;
+      margin-left: 5px;
+    }
+    span{
+      margin: 7px 0px 2px 0px;
+      text-align: center;
+      align-items: center;
+      font-family: Raleway-Medium;
+      font-size: 0.9rem;
+      margin-left: 5px;
+      color: #6b6a6b;
+
+    }
+  }
+  .details-item-body{
+    display: flex;
+    align-items: center;
+    p{
+      margin: 7px 0px 7px 0px;
+      font-family: Raleway-Medium;
+      font-size: 0.8rem;
+      color:  #f1f1f1;
+      margin-left: 5px;
+    }
+  }
+  .details-item-body-details{
+    padding-right: 30%;
+    margin: 2px 0px 15px 5px;
+    p{
+      margin: 2px 0px 2px 5px;
+      font-family: Raleway-Light;
+      font-size: .8rem;
+    }
+  }
+}
+.item-body-right-top{
+  position: absolute;
+  top: 0; right: 0;
+  padding-top: 10px;
+  padding-right: 10px;
+  button{
+    margin-bottom: 10px;
+    background-color:transparent;
+  }
+}
+.item-body-right-bottom {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  //left: 0; /* Asegura que el ancho sea el 100% del contenedor */
+  border-radius: 20px 0 20px 0;
+  height: 40px;
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+}
+
+.item-body-right-bottom div {
+  display: flex;
+  align-items: center;
+  h2 {
+    align-items: center;
+    font-family: Raleway-Medium;
+    font-size: 1rem;
+    color: #524f52;
+    margin-left: 5px;
+    margin-right: 20px;
+    padding-bottom: 8px;
+  }
+}
+
+.icono-item-botton{
+  margin-left: 10px;
+  width: 20px;
+  height: auto;
+  background-color:transparent ;
+}
+
+.large-div{
+  background-color: blue;
+}
+.mi-elemento{
+  background-color: blue;
+}
+
+.container{
+  padding: 0% 12% 0% 12%;
 }

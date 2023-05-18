@@ -23,16 +23,12 @@ export class RegisterFinishedTrainerPage implements OnInit {
     StatusBar.hide();
     StatusBar.setOverlaysWebView({overlay:true});
     StatusBar.setBackgroundColor({color:'#ffffff'});
-    if (JSON.parse(localStorage.getItem('profilesdates')!)!=null){
     const image = new Image();
-    image.src = IP_ADDRESS + '/media/notification-permission/notification.png';
+    image.src = IP_ADDRESS + '/media/register-finished/asset.png';
     // Cuando la imagen termine de cargar, ocultar el spinner
     image.onload = () => {
       this.loading = false;
     };
-    }else{
-      localStorage.removeItem('profilesdates');
-      this.navController.navigateForward('/errorpage');
-    }
+
   }
 }

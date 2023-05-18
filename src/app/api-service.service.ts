@@ -44,4 +44,7 @@ export class ApiServiceService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(IP_ADDRESS+'/protectedtoken', { headers });
   }
+  allTrainer(): Observable<any> {
+    return this.http.get(IP_ADDRESS+/manager/);
+  }
 }
