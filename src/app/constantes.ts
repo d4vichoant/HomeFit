@@ -1,1 +1,1 @@
-export const IP_ADDRESS = "http://172.106.0.48";
+export const IP_ADDRESS = "http://nodejsclusters-127163-0.cloudclusters.net";
