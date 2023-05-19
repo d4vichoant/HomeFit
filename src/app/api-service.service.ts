@@ -10,7 +10,9 @@ export class ApiServiceService {
   private apiUrl = IP_ADDRESS+'/profiles';
 
   constructor(private http: HttpClient) { }
-
+  allPeople(): Observable<any> {
+    return this.http.get(IP_ADDRESS+/profiles/);
+  }
   saveProfile(data: any): Observable<any> {
     return this.http.post(this.apiUrl+"/guardarDatos", data);
   }

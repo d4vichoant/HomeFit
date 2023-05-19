@@ -20,19 +20,11 @@ export class ActivateEntrenadoresPage implements OnInit {
       name: 'Entrenador',
       iconstatus: false,
     }, {
-      name: 'Entrenador2',
-      iconstatus: false,
-    }, {
-      name: 'Entrenador3',
-      iconstatus: false,
-    }, {
-      name: 'Entrenador4',
-      iconstatus: false,
-    }, {
-      name: 'Entrenador5',
-      iconstatus: false,
+      name: 'Usuarios',
+      iconstatus: true,
     }];
-
+  public searchTerm!:string;
+  previousSearchTerm: string = '';
 
   showDiv = false;
   isCircle = false;
@@ -42,6 +34,7 @@ export class ActivateEntrenadoresPage implements OnInit {
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
     public toastController: ToastController ) {
+      this.ordenarfilter();
     }
 
   ngOnInit() {
@@ -51,10 +44,10 @@ export class ActivateEntrenadoresPage implements OnInit {
     StatusBar.setOverlaysWebView({overlay:true});
     StatusBar.setBackgroundColor({color:'#ffffff'});
     var sesion = JSON.parse(localStorage.getItem('sesion')!);
-    if (sesion){
+    if (sesion && sesion.rolUsuario==99){
       this.apiService.protectedRequestWithToken(sesion.token).subscribe(
         (response) => {
-          this.apiService.allTrainer().subscribe(
+          this.apiService.allPeople().subscribe(
             (response) => {
               this.data=response;
               this.loading = false;
@@ -128,6 +121,36 @@ export class ActivateEntrenadoresPage implements OnInit {
   }
 
   buttonfilterhabilitate(filter:any){
+    this.data = [];
+    console.log(filter.iconstatus);
+    if(filter.name==="Entrenador"&& !filter.iconstatus){
+      this.loading = true;
+      this.apiService.allTrainer().subscribe(
+        (response) => {
+          this.updatestausIcon(filter);
+          this.data=response;
+          this.loading = false;
+          console.log(this.data);
+        },
+        (error) => {
+          this.presentCustomToast(error,"danger");
+        }
+      );
+    }else{
+      if(filter.name==="Usuarios"&& !filter.iconstatus){
+        this.loading = true;
+          this.apiService.allPeople().subscribe(
+            (response) => {
+              this.updatestausIcon(filter);
+              this.data=response;
+              this.loading = false;
+            },
+            (error) => {
+              this.presentCustomToast(error,"danger");
+            }
+          );
+      }
+    }
     filter.iconstatus = !filter.iconstatus;
     this.ordenarfilter();
   }
@@ -144,6 +167,86 @@ export class ActivateEntrenadoresPage implements OnInit {
       // Si ambos tienen el mismo valor de iconstatus, mantener el orden actual
       return 0;
     });
+  }
+  public getRoleName(role: number): string {
+    switch (role) {
+      case 1:
+        return 'Entrenante';
+      case 2:
+        return 'Entrenador';
+      case 99:
+        return 'Administrador';
+      default:
+        return '';
+    }
+  }
+  public getESTADOPERSONA(status:number):string{
+    switch (status) {
+      case 1:
+        return 'Activo';
+      case 0:
+        return 'Inactivo';
+      default:
+        return '';
+    }
+  }
+  public updatestausIcon(filter:any){
+    if(filter.iconstatus){
+      this.filter.forEach((filterItem: any) => {
+        if (filterItem !== filter){
+          filterItem.iconstatus =false;
+        }else{
+          if(filterItem==filter){
+            filterItem.iconstatus =true;
+          }
+        }
+      });
+    }
+  }
+  public onInputChange(event: any) {
+    const currentSearchTerm = event.target.value;
+    if (currentSearchTerm.length < this.previousSearchTerm.length) {
+      this.clearSearch();
+    }
+    this.previousSearchTerm = currentSearchTerm;
+    this.filterItems();
+  }
+
+  public filterItems(){
+    const searchTerms = this.searchTerm.toLowerCase().trim().split(' ');
+    if (searchTerms.length === 1){
+      const filteredArray =  this.data.filter(item =>
+      item.NOMBREPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      item.APELLDOPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      item.NICKNAMEPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      item.CORREOPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      this.calcularEdad(item.FECHANACIMIENTOPERSONA).toString().toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      this.getRoleName(item.IDROLUSUARIO).toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      this.getESTADOPERSONA(item.ESTADOPERSONA).toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+     this.data =filteredArray;
+    }else if (searchTerms.length === 2) {
+      const searchTerm1 = searchTerms[0];
+      const searchTerm2 = searchTerms[1];
+      const filteredArray =  this.data.filter(item =>
+        item.NOMBREPERSONA.toLowerCase().includes(searchTerm1.toLowerCase()) &&
+        item.APELLDOPERSONA.toLowerCase().includes(searchTerm2.toLowerCase())
+      );
+      this.data =filteredArray;
+    }
+  }
+  public clearSearch(){
+    this.data=[];
+    this.apiService.allPeople().subscribe(
+      (response) => {
+        this.loading = true;
+        this.data=response;
+        this.loading = false;
+      },
+      (error) => {
+        this.presentCustomToast(error,"danger");
+      }
+    );
   }
 
   toggleDiv() {

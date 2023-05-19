@@ -86,7 +86,8 @@ export class LoginPage implements OnInit {
           dataLogin.password = '';
           var sesion ={
             token:response.token,
-            nickname:response.nickname
+            nickname:response.nickname,
+            rolUsuario:response.rolUsuario
           }
           localStorage.setItem('sesion',JSON.stringify(sesion));
         }else{

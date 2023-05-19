@@ -34,7 +34,7 @@
           <ion-input formControlName="nickname" placeholder="Ingrese Nickname"
           (ionFocus)="showLabel('nickname')"
           (ionBlur)="hideLabel('nickname')"
-          (ionChange)="checkNickname()">
+          (ionInput)="checkNickname()">
           <ion-icon name='close-circle-sharp' (click)="clearNickname('nickname')"></ion-icon></ion-input>
       </div>
       <div class="form-input">
@@ -54,7 +54,7 @@
         <ion-input formControlName="mail_profile" placeholder="Ingrese Correo"
         (ionFocus)="showLabel('mail_profile')"
         (ionBlur)="hideLabel('mail_profile')"
-        (ionChange)="checkMail()">
+        (ionInput)="checkMail()">
         <ion-icon name='close-circle-sharp' (click)="clearNickname('mail_profile')"></ion-icon></ion-input>
       </div>
 

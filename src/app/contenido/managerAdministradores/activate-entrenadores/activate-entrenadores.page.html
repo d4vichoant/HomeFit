@@ -22,6 +22,9 @@
       </ion-row>
     </ion-grid>
   </ion-toolbar>
+  <div class="browser">
+    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="clearSearch()"  placeholder="Buscar"></ion-searchbar>
+  </div>
   <div class="filter" >
     <div class="filter-text-icon">
       <img  class="icono-filter" src="{{ ip_address }}/media/images/filter.png" alt="Imagen Subtítulo">
@@ -33,7 +36,7 @@
       </ng-container>
     </div>
   </div>
-  <div class="container-body">
+  <div class="container-body" *ngIf="filter[0]?.name === 'Entrenador' && filter[0]?.iconstatus">
     <div class="item-body" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#c7b4fe' : '#ac89fc' }" *ngFor="let item of data">
       <div class="div-item-body">
         <div class="div-text-item-body">
@@ -63,6 +66,41 @@
           <div>
             <img  class="icono-item-botton" src="{{ ip_address }}/media/images/{{ item.ACTIVACIONENTRENADOR ? 'check.png' : 'time.png' }}"alt="Imagen Subtítulo">
             <h2>{{ item.ACTIVACIONENTRENADOR ? 'Activo' : 'Revisión' }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-body" *ngIf="filter[0]?.name === 'Usuarios' && filter[0]?.iconstatus">
+    <div class="item-body" [ngStyle]="{ 'background-color': item.IDGENERO === 0 ? '#c7b4fe' : item.IDGENERO === 1? '#ac89fc' : item.IDGENERO === 2? '#ded5ff' : 'transparent' }" *ngFor="let item of data">
+      <div class="div-item-body">
+        <div class="div-text-item-body">
+          <h1>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}&nbsp;{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</h1><span class="age">|&nbsp;{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }} años</span>
+          <div class="sub-title">
+            <img  class="icono-item" src="{{ ip_address }}/media/images/portafolio.png" alt="Imagen Subtítulo">
+            <h2>NickName</h2>
+            <span>{{item.NICKNAMEPERSONA}}</span>
+          </div>
+          <div class="details-item-body">
+            <img class="icono-item" src="{{ ip_address }}/media/images/star.png"alt="Imagen Detalles">
+            <p >Perfil de</p>
+          </div>
+          <div class="details-item-body-details">
+            <p>{{getRoleName(item.IDROLUSUARIO)}}</p>
+          </div>
+        </div>
+        <div class="item-body-right-top">
+          <button >
+            <img class="icono-item-top" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"alt="Icono 1">
+          </button>
+          <button>
+            <img class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
+          </button>
+        </div>
+        <div class="item-body-right-bottom" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#fcfee7' : '#fdfec3' }">
+          <div>
+            <img  class="icono-item-botton" src="{{ ip_address }}/media/images/{{ item.ESTADOPERSONA ? 'check.png' : 'noactive.png' }}"alt="Imagen Subtítulo">
+            <h2>{{ item.ESTADOPERSONA ? 'Activo' : 'Inactivo' }}</h2>
           </div>
         </div>
       </div>
