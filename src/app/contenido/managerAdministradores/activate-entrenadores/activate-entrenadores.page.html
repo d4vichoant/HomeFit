@@ -29,8 +29,8 @@
     <div class="filter-text-icon">
       <img  class="icono-filter" src="{{ ip_address }}/media/images/filter.png" alt="Imagen Subtítulo">
     </div>
-    <div class="filter-text" *ngFor="let fil of filter" [ngStyle]="{ 'background-color': !fil.iconstatus ? '#ded5ff' : '#7525dc' }" (click)="buttonfilterhabilitate(fil)">
-      <p [ngStyle]="{ 'color': !fil.iconstatus ? '#621eb9' : '#ffffff' }"># {{fil.name}}</p>
+    <div class="filter-text" *ngFor="let fil of filter" [ngStyle]="{ 'background-color': fil.iconstatus ? '#7525dc' : '#ded5ff ' }" (click)="buttonfilterhabilitate(fil)">
+      <p [ngStyle]="{ 'color': fil.iconstatus ? '#ffffff' : '#621eb9' }"># {{fil.name}}</p>
       <ng-container *ngIf="fil.iconstatus">
         <img class="filter-icon" src="{{ ip_address }}/media/images/close.png" alt="Icono">
       </ng-container>
@@ -50,8 +50,8 @@
             <img class="icono-item" src="{{ ip_address }}/media/images/star.png"alt="Imagen Detalles">
             <p >Especialidad</p>
           </div>
-          <div class="details-item-body-details">
-            <p>{{truncarTexto(item.tituloESPECIALIDADENTRENADOR)}}</p>
+          <div class="details-item-body-details-Entr">
+            <p>{{ item.tituloESPECIALIDADENTRENADOR}}</p>
           </div>
         </div>
         <div class="item-body-right-top">

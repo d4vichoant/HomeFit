@@ -109,51 +109,40 @@ export class ActivateEntrenadoresPage implements OnInit {
     return edad;
   }
 
-  truncarTexto(texto: string): string {
-    const longitudMaxima = 59;
 
-    if (texto.length <= longitudMaxima) {
-      return texto;
-    } else {
-      const textoTruncado = texto.substring(0, longitudMaxima).trim();
-      return textoTruncado + "...";
-    }
-  }
-
-  buttonfilterhabilitate(filter:any){
-    this.data = [];
-    console.log(filter.iconstatus);
-    if(filter.name==="Entrenador"&& !filter.iconstatus){
+  async buttonfilterhabilitate(filter: any) {
+    try {
       this.loading = true;
-      this.apiService.allTrainer().subscribe(
-        (response) => {
-          this.updatestausIcon(filter);
-          this.data=response;
-          this.loading = false;
-          console.log(this.data);
-        },
-        (error) => {
-          this.presentCustomToast(error,"danger");
+      this.data = [];
+
+      if (filter.iconstatus) {
+        // Si el elemento seleccionado ya está activo, establecer todos los iconstatus en false
+        for (const fil of this.filter) {
+          fil.iconstatus = false;
         }
-      );
-    }else{
-      if(filter.name==="Usuarios"&& !filter.iconstatus){
-        this.loading = true;
-          this.apiService.allPeople().subscribe(
-            (response) => {
-              this.updatestausIcon(filter);
-              this.data=response;
-              this.loading = false;
-            },
-            (error) => {
-              this.presentCustomToast(error,"danger");
-            }
-          );
+      } else {
+        // Si el elemento seleccionado no está activo, establecer todos los iconstatus en false excepto el seleccionado
+        for (const fil of this.filter) {
+          fil.iconstatus = (fil === filter);
+        }
       }
+
+      if (filter.name === "Entrenador" && filter.iconstatus) {
+        this.data = await this.apiService.allTrainer().toPromise();
+      } else if (filter.name === "Usuarios" && filter.iconstatus) {
+        this.data = await this.apiService.allPeople().toPromise();
+      }
+
+      this.ordenarfilter();
+    } catch (error) {
+      this.presentCustomToast(error+"", "danger");
+    } finally {
+      this.loading = false;
     }
-    filter.iconstatus = !filter.iconstatus;
-    this.ordenarfilter();
   }
+
+
+
   ordenarfilter(){
     this.filter.sort((a, b) => {
       // Si iconstatus es true, colocar el elemento antes en la lista
@@ -190,54 +179,95 @@ export class ActivateEntrenadoresPage implements OnInit {
         return '';
     }
   }
-  public updatestausIcon(filter:any){
-    if(filter.iconstatus){
-      this.filter.forEach((filterItem: any) => {
-        if (filterItem !== filter){
-          filterItem.iconstatus =false;
-        }else{
-          if(filterItem==filter){
-            filterItem.iconstatus =true;
-          }
-        }
-      });
+  public getACTIVACIONENTRENADOR(status:number):string{
+    switch (status) {
+      case 1:
+        return 'Activo';
+      case 0:
+        return 'Revisión';
+      default:
+        return '';
     }
   }
   public onInputChange(event: any) {
     const currentSearchTerm = event.target.value;
     if (currentSearchTerm.length < this.previousSearchTerm.length) {
-      this.clearSearch();
+      if (this.filter[1].iconstatus){
+        this.clearSearch();
+      }else if(this.filter[0].iconstatus){
+        this.clearSearchTrainer();
+      }
     }
     this.previousSearchTerm = currentSearchTerm;
     this.filterItems();
   }
 
   public filterItems(){
-    const searchTerms = this.searchTerm.toLowerCase().trim().split(' ');
-    if (searchTerms.length === 1){
-      const filteredArray =  this.data.filter(item =>
-      item.NOMBREPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      item.APELLDOPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      item.NICKNAMEPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      item.CORREOPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      this.calcularEdad(item.FECHANACIMIENTOPERSONA).toString().toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      this.getRoleName(item.IDROLUSUARIO).toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      this.getESTADOPERSONA(item.ESTADOPERSONA).toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-     this.data =filteredArray;
-    }else if (searchTerms.length === 2) {
-      const searchTerm1 = searchTerms[0];
-      const searchTerm2 = searchTerms[1];
-      const filteredArray =  this.data.filter(item =>
-        item.NOMBREPERSONA.toLowerCase().includes(searchTerm1.toLowerCase()) &&
-        item.APELLDOPERSONA.toLowerCase().includes(searchTerm2.toLowerCase())
+    if (this.filter[1].iconstatus){
+      const searchTerms = this.searchTerm.toLowerCase().trim().split(' ');
+      if (searchTerms.length === 1){
+        const filteredArray =  this.data.filter(item =>
+        item.NOMBREPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.APELLDOPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.NICKNAMEPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.CORREOPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        this.calcularEdad(item.FECHANACIMIENTOPERSONA).toString().toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        this.getRoleName(item.IDROLUSUARIO).toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        this.getESTADOPERSONA(item.ESTADOPERSONA).toLowerCase().includes(this.searchTerm.toLowerCase())
       );
-      this.data =filteredArray;
+       this.data =filteredArray;
+      }else if (searchTerms.length === 2) {
+        const searchTerm1 = searchTerms[0];
+        const searchTerm2 = searchTerms[1];
+        const filteredArray =  this.data.filter(item =>
+          item.NOMBREPERSONA.toLowerCase().includes(searchTerm1.toLowerCase()) &&
+          item.APELLDOPERSONA.toLowerCase().includes(searchTerm2.toLowerCase())
+        );
+        this.data =filteredArray;
+      }
+    }else if(this.filter[0].iconstatus){
+      const searchTerms = this.searchTerm.toLowerCase().trim().split(' ');
+      if (searchTerms.length === 1){
+        const filteredArray =  this.data.filter(item =>
+        item.NOMBREPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.APELLDOPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.NICKNAMEPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.CORREOPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        this.calcularEdad(item.FECHANACIMIENTOPERSONA).toString().toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        this.getACTIVACIONENTRENADOR(item.ACTIVACIONENTRENADOR).toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.EXPERIENCIAENTRENADOR.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.tituloESPECIALIDADENTRENADOR.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+       this.data =filteredArray;
+      }else if (searchTerms.length === 2) {
+        const searchTerm1 = searchTerms[0];
+        const searchTerm2 = searchTerms[1];
+        const filteredArray =  this.data.filter(item =>
+          item.NOMBREPERSONA.toLowerCase().includes(searchTerm1.toLowerCase()) &&
+          item.APELLDOPERSONA.toLowerCase().includes(searchTerm2.toLowerCase())
+        );
+        this.data =filteredArray;
+      }
     }
+
   }
+
   public clearSearch(){
     this.data=[];
     this.apiService.allPeople().subscribe(
+      (response) => {
+        this.loading = true;
+        this.data=response;
+        this.loading = false;
+      },
+      (error) => {
+        this.presentCustomToast(error,"danger");
+      }
+    );
+  }
+  public clearSearchTrainer(){
+    this.data=[];
+    this.apiService.allTrainer().subscribe(
       (response) => {
         this.loading = true;
         this.data=response;
