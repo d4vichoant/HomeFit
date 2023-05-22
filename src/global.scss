@@ -134,6 +134,18 @@
   font-family:Raleway-Bold;
   text-align: center;
 }
+.toast-custom-warning {
+  --border-radius: 40px; // Aquí establecemos el radio de las esquinas de la alerta
+  --background: #f2c200be; // Aquí establecemos el fondo de la alerta
+  --color:rgb(2, 1, 1);
+  position: fixed;
+  top: var(--alert-top);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 300px;
+  font-family:Raleway-Medium;
+  text-align: center;
+}
 
 ion-calendar    .calendar-body .calendar-month .calendar-month-grid{
   display: flex;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { StatusBar } from '@capacitor/status-bar';
 import { ApiServiceService } from '../../../api-service.service';
 import { NavController, ToastController } from '@ionic/angular';
@@ -15,6 +15,13 @@ export class ActivateEntrenadoresPage implements OnInit {
   public ip_address = IP_ADDRESS;
   public status = false;
   public data!: any[] ;
+  public datagender!: any[] ;
+  public dataFrecuency!: any[] ;
+  public dataProfession!: any[] ;
+  public dataObjPersonales!: any[] ;
+  public dataRolUsers!: any[] ;
+  public dataEspecialidad!: any[] ;
+  public dataUniq!: any;
   public filter: any[]=[
     {
       name: 'Entrenador',
@@ -22,24 +29,27 @@ export class ActivateEntrenadoresPage implements OnInit {
     }, {
       name: 'Usuarios',
       iconstatus: true,
+    },{
+      name: 'Entrenante',
+      iconstatus: false,
     }];
   public searchTerm!:string;
   previousSearchTerm: string = '';
-
-  showDiv = false;
-  isCircle = false;
-  isMoved = false;
-  isTransformed = false;
-  isFlipped: boolean = false;
+  overlayVisible: boolean = false;
+  currentTab = 1;
+  public notificacionInt!:number;
+  public ExperienciaInt!:number;
+  selectedOption: any;
+  selectedOptionhoras?: string;
+  selectedOptionCertificador?: string;
+  selectedOptionNombre?: string;
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
-    public toastController: ToastController ) {
+    public toastController: ToastController,) {
       this.ordenarfilter();
     }
 
   ngOnInit() {
-  }
-  ionViewDidEnter() {
     StatusBar.hide();
     StatusBar.setOverlaysWebView({overlay:true});
     StatusBar.setBackgroundColor({color:'#ffffff'});
@@ -47,15 +57,14 @@ export class ActivateEntrenadoresPage implements OnInit {
     if (sesion && sesion.rolUsuario==99){
       this.apiService.protectedRequestWithToken(sesion.token).subscribe(
         (response) => {
-          this.apiService.allPeople().subscribe(
-            (response) => {
-              this.data=response;
-              this.loading = false;
-            },
-            (error) => {
-              this.presentCustomToast(error,"danger");
-            }
-          );
+          this.obtenerAllGender();
+          this.obtenerAllPeople();
+          this.obtenerAllFrecuencias();
+          this.obtenerAllProfesion();
+          this.obtenerObjetivosPersonales();
+          this.obtenerAllRolUsuario();
+          this.obtenerAllEspecialidad();
+          this.loading=false;
         },
         (error) => {
           this.loading = false;
@@ -69,25 +78,11 @@ export class ActivateEntrenadoresPage implements OnInit {
       this.navController.navigateForward('/errorpage');
     }
   }
-
-  async presentCustomToast(message: string, color: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 1400,
-      position: 'top',
-      cssClass: `toast-custom-${color}`,
-      buttons: [
-        {
-          side: 'end',
-          icon: 'close',
-          role: 'cancel'
-        }
-      ]
-    });
-      const alertElement = document.querySelector(`.toast-custom-${color}`) as HTMLDivElement;
-      alertElement.style.setProperty('--alert-top', `calc(50% + (9% * 0) + 8%)`);
-      toast.present();
-    }
+  ionViewDidEnter() {
+    StatusBar.hide();
+    StatusBar.setOverlaysWebView({overlay:true});
+    StatusBar.setBackgroundColor({color:'#ffffff'});
+  }
 
   obtenerPrimerNombre(nombreCompleto: string): string {
     const nombres = nombreCompleto.split(" ");
@@ -114,6 +109,7 @@ export class ActivateEntrenadoresPage implements OnInit {
     try {
       this.loading = true;
       this.data = [];
+      this.searchTerm="";
 
       if (filter.iconstatus) {
         // Si el elemento seleccionado ya está activo, establecer todos los iconstatus en false
@@ -126,13 +122,14 @@ export class ActivateEntrenadoresPage implements OnInit {
           fil.iconstatus = (fil === filter);
         }
       }
-
+      this.ordenarfilter();
       if (filter.name === "Entrenador" && filter.iconstatus) {
         this.data = await this.apiService.allTrainer().toPromise();
       } else if (filter.name === "Usuarios" && filter.iconstatus) {
         this.data = await this.apiService.allPeople().toPromise();
+      } else if (filter.name === "Entrenante" && filter.iconstatus) {
+        this.data = await this.apiService.allEntrenantes().toPromise();
       }
-
       this.ordenarfilter();
     } catch (error) {
       this.presentCustomToast(error+"", "danger");
@@ -192,10 +189,12 @@ export class ActivateEntrenadoresPage implements OnInit {
   public onInputChange(event: any) {
     const currentSearchTerm = event.target.value;
     if (currentSearchTerm.length < this.previousSearchTerm.length) {
-      if (this.filter[1].iconstatus){
-        this.clearSearch();
-      }else if(this.filter[0].iconstatus){
-        this.clearSearchTrainer();
+      if (this.filter[0].iconstatus && this.filter[0].name==="Usuarios"){
+        this.obtenerAllPeople();
+      }else if(this.filter[0].iconstatus && this.filter[0].name==="Entrenador"){
+        this.obtenerAllTrainers();
+      }else if(this.filter[0].iconstatus && this.filter[0].name==="Entrenante"){
+        this.obtenerAllEntrenantes();
       }
     }
     this.previousSearchTerm = currentSearchTerm;
@@ -203,7 +202,7 @@ export class ActivateEntrenadoresPage implements OnInit {
   }
 
   public filterItems(){
-    if (this.filter[1].iconstatus){
+    if (this.filter[0].iconstatus && this.filter[0].name==="Usuarios"){
       const searchTerms = this.searchTerm.toLowerCase().trim().split(' ');
       if (searchTerms.length === 1){
         const filteredArray =  this.data.filter(item =>
@@ -225,7 +224,7 @@ export class ActivateEntrenadoresPage implements OnInit {
         );
         this.data =filteredArray;
       }
-    }else if(this.filter[0].iconstatus){
+    }else if(this.filter[0].iconstatus && this.filter[0].name==="Entrenador"){
       const searchTerms = this.searchTerm.toLowerCase().trim().split(' ');
       if (searchTerms.length === 1){
         const filteredArray =  this.data.filter(item =>
@@ -248,124 +247,374 @@ export class ActivateEntrenadoresPage implements OnInit {
         );
         this.data =filteredArray;
       }
+    }else if(this.filter[0].iconstatus && this.filter[0].name==="Entrenante"){
+      const searchTerms = this.searchTerm.toLowerCase().trim().split(' ');
+      if (searchTerms.length === 1){
+        const filteredArray =  this.data.filter(item =>
+        item.NOMBREPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.APELLDOPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.NICKNAMEPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.CORREOPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        this.calcularEdad(item.FECHANACIMIENTOPERSONA).toString().toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.DESCRIPCIONPROFESION.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        this.getESTADOPERSONA(item.ESTADOPERSONA).toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.TituloFrecuenciaEjercicio.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+       this.data =filteredArray;
+      }else if (searchTerms.length === 2) {
+        const searchTerm1 = searchTerms[0];
+        const searchTerm2 = searchTerms[1];
+        const filteredArray =  this.data.filter(item =>
+          item.NOMBREPERSONA.toLowerCase().includes(searchTerm1.toLowerCase()) &&
+          item.APELLDOPERSONA.toLowerCase().includes(searchTerm2.toLowerCase())
+        );
+        this.data =filteredArray;
+      }
     }
 
   }
 
-  public clearSearch(){
-    this.data=[];
+  showPopup(dataUniq:any ) {
+    const overlay = document.getElementById('overlay');
+    const popup = document.querySelector('.popup');
+
+    gsap.to(overlay, { duration: 0.8, opacity: 1 });
+    gsap.to(popup, { duration: 0.5, y: '0%' });
+    this.loading=true;
+    this.overlayVisible = true;
+
+    this.dataUniq = dataUniq;
+    this.notificacionInt = parseInt( dataUniq.NOTIFICACIONUSUARIO);
+    this.dataUniq.age =this.calcularEdad(this.dataUniq.FECHANACIMIENTOPERSONA);
+    this.loading=false;
+
+    if (this.filter[0].name==="Entrenador"){
+      this.ExperienciaInt = parseInt(dataUniq.EXPERIENCIAENTRENADOR);
+      dataUniq.idespecialidadentrenador = dataUniq.idespecialidadentrenador.split(',');
+      dataUniq.idespecialidadentrenador = dataUniq.idespecialidadentrenador.map((element: string) => Number(element));
+      dataUniq.CERTIFICACIONESENTRENADOR = JSON.parse(dataUniq.CERTIFICACIONESENTRENADOR);
+    }else if(this.filter[0].name==="Entrenante"){
+      dataUniq.OBJETIVOSPERSONALES = dataUniq.OBJETIVOSPERSONALES.split(',');
+      dataUniq.OBJETIVOSPERSONALES = dataUniq.OBJETIVOSPERSONALES.map((element: string) => Number(element));
+    }
+  }
+  parsetoNumber(trnsf: string): number {
+    return parseInt(trnsf, 10); // Utilizando la función parseInt
+  }
+
+
+  hidePopup() {
+    this.dataUniq=null;
+    const overlay = document.getElementById('overlay');
+    const popup = document.querySelector('.popup');
+    this.currentTab = 1;
+    gsap.to(overlay, { duration: 0.5, opacity: 0, onComplete: () => {
+      this.overlayVisible = false;
+    }});
+
+    gsap.to(popup, { duration: 0.5, y: '100%' });
+  }
+
+  showTab(tabNumber: number) {
+    this.presentCustomToast("Recuerde Guardar en cada Pestaña","warning");
+    this.currentTab = tabNumber;
+  }
+  isTabSelected(tabNumber: number): boolean {
+    return this.currentTab === tabNumber;
+  }
+  OpenDialogObjPers(name:string,dataU:any){
+    this.dataUniq=dataU;
+    this.selectedOptionNombre='';
+    this.selectedOptionCertificador='';
+    this.selectedOptionhoras='';
+    this.openCustomDialog(name);
+  }
+  RemoveObjPers(data:any){
+    var index = this.dataUniq.OBJETIVOSPERSONALES.indexOf(data);
+    if (index !== -1) {
+      this.dataUniq.OBJETIVOSPERSONALES.splice(index, 1);
+    }
+    this.presentCustomToast("Objetivo Eliminado Correctamente","success");
+  }
+  RemoveEspTrainer(data:any){
+    var index = this.dataUniq.idespecialidadentrenador.indexOf(data);
+    if (index !== -1) {
+      this.dataUniq.idespecialidadentrenador.splice(index, 1);
+    }
+    this.presentCustomToast("Especialidad Eliminado Correctamente","success");
+  }
+  RemoveCertificaTrainer(data:any){
+    var index = this.dataUniq.CERTIFICACIONESENTRENADOR.indexOf(data);
+    if (index !== -1) {
+      this.dataUniq.CERTIFICACIONESENTRENADOR.splice(index, 1);
+    }
+    this.presentCustomToast("Certificado Eliminado Correctamente","success");
+  }
+  AddObjetivePersonal(){
+    let flag=true;
+    for (var i = 0; i < this.dataUniq.OBJETIVOSPERSONALES.length; i++) {
+      if(this.selectedOption === this.dataUniq.OBJETIVOSPERSONALES[i]){
+        flag=false;
+      }
+    }
+    if(flag){
+      this.presentCustomToast("Objetivo Agregado Correctamente","success");
+      this.dataUniq.OBJETIVOSPERSONALES.push(this.selectedOption);
+      this.closeCustomDialog("ObjetivePersonal");
+    }else{
+      this.presentCustomToast("Objetivo ya seleccionado","danger");
+
+    }
+  }
+  AddEspecialidadEntrenador(){
+    let flag=true;
+    for (var i = 0; i < this.dataUniq.idespecialidadentrenador.length; i++) {
+      if(this.selectedOption === this.dataUniq.idespecialidadentrenador[i]){
+        flag=false;
+      }
+    }
+    if (flag){
+      if (!this.dataUniq.idespecialidadentrenador) {
+        this.dataUniq.idespecialidadentrenador = []; // Inicializar como un array vacío si es null
+      }
+      this.dataUniq.idespecialidadentrenador.push(this.selectedOption);
+      this.presentCustomToast("Especialidad Agregada Correctamente","success");
+      this.closeCustomDialog("EspecialidadEntrenador");
+    }else{
+      this.presentCustomToast("Especialidad ya seleccionada","danger");
+    }
+
+  }
+  AddCertificadosEntrenador(){
+    let flag=true;
+    if (this.dataUniq.CERTIFICACIONESENTRENADOR){
+      for (var i = 0; i < this.dataUniq.CERTIFICACIONESENTRENADOR.length; i++) {
+        if(this.selectedOptionNombre === this.dataUniq.CERTIFICACIONESENTRENADOR[i].nombre){
+          flag=false;
+        }
+      }
+    }
+
+    if (flag ){
+      if(this.selectedOptionNombre && this.selectedOptionCertificador && this.selectedOptionhoras){
+      const objetoCertificado= {
+        nombre: this.selectedOptionNombre,
+        certificador: this.selectedOptionCertificador,
+        horas: this.selectedOptionhoras
+      };
+      if (!this.dataUniq.CERTIFICACIONESENTRENADOR) {
+        this.dataUniq.CERTIFICACIONESENTRENADOR = []; // Inicializar como un array vacío si es null
+      }
+      this.dataUniq.CERTIFICACIONESENTRENADOR.push(objetoCertificado);
+      this.presentCustomToast("Especialidad Agregada Correctamente","success");
+      this.closeCustomDialog("CertificacionesEntrenador");
+      }else{
+        this.presentCustomToast("Llene todos los campos","danger");
+      }
+
+    }else{
+      this.presentCustomToast("Certificado ya existente","danger");
+    }
+  }
+
+  openCustomDialog(name:string) {
+    this.selectedOption=null;
+    if(name==="ObjetivePersonal"){
+      const customDialog = document.getElementById('custom-dialog');
+      customDialog!.style.display = 'block';
+    }else if(name==="EspecialidadEntrenador"){
+      const customDialog = document.getElementById('custom-dialog-especialidad');
+      customDialog!.style.display = 'block';
+    }else if(name==="CertificacionesEntrenador"){
+      const customDialog = document.getElementById('custom-dialog-certificados');
+      customDialog!.style.display = 'block';
+    }
+  }
+
+  closeCustomDialog(name:string) {
+    if(name==="ObjetivePersonal"){
+      const customDialog = document.getElementById('custom-dialog');
+      customDialog!.style.display = 'none';
+    }else if(name==="EspecialidadEntrenador"){
+      const customDialog = document.getElementById('custom-dialog-especialidad');
+      customDialog!.style.display = 'none';
+    }else if(name==="CertificacionesEntrenador"){
+      const customDialog = document.getElementById('custom-dialog-certificados');
+      customDialog!.style.display = 'none';
+    }
+  }
+  actualizarUsuario(dataPerson:any){
+    var profiledat = JSON.parse(localStorage.getItem('sesion')!);
+    dataPerson.USUARIOMODIFICACIONPERSONA=profiledat.nickname
+    this.apiService.UpdatePersona(dataPerson).subscribe(
+      (response) => {
+        this.presentCustomToast(response.message,"success");
+        this.loading=true;
+        this.inicio();
+        this.ngOnInit();
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  actualizarEntrenantes(dataPerson:any){
+    console.log(dataPerson);
+    var profiledat = JSON.parse(localStorage.getItem('sesion')!);
+    dataPerson.USUARIOMODIFICACIONPERSONA=profiledat.nickname;
+    dataPerson.NOTIFICACIONUSUARIO = this.notificacionInt;
+    this.apiService.UpdateEntrenantes(dataPerson).subscribe(
+      (response) => {
+        this.presentCustomToast(response.message,"success");
+        this.loading=true;
+        this.inicio();
+        this.ngOnInit();
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+
+  async presentCustomToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2400,
+      position: 'top',
+      cssClass: `toast-custom-${color}`,
+      buttons: [
+        {
+          side: 'end',
+          icon: 'close',
+          role: 'cancel'
+        }
+      ]
+    });
+      const alertElement = document.querySelector(`.toast-custom-${color}`) as HTMLDivElement;
+      alertElement.style.setProperty('--alert-top', `calc(50% + (9% * 0) + 8%)`);
+      toast.present();
+    }
+  obtenerAllPeople(){
     this.apiService.allPeople().subscribe(
       (response) => {
-        this.loading = true;
         this.data=response;
-        this.loading = false;
       },
       (error) => {
-        this.presentCustomToast(error,"danger");
+        this.presentCustomToast(error.error.error,"danger");
       }
     );
   }
-  public clearSearchTrainer(){
-    this.data=[];
+  obtenerAllGender(){
+    this.apiService.allGender().subscribe(
+      (response) => {
+        this.datagender=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerAllTrainers(){
     this.apiService.allTrainer().subscribe(
       (response) => {
-        this.loading = true;
         this.data=response;
-        this.loading = false;
       },
       (error) => {
-        this.presentCustomToast(error,"danger");
+        this.presentCustomToast(error.error.error,"danger");
       }
     );
   }
-
-  toggleDiv() {
-    this.showDiv = !this.showDiv;
-
-    const navbarOption = document.querySelector('.navbar-option');
-    const largeDiv = document.querySelector('.large-div');
-    if (navbarOption && largeDiv) {
-    gsap.to(navbarOption, { y: this.showDiv ? -100 : 0, duration: 0.5, ease: 'power2.out' });
-    gsap.to(largeDiv, { x: this.showDiv ? 0 : 100, duration: 20.5, ease: 'linear' });
-    }else{
-      gsap.to(navbarOption, { y: this.showDiv ? -100 : 0, duration: 0.5, ease: 'power2.out' });
-      gsap.to(largeDiv, { x: this.showDiv ? 0 : 100, duration: 20.5, ease: 'linear' });
-    }
-  }
-  toggleShape() {
-    this.isCircle = !this.isCircle;
-
-    const largeDiv = document.querySelector('.large-div');
-
-    if (largeDiv) {
-      if (this.isCircle) {
-        gsap.to(largeDiv, { borderRadius: '50%', duration: 0.5 });
-      } else {
-        gsap.to(largeDiv, { borderRadius: '0', duration: 0.5 });
-      }
-    }
-  }
-  slideDiv() {
-    const largeDiv = document.querySelector('.large-div');
-
-    if (largeDiv) {
-      if (this.isMoved) {
-        gsap.to(largeDiv, { x: '0', y: '0', duration: 1 });
-      } else {
-        gsap.to(largeDiv, { x: '200px', y: '100px', duration: 1 });
-      }
-
-      this.isMoved = !this.isMoved;
-    }
-  }
-  transformShape() {
-    const shape = document.querySelector('.large-div');
-
-    if (shape) {
-      if (this.isTransformed) {
-        gsap.to(shape, { scale: 1, skewX: 0, skewY: 0, duration: 1 });
-      } else {
-        gsap.to(shape, { scale: 0.5, skewX: -30, skewY: 30, duration: 1 });
-      }
-
-      this.isTransformed = !this.isTransformed;
-    }
-  }
-  animateFlip() {
-    const elemento = document.querySelector('.mi-elemento');
-    if (!elemento) {
-      return; // Salir de la función si elemento es null
-    }
-
-    const contenido = elemento.querySelector('.contenido') as HTMLElement;
-    if (!contenido) {
-      return; // Salir de la función si contenido es null
-    }
-
-    gsap.set(elemento, {
-      scaleX: 0.5,
-      scaleY: 0.5,
-      x: '-100%',
-      y: '100%',
-      transformOrigin: 'bottom left'
-    });
-
-    gsap.to(elemento, {
-      duration: 0.5,
-      ease: 'power2.out',
-      x: this.isFlipped ? '100%' : '0%',
-      y: this.isFlipped ? '100%' : '0%',
-      opacity: this.isFlipped ? 0 : 1,
-      scaleX: this.isFlipped ? 0.5 : 1,
-      scaleY: this.isFlipped ? 0.5 : 1,
-      onComplete: () => {
-        // Lógica que se ejecuta cuando la animación ha finalizado
-        this.isFlipped = !this.isFlipped;
+  obtenerAllEntrenantes(){
+    this.apiService.allEntrenantes().subscribe(
+      (response) => {
+        this.data=response;
       },
-    });
-
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
   }
-
-
-
+  obtenerAllFrecuencias(){
+    this.apiService.allfrecuenciaejercicio().subscribe(
+      (response) => {
+        this.dataFrecuency=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerAllProfesion(){
+    this.apiService.allprofesion().subscribe(
+      (response) => {
+        this.dataProfession=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerObjetivosPersonales(){
+    this.apiService.allObjetivosPersonales().subscribe(
+      (response) => {
+        this.dataObjPersonales=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerAllRolUsuario(){
+    this.apiService.allObtenerRolUsers().subscribe(
+      (response) => {
+        this.dataRolUsers=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerAllEspecialidad(){
+    this.apiService.allEspecialidadentrenador().subscribe(
+      (response) => {
+        this.dataEspecialidad=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  inicio(){
+    this.status = false;
+    this.data = [];
+    this.datagender=[];
+    this.dataFrecuency=[] ;
+    this.dataProfession=[] ;
+    this.dataObjPersonales=[]  ;
+    this.dataRolUsers=[]  ;
+    this.dataEspecialidad=[] ;
+    this.dataUniq=[];
+    this.filter=[
+    {
+      name: 'Entrenador',
+      iconstatus: false,
+    }, {
+      name: 'Usuarios',
+      iconstatus: true,
+    },{
+      name: 'Entrenante',
+      iconstatus: false,
+    }];
+    this.searchTerm='';
+    this.previousSearchTerm = '';
+    this.overlayVisible = false;
+    this.currentTab = 1;
+    this.notificacionInt=99;
+    this.ExperienciaInt=99;
+    this.selectedOption=null;
+    this.selectedOptionhoras='';
+    this.selectedOptionCertificador='';
+    this.selectedOptionNombre='';
+    this.ordenarfilter();
+  }
 }

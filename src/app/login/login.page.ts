@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validator, FormBuilder, Validators} from '@angular/forms';
 import {StatusBar} from "@capacitor/status-bar";
-import { Keyboard } from '@capacitor/keyboard';
 import { NavController, ToastController } from '@ionic/angular';
 
 import { ApiServiceService } from '../api-service.service';
@@ -34,14 +33,6 @@ export class LoginPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    Keyboard.addListener('keyboardWillShow', (event) => {
-      this.keyboardHeight = event.keyboardHeight;
-      document.body.style.setProperty('--ion-safe-area-bottom', `${this.keyboardHeight}px`);
-    });
-    Keyboard.addListener('keyboardWillHide', () => {
-      this.keyboardHeight = 0;
-      document.body.style.setProperty('--ion-safe-area-bottom', '0px');
-    });
   }
 
   get_into (){
@@ -89,6 +80,7 @@ export class LoginPage implements OnInit {
             nickname:response.nickname,
             rolUsuario:response.rolUsuario
           }
+          this.formularioLogin.reset();
           localStorage.setItem('sesion',JSON.stringify(sesion));
         }else{
           this.presentCustomToast("Error de Ingreso a la APP","danger");

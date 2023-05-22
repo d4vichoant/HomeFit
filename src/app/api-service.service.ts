@@ -31,6 +31,12 @@ export class ApiServiceService {
   allfrecuenciaejercicio():Observable<any>{
     return this.http.get(this.apiUrl+/frecuenciaejercicio/);
   }
+  allprofesion():Observable<any>{
+    return this.http.get(this.apiUrl+/profesion/);
+  }
+  allObtenerRolUsers():Observable<any>{
+    return this.http.get(this.apiUrl+/rolUsers/);
+  }
   allObjetivosPersonales():Observable<any>{
     return this.http.get(this.apiUrl+/OBJETIVOSPERSONALES/);
   }
@@ -48,5 +54,17 @@ export class ApiServiceService {
   }
   allTrainer(): Observable<any> {
     return this.http.get(IP_ADDRESS+/manager/);
+  }
+  allEntrenantes(): Observable<any> {
+    return this.http.get(IP_ADDRESS+/manager/+/entrenante/ );
+  }
+  allGender(): Observable<any> {
+    return this.http.get(this.apiUrl+/genero/);
+  }
+  UpdatePersona(data:any): Observable<any>{
+    return this.http.post(this.apiUrl+"/updatePersona",data);
+  }
+  UpdateEntrenantes(data:any): Observable<any>{
+    return this.http.post(this.apiUrl+"/updateEntrenante",data);
   }
 }

@@ -92,7 +92,6 @@ const routes: Routes = [
     loadChildren: () => import('./contenido/managerAdministradores/errorpage/errorpage.module').then( m => m.ErrorpagePageModule)
   },
 
-
 ];
 
 @NgModule({

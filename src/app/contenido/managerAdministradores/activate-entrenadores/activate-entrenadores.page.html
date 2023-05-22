@@ -23,7 +23,7 @@
     </ion-grid>
   </ion-toolbar>
   <div class="browser">
-    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="clearSearch()"  placeholder="Buscar"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
   </div>
   <div class="filter" >
     <div class="filter-text-icon">
@@ -36,7 +36,7 @@
       </ng-container>
     </div>
   </div>
-  <div class="container-body" *ngIf="filter[0]?.name === 'Entrenador' && filter[0]?.iconstatus">
+  <div class="container-body" *ngIf="filter[0]?.name === 'Entrenador' && filter[0]?.iconstatus && data && data.length >0;else noDataMessage ">
     <div class="item-body" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#c7b4fe' : '#ac89fc' }" *ngFor="let item of data">
       <div class="div-item-body">
         <div class="div-text-item-body">
@@ -56,7 +56,7 @@
         </div>
         <div class="item-body-right-top">
           <button >
-            <img class="icono-item-top" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"alt="Icono 1">
+            <img class="icono-item-top" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"  (click)="showPopup(item)" alt="Icono 1">
           </button>
           <button>
             <img class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
@@ -71,18 +71,18 @@
       </div>
     </div>
   </div>
-  <div class="container-body" *ngIf="filter[0]?.name === 'Usuarios' && filter[0]?.iconstatus">
-    <div class="item-body" [ngStyle]="{ 'background-color': item.IDGENERO === 0 ? '#c7b4fe' : item.IDGENERO === 1? '#ac89fc' : item.IDGENERO === 2? '#ded5ff' : 'transparent' }" *ngFor="let item of data">
+  <div class="container-body" *ngIf="filter[0]?.name === 'Usuarios' && filter[0]?.iconstatus && data && data.length >0;else noDataMessageUser ">
+    <div class="item-body" [ngStyle]="{ 'background-color': item.IDGENERO === 0 ? '#c7b4fe' : item.IDGENERO === 1? '#ac89fc' : item.IDGENERO === 2? '#ded5ff' : 'transparent' }" *ngFor="let item of data" >
       <div class="div-item-body">
         <div class="div-text-item-body">
           <h1>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}&nbsp;{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</h1><span class="age">|&nbsp;{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }} años</span>
           <div class="sub-title">
-            <img  class="icono-item" src="{{ ip_address }}/media/images/portafolio.png" alt="Imagen Subtítulo">
+            <img  class="icono-item" src="{{ ip_address }}/media/images/agregar-usuario.png" alt="Imagen  Subtítulo">
             <h2>NickName</h2>
             <span>{{item.NICKNAMEPERSONA}}</span>
           </div>
           <div class="details-item-body">
-            <img class="icono-item" src="{{ ip_address }}/media/images/star.png"alt="Imagen Detalles">
+            <img class="icono-item" src="{{ ip_address }}/media/images/roluser.png"alt="Imagen Detalles">
             <p >Perfil de</p>
           </div>
           <div class="details-item-body-details">
@@ -91,7 +91,7 @@
         </div>
         <div class="item-body-right-top">
           <button >
-            <img class="icono-item-top" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"alt="Icono 1">
+            <img class="icono-item-top" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png" (click)="showPopup(item)" alt="Icono 1">
           </button>
           <button>
             <img class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
@@ -106,6 +106,261 @@
       </div>
     </div>
   </div>
+  <div class="container-body" *ngIf="filter[0]?.name === 'Entrenante' && filter[0]?.iconstatus && data && data.length >0;else noDataMessageEntrenante ">
+    <div class="item-body" [ngStyle]="{ 'background-color': item.IDGENERO === 0 ? '#c7b4fe' : item.IDGENERO === 1? '#ac89fc' : item.IDGENERO === 2? '#ded5ff' : 'transparent' }" *ngFor="let item of data" >
+      <div class="div-item-body">
+        <div class="div-text-item-body">
+          <h1>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}&nbsp;{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</h1><span class="age">|&nbsp;{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }} años</span>
+          <div class="sub-title">
+            <img  class="icono-item" src="{{ ip_address }}/media/images/frecuencia.png" alt="Imagen  Subtítulo">
+            <h2>Frecuencia </h2>
+            <span>{{item.TituloFrecuenciaEjercicio}}</span>
+          </div>
+          <div class="details-item-body">
+            <img class="icono-item" src="{{ ip_address }}/media/images/portafolio.png"alt="Imagen Detalles">
+            <p >Profesión</p>
+          </div>
+          <div class="details-item-body-details">
+            <p>{{ item.DESCRIPCIONPROFESION}}</p>
+          </div>
+        </div>
+        <div class="item-body-right-top">
+          <button >
+            <img class="icono-item-top" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png" (click)="showPopup(item)" alt="Icono 1">
+          </button>
+          <button>
+            <img class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
+          </button>
+        </div>
+        <div class="item-body-right-bottom" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#fcfee7' : '#fdfec3' }">
+          <div>
+            <img  class="icono-item-botton" src="{{ ip_address }}/media/images/{{ item.ESTADOPERSONA ? 'check.png' : 'noactive.png' }}"alt="Imagen Subtítulo">
+            <h2>{{ item.ESTADOPERSONA ? 'Activo' : 'Inactivo' }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #noDataMessageEntrenante>
+    <div class="no-data-message" *ngIf="data && data.length === 0 && filter[0]?.iconstatus && filter[0]?.name === 'Entrenante'">
+      <img src="{{ ip_address }}/media/images/notfound.png" alt="Imagen de datos no encontrados">
+      <h1 class="text-no-data-message">Resultado no encontrado</h1>
+      <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>
+    </div>
+  </ng-template>
+  <ng-template #noDataMessage>
+    <div class="no-data-message" *ngIf="data && data.length === 0 && filter[0]?.iconstatus && filter[0]?.name === 'Entrenador'">
+      <img src="{{ ip_address }}/media/images/notfound.png" alt="Imagen de datos no encontrados">
+      <h1 class="text-no-data-message">Resultado no encontrado</h1>
+      <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>
+    </div>
+  </ng-template>
+  <ng-template #noDataMessageUser>
+    <div class="no-data-message" *ngIf="data && data.length === 0 && filter[0]?.iconstatus && filter[0]?.name === 'Usuarios'">
+      <img src="{{ ip_address }}/media/images/notfound.png" alt="Imagen de datos no encontrados">
+      <h1 class="text-no-data-message">Resultado no encontrado</h1>
+      <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>
+    </div>
+  </ng-template>
+  <div id="overlay" [ngClass]="{'visible': overlayVisible}"></div>
+  <div class="background" [ngClass]="{'visible': overlayVisible}" (click)="hidePopup()" ></div>
+  <div class="popup" [style.display]="overlayVisible ? 'block' : 'none'">
+    <div class="line"></div>
+    <div class="tab-buttons">
+      <div (click)="showTab(1)" [class.selected]="isTabSelected(1)">Inf. Básica</div>
+      <div (click)="showTab(2)" [class.selected]="isTabSelected(2)" *ngIf="filter[0]?.name === 'Entrenante'">Inf. Avanzada</div>
+      <div (click)="showTab(3)" [class.selected]="isTabSelected(3)" *ngIf="filter[0]?.name === 'Entrenador'">Inf. Avanzada</div>
+    </div>
+
+    <div class="tab-content" *ngIf="currentTab === 1 && overlayVisible">
+      <ion-list>
+        <div>
+          <ion-label >Nombre:</ion-label>
+          <ion-input type="text" name="nombre" [(ngModel)]="dataUniq && dataUniq.NOMBREPERSONA" required></ion-input>
+        </div>
+        <div>
+          <ion-label>Apellido:</ion-label>
+          <ion-input    type="text" name="apellido" [(ngModel)]="dataUniq && dataUniq.APELLDOPERSONA" required></ion-input>
+        </div>
+        <div>
+          <ion-label >Edad:</ion-label>
+          <ion-input  type="number" name="edad" [(ngModel)]="dataUniq && dataUniq.age"  readonly disabled></ion-input>
+
+        </div>
+        <div>
+          <ion-label >Nickname:</ion-label>
+          <ion-input  type="text" name="nickname" [(ngModel)]="dataUniq &&  dataUniq.NICKNAMEPERSONA"  required></ion-input>
+        </div>
+        <div>
+          <ion-label>Genero:</ion-label>
+          <ion-select name="genero" interface="popover"  [(ngModel)]="dataUniq && dataUniq.IDGENERO" required>
+            <ion-select-option *ngFor="let option of datagender" [value]="option.IDGENERO ">{{ option.DESCRIPCIONGENERO }}</ion-select-option>
+          </ion-select>
+        </div>
+        <div>
+          <ion-label>Estado:</ion-label>
+          <ion-select name="estadoPersona" interface="popover"  [(ngModel)]="dataUniq && dataUniq.ESTADOPERSONA" required>
+            <ion-select-option [value]="1">Activo</ion-select-option>
+            <ion-select-option [value]="0">Inactivo</ion-select-option>
+          </ion-select>
+        </div>
+        <div>
+          <ion-label >Correo:</ion-label>
+          <ion-input type="email" name="correo" [(ngModel)]="dataUniq && dataUniq.CORREOPERSONA"  required></ion-input>
+        </div>
+        <div>
+          <ion-label >Creado como:</ion-label>
+          <ion-select name="rolusuario" interface="popover" [(ngModel)]="dataUniq && dataUniq.IDROLUSUARIO " required>
+            <ion-select-option *ngFor="let option of dataRolUsers" [value]="option.IDROLUSUARIO  ">{{ option.DESCRIPCIONROLUSUARIO }}</ion-select-option>
+          </ion-select>
+        </div>
+      </ion-list>
+      <div class="buttons-tab1">
+        <ion-button (click)="hidePopup()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
+        <ion-button (click)="actualizarUsuario(dataUniq)"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
+      </div>
+    </div>
+
+    <div class="tab-content" *ngIf="currentTab === 2 && filter[0]?.name === 'Entrenante'">
+      <ion-list>
+        <div>
+          <ion-label>Profesion:</ion-label>
+          <ion-select name="profesion" interface="popover" [(ngModel)]=" dataUniq && dataUniq.IDPROFESION " required>
+            <ion-select-option *ngFor="let option of dataProfession" [value]="option.IDPROFESION ">{{ option.DESCRIPCIONPROFESION }}</ion-select-option>
+          </ion-select>
+        </div>
+        <div>
+          <ion-label>Frecuencia:</ion-label>
+          <ion-select name="frecuencia" interface="popover"  [(ngModel)]="dataUniq && dataUniq.IDFRECUENCIA " required>
+            <ion-select-option *ngFor="let option of dataFrecuency" [value]="option.IDFRECUENCIA ">{{ option.TituloFrecuenciaEjercicio }}</ion-select-option>
+          </ion-select>
+        </div>
+        <div>
+          <ion-label >Peso:</ion-label>
+          <ion-input type="text" name="nombre" [(ngModel)]="dataUniq && dataUniq.PESOUSUARIO" required></ion-input>
+        </div>
+        <div>
+          <ion-label>Altura:</ion-label>
+          <ion-input type="text" name="apellido" [(ngModel)]=" dataUniq && dataUniq.ALTURAUSUARIO" required></ion-input>
+        </div>
+        <div>
+          <ion-label>Notificación:</ion-label>
+          <ion-select name="estadoPersona" interface="popover" [(ngModel)]="notificacionInt" required>
+            <ion-select-option [value]="1">Activo</ion-select-option>
+            <ion-select-option [value]="0">Inactivo</ion-select-option>
+          </ion-select>
+        </div>
+        <div class="inline-container" *ngIf="dataUniq.OBJETIVOSPERSONALES && dataUniq.OBJETIVOSPERSONALES.length > 0" (click)="OpenDialogObjPers('ObjetivePersonal', dataUniq)" >
+          <ion-label >Objetivos Personales:</ion-label><br>
+          <img src="{{ ip_address }}/media/images/plus.png" alt="Agregar Objetivo">
+        </div>
+        <div class="container-preselect">
+          <div class="container-selects select-container">
+            <ng-container   *ngFor="let option of dataUniq.OBJETIVOSPERSONALES">
+              <div class="select-item">
+                <ion-select interface="popover" [(ngModel)]="dataObjPersonales[option].IDOBJETIVOSPERSONALES">
+                  <ion-select-option *ngFor="let item of dataObjPersonales" [value]="item.IDOBJETIVOSPERSONALES">
+                    {{ item.DESCRIPCIONOBJETIVOSPERSONALES }}
+                  </ion-select-option>
+                </ion-select>
+                <img src="{{ ip_address }}/media/images/menos.png" alt="Remove Objetive" (click)="RemoveObjPers(dataObjPersonales[option].IDOBJETIVOSPERSONALES)" />
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div *ngIf="dataUniq.OBJETIVOSPERSONALES.length === 0">
+          <ion-label>Agregar Sesión:</ion-label>
+          <ion-button class="buttonaddObjPers" *ngIf="dataUniq.OBJETIVOSPERSONALES.length === 0"  (click)="OpenDialogObjPers('ObjetivePersonal', dataUniq)" fill="clear">+ Obj. Personales</ion-button>
+        </div>
+      </ion-list>
+      <div class="buttons-tab1">
+        <ion-button (click)="hidePopup()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
+        <ion-button (click)="actualizarEntrenantes(dataUniq)"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
+      </div>
+    </div>
+
+    <div class="tab-content"  *ngIf="currentTab === 3 && filter[0]?.name === 'Entrenador'">
+      <ion-list>
+        <div *ngIf=" !dataUniq.idespecialidadentrenador || dataUniq.idespecialidadentrenador.length === 0 ">
+          <ion-label>Agregar Sesión:</ion-label>
+          <ion-button class="buttonaddObjPers" *ngIf="!dataUniq.idespecialidadentrenador || dataUniq.idespecialidadentrenador.length === 0" (click)="OpenDialogObjPers('EspecialidadEntrenador',dataUniq)"   fill="clear">+ Especialidad </ion-button>
+        </div>
+
+        <div *ngIf="!dataUniq.CERTIFICACIONESENTRENADOR  ||  dataUniq.CERTIFICACIONESENTRENADOR.length === 0 ">
+          <ion-label>Agregar Sesión:</ion-label>
+          <ion-button class="buttonaddObjPers" *ngIf="!dataUniq.CERTIFICACIONESENTRENADOR || dataUniq.CERTIFICACIONESENTRENADOR.length === 0"  (click)="OpenDialogObjPers('CertificacionesEntrenador',dataUniq)"  fill="clear">+ Certificación </ion-button>
+        </div>
+        <div >
+          <ion-label>Tarifas: <span>(USD/mensual)</span> </ion-label>
+          <ion-input  class="input-container-tarifa"  type="text" name="tarifas" [(ngModel)]="dataUniq && dataUniq.TARIFASENTRENADOR" required></ion-input>
+        </div>
+        <div>
+          <ion-label>Acerca de:</ion-label>
+          <ion-input type="text" name="about"  [(ngModel)]="dataUniq && dataUniq.DESCRIPCIONENTRENADOR" required></ion-input>
+        </div>
+        <div>
+          <ion-label>Experiencia:</ion-label>
+            <ion-select name="experiencia" interface="popover" [(ngModel)]="dataUniq && ExperienciaInt" required>
+              <ion-select-option [value]="1">Menos de 1 año</ion-select-option>
+              <ion-select-option [value]="3">1-3 años</ion-select-option>
+              <ion-select-option [value]="5">3-5 años</ion-select-option>
+              <ion-select-option [value]="6">Más de 5 años</ion-select-option>
+            </ion-select>
+          </div>
+        <div>
+          <ion-label>Activación:</ion-label>
+            <ion-select name="estadoPersona" interface="popover" [(ngModel)]="dataUniq && dataUniq.ACTIVACIONENTRENADOR" required>
+              <ion-select-option [value]="1">Activo</ion-select-option>
+              <ion-select-option [value]="0">Revisión</ion-select-option>
+            </ion-select>
+          </div>
+          <div class="inline-container" style="margin-bottom: 2%;" (click)="OpenDialogObjPers('CertificacionesEntrenador',dataUniq)" *ngIf="dataUniq.CERTIFICACIONESENTRENADOR && dataUniq.CERTIFICACIONESENTRENADOR.length > 0">
+            <ion-label >Certificaciones:</ion-label><br>
+            <img src="{{ ip_address }}/media/images/plus.png"  alt="Agregar Objetivo" >
+          </div>
+          <div *ngFor="let certificacion of dataUniq.CERTIFICACIONESENTRENADOR" class="certificaciones-container" >
+            <div class="box" *ngIf="dataUniq.CERTIFICACIONESENTRENADOR && dataUniq.CERTIFICACIONESENTRENADOR.length > 0">
+              <div class="input-container" style=" margin-bottom: 15%;">
+                <ion-label style="margin:15% 0% 15% 0%;" >Nombre:</ion-label>
+                <ion-input type="text" name="certificatename" style="margin:10px 0px 10px 0px;" *ngIf="certificacion.nombre " [(ngModel)]=" certificacion.nombre "></ion-input>
+              </div>
+              <div  class="input-container" style="margin-bottom: 15%;">
+                <ion-label  >Certificador:</ion-label>
+                <ion-input type="text" style="margin:15% 0% 15% 0%;" name="certificatename" *ngIf="certificacion.certificador "  [(ngModel)]=" certificacion.certificador "></ion-input>
+              </div>
+              <div  class="input-container" style="margin-bottom: 10%;">
+                <ion-label style="margin:15% 0% 15% 0%;" >Horas:</ion-label>
+                <ion-input type="number" name="certificatename" style="margin:15% 0% 15% 0%;" *ngIf="certificacion.horas "  [(ngModel)]=" certificacion.horas "></ion-input>
+              </div>
+              <div class="button-certificate-uniq" (click)="RemoveCertificaTrainer(certificacion)" >
+                <ion-button > (-) Eliminar</ion-button>
+              </div>
+            </div>
+          </div>
+          <div class="inline-container" (click)="OpenDialogObjPers('EspecialidadEntrenador',dataUniq)" *ngIf="dataUniq.idespecialidadentrenador && dataUniq.idespecialidadentrenador.length > 0">
+            <ion-label >Especialidad:</ion-label><br>
+            <img src="{{ ip_address }}/media/images/plus.png"  alt="Agregar Objetivo">
+          </div>
+          <div class="container-selects select-container">
+            <ng-container   *ngFor="let option of dataUniq.idespecialidadentrenador">
+              <div class="select-item">
+                <ion-select interface="popover" [(ngModel)]="dataEspecialidad[option-1].idespecialidadentrenador">
+                  <ion-select-option *ngFor="let item of dataEspecialidad" [value]="item.idespecialidadentrenador">
+                    {{ item.tituloESPECIALIDADENTRENADOR }}
+                  </ion-select-option>
+                </ion-select>
+                <img src="{{ ip_address }}/media/images/menos.png" alt="Remove Objetive" (click)="RemoveEspTrainer(dataEspecialidad[option-1].idespecialidadentrenador)" />
+              </div>
+            </ng-container>
+          </div>
+      </ion-list>
+      <div class="buttons-tab1">
+        <ion-button (click)="hidePopup()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
+        <ion-button (click)="hidePopup()"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
+      </div>
+    </div>
+  </div>
+
   <ion-toolbar class="toolbar-footer">
     <ion-grid class="container-footer">
       <ion-row>
@@ -127,44 +382,58 @@
       </ion-row>
     </ion-grid>
   </ion-toolbar>
-</ion-content>
 
-<!-- <ion-footer>
-
-  <div class="large-div" *ngIf="showDiv">
-    <h3>adasdsa</h3>
-  </div>
-  <div class="container">
-    <div class="mi-elemento">
-      <div class="contenido">
-        <h3>adasdsa</h3>
-      </div>
-      <div class="contenido">
-        <h3>adasdsa</h3>
-      </div>
-      <div class="contenido">
-        <h3>adasdsa</h3>
-      </div>
-      <div class="contenido">
-        <h3>adasdsa</h3>
-      </div>
-      <div class="contenido">
-        <h3>adasdsa</h3>
-      </div>
-      <div class="contenido">
-        <h3>adasdsa</h3>
-      </div>
+<!-- Agrega el diálogo personalizado oculto por defecto -->
+<div id="custom-dialog" class="custom-dialog">
+  <div class="container-preselect">
+    <h2>Agregar un Objetivo Personal</h2>
+    <div class="container-selects">
+      <ion-select [(ngModel)]="selectedOption" interface="popover" placeholder="Selecciona una opción">
+        <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
+        <ion-select-option *ngFor="let option of dataObjPersonales" [value]="option.IDOBJETIVOSPERSONALES">
+          {{ option.DESCRIPCIONOBJETIVOSPERSONALES }}
+        </ion-select-option>
+      </ion-select>
+    </div>
+    <div class="buttons-tab1">
+      <div  class="ion-buttons-1"  (click)="closeCustomDialog('ObjetivePersonal')">Cancelar</div>
+      <div  class="ion-buttons-2"  (click)="AddObjetivePersonal()">Aceptar</div>
     </div>
   </div>
-  <ion-toolbar>
-    <ion-buttons>
-      <ion-button class="navbar-option" (click)="toggleDiv()">O 1</ion-button>
-      <ion-button  class="navbar-option" (click)="toggleDiv()">O 2</ion-button>
-      <ion-button class="navbar-option" (click)="toggleShape()">O 3</ion-button>
-      <ion-button  class="navbar-option" (click)="slideDiv()">O 4</ion-button>
-      <ion-button  class="navbar-option" (click)="transformShape()">O 5</ion-button>
-      <ion-button  class="navbar-option" (click)="animateFlip()">O 6</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer>
- -->
+</div>
+
+<div id="custom-dialog-especialidad" class="custom-dialog-especialidad">
+  <div class="container-preselect">
+    <h2>Agregar Especialidad</h2>
+    <div class="container-selects">
+      <ion-select [(ngModel)]="selectedOption" interface="popover" placeholder="Selecciona una opción">
+        <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
+        <ion-select-option *ngFor="let option of dataEspecialidad" [value]="option.idespecialidadentrenador">
+          {{ option.tituloESPECIALIDADENTRENADOR }}
+        </ion-select-option>
+      </ion-select>
+    </div>
+    <div class="buttons-tab1">
+      <div  class="ion-buttons-1"  (click)="closeCustomDialog('EspecialidadEntrenador')">Cancelar</div>
+      <div  class="ion-buttons-2"  (click)="AddEspecialidadEntrenador()">Aceptar</div>
+    </div>
+  </div>
+</div>
+
+<div id="custom-dialog-certificados" class="custom-dialog-certificados">
+  <div class="container-preselect">
+    <h2>Agregar Certificado</h2>
+    <div class="container-inputs">
+      <ion-input [(ngModel)]="selectedOptionNombre" type="text" placeholder="Nombre del Certificado"></ion-input>
+      <ion-input [(ngModel)]="selectedOptionCertificador" type="text" placeholder="¿Quién lo Certificado?"></ion-input>
+      <ion-input [(ngModel)]="selectedOptionhoras" type="text" placeholder="Horas"></ion-input>
+    </div>
+    <div class="buttons-tab1">
+      <div class="ion-buttons-1" (click)="closeCustomDialog('CertificacionesEntrenador')">Cancelar</div>
+      <div class="ion-buttons-2" (click)="AddCertificadosEntrenador()">Aceptar</div>
+    </div>
+  </div>
+</div>
+
+
+</ion-content>
