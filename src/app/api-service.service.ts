@@ -62,9 +62,24 @@ export class ApiServiceService {
     return this.http.get(this.apiUrl+/genero/);
   }
   UpdatePersona(data:any): Observable<any>{
+    console.log(data);
     return this.http.post(this.apiUrl+"/updatePersona",data);
   }
   UpdateEntrenantes(data:any): Observable<any>{
     return this.http.post(this.apiUrl+"/updateEntrenante",data);
+  }
+  UpdateEntrenador(data:any): Observable<any>{
+    return this.http.post(this.apiUrl+"/updateEntrenador",data);
+  }
+  UpdateEntrenadorActivacion(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+/manager/+/activacion/+data.IDENTRENADOR,data );
+  }
+  UpdatePersonaEstado(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+/manager/+/estado/+data.IDPERSONA,data );
+  }
+  PerfileUniq(nickname:string): Observable<any>{
+    return this.http.post(IP_ADDRESS+/profiles/+nickname,{})};
+  UpdateProfileBasic(data:any):Observable<any>{
+    return this.http.post(IP_ADDRESS+/manager/+/perfile/+data.IDPERSONA,data );
   }
 }

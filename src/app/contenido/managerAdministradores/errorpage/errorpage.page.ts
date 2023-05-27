@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IP_ADDRESS } from '../../../constantes';
 import { StatusBar } from '@capacitor/status-bar';
 import { NavController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-errorpage',
@@ -11,7 +12,8 @@ import { NavController } from '@ionic/angular';
 export class ErrorpagePage implements OnInit {
   public loading = true;
   public ip_address = IP_ADDRESS;
-  constructor(private navController: NavController) { }
+  constructor(private navController: NavController,
+    private storage: Storage) { }
 
   ngOnInit() {
   }
@@ -29,6 +31,7 @@ export class ErrorpagePage implements OnInit {
     image.onload = () => {
       this.loading = false;
     };
+    this.storage.remove('sesion');
 
   }
 }

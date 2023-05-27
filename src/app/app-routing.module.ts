@@ -90,7 +90,11 @@ const routes: Routes = [
   {
     path: 'errorpage',
     loadChildren: () => import('./contenido/managerAdministradores/errorpage/errorpage.module').then( m => m.ErrorpagePageModule)
+  },  {
+    path: 'perfile',
+    loadChildren: () => import('./contenido/perfile/perfile.module').then( m => m.PerfilePageModule)
   },
+
 
 ];
 

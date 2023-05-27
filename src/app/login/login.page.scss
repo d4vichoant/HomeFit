@@ -40,6 +40,27 @@ ion-content {
       ion-item::part(native){
         padding-left: 0;
       }
+      div{
+        ion-icon{
+          position: absolute;
+          top: 33%;
+          z-index: 2;
+          font-size: 1.5rem;
+          right: 25px;
+          color: #7b7b7b;
+        }
+        ion-input{
+          text-align: left;
+          --padding-top: 5%; /* ajusta el valor de acuerdo a tu preferencia */
+          --padding-bottom: 5%;
+          --border-width: 0px;
+          border-radius: 10px;
+          font-size: 1.15rem;
+          color: #999898c2;
+          --padding-start:20px;
+          --padding-end:10px;
+        }
+      }
       ion-icon{
         position: absolute;
         top: 33%;
@@ -58,9 +79,13 @@ ion-content {
         font-size: 1.15rem;
         color: #999898c2;
         --padding-start:20px;
-        --padding-end:90px;
+        --padding-end:10px;
       }
     }
+  }
+  .form-input-passsword{
+    display: grid;
+    grid-template-columns: 10fr 2fr;
   }
   .action-button{
     padding: 3% 6% 0% 6%;

@@ -1,0 +1,131 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="container-up"  (click)="togglePopup()">
+    <div class="container-up-image">
+      <ion-img class="imagen-container-up" src="{{ ip_address }}/media/images/user-pg.png"></ion-img>
+    </div>
+    <div class="header-botton" *ngFor="let option of dataPerfil" >
+      <div class="full-name" >
+        <ion-label style="padding-right: 10px;">{{ obtenerPrimerNombre(option.NOMBREPERSONA) }}</ion-label>
+        <ion-label >{{ obtenerPrimerNombre(option.APELLDOPERSONA) }}</ion-label>
+      </div>
+      <div class="name-nickname">
+        <ion-icon name="finger-print-outline" style="padding-right: 5px;"></ion-icon>
+        <ion-label>{{ option.NICKNAMEPERSONA }}</ion-label>
+      </div>
+    </div>
+  </div>
+  <div class="container-body">
+    <div class="container-body-list">
+      <ion-list lines="none">
+        <ion-item (click)="sign_off()">
+          <ion-icon name="exit-outline"></ion-icon>
+          <ion-label>Cerrar Sesión</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="help-circle-outline"></ion-icon>
+          <ion-label>Acerca</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="information-circle-outline"></ion-icon>
+          <ion-label>Legal</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div class="container-body-footer">
+      <p>V 1.0</p>
+    </div>
+  </div>
+
+  <div id="overlay" [ngClass]="{'visible': overlayVisible}"></div>
+  <div class="background" [ngClass]="{'visible': overlayVisible}" (click)="togglePopup()" ></div>
+  <div class="popup" [style.display]="overlayVisible ? 'block' : 'none'">
+    <div class="line"></div>
+    <div class="tab-buttons">
+      <div (click)="showTab(1)" [class.selected]="isTabSelected(1)">Inf. Básica</div>
+      <div (click)="showTab(2)" [class.selected]="isTabSelected(2)">Inf. Avanzada</div>
+    </div>
+
+    <div class="tab-content" *ngIf="currentTab === 1" >
+      <ion-list *ngFor="let option of dataPerfil">
+        <div>
+          <ion-label >Nombre:</ion-label>
+          <ion-input type="text" name="nombre" [(ngModel)]="option && option.NOMBREPERSONA" required></ion-input>
+        </div>
+        <div>
+          <ion-label>Apellido:</ion-label>
+          <ion-input type="text" name="apellido" [(ngModel)]="option && option.APELLDOPERSONA" required></ion-input>
+        </div>
+        <div class="date">
+          <ion-label >Fecha de Nacimiento:</ion-label>
+          <input type="date" [value]="getFormattedDate(option?.FECHANACIMIENTOPERSONA)"  (input)="updateNgModel($event, option)" min="1900-01-01" max="2100-12-31">
+        </div>
+      </ion-list>
+      <div class="buttons-tab1" *ngFor="let option of dataPerfil">
+        <ion-button (click)="cancelarButton()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
+        <ion-button (click)="actualizarUsuario(option)"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
+      </div>
+    </div>
+
+    <div class="tab-content" *ngIf="currentTab === 2" >
+      <ion-list >
+        <h1>Seguridad</h1>
+        <p>Cambiar la Contraseña</p>
+        <div>
+          <ion-label>Ingrese Contraseña:</ion-label>
+          <div class="input-wrapper">
+            <div class="input-password">
+              <ion-input placeholder="Ingrese Contraseña" [type]="passwordType1" name="password" required></ion-input>
+            </div>
+            <div class="input-icon" (click)="togglePassword(1)">
+              <ion-icon [name]="passwordIcon1"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <ion-label>Confirmar Contraseña:</ion-label>
+          <div class="input-wrapper">
+            <div class="input-password">
+              <ion-input placeholder="Ingrese Contraseña" [type]="passwordType2" name="password" required></ion-input>
+            </div>
+            <div class="input-icon" (click)="togglePassword(2)">
+              <ion-icon [name]="passwordIcon2"></ion-icon>
+            </div>
+          </div>
+        </div>
+        </ion-list>
+        <div class="buttons-tab1" >
+          <ion-button (click)="cancelarButton()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
+          <ion-button  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
+        </div>
+    </div>
+  </div>
+
+  <ion-toolbar class="toolbar-footer">
+    <ion-grid class="container-footer">
+      <ion-row>
+        <ion-col (click)="go_page('activate-entrenadores')"  size="3" class="image-container-footer">
+          <img class="icono-image" src="{{ ip_address }}/media/images/edituser_gris.png" alt="Icono de mi app">
+          <ion-label class="label-footer">Usuarios</ion-label>
+        </ion-col>
+        <ion-col size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/multimedia.png"></ion-img>
+          <ion-label class="label-footer">Videos</ion-label>
+        </ion-col>
+        <ion-col size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+          <ion-label class="label-footer">Inicio</ion-label>
+        </ion-col>
+        <ion-col (click)="go_page('perfile')" size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/profile.png"></ion-img>
+          <ion-label class="label-footer">Cuenta</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-content>

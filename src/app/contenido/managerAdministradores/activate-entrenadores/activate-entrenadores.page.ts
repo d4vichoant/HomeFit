@@ -1,9 +1,12 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { StatusBar } from '@capacitor/status-bar';
 import { ApiServiceService } from '../../../api-service.service';
-import { NavController, ToastController } from '@ionic/angular';
-import { gsap } from 'gsap';
+import { NavController, ToastController ,Animation, AnimationController } from '@ionic/angular';
 import { IP_ADDRESS } from '../../../constantes';
+import { AlertController } from '@ionic/angular';
+
+import { Storage } from '@ionic/storage-angular';
+
 
 @Component({
   selector: 'app-activate-entrenadores',
@@ -15,6 +18,7 @@ export class ActivateEntrenadoresPage implements OnInit {
   public ip_address = IP_ADDRESS;
   public status = false;
   public data!: any[] ;
+  public origindata!:any[];
   public datagender!: any[] ;
   public dataFrecuency!: any[] ;
   public dataProfession!: any[] ;
@@ -33,6 +37,7 @@ export class ActivateEntrenadoresPage implements OnInit {
       name: 'Entrenante',
       iconstatus: false,
     }];
+  public filteredOptionsRol!: any[];
   public searchTerm!:string;
   previousSearchTerm: string = '';
   overlayVisible: boolean = false;
@@ -45,45 +50,75 @@ export class ActivateEntrenadoresPage implements OnInit {
   selectedOptionNombre?: string;
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
-    public toastController: ToastController,) {
+    public toastController: ToastController,
+    public alertController: AlertController,
+    private storage: Storage,
+    private animationCtrl: AnimationController) {
       this.ordenarfilter();
     }
 
-  ngOnInit() {
-    StatusBar.hide();
-    StatusBar.setOverlaysWebView({overlay:true});
-    StatusBar.setBackgroundColor({color:'#ffffff'});
-    var sesion = JSON.parse(localStorage.getItem('sesion')!);
-    if (sesion && sesion.rolUsuario==99){
-      this.apiService.protectedRequestWithToken(sesion.token).subscribe(
-        (response) => {
-          this.obtenerAllGender();
-          this.obtenerAllPeople();
-          this.obtenerAllFrecuencias();
-          this.obtenerAllProfesion();
-          this.obtenerObjetivosPersonales();
-          this.obtenerAllRolUsuario();
-          this.obtenerAllEspecialidad();
-          this.loading=false;
-        },
-        (error) => {
-          this.loading = false;
-          this.navController.navigateForward('/errorpage');
-          localStorage.removeItem('sesion');
-        }
-      );
-    }else{
-      this.loading = false;
-      localStorage.removeItem('sesion');
-      this.navController.navigateForward('/errorpage');
+    ngOnInit() {
+      StatusBar.hide();
+      StatusBar.setOverlaysWebView({ overlay: true });
+      StatusBar.setBackgroundColor({ color: '#ffffff' });
+      try{
+        this.storage.get('sesion').then((sesion) => {
+          if (sesion && JSON.parse(sesion).rolUsuario == 99) {
+            this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
+              (response) => {
+                this.obtenerAllGender();
+                this.obtenerAllPeople();
+                this.obtenerAllFrecuencias();
+                this.obtenerAllProfesion();
+                this.obtenerObjetivosPersonales();
+                this.obtenerAllRolUsuario();
+                this.obtenerAllEspecialidad();
+                this.loading = false;
+              },
+              (error) => {
+                this.handleError();
+              }
+            );
+          } else {
+            this.handleError();
+          }
+        });
+      } catch (error) {
+        this.handleError();
+      }
     }
-  }
   ionViewDidEnter() {
     StatusBar.hide();
-    StatusBar.setOverlaysWebView({overlay:true});
-    StatusBar.setBackgroundColor({color:'#ffffff'});
+    StatusBar.setOverlaysWebView({ overlay: true });
+    StatusBar.setBackgroundColor({ color: '#ffffff' });
+      this.storage.get('sesion').then((sesion) => {
+        if (sesion && JSON.parse(sesion).rolUsuario == 99) {
+          this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
+            (response) => {
+              this.obtenerAllGender();
+              this.obtenerAllPeople();
+              this.obtenerAllFrecuencias();
+              this.obtenerAllProfesion();
+              this.obtenerObjetivosPersonales();
+              this.obtenerAllRolUsuario();
+              this.obtenerAllEspecialidad();
+              this.loading = false;
+            },
+            (error) => {
+              this.handleError();
+            }
+          );
+        } else {
+          this.handleError();
+        }
+      });
   }
 
+  private handleError() {
+    this.loading = false;
+    this.navController.navigateForward('/errorpage');
+    this.storage.remove('sesion');
+  }
   obtenerPrimerNombre(nombreCompleto: string): string {
     const nombres = nombreCompleto.split(" ");
     return nombres[0];
@@ -135,6 +170,7 @@ export class ActivateEntrenadoresPage implements OnInit {
       this.presentCustomToast(error+"", "danger");
     } finally {
       this.loading = false;
+      this.filteredOptionsRol = this.filtrarArrayPorRol(this.dataRolUsers,filter.name);
     }
   }
 
@@ -234,8 +270,11 @@ export class ActivateEntrenadoresPage implements OnInit {
         item.CORREOPERSONA.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         this.calcularEdad(item.FECHANACIMIENTOPERSONA).toString().toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         this.getACTIVACIONENTRENADOR(item.ACTIVACIONENTRENADOR).toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        item.EXPERIENCIAENTRENADOR.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        item.tituloESPECIALIDADENTRENADOR.toLowerCase().includes(this.searchTerm.toLowerCase())
+        item.EXPERIENCIAENTRENADOR && item.EXPERIENCIAENTRENADOR.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.tituloESPECIALIDADENTRENADOR && item.tituloESPECIALIDADENTRENADOR.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.CERTIFICACIONESENTRENADOR && item.CERTIFICACIONESENTRENADOR.some((certificacion: any) =>
+        certificacion.nombre.toLowerCase().includes(this.searchTerm.toLowerCase())
+        )
         );
        this.data =filteredArray;
       }else if (searchTerms.length === 2) {
@@ -275,13 +314,10 @@ export class ActivateEntrenadoresPage implements OnInit {
   }
 
   showPopup(dataUniq:any ) {
-    const overlay = document.getElementById('overlay');
-    const popup = document.querySelector('.popup');
+    const rawData = this.data;
+    this.origindata = rawData.map(item => ({ ...item }));
 
-    gsap.to(overlay, { duration: 0.8, opacity: 1 });
-    gsap.to(popup, { duration: 0.5, y: '0%' });
     this.loading=true;
-    this.overlayVisible = true;
 
     this.dataUniq = dataUniq;
     this.notificacionInt = parseInt( dataUniq.NOTIFICACIONUSUARIO);
@@ -289,14 +325,22 @@ export class ActivateEntrenadoresPage implements OnInit {
     this.loading=false;
 
     if (this.filter[0].name==="Entrenador"){
+      if (!this.dataUniq.idespecialidadentrenador) {
+        this.dataUniq.idespecialidadentrenador = []; // Inicializar como un array vacío si es null
+      }else{
+        dataUniq.idespecialidadentrenador = dataUniq.idespecialidadentrenador.split(',');
+        dataUniq.idespecialidadentrenador = dataUniq.idespecialidadentrenador.map((element: string) => Number(element));
+      }
       this.ExperienciaInt = parseInt(dataUniq.EXPERIENCIAENTRENADOR);
-      dataUniq.idespecialidadentrenador = dataUniq.idespecialidadentrenador.split(',');
-      dataUniq.idespecialidadentrenador = dataUniq.idespecialidadentrenador.map((element: string) => Number(element));
-      dataUniq.CERTIFICACIONESENTRENADOR = JSON.parse(dataUniq.CERTIFICACIONESENTRENADOR);
     }else if(this.filter[0].name==="Entrenante"){
-      dataUniq.OBJETIVOSPERSONALES = dataUniq.OBJETIVOSPERSONALES.split(',');
-      dataUniq.OBJETIVOSPERSONALES = dataUniq.OBJETIVOSPERSONALES.map((element: string) => Number(element));
+      if (!this.dataUniq.OBJETIVOSPERSONALES) {
+        this.dataUniq.OBJETIVOSPERSONALES = []; // Inicializar como un array vacío si es null
+      }else{
+        dataUniq.OBJETIVOSPERSONALES = dataUniq.OBJETIVOSPERSONALES.split(',');
+        dataUniq.OBJETIVOSPERSONALES = dataUniq.OBJETIVOSPERSONALES.map((element: string) => Number(element));
+      }
     }
+    this.togglePopup();
   }
   parsetoNumber(trnsf: string): number {
     return parseInt(trnsf, 10); // Utilizando la función parseInt
@@ -304,15 +348,38 @@ export class ActivateEntrenadoresPage implements OnInit {
 
 
   hidePopup() {
+    this.data=this.origindata;
     this.dataUniq=null;
-    const overlay = document.getElementById('overlay');
-    const popup = document.querySelector('.popup');
     this.currentTab = 1;
-    gsap.to(overlay, { duration: 0.5, opacity: 0, onComplete: () => {
-      this.overlayVisible = false;
-    }});
+    this.loading=true;
+    this.togglePopup();
+  }
 
-    gsap.to(popup, { duration: 0.5, y: '100%' });
+  public togglePopup(): void {
+    this.overlayVisible = !this.overlayVisible;
+    const animation = this.animatePopup(this.overlayVisible);
+    this.loading=false;
+    animation.play(); // Ejecutar la animación
+  }
+
+
+  private animatePopup(show: boolean): Animation {
+    const animation = this.animationCtrl.create()
+      .addElement(document.querySelector('.popup')!)
+      .duration(300);
+
+    if (show) {
+      // Animación para mostrar el popup
+      animation
+        .fromTo('opacity', '0', '1')
+        .fromTo('transform', 'translateY(100%)', 'translateY(0)');
+    } else {
+      // Animación para ocultar el popup
+      animation
+        .fromTo('opacity', '1', '0')
+        .fromTo('transform', 'translateY(0)', 'translateY(100%)');
+    }
+    return animation;
   }
 
   showTab(tabNumber: number) {
@@ -443,39 +510,183 @@ export class ActivateEntrenadoresPage implements OnInit {
       customDialog!.style.display = 'none';
     }
   }
-  actualizarUsuario(dataPerson:any){
-    var profiledat = JSON.parse(localStorage.getItem('sesion')!);
-    dataPerson.USUARIOMODIFICACIONPERSONA=profiledat.nickname
-    this.apiService.UpdatePersona(dataPerson).subscribe(
-      (response) => {
-        this.presentCustomToast(response.message,"success");
-        this.loading=true;
-        this.inicio();
-        this.ngOnInit();
-      },
-      (error) => {
-        this.presentCustomToast(error.error.error,"danger");
-      }
-    );
-  }
-  actualizarEntrenantes(dataPerson:any){
+  actualizarUsuario(dataPerson: any) {
     console.log(dataPerson);
-    var profiledat = JSON.parse(localStorage.getItem('sesion')!);
-    dataPerson.USUARIOMODIFICACIONPERSONA=profiledat.nickname;
-    dataPerson.NOTIFICACIONUSUARIO = this.notificacionInt;
-    this.apiService.UpdateEntrenantes(dataPerson).subscribe(
-      (response) => {
-        this.presentCustomToast(response.message,"success");
-        this.loading=true;
-        this.inicio();
-        this.ngOnInit();
-      },
-      (error) => {
-        this.presentCustomToast(error.error.error,"danger");
+    this.storage.get('sesion').then((sesionString) => {
+      if (sesionString) {
+        var profiledat = JSON.parse(sesionString);
+        dataPerson.USUARIOMODIFICACIONPERSONA = profiledat.nickname;
+        this.apiService.UpdatePersona(dataPerson).subscribe(
+          (response) => {
+            this.presentCustomToast(response.message, "success");
+            this.loading = true;
+            this.inicio();
+            this.ngOnInit();
+          },
+          (error) => {
+            this.presentCustomToast(error.error.error, "danger");
+          }
+        );
+      } else {
+        // No se encontró la sesión en el storage
+        console.log('No se encontró la sesión');
       }
-    );
+    });
   }
 
+  actualizarEntrenador(dataEntre: any) {
+    this.storage.get('sesion').then((sesionString) => {
+      if (sesionString) {
+        var profiledat = JSON.parse(sesionString);
+        dataEntre.USUARIOMODIFICACIONPERSONA = profiledat.nickname;
+        this.apiService.UpdateEntrenador(dataEntre).subscribe(
+          (response) => {
+            this.presentCustomToast(response.message, "success");
+            this.loading = true;
+            this.inicio();
+            this.ngOnInit();
+          },
+          (error) => {
+            this.presentCustomToast(error.error.error, "danger");
+          }
+        );
+      } else {
+        // No se encontró la sesión en el storage
+        console.log('No se encontró la sesión');
+      }
+    });
+  }
+
+
+actualizarEntrenantes(dataPerson: any) {
+  this.storage.get('sesion').then((sesionString) => {
+    if (sesionString) {
+      var profiledat = JSON.parse(sesionString);
+      dataPerson.USUARIOMODIFICACIONPERSONA = profiledat.nickname;
+      dataPerson.NOTIFICACIONUSUARIO = this.notificacionInt;
+      this.apiService.UpdateEntrenantes(dataPerson).subscribe(
+        (response) => {
+          this.presentCustomToast(response.message, "success");
+          this.loading = true;
+          this.inicio();
+          this.ngOnInit();
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error, "danger");
+        }
+      );
+    } else {
+      // No se encontró la sesión en el storage
+      console.log('No se encontró la sesión');
+    }
+  });
+}
+  async confirmaractualizarUsuarioActivacion(dataUsuario :any, name:string) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar Estado',
+      message: '¿Estás seguro de activar/desactivar este '+name+'?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.presentCustomToast('Proceso cancelada',"danger");
+          }
+        }, {
+          text: 'Aceptar',
+          handler: () => {
+            this.presentCustomToast('Estado del '+name+' cambiada correctamente',"success");
+            this.actualizarUsuarioActivacion(dataUsuario);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  actualizarUsuarioActivacion(dataEntrenador: any) {
+    this.storage.get('sesion').then((sesionString) => {
+      if (sesionString) {
+        var profiledat = JSON.parse(sesionString);
+        dataEntrenador.USUARIOMODIFICACIONPERSONA = profiledat.nickname;
+        this.loading = true;
+        if (dataEntrenador.ESTADOPERSONA === 1) {
+          dataEntrenador.ESTADOPERSONA = 0;
+        } else {
+          dataEntrenador.ESTADOPERSONA = 1;
+        }
+        this.apiService.UpdatePersonaEstado(dataEntrenador).subscribe(
+          (response) => {
+            this.presentCustomToast(response.message, "success");
+            this.loading = true;
+            this.inicio();
+            this.ngOnInit();
+          },
+          (error) => {
+            this.presentCustomToast(error.error.error, "danger");
+          }
+        );
+      } else {
+        // No se encontró la sesión en el storage
+        console.log('No se encontró la sesión');
+      }
+    });
+  }
+
+  async confirmaractualizarEntrenadorActivacion(dataEntrenador:any) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar Activación',
+      message: '¿Estás seguro de activar/desactivar el entrenador?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.presentCustomToast('Proceso cancelada',"danger");
+          }
+        }, {
+          text: 'Aceptar',
+          handler: () => {
+            this.presentCustomToast('Activacion cambiada',"success");
+            this.actualizarEntrenadorActivacion(dataEntrenador);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  actualizarEntrenadorActivacion(dataEntrenador: any) {
+    this.storage.get('sesion').then((sesionString) => {
+      if (sesionString) {
+        this.loading = true;
+        if (dataEntrenador.ACTIVACIONENTRENADOR === 1) {
+          dataEntrenador.ACTIVACIONENTRENADOR = 0;
+        } else {
+          dataEntrenador.ACTIVACIONENTRENADOR = 1;
+        }
+        this.apiService.UpdateEntrenadorActivacion(dataEntrenador).subscribe(
+          (response) => {
+            this.presentCustomToast(response.message, "success");
+            this.loading = true;
+            this.inicio();
+            this.ngOnInit();
+          },
+          (error) => {
+            this.presentCustomToast(error.error.error, "danger");
+          }
+        );
+      } else {
+        // No se encontró la sesión en el storage
+        console.log('No se encontró la sesión');
+      }
+    });
+  }
+  go_page(name: string){
+    this.navController.navigateForward('/'+name);
+  }
   async presentCustomToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
@@ -568,11 +779,21 @@ export class ActivateEntrenadoresPage implements OnInit {
     this.apiService.allObtenerRolUsers().subscribe(
       (response) => {
         this.dataRolUsers=response;
+        this.filteredOptionsRol = this.filtrarArrayPorRol(this.dataRolUsers,this.filter.find((item) => item.iconstatus === true)?.name);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
       }
     );
+  }
+  filtrarArrayPorRol(array: any[], rol: string): any[] {
+    if (rol === 'Usuarios' || rol === 'Entrenante') {
+      return array.filter((item) => item.DESCRIPCIONROLUSUARIO === 'usuario' || item.DESCRIPCIONROLUSUARIO === 'administrador');
+    } else if (rol === 'Entrenador') {
+      return array.filter((item) => item.DESCRIPCIONROLUSUARIO === 'entrenador' || item.DESCRIPCIONROLUSUARIO === 'administrador');
+    } else {
+      return [];
+    }
   }
   obtenerAllEspecialidad(){
     this.apiService.allEspecialidadentrenador().subscribe(

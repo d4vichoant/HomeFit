@@ -14,10 +14,13 @@
         <div class="form-input">
             <ion-input formControlName="nickname" placeholder="Ingrese Nickname" ></ion-input>
         </div>
-        <div class="form-input">
-            <ion-input formControlName="password" type="{{ passwordType }}" placeholder="Ingrese Contraseña" >
-              <ion-icon  name="{{ passwordIcon }}"  slot="end" (click)="togglePassword()"></ion-icon>
-            </ion-input>
+        <div class="form-input form-input-passsword" style=" background-color: #f1f5fe; border-radius: 10px;">
+          <div>
+            <ion-input formControlName="password" type="{{ passwordType }}" placeholder="Ingrese Contraseña" > </ion-input>
+          </div>
+          <div (click)="togglePassword()">
+            <ion-icon  name="{{ passwordIcon }}"  slot="end"></ion-icon>
+          </div>
         </div>
       </form>
     </div>

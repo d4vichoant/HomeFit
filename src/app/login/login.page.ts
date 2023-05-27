@@ -6,6 +6,7 @@ import { NavController, ToastController } from '@ionic/angular';
 import { ApiServiceService } from '../api-service.service';
 import { IP_ADDRESS } from '../constantes';
 
+import { Storage } from '@ionic/storage-angular';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -22,7 +23,8 @@ export class LoginPage implements OnInit {
   constructor(public fb: FormBuilder,
     private apiService: ApiServiceService,
     private navController: NavController,
-    public toastController: ToastController) {
+    public toastController: ToastController,
+    private storage: Storage, ) {
     this.formularioLogin = this.fb.group({
       'nickname': new FormControl("",Validators.required),
       'password':new FormControl("",Validators.required)
@@ -32,7 +34,12 @@ export class LoginPage implements OnInit {
   ngOnInit() {
   }
 
+  async initializeApp() {
+    await this.storage.create();
+  }
+
   ionViewWillEnter() {
+    this.initializeApp();
   }
 
   get_into (){
@@ -44,46 +51,35 @@ export class LoginPage implements OnInit {
     const data = dataLogin;
     this.apiService.consultLogin(data).subscribe(
       (response) => {
-        var flag = false;
+        var sesion ={
+          token:response.token,
+          nickname:response.nickname,
+          rolUsuario:response.rolUsuario
+        }
         if (response.message=="access user"){
-          this.navController.navigateForward('/main');
-          this.presentCustomToast("Bienvenido Usuario Comun","success");
-          flag=true;
+          this.storage.set('sesion', JSON.stringify(sesion)).then(() => {
+            this.navController.navigateForward('/main');
+          });
         }else{
           if (response.message=="all access"){
-            this.navController.navigateForward('/main');
-            this.presentCustomToast("Bienvenido Administrador","success");
-            this.navController.navigateForward('/activate-entrenadores');
-            flag=true;
+            this.storage.set('sesion', JSON.stringify(sesion)).then(() => {
+              this.navController.navigateForward('/activate-entrenadores');
+            });
           }else {
             if (response.message=="access trainer"){
-              this.navController.navigateForward('/main');
-              this.presentCustomToast("Bienvenido Entrenador Comun","success");
-              flag=true;
+              this.storage.set('sesion', JSON.stringify(sesion)).then(() => {
+                this.navController.navigateForward('/main');
+              });
             }else{
               if (response.message=="trainer not activated"){
-                 this.presentCustomToast("Bienvenido Entrenador Comun Bloqueado","success");
-                 this.navController.navigateForward('/notactivate');
-                 flag=true;
+                this.storage.set('sesion', JSON.stringify(sesion)).then(() => {
+                  this.navController.navigateForward('/notactivate');
+                });
               }else{
                 this.presentCustomToast("Error de Ingreso a la APP","danger");
-                flag=false;
               }
             }
           }
-        }
-        if (flag){
-          dataLogin.nickname = '';
-          dataLogin.password = '';
-          var sesion ={
-            token:response.token,
-            nickname:response.nickname,
-            rolUsuario:response.rolUsuario
-          }
-          this.formularioLogin.reset();
-          localStorage.setItem('sesion',JSON.stringify(sesion));
-        }else{
-          this.presentCustomToast("Error de Ingreso a la APP","danger");
         }
       },
       (error) => {
@@ -91,7 +87,9 @@ export class LoginPage implements OnInit {
         this.presentCustomToast(errorMessage, "danger");
       }
     );
-
+    dataLogin.nickname = '';
+    dataLogin.password = '';
+    this.formularioLogin.reset();
   }
 
   goRegister(){

@@ -16,8 +16,8 @@
         <ion-col size="1.5" class="image-container">
           <ion-img class="icono-notificacion" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
         </ion-col>
-        <ion-col size="1.5" class="image-container">
-          <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/bookmark.png"></ion-img>
+        <ion-col (click)="go_page('perfile')" size="1.5" class="image-container">
+          <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/profile-gris.png"></ion-img>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -37,7 +37,7 @@
     </div>
   </div>
   <div class="container-body" *ngIf="filter[0]?.name === 'Entrenador' && filter[0]?.iconstatus && data && data.length >0;else noDataMessage ">
-    <div class="item-body" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#c7b4fe' : '#ac89fc' }" *ngFor="let item of data">
+    <div class="item-body" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#ac89fc' : '#c7b4fe' }" *ngFor="let item of data">
       <div class="div-item-body">
         <div class="div-text-item-body">
           <h1>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}&nbsp;{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</h1><span class="age">|&nbsp;{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }} años</span>
@@ -46,23 +46,39 @@
             <h2>Experiencia</h2>
             <span>{{item.EXPERIENCIAENTRENADOR}}</span>
           </div>
-          <div class="details-item-body">
-            <img class="icono-item" src="{{ ip_address }}/media/images/star.png"alt="Imagen Detalles">
-            <p >Especialidad</p>
+          <div *ngIf="item.tituloESPECIALIDADENTRENADOR; else alternativeContent">
+            <div class="details-item-body">
+              <img class="icono-item" src="{{ ip_address }}/media/images/star.png" alt="Imagen Detalles">
+              <p>Especialidad</p>
+            </div>
+            <div class="details-item-body-details-Entr">
+              <p>{{ item.tituloESPECIALIDADENTRENADOR }}</p>
+            </div>
           </div>
-          <div class="details-item-body-details-Entr">
-            <p>{{ item.tituloESPECIALIDADENTRENADOR}}</p>
-          </div>
+          <ng-template #alternativeContent>
+            <div>
+              <div class="details-item-body">
+                <img class="icono-item" src="{{ ip_address }}/media/images/medalla.png" alt="Imagen Detalles">
+                <p>Certificaciones</p>
+              </div>
+              <div class="details-item-body-details-Entr">
+                <p>
+                  <span *ngFor="let certificacion of item.CERTIFICACIONESENTRENADOR; let last = last">{{ certificacion.nombre }}{{ !last ? ', ' : '' }}</span>
+                </p>
+              </div>
+            </div>
+          </ng-template>
+
         </div>
         <div class="item-body-right-top">
           <button >
             <img class="icono-item-top" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"  (click)="showPopup(item)" alt="Icono 1">
           </button>
           <button>
-            <img class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
+            <img (click)="confirmaractualizarUsuarioActivacion(item,'Entrenador')"  class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
           </button>
         </div>
-        <div class="item-body-right-bottom" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#fcfee7' : '#fdfec3' }">
+        <div (click)="confirmaractualizarEntrenadorActivacion(item)" class="item-body-right-bottom" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#fcfee7' : '#fdfec3' }">
           <div>
             <img  class="icono-item-botton" src="{{ ip_address }}/media/images/{{ item.ACTIVACIONENTRENADOR ? 'check.png' : 'time.png' }}"alt="Imagen Subtítulo">
             <h2>{{ item.ACTIVACIONENTRENADOR ? 'Activo' : 'Revisión' }}</h2>
@@ -94,10 +110,10 @@
             <img class="icono-item-top" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png" (click)="showPopup(item)" alt="Icono 1">
           </button>
           <button>
-            <img class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
+            <img (click)="confirmaractualizarUsuarioActivacion(item,'Usuario')"  class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
           </button>
         </div>
-        <div class="item-body-right-bottom" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#fcfee7' : '#fdfec3' }">
+        <div  (click)="confirmaractualizarUsuarioActivacion(item,'Usuario')" class="item-body-right-bottom" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#fcfee7' : '#fdfec3' }">
           <div>
             <img  class="icono-item-botton" src="{{ ip_address }}/media/images/{{ item.ESTADOPERSONA ? 'check.png' : 'noactive.png' }}"alt="Imagen Subtítulo">
             <h2>{{ item.ESTADOPERSONA ? 'Activo' : 'Inactivo' }}</h2>
@@ -129,10 +145,10 @@
             <img class="icono-item-top" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png" (click)="showPopup(item)" alt="Icono 1">
           </button>
           <button>
-            <img class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
+            <img (click)="confirmaractualizarUsuarioActivacion(item,'Entrenante')" class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
           </button>
         </div>
-        <div class="item-body-right-bottom" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#fcfee7' : '#fdfec3' }">
+        <div (click)="confirmaractualizarUsuarioActivacion(item,'Entrenante')" class="item-body-right-bottom" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#fcfee7' : '#fdfec3' }">
           <div>
             <img  class="icono-item-botton" src="{{ ip_address }}/media/images/{{ item.ESTADOPERSONA ? 'check.png' : 'noactive.png' }}"alt="Imagen Subtítulo">
             <h2>{{ item.ESTADOPERSONA ? 'Activo' : 'Inactivo' }}</h2>
@@ -211,7 +227,7 @@
         <div>
           <ion-label >Creado como:</ion-label>
           <ion-select name="rolusuario" interface="popover" [(ngModel)]="dataUniq && dataUniq.IDROLUSUARIO " required>
-            <ion-select-option *ngFor="let option of dataRolUsers" [value]="option.IDROLUSUARIO  ">{{ option.DESCRIPCIONROLUSUARIO }}</ion-select-option>
+            <ion-select-option  *ngFor="let option of filteredOptionsRol" [value]="option.IDROLUSUARIO  ">{{ option.DESCRIPCIONROLUSUARIO }}</ion-select-option>
           </ion-select>
         </div>
       </ion-list>
@@ -223,6 +239,10 @@
 
     <div class="tab-content" *ngIf="currentTab === 2 && filter[0]?.name === 'Entrenante'">
       <ion-list>
+        <div *ngIf=" dataUniq.OBJETIVOSPERSONALES && dataUniq.OBJETIVOSPERSONALES.length === 0">
+          <ion-label>Agregar Sesión:</ion-label>
+          <ion-button class="buttonaddObjPers" *ngIf="dataUniq.OBJETIVOSPERSONALES && dataUniq.OBJETIVOSPERSONALES.length === 0"  (click)="OpenDialogObjPers('ObjetivePersonal', dataUniq)" fill="clear">+ Obj. Personales</ion-button>
+        </div>
         <div>
           <ion-label>Profesion:</ion-label>
           <ion-select name="profesion" interface="popover" [(ngModel)]=" dataUniq && dataUniq.IDPROFESION " required>
@@ -267,10 +287,6 @@
               </div>
             </ng-container>
           </div>
-        </div>
-        <div *ngIf="dataUniq.OBJETIVOSPERSONALES.length === 0">
-          <ion-label>Agregar Sesión:</ion-label>
-          <ion-button class="buttonaddObjPers" *ngIf="dataUniq.OBJETIVOSPERSONALES.length === 0"  (click)="OpenDialogObjPers('ObjetivePersonal', dataUniq)" fill="clear">+ Obj. Personales</ion-button>
         </div>
       </ion-list>
       <div class="buttons-tab1">
@@ -356,7 +372,7 @@
       </ion-list>
       <div class="buttons-tab1">
         <ion-button (click)="hidePopup()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
-        <ion-button (click)="hidePopup()"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
+        <ion-button (click)="actualizarEntrenador(dataUniq)"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
       </div>
     </div>
   </div>
@@ -364,24 +380,26 @@
   <ion-toolbar class="toolbar-footer">
     <ion-grid class="container-footer">
       <ion-row>
-        <ion-col size="4" class="image-container-footer ">
-          <img  class="icono-image" src="{{ ip_address }}/media/images/users.png" alt="Icono de mi app">
+        <ion-col (click)="go_page('activate-entrenadores')"  size="3" class="image-container-footer">
+          <img class="icono-image" src="{{ ip_address }}/media/images/edituser.png" alt="Icono de mi app">
+          <ion-label class="label-footer">Usuarios</ion-label>
         </ion-col>
-        <ion-col size="2" class="image-container-footer ">
-          <ion-img class="icono-notificacion" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+        <ion-col size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/multimedia.png"></ion-img>
+          <ion-label class="label-footer">Videos</ion-label>
         </ion-col>
-        <ion-col size="2" class="image-container-footer ">
-          <ion-img class="icono-notificacion" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+        <ion-col size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+          <ion-label class="label-footer">Inicio</ion-label>
         </ion-col>
-        <ion-col size="2" class="image-container-footer ">
-          <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/bookmark.png"></ion-img>
-        </ion-col>
-        <ion-col size="2" class="image-container-footer ">
-          <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/bookmark.png"></ion-img>
+        <ion-col (click)="go_page('perfile')" size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/profile-gris.png"></ion-img>
+          <ion-label class="label-footer">Cuenta</ion-label>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-toolbar>
+
 
 <!-- Agrega el diálogo personalizado oculto por defecto -->
 <div id="custom-dialog" class="custom-dialog">
