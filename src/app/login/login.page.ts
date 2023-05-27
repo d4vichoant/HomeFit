@@ -42,51 +42,57 @@ export class LoginPage implements OnInit {
     this.initializeApp();
   }
 
-  get_into (){
+  async get_into (){
     var f= this.formularioLogin.value;
     var dataLogin ={
       nickname:f.nickname,
       password:f.password
     }
     const data = dataLogin;
-    this.apiService.consultLogin(data).subscribe(
-      (response) => {
-        var sesion ={
-          token:response.token,
-          nickname:response.nickname,
-          rolUsuario:response.rolUsuario
-        }
-        if (response.message=="access user"){
-          this.storage.set('sesion', JSON.stringify(sesion)).then(() => {
-            this.navController.navigateForward('/main');
-          });
-        }else{
-          if (response.message=="all access"){
+    const hashedPassword = await this.consultarPasswordhas(data.nickname);
+    const result = await this.passwordVerify(f.password, hashedPassword);
+    if (result){
+      this.apiService.consultLogin(data).subscribe(
+        (response) => {
+          var sesion ={
+            token:response.token,
+            nickname:response.nickname,
+            rolUsuario:response.rolUsuario
+          }
+          if (response.message=="access user"){
             this.storage.set('sesion', JSON.stringify(sesion)).then(() => {
-              this.navController.navigateForward('/activate-entrenadores');
+              this.navController.navigateForward('/main');
             });
-          }else {
-            if (response.message=="access trainer"){
+          }else{
+            if (response.message=="all access"){
               this.storage.set('sesion', JSON.stringify(sesion)).then(() => {
-                this.navController.navigateForward('/main');
+                this.navController.navigateForward('/activate-entrenadores');
               });
-            }else{
-              if (response.message=="trainer not activated"){
+            }else {
+              if (response.message=="access trainer"){
                 this.storage.set('sesion', JSON.stringify(sesion)).then(() => {
-                  this.navController.navigateForward('/notactivate');
+                  this.navController.navigateForward('/main');
                 });
               }else{
-                this.presentCustomToast("Error de Ingreso a la APP","danger");
+                if (response.message=="trainer not activated"){
+                  this.storage.set('sesion', JSON.stringify(sesion)).then(() => {
+                    this.navController.navigateForward('/notactivate');
+                  });
+                }else{
+                  this.presentCustomToast("Error de Ingreso a la APP","danger");
+                }
               }
             }
           }
+        },
+        (error) => {
+          const errorMessage = error?.error?.message || 'Error desconocido';
+          this.presentCustomToast(errorMessage, "danger");
         }
-      },
-      (error) => {
-        const errorMessage = error?.error?.message || 'Error desconocido';
-        this.presentCustomToast(errorMessage, "danger");
-      }
-    );
+      );
+    }else{
+      this.presentCustomToast("Credenciales Invalidas", "danger");
+    }
     dataLogin.nickname = '';
     dataLogin.password = '';
     this.formularioLogin.reset();
@@ -142,4 +148,32 @@ export class LoginPage implements OnInit {
       alertElement.style.setProperty('--alert-top', `calc(50% + (9% * 0) + 8%)`);
       toast.present();
     }
+    async consultarPasswordhas(nickname: string): Promise<string> {
+      try {
+        const response = await this.apiService.getPasswordHash(nickname).toPromise();
+        return response[0].CONTRASENIAPERSONA;
+      } catch (error) {
+        this.presentCustomToast(error+"", "danger");
+        return "";
+      }
+    }
+
+
+
+  async passwordVerify(enteredPassword: string, hashedPassword: string): Promise<boolean> {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(enteredPassword);
+
+    try {
+      const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const enteredHashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+
+      return enteredHashedPassword === hashedPassword;
+    } catch (error) {
+      console.error('Error al verificar la contraseña:', error);
+      throw error;
+    }
+  }
+
 }

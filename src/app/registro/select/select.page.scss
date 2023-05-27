@@ -135,6 +135,16 @@ ion-content {
 }
 .center-box {
   position: absolute;
+  top: 50%;
+  width: 50%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+.center-box-2 {
+  position: absolute;
   top: 70%;
   width: 50%;
   height: 200px;

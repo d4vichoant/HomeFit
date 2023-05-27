@@ -103,6 +103,7 @@ export class ActivateEntrenadoresPage implements OnInit {
               this.obtenerAllRolUsuario();
               this.obtenerAllEspecialidad();
               this.loading = false;
+              this.inicio();
             },
             (error) => {
               this.handleError();
@@ -511,7 +512,6 @@ export class ActivateEntrenadoresPage implements OnInit {
     }
   }
   actualizarUsuario(dataPerson: any) {
-    console.log(dataPerson);
     this.storage.get('sesion').then((sesionString) => {
       if (sesionString) {
         var profiledat = JSON.parse(sesionString);
@@ -528,8 +528,7 @@ export class ActivateEntrenadoresPage implements OnInit {
           }
         );
       } else {
-        // No se encontró la sesión en el storage
-        console.log('No se encontró la sesión');
+        this.presentCustomToast('No se encontró la sesión', "danger");
       }
     });
   }
@@ -551,8 +550,7 @@ export class ActivateEntrenadoresPage implements OnInit {
           }
         );
       } else {
-        // No se encontró la sesión en el storage
-        console.log('No se encontró la sesión');
+        this.presentCustomToast('No se encontró la sesión', "danger");
       }
     });
   }
@@ -576,8 +574,7 @@ actualizarEntrenantes(dataPerson: any) {
         }
       );
     } else {
-      // No se encontró la sesión en el storage
-      console.log('No se encontró la sesión');
+      this.presentCustomToast('No se encontró la sesión', "danger");
     }
   });
 }
@@ -628,8 +625,7 @@ actualizarEntrenantes(dataPerson: any) {
           }
         );
       } else {
-        // No se encontró la sesión en el storage
-        console.log('No se encontró la sesión');
+        this.presentCustomToast('No se encontró la sesión', "danger");
       }
     });
   }
@@ -679,8 +675,7 @@ actualizarEntrenantes(dataPerson: any) {
           }
         );
       } else {
-        // No se encontró la sesión en el storage
-        console.log('No se encontró la sesión');
+        this.presentCustomToast('No se encontró la sesión', "danger");
       }
     });
   }

@@ -82,4 +82,7 @@ export class ApiServiceService {
   UpdateProfileBasic(data:any):Observable<any>{
     return this.http.post(IP_ADDRESS+/manager/+/perfile/+data.IDPERSONA,data );
   }
+  getPasswordHash(nickname:string):Observable<any>{
+    return this.http.get(this.apiUrl+/passwordHash/+nickname);
+  }
 }

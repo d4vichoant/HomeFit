@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
+
 interface ValidationStatus {
   symbol: boolean;
   uppercase: boolean;
@@ -30,7 +31,7 @@ export class PasswordPage implements OnInit {
     symbol: false
   };
 
-  constructor(private navController: NavController, public fb: FormBuilder)
+  constructor(private navController: NavController, public fb: FormBuilder, public toastController: ToastController,)
   {
     this.formularioLogin = this.fb.group({
       'password': new FormControl("",Validators.required),
@@ -80,10 +81,7 @@ export class PasswordPage implements OnInit {
     }
   }
   go_nextPage(){
-    var profiledat = JSON.parse(localStorage.getItem('profilesdates')!);
-    var f= this.formularioLogin.value;
-    profiledat.password = f.password;
-    localStorage.setItem('profilesdates', JSON.stringify(profiledat));
+    this.passwordEncode();
     this.navController.navigateForward(['gender']);
 
   }
@@ -105,6 +103,26 @@ export class PasswordPage implements OnInit {
       this.passwordIconConf = 'eye-outline';
     }
   }
+  passwordEncode() {
+    var profiledat = JSON.parse(localStorage.getItem('profilesdates')!);
+    var f = this.formularioLogin.value;
+    let password = f.password;
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+
+    window.crypto.subtle.digest('SHA-256', data)
+      .then(hashBuffer => {
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+        profiledat.password = hashedPassword;
+        localStorage.setItem('profilesdates', JSON.stringify(profiledat));
+      })
+      .catch(error => {
+        this.presentCustomToast('Error al guardar la contraseña', "danger");
+      });
+  }
+
+
   passwordMatchValidator(control: FormGroup): { [key: string]: boolean } | null {
     const password = control.get('password')?.value;
     const confirmPassword = control.get('passwordConfirm')?.value;
@@ -121,4 +139,22 @@ export class PasswordPage implements OnInit {
       return { mismatch: true };
     }
   }
+  async presentCustomToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2400,
+      position: 'top',
+      cssClass: `toast-custom-${color}`,
+      buttons: [
+        {
+          side: 'end',
+          icon: 'close',
+          role: 'cancel'
+        }
+      ]
+    });
+      const alertElement = document.querySelector(`.toast-custom-${color}`) as HTMLDivElement;
+      alertElement.style.setProperty('--alert-top', `calc(50% + (9% * 0) + 8%)`);
+      toast.present();
+    }
 }

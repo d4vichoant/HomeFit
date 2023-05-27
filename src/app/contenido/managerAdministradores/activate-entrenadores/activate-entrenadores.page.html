@@ -39,7 +39,7 @@
   <div class="container-body" *ngIf="filter[0]?.name === 'Entrenador' && filter[0]?.iconstatus && data && data.length >0;else noDataMessage ">
     <div class="item-body" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#ac89fc' : '#c7b4fe' }" *ngFor="let item of data">
       <div class="div-item-body">
-        <div class="div-text-item-body">
+        <div class="div-text-item-body"  >
           <h1>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}&nbsp;{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</h1><span class="age">|&nbsp;{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }} años</span>
           <div class="sub-title">
             <img  class="icono-item" src="{{ ip_address }}/media/images/portafolio.png" alt="Imagen Subtítulo">

@@ -94,6 +94,14 @@ const routes: Routes = [
     path: 'perfile',
     loadChildren: () => import('./contenido/perfile/perfile.module').then( m => m.PerfilePageModule)
   },
+  {
+    path: 'videos',
+    loadChildren: () => import('./contenido/managerMultimedia/videos/videos.module').then( m => m.VideosPageModule)
+  },
+  {
+    path: 'errorvideos',
+    loadChildren: () => import('./contenido/managerMultimedia/errorvideos/errorvideos.module').then( m => m.ErrorvideosPageModule)
+  },
 
 
 ];
