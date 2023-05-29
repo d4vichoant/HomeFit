@@ -1,13 +1,92 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>videos</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">videos</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <ion-toolbar class="toolbar-header">
+    <ion-grid class="container-header">
+      <ion-row>
+        <ion-col size="1.5" class="image-container">
+          <img style="width: 30px!important;"  class="icono-image" src="{{ ip_address }}/media/iconhomeviolet.png" alt="Icono de mi app">
+        </ion-col>
+        <ion-col size="7.5">
+          <ion-title class="title-text">Home <span style="color: #9259f9;font-family: Raleway-Bold;">Fit</span> Go</ion-title>
+        </ion-col>
+        <ion-col size="1.5" class="image-container">
+          <ion-img class="icono-notificacion" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+        </ion-col>
+        <ion-col (click)="go_page('perfile')" size="1.5" class="image-container">
+          <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/profile-gris.png"></ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+  <div class="browser">
+    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
+  </div>
+  <div class="container-dificultad" >
+    <div class="item" (click)="go_page_create('crear-ejercicio','')" >
+      <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/plus-violet.png"></ion-img>
+      <ion-label>Crear</ion-label>
+    </div>
+    <div class="item" (click)="buttonfilterhabilitate(item,i)"  *ngFor="let item of dataNivelDificultad;let i = index" [style.background-color]="selectedItem === i ? '#f0f0f0' : ''">
+      <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/{{item.tituloniveldificultadejercicio}}.png"></ion-img>
+      <ion-label>{{item.tituloniveldificultadejercicio}}</ion-label>
+    </div>
+  </div>
+  <div class="container-videos"  *ngIf="dataEjercicio && dataEjercicio.length > 0; else emptyData">
+    <div class="item-video-setup" *ngFor="let option of dataEjercicio" >
+      <img class="background-image" src="{{ ip_address }}/multimedia/{{getVideoName(option.ALMACENAMIENTOMULTIMEDIA)}}.jpg"alt="Imagen de fondo">
+      <div class="text-container">
+        <p class="text2">{{option.NOMBREEJERCICIO}}</p>
+        <p class="text1">{{option.titulotipoejercicio}}<span> | {{option.tituloniveldificultadejercicio}}</span></p>
+      </div>
+      <div class="item-body-right-top">
+        <button >
+          <img class="icono-item-top" (click)="go_page_create('crear-ejercicio',option)"style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"  alt="Icono 1">
+        </button>
+        <button>
+          <img (click)="confirmaractualizarEjercicioActivacion(option)"   class="icono-item-top" src="{{ ip_address }}/media/images/reject_red.png" alt="Icono 2">
+        </button>
+      </div>
+      <div  (click)="confirmaractualizarEjercicioActivacion(option)" class="item-body-right-bottom" [ngStyle]="{ 'background-color': option.ESTADOEJERCICIO ? '#33af1496' : '#d62f2fa8' }">
+        <div>
+          <img  class="icono-item-botton" src="{{ ip_address }}/media/images/{{ option.ESTADOEJERCICIO ? 'check-white.png' : 'noactive-white.png' }}" alt="Imagen Subtítulo">
+          <h2>{{ option.ESTADOEJERCICIO ? 'Activo' : 'Inactivo' }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #emptyData>
+    <div class="no-data-message" >
+      <img src="{{ ip_address }}/media/images/notfound.png" alt="Imagen de datos no encontrados">
+      <h1 class="text-no-data-message">Resultado no encontrado</h1>
+      <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>
+    </div>
+  </ng-template>
+
+  <ion-toolbar class="toolbar-footer">
+    <ion-grid class="container-footer">
+      <ion-row>
+        <ion-col (click)="go_page('activate-entrenadores')"  size="3" class="image-container-footer">
+          <img class="icono-image" src="{{ ip_address }}/media/images/edituser_gris.png" alt="Icono de mi app">
+          <ion-label class="label-footer">Usuarios</ion-label>
+        </ion-col>
+        <ion-col (click)="go_page('videos')" size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/multimedia-violet.png"></ion-img>
+          <ion-label class="label-footer">Videos</ion-label>
+        </ion-col>
+        <ion-col size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+          <ion-label class="label-footer">Inicio</ion-label>
+        </ion-col>
+        <ion-col (click)="go_page('perfile')" size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/profile-gris.png"></ion-img>
+          <ion-label class="label-footer">Cuenta</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+
 </ion-content>

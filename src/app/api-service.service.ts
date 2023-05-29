@@ -85,4 +85,28 @@ export class ApiServiceService {
   getPasswordHash(nickname:string):Observable<any>{
     return this.http.get(this.apiUrl+/passwordHash/+nickname);
   }
+  getMultimedia():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/);
+  }
+  getEquipoRequerido():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/equiporequerido/);
+  }
+  getTipoEjercicio():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/tipoejercicio/);
+  }
+  getObjetivosMusculares():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/tipoejercicio/);
+  }
+  getEjercicio():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/ejercicio/);
+  }
+  getPreEjercicio():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/preejercicio/);
+  }
+  getNivelDificultaDejercicio():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/niveldificultadejercicio/);
+  }
+  UpdateEjercicioEstado(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+/multimedia/+/estado/+data.IDEJERCICIO,data );
+  }
 }

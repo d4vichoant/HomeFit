@@ -102,6 +102,10 @@ const routes: Routes = [
     path: 'errorvideos',
     loadChildren: () => import('./contenido/managerMultimedia/errorvideos/errorvideos.module').then( m => m.ErrorvideosPageModule)
   },
+  {
+    path: 'crear-ejercicio',
+    loadChildren: () => import('./contenido/managerMultimedia/crear-ejercicio/crear-ejercicio.module').then( m => m.CrearEjercicioPageModule)
+  },
 
 
 ];

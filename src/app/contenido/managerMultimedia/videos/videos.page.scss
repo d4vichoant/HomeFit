@@ -1,0 +1,284 @@
+ion-content {
+  --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
+  height: 100vh;
+  overflow: hidden;
+}
+
+
+.toolbar-header{
+  z-index: -1;
+  margin-top: 9%;
+  background: transparent;
+  padding: 0% 6% 0% 6%;
+  --background: transparent;
+  ion-title{
+    background-color: transparent;
+  }
+
+}
+.toolbar-footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f0f0f0;
+  padding: 0px;
+  box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
+}
+.container-header{
+  border-radius: 20px;
+  }
+.container-footer{
+  background-color: transparent;
+}
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+
+.image-container-footer {
+  position: relative;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 3vh;
+  flex-direction: column;
+  .label-footer {
+    font-family: Raleway-Medium;
+    font-size: 11px;
+    margin-top: 4px;
+    color: #6b6a6b;
+  }
+}
+
+.icono-image{
+  width: 23px;
+  height: auto;
+}
+.icono-bookmark{
+  padding-top: 3px;
+  width: 28px;
+  height: auto;
+}
+.icono-notificacion{
+  padding-top: 3px;
+  width: 28px;
+  height: auto;
+}
+
+.title-text{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: Raleway-Light;
+  font-size: 1.5rem;
+  color:  #6b6a6b;
+  padding-left: 5px;
+  padding-top: 3px;
+  text-align: left;
+}
+
+//css de Spinner de cargando ...
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(130, 123, 123, 0.5); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.browser{
+  padding: 0% 6% 0% 6%;
+  ion-searchbar {
+    border-radius: 20px;
+    --background: #f2f2f2; /* Cambia el color de fondo */
+    --color: #333; /* Cambia el color del texto */
+  }
+}
+
+.container-dificultad
+{
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 10px; /* Espacio entre los elementos item */
+  padding: 3% 6% 1% 6%;
+  overflow: auto;
+  align-items: center;
+  text-align: center;
+  .item{
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 500px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10%;
+    ion-img{
+      align-items: center;
+      text-align: center;
+      width: 25px;
+    }
+    ion-label{
+      align-items: center;
+      text-align: center;
+      font-family: Raleway-Light;
+      font-size: 15px;
+      margin-top: 4px;
+      color: #6b6a6b;
+    }
+  }
+}
+
+.container-videos {
+  padding: 1% 6% 0% 6%;
+  margin-top: 3%;
+  height: 60%;
+  width: 100%; /* Ancho igual al ancho de la pantalla */
+  position: relative;
+  overflow: auto;
+  .item-video-setup {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8))!important;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    height: 28%;
+    border-radius: 15px;
+    position: relative; /* Agrega posicionamiento relativo al elemento contenedor */
+  }
+}
+
+.background-image {
+  border-radius: 15px;
+  width: 100%;
+  height: 100%; /* Cambia el valor fijo a 100% para ajustar automáticamente a la altura del contenedor */
+  object-fit: cover; /* Ajusta el tamaño de la imagen para que cubra todo el contenedor */
+  position: relative;
+  z-index: -1;
+  object-fit: cover;
+  object-position: bottom;
+}
+
+.text-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding-left: 2%;
+  color: white; /* Color del texto */
+  width: 100%; /* Ajusta el ancho al 100% para que coincida con el ancho de la imagen */
+}
+
+.text1 {
+  font-family: Raleway-Light;
+  font-size: 15px;
+  margin-bottom: 6%; /* Espacio entre el primer y segundo texto */
+  margin-top: 0px;
+}
+.text2 {
+  font-family: Raleway-Bold;
+  margin-top: 1%;
+  font-size: 20px;
+  margin-bottom: 1%; /* Espacio entre el primer y segundo texto */
+}
+
+
+.item-body-right-top{
+  position: absolute;
+  top: 0; right: 0;
+  padding-top: 10px;
+  padding-right: 10px;
+  button{
+    margin-bottom: 10px;
+    background-color:transparent;
+  }
+}
+.item-body-right-bottom {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  //left: 0; /* Asegura que el ancho sea el 100% del contenedor */
+  border-radius: 15px 0 15px 0;
+  height: 40px;
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+}
+
+.item-body-right-bottom div {
+  display: flex;
+  align-items: center;
+
+  h2 {
+    align-items: center;
+    font-family: Raleway-Bold;
+    font-size: 1rem;
+    color: #f0f0f0;
+    margin-left: 5px;
+    margin-right: 20px;
+    padding-bottom: 8px;
+  }
+}
+
+.icono-item-botton{
+  margin-left: 10px;
+  width: 20px;
+  height: auto;
+  background-color:transparent ;
+}
+.icono-item-top{
+  width: 22px;
+  height: auto;
+  background-color:transparent ;
+}
+
+.no-data-message{
+  padding: 0% 6% 0% 6%;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  img{
+    width: 60%;
+    height: auto;
+
+  }
+}
+.text-no-data-message{
+  text-align: center  ;
+  font-family: Raleway-Bold;
+  font-size: 1.1rem;
+  color: #303030;
+  padding: 5% 0% 0% 0%;
+  margin: 0%;
+}
+.subtext-no-data-message{
+  text-align: center;
+  font-family: Raleway-Medium;
+  font-size: 1rem;
+  padding: 2% 0% 0% 5%;
+  margin: 0%;
+  color: #9e9e9e;
+}

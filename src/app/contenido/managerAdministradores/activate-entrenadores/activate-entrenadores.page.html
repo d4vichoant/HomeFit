@@ -8,10 +8,10 @@
     <ion-grid class="container-header">
       <ion-row>
         <ion-col size="1.5" class="image-container">
-          <img  class="icono-image" src="{{ ip_address }}/media/iconhomeviolet.png" alt="Icono de mi app">
+          <img style="width: 30px!important;"  class="icono-image" src="{{ ip_address }}/media/iconhomeviolet.png" alt="Icono de mi app">
         </ion-col>
         <ion-col size="7.5">
-          <ion-title class="title-text">Home <span style="color: #9259f9;font-family: Raleway-Bold;">Fit</span> Go</ion-title>
+          <ion-title  class="title-text">Home <span style="color: #9259f9;font-family: Raleway-Bold;">Fit</span> Go</ion-title>
         </ion-col>
         <ion-col size="1.5" class="image-container">
           <ion-img class="icono-notificacion" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
@@ -384,7 +384,7 @@
           <img class="icono-image" src="{{ ip_address }}/media/images/edituser.png" alt="Icono de mi app">
           <ion-label class="label-footer">Usuarios</ion-label>
         </ion-col>
-        <ion-col size="3" class="image-container-footer">
+        <ion-col size="3" (click)="go_page('videos')" class="image-container-footer">
           <ion-img class="icono-image" src="{{ ip_address }}/media/images/multimedia.png"></ion-img>
           <ion-label class="label-footer">Videos</ion-label>
         </ion-col>

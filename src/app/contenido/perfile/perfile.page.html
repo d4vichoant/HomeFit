@@ -113,7 +113,7 @@
           <img class="icono-image" src="{{ ip_address }}/media/images/edituser_gris.png" alt="Icono de mi app">
           <ion-label class="label-footer">Usuarios</ion-label>
         </ion-col>
-        <ion-col size="3" class="image-container-footer">
+        <ion-col (click)="go_page('videos')" size="3" class="image-container-footer">
           <ion-img class="icono-image" src="{{ ip_address }}/media/images/multimedia.png"></ion-img>
           <ion-label class="label-footer">Videos</ion-label>
         </ion-col>
