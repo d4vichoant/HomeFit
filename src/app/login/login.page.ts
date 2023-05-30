@@ -7,6 +7,8 @@ import { ApiServiceService } from '../api-service.service';
 import { IP_ADDRESS } from '../constantes';
 
 import { Storage } from '@ionic/storage-angular';
+import { sha256 } from 'crypto-hash';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -153,27 +155,18 @@ export class LoginPage implements OnInit {
         const response = await this.apiService.getPasswordHash(nickname).toPromise();
         return response[0].CONTRASENIAPERSONA;
       } catch (error) {
-        this.presentCustomToast(error+"", "danger");
+        this.presentCustomToast("Usuario No Encontrado", "danger");
         return "";
       }
     }
-
-
-
-  async passwordVerify(enteredPassword: string, hashedPassword: string): Promise<boolean> {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(enteredPassword);
-
-    try {
-      const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const enteredHashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-
-      return enteredHashedPassword === hashedPassword;
-    } catch (error) {
-      console.error('Error al verificar la contraseña:', error);
-      throw error;
+    async passwordVerify(enteredPassword: string, hashedPassword: string): Promise<boolean> {
+      try {
+        const enteredHashedPassword = await sha256(enteredPassword);
+        return enteredHashedPassword === hashedPassword;
+      } catch (error) {
+        console.error('Error al verificar la contraseña:', error);
+        throw error;
+      }
     }
-  }
 
 }
