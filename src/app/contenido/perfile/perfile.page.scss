@@ -358,5 +358,24 @@ ion-content {
     }
   }
 }
-
+.password-instruccion{
+  background-color: transparent;
+  border: #dedede solid 1px;
+  border-radius: 15px;
+  padding: 5%;
+  margin: 1px;
+  text-align: start!important;
+  h1{
+    text-align: start!important;
+    font-family: Raleway-Light;
+    font-size: 1.1rem;
+    color: #524f52!important;
+    span{
+      text-align: start!important;
+      font-family: Raleway-Light ;
+      font-size: 1rem;
+      color: #524f52!important;
+    }
+  }
+}
 

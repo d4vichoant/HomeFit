@@ -14,7 +14,9 @@ import { IP_ADDRESS } from '../../constantes';
 export class PerfilePage implements OnInit {
   public loading = true;
   public ip_address = IP_ADDRESS;
-
+  public password!: string;
+  public confirmPassword!: string;
+  public hashpassword!: string;
   public dataPerfil!: any[] ;
   public originalDataPerfil!: any[];
 
@@ -36,12 +38,21 @@ export class PerfilePage implements OnInit {
   ngOnInit() {
     // this.obtenerPerfileUniq("administrador");
     // this.loading = false;
+    this.StatusBar();
+    this.validartoken();
   }
 
   ionViewDidEnter() {
+    this.StatusBar();
+    this.validartoken();
+  }
+
+  private StatusBar(){
     StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
     StatusBar.setBackgroundColor({ color: '#ffffff' });
+  }
+  private validartoken(){
     try {
       this.storage.get('sesion').then((sesionString) => {
           if (sesionString) {
@@ -63,8 +74,6 @@ export class PerfilePage implements OnInit {
       this.handleError();
     }
   }
-
-
   public togglePopup(): void {
     this.overlayVisible = !this.overlayVisible;
 
@@ -113,7 +122,88 @@ export class PerfilePage implements OnInit {
   go_page(name: string){
     this.navController.navigateForward('/'+name);
   }
+  updateNewPassword(item :any){
+    if (this.password && this.confirmPassword){
+      if(this.password === this.confirmPassword){
+        if (this.validatePassword(this.password)){
+          this.passwordEncode(item);
+          console.log(this.hashpassword);
+        }else{
+          this.presentCustomToast("No cumple como una contraseña segura","warning");
+        }
+      }else{
+        this.presentCustomToast("Ambas contraseñas deben coincidir","warning");
+      }
+    }else{
+      this.presentCustomToast("Debe llenar todos los campos","warning");
+    }
+  }
 
+validatePassword(password: string): boolean {
+  const minLength = 8;
+  const symbolRegex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+  const uppercaseRegex = /[A-Z]/;
+  const numberRegex = /\d/g;
+
+  // Verificar la longitud mínima
+  if (password.length < minLength) {
+    return false;
+  }
+
+  // Verificar al menos 1 símbolo
+  if (!symbolRegex.test(password)) {
+    return false;
+  }
+
+  // Verificar al menos 1 mayúscula
+  if (!uppercaseRegex.test(password)) {
+    return false;
+  }
+
+  // Verificar más de 1 número
+  const numbersCount = (password.match(numberRegex) || []).length;
+  if (numbersCount < 2) {
+    return false;
+  }
+
+  return true;
+}
+passwordEncode(item:any) {
+  let password = this.password;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+
+  window.crypto.subtle.digest('SHA-256', data)
+    .then(hashBuffer => {
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+      item.CONTRASENIAPERSONA=hashedPassword;
+      this.storage.get('sesion').then((sesionString) => {
+        if (sesionString) {
+          var profiledat = JSON.parse(sesionString);
+          item.USUARIOMODIFICACIONPERSONA = profiledat.nickname;
+          this.loading = true;
+          console.log(item);
+          this.apiService.UpdatePassword(item).subscribe(
+            (response) => {
+              this.presentCustomToast(response.message, "success");
+              this.password='';
+              this.confirmPassword='';
+              this.sign_off();
+            },
+            (error) => {
+              this.presentCustomToast(error.error.error, "danger");
+            }
+          );
+        } else {
+          this.presentCustomToast('No se encontró la sesión', "danger");
+        }
+      });
+    })
+    .catch(error => {
+      this.presentCustomToast('Error al guardar la contraseña', "danger");
+    });
+}
 
   obtenerPrimerNombre(nombreCompleto: string): string {
     const nombres = nombreCompleto.split(" ");
@@ -125,6 +215,8 @@ export class PerfilePage implements OnInit {
   }
   cancelarButton(){
       this.dataPerfil = this.originalDataPerfil;
+      this.password='';
+      this.confirmPassword='';
       this.togglePopup()
   }
 

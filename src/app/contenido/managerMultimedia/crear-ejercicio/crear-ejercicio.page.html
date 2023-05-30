@@ -22,6 +22,36 @@
       </ion-row>
     </ion-grid>
   </ion-toolbar>
+  <div class="onboard-top" >
+    <ion-toolbar >
+      <ion-buttons slot="start">
+        <ion-button style="color: #9259f9;"  (click)="go_page('videos')">
+         <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+       </ion-button>
+     </ion-buttons>
+      <!-- <ion-buttons slot="end">
+        <ion-button style="color: #ffffff;" (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons> -->
+    </ion-toolbar>
+  </div>
+  <div class="container-body">
+    <div>
+      <div class="container-preselect">
+        <h2>Elige el video:</h2>
+        <div class="container-selects">
+          <ion-input type="text" [(ngModel)]="searchTermMultimedia"></ion-input>
+          <ion-select [(ngModel)]="selectedMultimedia" interface="popover" placeholder="Selecciona una opción">
+            <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
+            <ion-select-option *ngFor="let option of dataMultimedia" [value]="option.IDMULTIMEDIA">
+             {{option.IDMULTIMEDIA}} | {{ option.TITULOMULTIMEDIA }}
+            </ion-select-option>
+          </ion-select>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <ion-toolbar class="toolbar-footer">

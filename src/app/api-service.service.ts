@@ -109,4 +109,7 @@ export class ApiServiceService {
   UpdateEjercicioEstado(data:any): Observable<any>{
     return this.http.post(IP_ADDRESS+/multimedia/+/estado/+data.IDEJERCICIO,data );
   }
+  UpdatePassword(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+/manager/+/updatepassword/,data );
+  }
 }
