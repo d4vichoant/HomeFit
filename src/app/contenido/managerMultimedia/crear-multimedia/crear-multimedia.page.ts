@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,  ViewChild, ElementRef} from '@angular/core';
 import { IP_ADDRESS } from '../../../constantes';
 import { ApiServiceService } from '../../../api-service.service';
 import { StatusBar } from '@capacitor/status-bar';
@@ -11,7 +11,9 @@ import { Router } from '@angular/router';
   templateUrl: './crear-multimedia.page.html',
   styleUrls: ['./crear-multimedia.page.scss'],
 })
-export class CrearMultimediaPage implements OnInit {
+export class CrearMultimediaPage implements OnInit   {
+  @ViewChild('videoPlayer') videoPlayer!: ElementRef;
+
   public loading = true;
   public ip_address = IP_ADDRESS;
 
@@ -19,6 +21,8 @@ export class CrearMultimediaPage implements OnInit {
   public dataMultimediaUniq!: any;
   selectedFile: File | null = null;
   nameFile:string='';
+  imagenFile: File | null = null;
+
 
   public selectData!: any[];
   public searchTerm:string="";
@@ -26,6 +30,7 @@ export class CrearMultimediaPage implements OnInit {
 
   private originData!:any[];
 
+  public mostrarImagen:boolean=false;
   public mostrarSelect:boolean=false;
   public mostrarSelectEdit:boolean=false;
   public mostrarSelectCreate:boolean=false;
@@ -36,6 +41,18 @@ export class CrearMultimediaPage implements OnInit {
     { id: 2, nombre: 'Revisión' },
   ];
 
+  public filter: any[]=[
+    {
+      name: 'Inactivo',
+      iconstatus: false,
+    }, {
+      name: 'Activo',
+      iconstatus: false,
+    },{
+      name: 'Revisión',
+      iconstatus: false,
+    }];
+
   constructor(private storage: Storage,
     private apiService: ApiServiceService,
     private navController: NavController,
@@ -44,16 +61,27 @@ export class CrearMultimediaPage implements OnInit {
     public alertController: AlertController) { }
 
     ionViewDidEnter(){
-      //this.validateSesion();
-      this.test()
+      this.validateSesion();
+      //this.test()
     }
     ngOnInit() {
-      //this.validateSesion();
-      this.test()
+      this.validateSesion();
+      //this.test()
     }
+
+    AfterViewChecked() {
+      if (this.mostrarImagen) {
+        this.mostrarImagen = false;
+        setTimeout(() => {
+          this.mostrarImagen = true;
+        }, 0);
+      }
+    }
+
     test(){
       this.obtenerMultimedia();
       this.loading=false;
+      this.AfterViewChecked();
     }
     StatusBar(){
       StatusBar.hide();
@@ -66,6 +94,7 @@ export class CrearMultimediaPage implements OnInit {
           if (sesion && JSON.parse(sesion).rolUsuario == 99) {
             this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
               (response) => {
+                this.AfterViewChecked();
                 this.StatusBar();
                 this.obtenerMultimedia();
                 this.loading = false;
@@ -104,7 +133,46 @@ export class CrearMultimediaPage implements OnInit {
       }
     }
     public onInputChange(event: any) {
-
+      const currentSearchTerm = event.target.value;
+      if (currentSearchTerm.length < this.previousSearchTerm.length) {
+        this.dataMultimedia=this.selectData;
+      }
+      this.previousSearchTerm = currentSearchTerm;
+      this.filterItems();
+    }
+    private filterItems() {
+      if (!this.selectData) {
+        const rawData = this.dataMultimedia;
+        this.selectData = rawData.map(item => ({ ...item }));
+      }
+      const searchTerms = this.searchTerm.toLowerCase().trim().split(' ');
+      if (searchTerms.length >= 1) {
+        let filteredArray: any[] = [];
+          for (const term of searchTerms) {
+            const filteredItems = this.selectData.filter(item =>
+              item.TITULOMULTIMEDIA.toLowerCase().includes(term)||
+              item.DESCRIPCIONMULTIMEDIA.toLowerCase().includes(term)||
+              item.ALMACENAMIENTOMULTIMEDIA.toLowerCase().includes(term) ||
+              this.getESTADO(item.STATUSMULTIMEDIA).toLowerCase().includes(term)||
+              item.OBSERVACIONMULTIMEDIA.toLowerCase().includes(term)
+            );
+            filteredArray = filteredArray.concat(filteredItems);
+          }
+        // Eliminar duplicados del array filtrado
+        this.dataMultimedia = Array.from(new Set(filteredArray));
+      }
+    }
+    public getESTADO(status:number):string{
+      switch (status) {
+        case 1:
+          return 'Activo';
+        case 0:
+          return 'Inactivo';
+        case 2:
+          return 'Revisión';
+        default:
+          return '';
+      }
     }
     getVideoName(url: string): string {
       return url.split('.')[0];
@@ -127,8 +195,9 @@ export class CrearMultimediaPage implements OnInit {
         this.nameFile= rawDat1;
       }else{
         this.dataMultimediaUniq = {};
-        this.dataMultimediaUniq.STATUSTIPOEJERCICIO="";
+        this.dataMultimediaUniq.STATUSMULTIMEDIA="";
         this.mostrarSelectCreate=!this.mostrarSelectCreate;
+        this.nameFile= '';
       }
     }
     cancelprocess(){
@@ -143,12 +212,54 @@ export class CrearMultimediaPage implements OnInit {
       this.mostrarSelectEdit=!this.mostrarSelectEdit;
       this.presentCustomToast('Proceso Cancelado',"danger");
     }
+    cancelprocessCreate(){
+      this.dataMultimediaUniq={};
+      this.mostrarSelectCreate=!this.mostrarSelectCreate;
+      this.presentCustomToast('Proceso Cancelado',"danger");
+    }
     handleFileInput(event: any) {
       const file = event.target.files[0];
       this.selectedFile = file;
-      this.nameFile=file.name;
-      this.presentCustomToast("Subido archivo Correctamente","success");
+      this.nameFile = file.name;
+      this.presentCustomToast("Archivo subido correctamente", "success");
+
+      const videoURL = URL.createObjectURL(file);
+      this.videoPlayer.nativeElement.src = videoURL;
+
     }
+
+    captureImage(video: HTMLVideoElement) {
+      this.AfterViewChecked();
+      // ...
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+
+      if (context) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const capturedImage = new File([blob], 'captured-image.jpg', { type: 'image/png' });
+            this.imagenFile=capturedImage;
+            this.mostrarImagen=!this.mostrarImagen;
+            //this.presentCustomToast('Captura Realizada Correctamente','success');
+          } else {
+            // Manejar el caso en que blob sea nulo
+            this.presentCustomToast('No se pudo crear el blob','danger');
+          }
+        }, 'image/png');
+      } else {
+        // Manejar el caso en que el contexto sea nulo
+        this.presentCustomToast('No se pudo obtener el contexto del canvas','danger');
+      }
+    }
+
+    getImagenURL(imagenFile: File): string {
+      return URL.createObjectURL(imagenFile);
+    }
+
     truncateString(inputString: string): string {
       if (inputString.length <= 21) {
         return inputString;
@@ -219,12 +330,15 @@ export class CrearMultimediaPage implements OnInit {
             }, {
               text: 'Aceptar',
               handler: () => {
+                if(this.imagenFile){
+                  this.saveImageFile();
+                }
                 if(item.STATUSMULTIMEDIA === 1 ){
                   item.OBSERVACIONMULTIMEDIA="N/A";
                 }
                 if(this.selectedFile){
                   this.UpdateFile();
-                  this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA);
+                  this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4";
                 }
                 this.UpdateDates(item,nombre);
                 this.mostrarSelectEdit=!this.mostrarSelectEdit;
@@ -242,6 +356,8 @@ export class CrearMultimediaPage implements OnInit {
           this.presentCustomToast(response.message,"success");
           this.originData=[];
           this.dataMultimediaUniq={}
+          this.imagenFile =null;
+          this.selectedFile=null;
           this.ngOnInit();
         },
         (error) => {
@@ -251,7 +367,22 @@ export class CrearMultimediaPage implements OnInit {
     }
     UpdateFile() {
       if (this.selectedFile) {
-        this.apiService.uploadFileMp3(this.selectedFile,this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)).subscribe(
+        this.apiService.uploadFileMp3(this.selectedFile,this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4").subscribe(
+          (response) => {
+            this.presentCustomToast(response.message, "success");
+          },
+          (error) => {
+            this.presentCustomToast(error.error.error, "danger");
+          }
+        );
+      } else {
+        // Manejar caso cuando this.selectedFile es null
+        this.presentCustomToast("No se ha seleccionado ningún archivo", "danger");
+      }
+    }
+    saveImageFile() {
+      if (this.imagenFile) {
+        this.apiService.uploadcaptureImagen(this.imagenFile,this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".jpg").subscribe(
           (response) => {
             this.presentCustomToast(response.message, "success");
           },
@@ -269,14 +400,90 @@ export class CrearMultimediaPage implements OnInit {
         .toLowerCase()
         .replace(/\s+/g, "_")
         .replace(/[^a-z0-9_.-]/g, "");
-      const extension = ".mp4";
 
-      return sanitizedText + extension;
+      return sanitizedText ;
     }
+    async confirmcreatesDates(item:any, nombre:string) {
+      if((item.OBSERVACIONMULTIMEDIA ==="" ||item.OBSERVACIONMULTIMEDIA ==="N/A" )&& item.STATUSMULTIMEDIA !== 1){
+        this.presentCustomToast('Debe escribir alguna razon',"danger");
+      }else{
+        if(this.imagenFile){
+           const alert = await this.alertController.create({
+          header: 'Confirmar Estado',
+          message: '¿Estás seguro que desea guardar estos datos en '+nombre+'?',
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                this.dataMultimediaUniq={};
+                this.presentCustomToast('Proceso cancelada',"danger");
+              }
+            }, {
+              text: 'Aceptar',
+              handler: () => {
+                if(item.STATUSMULTIMEDIA === 1 ){
+                  item.OBSERVACIONMULTIMEDIA="N/A";
+                }
+                if(this.selectedFile){
+                  this.UpdateFile();
+                  this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4";
+                }
+                if(this.imagenFile){
+                  this.saveImageFile();
+                }
+                this.createsDates(item,nombre);
+                this.mostrarSelectCreate=!this.mostrarSelectCreate;
+              }
+            }
+          ]
+        });
+        await alert.present();
+        }else{
+          this.presentCustomToast('Debe existir una miniatura',"danger");
+        }
+
+      }
+    }
+    createsDates(item:any, nombre:string)
+    {
+      console.log(item);
+      this.apiService.CreteDataMultimedia(item,nombre).subscribe(
+        (response) => {
+          this.dataMultimediaUniq={};
+          this.presentCustomToast(response.message,"success");
+          this.ngOnInit();
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
+    buttonfilterhabilitate(filtro:any,index:number){
+      this.toggleIconStatus(index);
+      if(!filtro.iconstatus){
+        this.searchTerm = "";
+      }else{
+        this.searchTerm = filtro.name;
+      }
+      this.filterItems();
+      this.searchTerm = "";
+    }
+    toggleIconStatus(index: number) {
+      this.filter.forEach((item, i) => {
+        if (i === index) {
+          item.iconstatus = !item.iconstatus;
+        } else {
+          item.iconstatus = false;
+        }
+      });
+    }
+
     async presentCustomToast(message: string, color: string) {
       const toast = await this.toastController.create({
         message: message,
-        duration: 2400,
+        duration: 1000,
         position: 'top',
         cssClass: `toast-custom-${color}`,
         buttons: [

@@ -41,6 +41,17 @@
     <div class="browser">
       <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
     </div>
+    <div class="filter" >
+      <div class="filter-text-icon">
+        <img  class="icono-filter" src="{{ ip_address }}/media/images/filter.png" alt="Imagen Subtítulo">
+      </div>
+      <div class="filter-text" *ngFor="let fil of filter; let i = index" [ngStyle]="{ 'background-color': fil.iconstatus ? '#7525dc' : '#ded5ff ' }" (click)="buttonfilterhabilitate(fil,i)">
+        <p [ngStyle]="{ 'color': fil.iconstatus ? '#ffffff' : '#621eb9' }">{{fil.name}}</p>
+        <!-- <ng-container *ngIf="fil.iconstatus">
+          <img class="filter-icon" src="{{ ip_address }}/media/images/close.png" alt="Icono">
+        </ng-container> -->
+      </div>
+    </div>
     <div class="container-videos" *ngIf=" dataOMuscular && dataOMuscular.length >0;else noDataMessage " >
       <div  (click)="showSelectEdit(null,'create')" class="item-video-setup" style="height: 15%!important;" >
         <div class="text-container-up">

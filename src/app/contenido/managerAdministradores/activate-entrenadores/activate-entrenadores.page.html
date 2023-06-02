@@ -30,10 +30,10 @@
       <img  class="icono-filter" src="{{ ip_address }}/media/images/filter.png" alt="Imagen Subtítulo">
     </div>
     <div class="filter-text" *ngFor="let fil of filter" [ngStyle]="{ 'background-color': fil.iconstatus ? '#7525dc' : '#ded5ff ' }" (click)="buttonfilterhabilitate(fil)">
-      <p [ngStyle]="{ 'color': fil.iconstatus ? '#ffffff' : '#621eb9' }"># {{fil.name}}</p>
-      <ng-container *ngIf="fil.iconstatus">
+      <p [ngStyle]="{ 'color': fil.iconstatus ? '#ffffff' : '#621eb9' }">{{fil.name}}</p>
+      <!-- <ng-container *ngIf="fil.iconstatus">
         <img class="filter-icon" src="{{ ip_address }}/media/images/close.png" alt="Icono">
-      </ng-container>
+      </ng-container> -->
     </div>
   </div>
   <div class="container-body" *ngIf="filter[0]?.name === 'Entrenador' && filter[0]?.iconstatus && data && data.length >0;else noDataMessage ">

@@ -31,7 +31,7 @@
       <ion-label [ngStyle]="{'color': selectedItem === i ? '#ffffff' : ''}" >{{item.tituloniveldificultadejercicio}}</ion-label>
     </div>
   </div>
-  <div class="container-videos">
+  <div class="container-videos" *ngIf=" dataEjercicio && dataEjercicio.length >0;else noDataMessage " >
     <div class="item-video-setup"  (click)="go_page_create('crear-ejercicio','')"  >
       <img class="background-image" src="{{ ip_address }}/media/images/crear_video.jpg"alt="Imagen de fondo">
       <div class="text-container-up">
@@ -61,8 +61,9 @@
       </div>
     </div>
   </div>
-  <ng-template #emptyData>
-    <div class="no-data-message" >
+
+  <ng-template #noDataMessage>
+    <div class="no-data-message" *ngIf="dataEjercicio && dataEjercicio.length === 0">
       <img src="{{ ip_address }}/media/images/notfound.png" alt="Imagen de datos no encontrados">
       <h1 class="text-no-data-message">Resultado no encontrado</h1>
       <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>

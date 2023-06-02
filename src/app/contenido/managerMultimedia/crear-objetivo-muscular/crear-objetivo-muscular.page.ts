@@ -28,11 +28,23 @@ export class CrearObjetivoMuscularPage implements OnInit {
   public mostrarSelectEdit:boolean=false;
   public mostrarSelectCreate:boolean=false;
 
+
   dataSelect: any[] = [
     { id: 1, nombre: 'Activo' },
     { id: 0, nombre: 'Inactivo' },
     { id: 2, nombre: 'Revisión' },
   ];
+  public filter: any[]=[
+    {
+      name: 'Inactivo',
+      iconstatus: false,
+    }, {
+      name: 'Activo',
+      iconstatus: false,
+    },{
+      name: 'Revisión',
+      iconstatus: false,
+    }];
 
   constructor(private storage: Storage,
     private apiService: ApiServiceService,
@@ -313,6 +325,26 @@ export class CrearObjetivoMuscularPage implements OnInit {
         this.presentCustomToast(error.error.error,"danger");
       }
     );
+  }
+
+  buttonfilterhabilitate(filtro:any,index:number){
+    this.toggleIconStatus(index);
+    if(!filtro.iconstatus){
+      this.searchTerm = "";
+    }else{
+      this.searchTerm = filtro.name;
+    }
+    this.filterItems();
+    this.searchTerm = "";
+  }
+  toggleIconStatus(index: number) {
+    this.filter.forEach((item, i) => {
+      if (i === index) {
+        item.iconstatus = !item.iconstatus;
+      } else {
+        item.iconstatus = false;
+      }
+    });
   }
 
   async presentCustomToast(message: string, color: string) {

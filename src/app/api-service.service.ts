@@ -19,6 +19,9 @@ export class ApiServiceService {
   saveProfileTrainer(data: any): Observable<any> {
     return this.http.post(this.apiUrl+"/guardarDatosEntrenador", data);
   }
+  connsultPerfilCompleto(nickname:string): Observable<any>{
+    return this.http.post(this.apiUrl+"/"+nickname,"");
+  }
   consultLogin(data:any): Observable<any>{
     return this.http.post(this.apiUrl+"/login",data);
   }
@@ -133,9 +136,23 @@ export class ApiServiceService {
   UpdataDataMultimedia(data:any,nombre:string): Observable<any>{
     return this.http.post(IP_ADDRESS+/multimedia/+/UpdateDataMultimedia/+nombre,data );
   }
+  CreteDataMultimedia(data:any,nombre:string): Observable<any>{
+    return this.http.post(IP_ADDRESS+/multimedia/+/CreateDataMultimedia/+nombre,data );
+  }
   uploadFileMp3(file: File,filename :string): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file,filename);
     return this.http.post(IP_ADDRESS + '/multimedia/subir-archivo', formData);
+  }
+  uploadcaptureImagen(file: File,filename :string): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file,filename);
+    return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen', formData);
+  }
+    CreteDatEjercicio(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+/multimedia/+/CreateDataEjercicio/,data );
+  }
+  UpdateEjercicio(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+/multimedia/+/UpdateDataEjercicio/,data );
   }
 }

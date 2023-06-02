@@ -88,6 +88,7 @@ export class VideosPage implements OnInit {
         variable: data
       }
     });
+    this.dataEjercicio=[];
   }
 
   getVideoName(url: string): string {
@@ -178,7 +179,7 @@ async buttonfilterhabilitate(filter: any,index:number) {
 
       for (const term of searchTerms) {
         const filteredItems = this.dataEjercicio.filter(item =>
-          item.titulotipoejercicio.toLowerCase().includes(term) ||
+          item.NOMBRETIPOEJERCICIO.toLowerCase().includes(term) ||
           item.tituloniveldificultadejercicio.toLowerCase().includes(term) ||
           item.NOMBREEJERCICIO.toLowerCase().includes(term)
         );
@@ -222,7 +223,7 @@ async buttonfilterhabilitate(filter: any,index:number) {
     );
   }
   obtenerEjercicios(){
-    this.apiService.getPreEjercicio().subscribe(
+    this.apiService.getEjercicio().subscribe(
       (response) => {
         this.dataEjercicio=response;
       },

@@ -118,6 +118,10 @@ const routes: Routes = [
     path: 'crear-multimedia',
     loadChildren: () => import('./contenido/managerMultimedia/crear-multimedia/crear-multimedia.module').then( m => m.CrearMultimediaPageModule)
   },
+  {
+    path: 'control-multimedia',
+    loadChildren: () => import('./contenido/managerMultimedia/control-multimedia/control-multimedia.module').then( m => m.ControlMultimediaPageModule)
+  },
 
 
 ];

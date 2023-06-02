@@ -42,8 +42,19 @@
     <div class="browser">
       <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
     </div>
-    <div class="container-videos">
-      <div class="item-video-setup"   >
+    <div class="filter" >
+      <div class="filter-text-icon">
+        <img  class="icono-filter" src="{{ ip_address }}/media/images/filter.png" alt="Imagen Subtítulo">
+      </div>
+      <div class="filter-text" *ngFor="let fil of filter; let i = index" [ngStyle]="{ 'background-color': fil.iconstatus ? '#7525dc' : '#ded5ff ' }" (click)="buttonfilterhabilitate(fil,i)">
+        <p [ngStyle]="{ 'color': fil.iconstatus ? '#ffffff' : '#621eb9' }">{{fil.name}}</p>
+        <!-- <ng-container *ngIf="fil.iconstatus">
+          <img class="filter-icon" src="{{ ip_address }}/media/images/close.png" alt="Icono">
+        </ng-container> -->
+      </div>
+    </div>
+    <div class="container-videos" *ngIf=" dataMultimedia && dataMultimedia.length >0;else noDataMessage " >
+      <div  (click)="showSelectEdit(null,'create')" class="item-video-setup"   >
         <img class="background-image" src="{{ ip_address }}/media/images/crear_Multimedia.jpg"alt="Imagen de fondo">
         <div class="text-container-up">
           <ion-icon name="add-outline"></ion-icon>
@@ -74,6 +85,13 @@
       </div>
     </div>
   </div>
+  <ng-template #noDataMessage>
+    <div class="no-data-message" *ngIf="dataMultimedia && dataMultimedia.length === 0">
+      <img src="{{ ip_address }}/media/images/notfound.png" alt="Imagen de datos no encontrados">
+      <h1 class="text-no-data-message">Resultado no encontrado</h1>
+      <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>
+    </div>
+  </ng-template>
 
   <!-- Modificar Status -->
   <div class="overlay-container-select"  *ngIf="mostrarSelect" >
@@ -96,43 +114,109 @@
   </div>
 
     <!-- Modificar Todo -->
-    <div class="overlay-container-select"  *ngIf="mostrarSelectEdit" >
-      <div class="up-title">
-        <div class="title-select">
-          <p>Título de Multimedia</p>
-          <ion-input type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.TITULOMULTIMEDIA" ></ion-input>
-        </div>
-        <div class="title-select">
-          <p>Descripción Multimedia</p>
-          <ion-textarea type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.DESCRIPCIONMULTIMEDIA" ></ion-textarea>
-        </div>
-        <div class="file-container">
-          <div class="file">
-            <div class="form-group">
-              <label class="text-file-title" >Almacenamiento de Multimedia<span>*</span></label>
-              <label for="fileInput" class="file-label">
-                <img [src]="ip_address + '/media/resume/subir.png'" alt="File Icon" class="file-icon">
-                <span class="file-text">{{ dataMultimediaUniq ? truncateString(nameFile) : 'Ningún archivo elegido' }}</span>
-                <input type="file" id="fileInput" class="file-input" accept=".mp4" (change)="handleFileInput($event)">
-              </label>
+    <div class="overlay-container-select-2"  *ngIf="mostrarSelectEdit" >
+      <div class="sub-overlay-container-select">
+        <div class="up-title">
+          <div class="title-select">
+            <p>Título de Multimedia</p>
+            <ion-textarea type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.TITULOMULTIMEDIA" ></ion-textarea>
+          </div>
+          <div class="title-select">
+            <p>Descripción Multimedia</p>
+            <ion-textarea type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.DESCRIPCIONMULTIMEDIA" ></ion-textarea>
+          </div>
+          <div class="file-container">
+            <div class="file-container">
+              <div class="file">
+                <div class="form-group">
+                  <label class="text-file-title">Almacenamiento de Multimedia<span>*</span></label>
+                  <label for="fileInput" class="file-label">
+                    <img [src]="ip_address + '/media/resume/subir.png'" alt="File Icon" class="file-icon">
+                    <span class="file-text">{{ dataMultimediaUniq ? truncateString(nameFile) : 'Ningún archivo elegido' }}</span>
+                    <input type="file" id="fileInput" class="file-input" accept=".mp4" (change)="handleFileInput($event)">
+                  </label>
+                </div>
+              </div>
+              <div  class="full-width" >
+                <video  #videoPlayer  controls></video>
+                <ion-button (click)="captureImage(videoPlayer)" fill="clear">2 veces pa´ Miniatura</ion-button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="title-select">
-          <p>Cambiar Estado</p>
-        </div>
-        <ion-select name="selectStatus" interface="popover"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.STATUSMULTIMEDIA" required>
-          <ion-select-option *ngFor="let option of dataSelect" [value]="option.id">{{ option.nombre }}</ion-select-option>
-        </ion-select>
-        <div  class="div-select" *ngIf="dataMultimediaUniq && (dataMultimediaUniq.STATUSMULTIMEDIA === 0 || dataMultimediaUniq.STATUSMULTIMEDIA === 2)">
-          <p>Indique las Razones</p>
-          <ion-textarea type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.OBSERVACIONMULTIMEDIA" ></ion-textarea>
-        </div>
+          <div class="title-select">
+            <p>Cambiar Estado</p>
+          </div>
+          <ion-select name="selectStatus" interface="popover"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.STATUSMULTIMEDIA" required>
+            <ion-select-option *ngFor="let option of dataSelect" [value]="option.id">{{ option.nombre }}</ion-select-option>
+          </ion-select>
+          <div  class="div-select" *ngIf="dataMultimediaUniq && (dataMultimediaUniq.STATUSMULTIMEDIA === 0 || dataMultimediaUniq.STATUSMULTIMEDIA === 2)">
+            <p>Indique las Razones</p>
+            <ion-textarea type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.OBSERVACIONMULTIMEDIA" ></ion-textarea>
+          </div>
+      </div>
+    </div>
         <div class="buttons-tab1">
           <ion-button (click)="cancelprocessEdit()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
           <ion-button (click)="confirmUpdateDates(dataMultimediaUniq,'multimedia')"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
         </div>
+
+    </div>
+
+    <!-- Crear Todo -->
+    <div class="overlay-container-select-2"  *ngIf="mostrarSelectCreate" >
+      <div class="sub-overlay-container-select">
+        <div class="up-title">
+          <div class="title-select">
+            <p>Título de Multimedia</p>
+            <ion-textarea type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.TITULOMULTIMEDIA" ></ion-textarea>
+          </div>
+          <div class="title-select">
+            <p>Descripción Multimedia</p>
+            <ion-textarea type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.DESCRIPCIONMULTIMEDIA" ></ion-textarea>
+          </div>
+          <div class="file-container">
+            <div class="file-container">
+              <div class="file">
+                <div class="form-group">
+                  <label class="text-file-title">Almacenamiento de Multimedia<span>*</span></label>
+                  <label for="fileInput" class="file-label">
+                    <img [src]="ip_address + '/media/resume/subir.png'" alt="File Icon" class="file-icon">
+                    <span class="file-text">{{ nameFile ? truncateString(nameFile) : 'Ningún archivo elegido' }}</span>
+                    <input type="file" id="fileInput" class="file-input" accept=".mp4" (change)="handleFileInput($event)">
+                  </label>
+                </div>
+              </div>
+              <div  class="full-width" >
+                <video  #videoPlayer  controls></video>
+                <ion-button (click)="captureImage(videoPlayer)" fill="clear">2 veces pa´ Miniatura</ion-button>
+              </div>
+            </div>
+          </div>
+          <div class="title-select">
+            <p>Cambiar Estado</p>
+          </div>
+          <ion-select name="selectStatus" interface="popover"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.STATUSMULTIMEDIA" required>
+            <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
+            <ion-select-option *ngFor="let option of dataSelect" [value]="option.id">{{ option.nombre }}</ion-select-option>
+          </ion-select>
+          <div  class="div-select" *ngIf="dataMultimediaUniq && (dataMultimediaUniq.STATUSMULTIMEDIA === 0 || dataMultimediaUniq.STATUSMULTIMEDIA === 2)">
+            <p>Indique las Razones</p>
+            <ion-textarea type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.OBSERVACIONMULTIMEDIA" ></ion-textarea>
+          </div>
       </div>
+    </div>
+        <div class="buttons-tab1">
+          <ion-button (click)="cancelprocessCreate()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
+          <ion-button (click)="confirmcreatesDates(dataMultimediaUniq,'multimedia')"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
+        </div>
+
+    </div>
+
+    <!-- Modificar Todo -->
+    <div class="overlay-container-imagen"  (click)="mostrarImagen=!mostrarImagen" *ngIf="mostrarImagen" >
+      <h1>¡Minuatura Guardada!</h1>
+      <img [src]="imagenFile ? getImagenURL(imagenFile) : ''" *ngIf="imagenFile" alt="Captured Image">
+      <p>Presiona afuera para salir</p>
     </div>
 
 
