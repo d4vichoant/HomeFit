@@ -17,12 +17,17 @@ ion-content {
 }
 .onboard-top{
   padding-top: 0%;
-  padding-bottom: 5%;
+  padding-bottom: 1%;
   padding-right: 6%;
   padding-left: 6%;
   margin-top:0%;
   ion-toolbar{
     --background:transparent;
+    p{
+      font-family: Raleway-Light;
+      font-size: 1rem;
+      color:  #6b6a6b;
+    }
   }
 }
 
@@ -114,34 +119,133 @@ ion-content {
   align-items: center;
   justify-content: center;
 }
-
 .container-body{
-  padding: 2% 6% 2% 6%;
+  height: 80vh;
+  overflow-y: auto;
+  @media (min-height: 300px) and (max-height: 600px) {
+    /* Agrega los estilos específicos cuando el teclado está activo */
+    /* Puedes ajustar estos estilos según tus necesidades */
+    padding: 0% 6% 0% 6%;
+    bottom: 0;
+    height: 0;
+  }
+  padding: 0% 6% 12% 6%;
+  h2{
+    color: #524f52;
+    padding-left: 20px !important;
+    font-family: Raleway-Bold;
+    font-size: 1.1rem;
+  }
 }
 
-.container-preselect{
-  padding: 0px 0px 0px 0px;
-  display: flex;
-  text-align: center;
-  flex-direction: column;
-  justify-content: center;
+.input-wrapper{
+  margin: 3% 0% 3% 0%;
+  padding-bottom: 2%;
+  display: grid;
+  grid-template-columns: 10fr 2fr; /* 11 columnas para el input, 1 columna para el icono */
   align-items: center;
-  h2{
-    font-family: Raleway-Medium;
-    font-size: 1rem;
-    margin: 0px;
-    color: #6b6a6b;
-  }
-}
-.container-selects{
+  justify-content: center!important;
+  border-radius: 10px;
   width: 100%;
-  display: block;
-  flex-direction: column;
-  ion-select{
-    display: flex;
-    text-align: center;
-    flex-direction: column;
+  background-color: #ffffff81;
+  .title-up{
+    h2{
+      color: #524f52;
+      padding-left: 20px !important;
+      font-family: Raleway-Light;
+      font-size: 1rem;
+    }
+  }
+  .input-icon{
     justify-content: center;
-    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+    ion-icon{
+      width: 23px;
+      height: 23px;
+      color: #6b6a6b;
+    }
   }
 }
+
+.overlay-container-select{
+  padding: 0% 6% 0% 6%;
+  backdrop-filter: blur(8px); /* Ajusta el valor de desenfoque según tus necesidades */
+  background-color: rgba(255, 255, 255, 0.445); /* Cambia los valores RGBA según el color deseado */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .browser{
+    ion-list{
+      height: 65vh;
+      overflow: auto;
+      padding-top: 2%;
+      border-radius: 10px;
+      margin: 0px 6px 0px 6px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+.up-title{
+  padding: 0% 6% 0% 6%;
+  display: flex;
+  justify-content: space-between;
+  .title-select {
+    text-align: center;
+    p{
+      color: #524f52;
+      text-align: center;
+      font-family: Raleway-Bold;
+      font-size: 1rem;
+    }
+  }
+  .back-select {
+    text-align: right;
+    p{
+      color: #524f52;
+      text-align: center;
+      font-family: Raleway-Light;
+      font-size: 1rem;
+    }
+  }
+}
+
+.selected {
+  --background: #9660f98e;
+  color: #f0f0f0;
+  border-radius: 10px;
+  margin: 0% 2% 0% 2%;
+}
+
+.ion-button-select{
+  width: 100%;
+  background-color: #ffffff;
+  --background-color: #ffffff;
+  color: #9259f9;
+  border-radius: 10px;
+  padding: 2% 6% 3% 6%;
+  margin: 2% 0%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ion-input-body{
+  background-color: #f8f9fb;
+  border-radius: 10px;
+  --padding-start:20px;
+  --padding-end:20px;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.ion-label-body{
+    color: #524f52;
+    padding-left: 20px !important;
+    font-family: Raleway-Bold;
+    font-size: 1.1rem;
+}
+

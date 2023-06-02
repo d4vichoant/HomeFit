@@ -88,14 +88,23 @@ export class ApiServiceService {
   getMultimedia():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/);
   }
+  getMultimediaActivate():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/multimediaActivate/);
+  }
   getEquipoRequerido():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/+/equiporequerido/);
   }
   getTipoEjercicio():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/+/tipoejercicio/);
   }
+  getTipoEjercicioActivate():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/tipoejercicioActivate/);
+  }
   getObjetivosMusculares():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/tipoejercicio/);
+    return this.http.get(IP_ADDRESS+/multimedia/+/objetivosmusculares/);
+  }
+  getObjetivosMuscularesActivate():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/objetivosmuscularesActivate/);
   }
   getEjercicio():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/+/ejercicio/);
@@ -111,5 +120,22 @@ export class ApiServiceService {
   }
   UpdatePassword(data:any): Observable<any>{
     return this.http.post(IP_ADDRESS+/manager/+/updatepassword/,data );
+  }
+  UpdataStatus(data:any,nombre:string): Observable<any>{
+    return this.http.post(IP_ADDRESS+/multimedia/+/chanceActivacion/+nombre,data );
+  }
+  UpdataData(data:any,nombre:string): Observable<any>{
+    return this.http.post(IP_ADDRESS+/multimedia/+/UpdateData/+nombre,data );
+  }
+  CreteData(data:any,nombre:string): Observable<any>{
+    return this.http.post(IP_ADDRESS+/multimedia/+/CreateData/+nombre,data );
+  }
+  UpdataDataMultimedia(data:any,nombre:string): Observable<any>{
+    return this.http.post(IP_ADDRESS+/multimedia/+/UpdateDataMultimedia/+nombre,data );
+  }
+  uploadFileMp3(file: File,filename :string): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file,filename);
+    return this.http.post(IP_ADDRESS + '/multimedia/subir-archivo', formData);
   }
 }

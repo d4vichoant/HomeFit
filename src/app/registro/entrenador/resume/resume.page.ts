@@ -73,8 +73,8 @@ export class ResumePage implements OnInit {
       this.allDatos.rolusuarioNombre = "Entrenante";
     }
     this.allDatos.birthdayActual = this.calcularEdad(this.allDatos.birthday);
-    console.log(this.allDatos);
-   }
+
+  }
   ngOnInit() {
 
   }
@@ -108,8 +108,7 @@ export class ResumePage implements OnInit {
         this.navController.navigateForward('/register-finished-trainer');
       },
       (error) => {
-        console.error('Error al llamar a la API:', error);
-        this.presentCustomToast(error,"danger");
+        this.presentCustomToast(error.error.error,"danger");
       }
     );
   }
@@ -120,7 +119,6 @@ export class ResumePage implements OnInit {
       profiledat.activacion=false;
       localStorage.setItem('profilesdates', JSON.stringify(profiledat));
     }else{
-      console.log(this.selectedFile);
       this.apiService.uploadFile(this.selectedFile,profiledat.nickname).subscribe(
         response => {
           profiledat.status=true;

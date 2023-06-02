@@ -26,21 +26,24 @@
     <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
   </div>
   <div class="container-dificultad" >
-    <div class="item" (click)="go_page_create('crear-ejercicio','')" >
-      <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/plus-violet.png"></ion-img>
-      <ion-label>Crear</ion-label>
-    </div>
-    <div class="item" (click)="buttonfilterhabilitate(item,i)"  *ngFor="let item of dataNivelDificultad;let i = index" [style.background-color]="selectedItem === i ? '#f0f0f0' : ''">
+    <div class="item" (click)="buttonfilterhabilitate(item, i)" *ngFor="let item of dataNivelDificultad; let i = index" [style.background-color]="selectedItem === i ? '#9159f965' : '#ffffff'">
       <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/{{item.tituloniveldificultadejercicio}}.png"></ion-img>
-      <ion-label>{{item.tituloniveldificultadejercicio}}</ion-label>
+      <ion-label [ngStyle]="{'color': selectedItem === i ? '#ffffff' : ''}" >{{item.tituloniveldificultadejercicio}}</ion-label>
     </div>
   </div>
-  <div class="container-videos"  *ngIf="dataEjercicio && dataEjercicio.length > 0; else emptyData">
+  <div class="container-videos">
+    <div class="item-video-setup"  (click)="go_page_create('crear-ejercicio','')"  >
+      <img class="background-image" src="{{ ip_address }}/media/images/crear_video.jpg"alt="Imagen de fondo">
+      <div class="text-container-up">
+        <ion-icon name="add-outline"></ion-icon>
+        <p >Crear Ejercicio</p>
+      </div>
+    </div>
     <div class="item-video-setup" *ngFor="let option of dataEjercicio" >
       <img class="background-image" src="{{ ip_address }}/multimedia/{{getVideoName(option.ALMACENAMIENTOMULTIMEDIA)}}.jpg"alt="Imagen de fondo">
       <div class="text-container">
         <p class="text2">{{option.NOMBREEJERCICIO}}</p>
-        <p class="text1">{{option.titulotipoejercicio}}<span> | {{option.tituloniveldificultadejercicio}}</span></p>
+        <p class="text1">{{option.NOMBRETIPOEJERCICIO}}<span> | {{option.tituloniveldificultadejercicio}}</span></p>
       </div>
       <div class="item-body-right-top">
         <button >

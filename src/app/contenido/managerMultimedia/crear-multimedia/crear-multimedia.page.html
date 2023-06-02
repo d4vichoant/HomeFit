@@ -1,0 +1,162 @@
+
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <ion-toolbar class="toolbar-header">
+    <ion-grid class="container-header">
+      <ion-row>
+        <ion-col size="1.5" class="image-container">
+          <img style="width: 30px!important;"  class="icono-image" src="{{ ip_address }}/media/iconhomeviolet.png" alt="Icono de mi app">
+        </ion-col>
+        <ion-col size="7.5">
+          <ion-title class="title-text">Home <span style="color: #9259f9;font-family: Raleway-Bold;">Fit</span> Go</ion-title>
+        </ion-col>
+        <ion-col size="1.5" class="image-container">
+          <ion-img class="icono-notificacion" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+        </ion-col>
+        <ion-col (click)="go_page('perfile')" size="1.5" class="image-container">
+          <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/profile-gris.png"></ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="onboard-top" >
+      <ion-toolbar >
+        <ion-buttons slot="start">
+          <ion-button style="color: #9259f9;"  (click)="go_page('videos')">
+           <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+         </ion-button>
+         <p (click)="goBackToPreviousPage()">Regresar</p>
+       </ion-buttons>
+        <!-- <ion-buttons slot="end">
+          <ion-button style="color: #ffffff;" (click)="goHome()">
+            <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons> -->
+      </ion-toolbar>
+    </div>
+  </ion-toolbar>
+  <div class="container-body">
+    <div class="browser">
+      <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
+    </div>
+    <div class="container-videos">
+      <div class="item-video-setup"   >
+        <img class="background-image" src="{{ ip_address }}/media/images/crear_Multimedia.jpg"alt="Imagen de fondo">
+        <div class="text-container-up">
+          <ion-icon name="add-outline"></ion-icon>
+          <p >Crear Multimedia</p>
+        </div>
+      </div>
+      <div class="item-video-setup" *ngFor="let option of dataMultimedia" >
+        <img class="background-image" src="{{ ip_address }}/multimedia/{{getVideoName(option.ALMACENAMIENTOMULTIMEDIA)}}.jpg"alt="Imagen de fondo">
+        <div class="text-container">
+          <p class="text2">{{option.TITULOMULTIMEDIA}}</p>
+          <!-- <p class="text1">Descrip.<span> : {{option.DESCRIPCIONMULTIMEDIA}}</span></p> -->
+        </div>
+        <div class="item-body-right-top">
+          <button >
+            <img class="icono-item-top" (click)="showSelectEdit(option,'edit')" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"  alt="Icono 1">
+          </button>
+          <button>
+            <img (click)="showSelect(option,'multimedia')"  class="icono-item-top" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
+          </button>
+        </div>
+
+        <div  class="item-body-right-bottom" (click)="showSelect(option,'multimedia')" [ngStyle]="{ 'background-color': option.STATUSMULTIMEDIA === 0 ? '#fdfec3' : (option.STATUSMULTIMEDIA === 1 ? '#fcfee7' : '#fdfec3') }" >
+          <div>
+            <img class="icono-item-botton" src="{{ ip_address }}/media/images/{{ option.STATUSMULTIMEDIA === 0 ? 'noactive.png' : (option.STATUSMULTIMEDIA === 1 ? 'check.png' : 'time.png') }}" alt="Imagen Subtítulo">
+            <h2> {{ option.STATUSMULTIMEDIA === 0 ? 'Inactivo' : (option.STATUSMULTIMEDIA === 1 ? 'Activo' : 'Revisión') }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modificar Status -->
+  <div class="overlay-container-select"  *ngIf="mostrarSelect" >
+    <div class="up-title">
+      <div class="title-select">
+        <p>Cambiar Estado</p>
+      </div>
+      <ion-select name="selectStatus" interface="popover"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.STATUSMULTIMEDIA" required>
+        <ion-select-option *ngFor="let option of dataSelect" [value]="option.id">{{ option.nombre }}</ion-select-option>
+      </ion-select>
+      <div  class="div-select" *ngIf="dataMultimediaUniq && (dataMultimediaUniq.STATUSMULTIMEDIA === 0 || dataMultimediaUniq.STATUSMULTIMEDIA === 2)">
+        <p>Indique las Razones</p>
+        <ion-textarea type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.OBSERVACIONMULTIMEDIA" ></ion-textarea>
+      </div>
+      <div class="buttons-tab1">
+        <ion-button (click)="cancelprocess()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
+        <ion-button (click)="confirmchangeStatus(dataMultimediaUniq,'multimedia')"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
+      </div>
+    </div>
+  </div>
+
+    <!-- Modificar Todo -->
+    <div class="overlay-container-select"  *ngIf="mostrarSelectEdit" >
+      <div class="up-title">
+        <div class="title-select">
+          <p>Título de Multimedia</p>
+          <ion-input type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.TITULOMULTIMEDIA" ></ion-input>
+        </div>
+        <div class="title-select">
+          <p>Descripción Multimedia</p>
+          <ion-textarea type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.DESCRIPCIONMULTIMEDIA" ></ion-textarea>
+        </div>
+        <div class="file-container">
+          <div class="file">
+            <div class="form-group">
+              <label class="text-file-title" >Almacenamiento de Multimedia<span>*</span></label>
+              <label for="fileInput" class="file-label">
+                <img [src]="ip_address + '/media/resume/subir.png'" alt="File Icon" class="file-icon">
+                <span class="file-text">{{ dataMultimediaUniq ? truncateString(nameFile) : 'Ningún archivo elegido' }}</span>
+                <input type="file" id="fileInput" class="file-input" accept=".mp4" (change)="handleFileInput($event)">
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="title-select">
+          <p>Cambiar Estado</p>
+        </div>
+        <ion-select name="selectStatus" interface="popover"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.STATUSMULTIMEDIA" required>
+          <ion-select-option *ngFor="let option of dataSelect" [value]="option.id">{{ option.nombre }}</ion-select-option>
+        </ion-select>
+        <div  class="div-select" *ngIf="dataMultimediaUniq && (dataMultimediaUniq.STATUSMULTIMEDIA === 0 || dataMultimediaUniq.STATUSMULTIMEDIA === 2)">
+          <p>Indique las Razones</p>
+          <ion-textarea type="text"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.OBSERVACIONMULTIMEDIA" ></ion-textarea>
+        </div>
+        <div class="buttons-tab1">
+          <ion-button (click)="cancelprocessEdit()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
+          <ion-button (click)="confirmUpdateDates(dataMultimediaUniq,'multimedia')"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
+        </div>
+      </div>
+    </div>
+
+
+
+  <ion-toolbar class="toolbar-footer">
+    <ion-grid class="container-footer">
+      <ion-row>
+        <ion-col (click)="go_page('activate-entrenadores')"  size="3" class="image-container-footer">
+          <img class="icono-image" src="{{ ip_address }}/media/images/edituser_gris.png" alt="Icono de mi app">
+          <ion-label class="label-footer">Usuarios</ion-label>
+        </ion-col>
+        <ion-col (click)="go_page('videos')" size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/multimedia-violet.png"></ion-img>
+          <ion-label class="label-footer">Videos</ion-label>
+        </ion-col>
+        <ion-col size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+          <ion-label class="label-footer">Inicio</ion-label>
+        </ion-col>
+        <ion-col (click)="go_page('perfile')" size="3" class="image-container-footer">
+          <ion-img class="icono-image" src="{{ ip_address }}/media/images/profile-gris.png"></ion-img>
+          <ion-label class="label-footer">Cuenta</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-content>

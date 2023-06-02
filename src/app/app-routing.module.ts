@@ -106,6 +106,18 @@ const routes: Routes = [
     path: 'crear-ejercicio',
     loadChildren: () => import('./contenido/managerMultimedia/crear-ejercicio/crear-ejercicio.module').then( m => m.CrearEjercicioPageModule)
   },
+  {
+    path: 'crear-tipo-ejercicio',
+    loadChildren: () => import('./contenido/managerMultimedia/crear-tipo-ejercicio/crear-tipo-ejercicio.module').then( m => m.CrearTipoEjercicioPageModule)
+  },
+  {
+    path: 'crear-objetivo-muscular',
+    loadChildren: () => import('./contenido/managerMultimedia/crear-objetivo-muscular/crear-objetivo-muscular.module').then( m => m.CrearObjetivoMuscularPageModule)
+  },
+  {
+    path: 'crear-multimedia',
+    loadChildren: () => import('./contenido/managerMultimedia/crear-multimedia/crear-multimedia.module').then( m => m.CrearMultimediaPageModule)
+  },
 
 
 ];

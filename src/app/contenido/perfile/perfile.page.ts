@@ -129,13 +129,13 @@ export class PerfilePage implements OnInit {
           this.passwordEncode(item);
           console.log(this.hashpassword);
         }else{
-          this.presentCustomToast("No cumple como una contraseña segura","warning");
+          this.presentCustomToast("No cumple como una contraseña segura","danger");
         }
       }else{
-        this.presentCustomToast("Ambas contraseñas deben coincidir","warning");
+        this.presentCustomToast("Ambas contraseñas deben coincidir","danger");
       }
     }else{
-      this.presentCustomToast("Debe llenar todos los campos","warning");
+      this.presentCustomToast("Debe llenar todos los campos","danger");
     }
   }
 
@@ -225,10 +225,12 @@ passwordEncode(item:any) {
   }
 
   actualizarUsuario(dataUser :any){
+    console.log(dataUser);
     this.storage.get('sesion').then((sesionString) => {
       if (sesionString) {
         var profiledat = JSON.parse(sesionString);
         dataUser.USUARIOMODIFICACIONPERSONA = profiledat.nickname;
+        dataUser.FECHANACIMIENTOPERSONA = dataUser.FECHANACIMIENTOPERSONA.split("T")[0];
         this.loading = true;
         this.apiService.UpdateProfileBasic(dataUser).subscribe(
           (response) => {

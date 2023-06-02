@@ -29,25 +29,24 @@ export class VideosPage implements OnInit {
     public alertController: AlertController) { }
 
   ngOnInit() {
-    this.StatusBar();
-    this.loading = false;
     this.validateSesion();
-    //this.obtenerNivelDificultad();
-    //this.obtenerEjercicios();
+    //this.test();
 
   }
   ionViewDidEnter() {
-    this.StatusBar();
-    this.loading = false;
+    //this.test();
     this.validateSesion();
-    //this.obtenerNivelDificultad();
-    //this.obtenerEjercicios();
   }
 
   StatusBar(){
     StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
     StatusBar.setBackgroundColor({ color: '#ffffff' });
+  }
+  test(){
+    this.loading = false;
+    this.obtenerNivelDificultad();
+    this.obtenerEjercicios();
   }
 
   validateSesion(){
@@ -56,6 +55,7 @@ export class VideosPage implements OnInit {
         if (sesion && JSON.parse(sesion).rolUsuario == 99) {
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
+              this.StatusBar();
               this.obtenerEjercicios();
               this.obtenerNivelDificultad();
               this.loading = false;
