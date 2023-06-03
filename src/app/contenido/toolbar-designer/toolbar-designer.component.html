@@ -1,0 +1,18 @@
+<ion-toolbar class="toolbar-header">
+  <ion-grid class="container-header">
+    <ion-row>
+      <ion-col size="1.5" class="image-container">
+        <img style="width: 30px!important;"  class="icono-image" src="{{ ip_address }}/media/iconhomeviolet.png" alt="Icono de mi app">
+      </ion-col>
+      <ion-col size="7.5">
+        <ion-title class="title-text">Home <span style="color: #9259f9;font-family: Raleway-Bold;">Fit</span> Go</ion-title>
+      </ion-col>
+      <ion-col size="1.5" class="image-container">
+        <ion-img class="icono-notificacion" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
+      </ion-col>
+      <ion-col (click)="go_page('perfile')" size="1.5" class="image-container">
+        <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/profile-gris.png"></ion-img>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-toolbar>

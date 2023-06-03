@@ -4,30 +4,15 @@
       <ion-spinner name="crescent"></ion-spinner>
     </div>
   </div>
+  <app-toolbar-designer></app-toolbar-designer>
   <ion-toolbar class="toolbar-header">
-    <ion-grid class="container-header">
-      <ion-row>
-        <ion-col size="1.5" class="image-container">
-          <img style="width: 30px!important;"  class="icono-image" src="{{ ip_address }}/media/iconhomeviolet.png" alt="Icono de mi app">
-        </ion-col>
-        <ion-col size="7.5">
-          <ion-title class="title-text">Home <span style="color: #9259f9;font-family: Raleway-Bold;">Fit</span> Go</ion-title>
-        </ion-col>
-        <ion-col size="1.5" class="image-container">
-          <ion-img class="icono-notificacion" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
-        </ion-col>
-        <ion-col (click)="go_page('perfile')" size="1.5" class="image-container">
-          <ion-img  class="icono-bookmark" src="{{ ip_address }}/media/images/profile-gris.png"></ion-img>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
     <div class="onboard-top" >
       <ion-toolbar >
         <ion-buttons slot="start">
-          <ion-button style="color: #9259f9;"  (click)="go_page('videos')">
+          <ion-button style="color: #9259f9;"   (click)="go_page('control-multimedia')">
            <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
          </ion-button>
-         <p (click)="goBackToPreviousPage()">Regresar</p>
+         <p (click)="go_page('control-multimedia')">Regresar</p>
        </ion-buttons>
         <!-- <ion-buttons slot="end">
           <ion-button style="color: #ffffff;" (click)="goHome()">
@@ -168,27 +153,5 @@
         </div>
       </div>
     </div>
-
-  <ion-toolbar class="toolbar-footer">
-    <ion-grid class="container-footer">
-      <ion-row>
-        <ion-col (click)="go_page('activate-entrenadores')"  size="3" class="image-container-footer">
-          <img class="icono-image" src="{{ ip_address }}/media/images/edituser_gris.png" alt="Icono de mi app">
-          <ion-label class="label-footer">Usuarios</ion-label>
-        </ion-col>
-        <ion-col (click)="go_page('videos')" size="3" class="image-container-footer">
-          <ion-img class="icono-image" src="{{ ip_address }}/media/images/multimedia-violet.png"></ion-img>
-          <ion-label class="label-footer">Videos</ion-label>
-        </ion-col>
-        <ion-col size="3" class="image-container-footer">
-          <ion-img class="icono-image" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
-          <ion-label class="label-footer">Inicio</ion-label>
-        </ion-col>
-        <ion-col (click)="go_page('perfile')" size="3" class="image-container-footer">
-          <ion-img class="icono-image" src="{{ ip_address }}/media/images/profile-gris.png"></ion-img>
-          <ion-label class="label-footer">Cuenta</ion-label>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
+    <app-footer-designer></app-footer-designer>
 </ion-content>

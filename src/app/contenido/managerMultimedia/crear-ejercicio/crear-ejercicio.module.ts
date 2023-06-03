@@ -8,12 +8,15 @@ import { CrearEjercicioPageRoutingModule } from './crear-ejercicio-routing.modul
 
 import { CrearEjercicioPage } from './crear-ejercicio.page';
 
+import { SharedModule } from '../../../shared.module';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CrearEjercicioPageRoutingModule
+    CrearEjercicioPageRoutingModule,
+    SharedModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [CrearEjercicioPage]

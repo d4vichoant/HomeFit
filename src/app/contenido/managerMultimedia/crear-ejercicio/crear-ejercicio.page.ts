@@ -105,10 +105,19 @@ export class CrearEjercicioPage implements OnInit {
     this.adicionalInformacion = this.variable.OBSERVACIONESEJERCICIO;
   }
 
+  private chanceColorFooter(){
+    document.documentElement.style.setProperty('--activate-foot10',' transparent');
+    document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot20',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot21',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot30',' transparent');
+    document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot40',' transparent');
+    document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
+  }
   go_page(name: string){
-    this.cleanSelecItem();
     this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
-    this.navController.navigateForward('/'+name);
+    //this.navController.navigateForward('/'+name);
   }
   StatusBar(){
     StatusBar.hide();
@@ -131,6 +140,7 @@ export class CrearEjercicioPage implements OnInit {
           this.obtenerGetPerfilCompleto(this.userSesion);
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
+              this.chanceColorFooter();
               this.StatusBar();
               this.obtenerMultimedia();
               this.obtenerTEjercicio();

@@ -39,11 +39,13 @@ export class PerfilePage implements OnInit {
     // this.obtenerPerfileUniq("administrador");
     // this.loading = false;
     this.StatusBar();
+    this.chanceColorFooter();
     this.validartoken();
   }
 
   ionViewDidEnter() {
     this.StatusBar();
+    this.chanceColorFooter();
     this.validartoken();
   }
 
@@ -80,6 +82,17 @@ export class PerfilePage implements OnInit {
     const animation = this.animatePopup(this.overlayVisible);
 
     animation.play(); // Ejecutar la animación
+  }
+  private chanceColorFooter(){
+    document.documentElement.style.setProperty('--activate-foot10',' transparent');
+    document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot20',' transparent');
+    document.documentElement.style.setProperty('--activate-foot21',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot30',' transparent');
+    document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot40',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot41',' #9259f9');
+
   }
 
 

@@ -57,40 +57,31 @@ export class ActivateEntrenadoresPage implements OnInit {
       this.ordenarfilter();
     }
 
-    ngOnInit() {
-      StatusBar.hide();
-      StatusBar.setOverlaysWebView({ overlay: true });
-      StatusBar.setBackgroundColor({ color: '#ffffff' });
-      try{
-        this.storage.get('sesion').then((sesion) => {
-          if (sesion && JSON.parse(sesion).rolUsuario == 99) {
-            this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
-              (response) => {
-                this.obtenerAllGender();
-                this.obtenerAllPeople();
-                this.obtenerAllFrecuencias();
-                this.obtenerAllProfesion();
-                this.obtenerObjetivosPersonales();
-                this.obtenerAllRolUsuario();
-                this.obtenerAllEspecialidad();
-                this.loading = false;
-              },
-              (error) => {
-                this.handleError();
-              }
-            );
-          } else {
-            this.handleError();
-          }
-        });
-      } catch (error) {
-        this.handleError();
-      }
-    }
+  ngOnInit() {
+    this.chanceColorFooter();
+    this.ValidateSesionInicio();
+  }
   ionViewDidEnter() {
+    this.chanceColorFooter();
+    this.ValidateSesionInicio();
+  }
+  private chanceColorFooter(){
+    document.documentElement.style.setProperty('--activate-foot10',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot11',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot20',' transparent');
+    document.documentElement.style.setProperty('--activate-foot21',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot30',' transparent');
+    document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot40',' transparent');
+    document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
+  }
+  StatusBar(){
     StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
     StatusBar.setBackgroundColor({ color: '#ffffff' });
+  }
+  private ValidateSesionInicio(){
+    try{
       this.storage.get('sesion').then((sesion) => {
         if (sesion && JSON.parse(sesion).rolUsuario == 99) {
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
@@ -113,13 +104,16 @@ export class ActivateEntrenadoresPage implements OnInit {
           this.handleError();
         }
       });
+    }catch (error) {
+        this.handleError();
+      }
   }
-
   private handleError() {
     this.loading = false;
     this.navController.navigateForward('/errorpage');
     this.storage.remove('sesion');
   }
+
   obtenerPrimerNombre(nombreCompleto: string): string {
     const nombres = nombreCompleto.split(" ");
     return nombres[0];

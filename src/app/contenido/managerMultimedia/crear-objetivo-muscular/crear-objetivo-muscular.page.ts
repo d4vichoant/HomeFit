@@ -76,6 +76,7 @@ export class CrearObjetivoMuscularPage implements OnInit {
         if (sesion && JSON.parse(sesion).rolUsuario == 99) {
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
+              this.chanceColorFooter();
               this.StatusBar();
               this.obtenerOMuscular();
               this.loading = false;
@@ -96,6 +97,16 @@ export class CrearObjetivoMuscularPage implements OnInit {
     this.loading = false;
     this.navController.navigateForward('/errorvideos');
     this.storage.remove('sesion');
+  }
+  private chanceColorFooter(){
+    document.documentElement.style.setProperty('--activate-foot10',' transparent');
+    document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot20',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot21',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot30',' transparent');
+    document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot40',' transparent');
+    document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
   }
 
   go_page(name: string){

@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { VideosPageRoutingModule } from './videos-routing.module';
 
 import { VideosPage } from './videos.page';
+import { SharedModule } from '../../../shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    VideosPageRoutingModule
+    VideosPageRoutingModule,
+    SharedModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [VideosPage]

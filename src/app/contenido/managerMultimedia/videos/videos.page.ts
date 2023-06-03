@@ -4,6 +4,7 @@ import { ApiServiceService } from '../../../api-service.service';
 import { NavController, ToastController } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 import { Storage } from '@ionic/storage-angular';
 @Component({
@@ -26,16 +27,44 @@ export class VideosPage implements OnInit {
     private apiService: ApiServiceService,
     public toastController: ToastController,
     private storage: Storage,
+    private router: Router,
     public alertController: AlertController) { }
 
   ngOnInit() {
-    this.validateSesion();
     //this.test();
-
+    this.validateSesion();
+    this.chanceColorFooter();
+    this.cargarImagenesBeforesNdif();
+    this.cargarImagenesBefores();
   }
   ionViewDidEnter() {
     //this.test();
     this.validateSesion();
+    this.chanceColorFooter();
+    this.cargarImagenesBeforesNdif();
+    this.cargarImagenesBefores();
+  }
+
+  goBackToPreviousPage() {
+    // Retrieve the previous page information from state
+    const state = window.history.state;
+    if (state && state.previousPage) {
+      // Navigate back to the previous page
+      this.router.navigateByUrl(state.previousPage);
+    } else {
+      // Handle the case when no previous page information is available
+      // You can navigate to a default page or show an error message
+    }
+  }
+  private chanceColorFooter(){
+    document.documentElement.style.setProperty('--activate-foot10',' transparent');
+    document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot20',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot21',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot30',' transparent');
+    document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot40',' transparent');
+    document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
   }
 
   StatusBar(){
@@ -58,7 +87,6 @@ export class VideosPage implements OnInit {
               this.StatusBar();
               this.obtenerEjercicios();
               this.obtenerNivelDificultad();
-              this.loading = false;
             },
             (error) => {
               this.handleError();
@@ -78,7 +106,55 @@ export class VideosPage implements OnInit {
     this.navController.navigateForward('/errorvideos');
     this.storage.remove('sesion');
   }
-
+  cargarImagenesBeforesNdif(){
+    const ejercicios = this.dataNivelDificultad; // Obtén el array de ejercicios
+    const imageUrls = []; // Array para almacenar las URL de las imágenes
+    if (Array.isArray(ejercicios)) {
+      for (let i = 0; i < ejercicios.length; i++) {
+        const videoName = ejercicios[i].tituloniveldificultadejercicio;
+        const imageUrl = this.ip_address+'/media/images/'+videoName+'.png';
+        imageUrls.push(imageUrl);
+      }
+    }
+    let imagesLoaded = 0;
+    const totalImages = imageUrls.length;
+    const handleImageLoad = () => {
+      imagesLoaded++;
+      if (imagesLoaded === totalImages) {
+      }
+    };
+    imageUrls.forEach((imageUrl) => {
+      const image = new Image();
+      image.onload = handleImageLoad;
+      image.src = imageUrl;
+    });
+  }
+  cargarImagenesBefores(){
+    const ejercicios = this.dataEjercicio; // Obtén el array de ejercicios
+    const imageUrls = []; // Array para almacenar las URL de las imágenes
+    if (Array.isArray(ejercicios)) {
+      for (let i = 0; i < ejercicios.length; i++) {
+        const videoName = this.getVideoName(ejercicios[i].ALMACENAMIENTOMULTIMEDIA);
+        const imageUrl = this.ip_address+'/multimedia/'+videoName+'.jpg';
+        imageUrls.push(imageUrl);
+      }
+    }
+    const imageUrlAdd = this.ip_address+'/media/images/crear_video.jpg';
+    imageUrls.push(imageUrlAdd);
+    let imagesLoaded = 0;
+    const totalImages = imageUrls.length;
+    const handleImageLoad = () => {
+      imagesLoaded++;
+      if (imagesLoaded === totalImages) {
+        this.loading = false;
+      }
+    };
+    imageUrls.forEach((imageUrl) => {
+      const image = new Image();
+      image.onload = handleImageLoad;
+      image.src = imageUrl;
+    });
+  }
   go_page(name: string){
     this.navController.navigateForward('/'+name);
   }

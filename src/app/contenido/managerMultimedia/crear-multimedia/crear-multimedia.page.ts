@@ -62,10 +62,12 @@ export class CrearMultimediaPage implements OnInit   {
 
     ionViewDidEnter(){
       this.validateSesion();
+      this.cargarImagenesBefores();
       //this.test()
     }
     ngOnInit() {
       this.validateSesion();
+      this.cargarImagenesBefores();
       //this.test()
     }
 
@@ -94,10 +96,10 @@ export class CrearMultimediaPage implements OnInit   {
           if (sesion && JSON.parse(sesion).rolUsuario == 99) {
             this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
               (response) => {
+                this.chanceColorFooter();
                 this.AfterViewChecked();
                 this.StatusBar();
                 this.obtenerMultimedia();
-                this.loading = false;
               },
               (error) => {
                 this.handleError();
@@ -117,6 +119,43 @@ export class CrearMultimediaPage implements OnInit   {
       this.storage.remove('sesion');
     }
 
+    cargarImagenesBefores(){
+      const ejercicios = this.dataMultimedia; // Obtén el array de ejercicios
+      const imageUrls = []; // Array para almacenar las URL de las imágenes
+      if (Array.isArray(ejercicios)) {
+        for (let i = 0; i < ejercicios.length; i++) {
+          const videoName = this.getVideoName(ejercicios[i].ALMACENAMIENTOMULTIMEDIA);
+          const imageUrl = this.ip_address+'/multimedia/'+videoName+'.jpg';
+          imageUrls.push(imageUrl);
+        }
+      }
+      const imageUrlAdd = this.ip_address+'/media/images/crear_Multimedia.jpg';
+      imageUrls.push(imageUrlAdd);
+      let imagesLoaded = 0;
+      const totalImages = imageUrls.length;
+      const handleImageLoad = () => {
+        imagesLoaded++;
+        if (imagesLoaded === totalImages) {
+          this.loading = false;
+        }
+      };
+      imageUrls.forEach((imageUrl) => {
+        const image = new Image();
+        image.onload = handleImageLoad;
+        image.src = imageUrl;
+      });
+    }
+
+    private chanceColorFooter(){
+      document.documentElement.style.setProperty('--activate-foot10',' transparent');
+      document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
+      document.documentElement.style.setProperty('--activate-foot20',' #9259f9');
+      document.documentElement.style.setProperty('--activate-foot21',' #9259f9');
+      document.documentElement.style.setProperty('--activate-foot30',' transparent');
+      document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
+      document.documentElement.style.setProperty('--activate-foot40',' transparent');
+      document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
+    }
     go_page(name: string){
       this.navController.navigateForward('/'+name);
     }

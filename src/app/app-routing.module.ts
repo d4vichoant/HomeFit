@@ -90,7 +90,8 @@ const routes: Routes = [
   {
     path: 'errorpage',
     loadChildren: () => import('./contenido/managerAdministradores/errorpage/errorpage.module').then( m => m.ErrorpagePageModule)
-  },  {
+  },
+  {
     path: 'perfile',
     loadChildren: () => import('./contenido/perfile/perfile.module').then( m => m.PerfilePageModule)
   },
@@ -122,7 +123,6 @@ const routes: Routes = [
     path: 'control-multimedia',
     loadChildren: () => import('./contenido/managerMultimedia/control-multimedia/control-multimedia.module').then( m => m.ControlMultimediaPageModule)
   },
-
 
 ];
 

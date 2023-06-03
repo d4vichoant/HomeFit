@@ -1,7 +1,115 @@
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">control-Multimedia</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <app-toolbar-designer></app-toolbar-designer>
+  <div class="header-up">
+    <div class="up-date">
+      <ion-icon name="sunny-outline"></ion-icon>
+      <span class="date">{{ currentDate }}</span>
+    </div>
+    <div class="header-name">
+      <h1>Hola,
+        <ng-container *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0].NOMBREPERSONA">
+          {{ obtenerPrimerNombre(userSesionPerfil[0].NOMBREPERSONA) }}
+        </ng-container>
+      </h1>
+    </div>
+  </div>
+  <div class="container-body">
+    <ion-card (click)="go_page('videos')">
+      <div class="custom-image">
+        <img alt="Silhouette of mountains" src="{{ ip_address }}/media/images/control-multimedia-1.png" />
+      </div>
+        <ion-card-header>
+        <ion-card-title>Ejercicio</ion-card-title>
+        <ion-card-subtitle>Administrar</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              En esta sección, podrás realizar tareas como agregar nuevos ejercicios, editar ejercicios existentes y eliminar ejercicios que ya no sean necesarios.
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-end">
+              <p class="ion-button " (click)="go_page('videos')">Configurar</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card (click)="go_page('crear-multimedia')">
+      <div class="custom-image">
+        <img alt="Silhouette of mountains" src="{{ ip_address }}/media/images/control-multimedia-2.jpg" />
+      </div>
+      <ion-card-header >
+        <ion-card-title>Multimedia</ion-card-title>
+        <ion-card-subtitle>Administrar</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              En esta área, podrás manejar todos los aspectos relacionados con los videos de los ejercicios. Aquí encontrarás una lista de los videos existentes, donde podrás ver, editar y eliminar cada uno de ellos según tus necesidades.
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-end">
+              <p class="ion-button " (click)="go_page('videos')">Configurar</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card (click)="go_page('crear-tipo-ejercicio')">
+      <div class="custom-image">
+        <img alt="Silhouette of mountains" src="{{ ip_address }}/media/images/control-multimedia-3.jpg" />
+    </div>
+      <ion-card-header>
+        <ion-card-title>Tipo de Ejercicios</ion-card-title>
+        <ion-card-subtitle>Administrar</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              Aquí podrás administrar los diferentes tipos de ejercicios que se ofrecen en tu plataforma. Los tipos de ejercicio te permiten organizar y clasificar tus rutinas de entrenamiento según las necesidades y objetivos de tus usuarios.
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-end">
+              <p class="ion-button " (click)="go_page('videos')">Configurar</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card (click)="go_page('crear-objetivo-muscular')">
+      <div class="custom-image">
+      <img alt="Silhouette of mountains" src="{{ ip_address }}/media/images/control-multimedia-4.jpg" />
+    </div>
+      <ion-card-header>
+        <ion-card-title>Objetivo Muscular</ion-card-title>
+        <ion-card-subtitle>Administrar</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              Los objetivos musculares te permiten ayudar a tus usuarios a enfocar su entrenamiento de acuerdo con sus metas específicas.
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-end">
+              <p class="ion-button " (click)="go_page('videos')">Configurar</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <app-footer-designer></app-footer-designer>
 </ion-content>

@@ -1,0 +1,82 @@
+ion-content {
+  --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
+  height: 100vh;
+  overflow: hidden;
+}
+.header-up{
+  padding: 0% 6% 3% 6%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  .up-date{
+    margin: 0px;
+    padding: 0px;
+    ion-icon{
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #8c7efc;
+      margin-right: 10px;
+      width: 19px;
+      height: 19px;
+    }
+    span{
+      font-family: Raleway-bold;
+      font-size: 1rem;
+      color: #8c7efc;
+    }
+  }
+  .header-name{
+    margin: 0px;
+    padding: 0px;
+    h1{
+      font-family: Raleway-ExtraBold;
+      font-size: 2rem;
+      color: #535253;
+    }
+
+  }
+}
+.custom-image{
+  overflow: hidden;
+  height: 100px;
+}
+.container-body{
+  padding: 0% 6% 3% 6%;
+  overflow-y: auto;
+  height: 72vh;
+  ion-card{
+    img{
+      width: 100%;
+    }
+    border-radius: 15px;
+    ion-card-header{
+      ion-card-title{
+        font-family: Raleway-Bold;
+        font-size: 1.3rem;
+        color: #6b6a6b;
+      }
+      ion-card-subtitle{
+        font-family: Raleway-Medium;
+        font-size: .9rem;
+        color: #6b6a6b;
+      }
+    }
+    ion-card-content{
+      font-family: Raleway-Light;
+      font-size: .9rem;
+      color: #6b6a6b;
+    }
+  }
+}
+.ion-text-end{
+  .ion-button{
+    padding: 2% 3% 2% 3%;
+    background: linear-gradient(90deg, #ffffff80, #e4dffe);
+    box-shadow: none;
+    border-radius: 10px;
+    font-family: Raleway-Bold;
+    font-size: .9rem;
+    color: #9a93d7;
+  }
+}
