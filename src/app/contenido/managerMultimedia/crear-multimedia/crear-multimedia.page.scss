@@ -8,7 +8,7 @@ ion-content {
   z-index: -1;
   margin-top: 2%;
   background: transparent;
-  padding: 0% 6% 0% 6%;
+  padding: 0% 3% 0% 3%;
   --background: transparent;
 
 }
@@ -67,7 +67,7 @@ ion-content {
 
 
 .container-videos {
-  padding: 1% 6% 0% 6%;
+  padding: 1% 0% 0% 0%;
   margin-top: 2%;
   height: 83%;
   width: 100%; /* Ancho igual al ancho de la pantalla */
@@ -173,7 +173,7 @@ ion-content {
   bottom: 0;
   right: 0;
   //left: 0; /* Asegura que el ancho sea el 100% del contenedor */
-  border-radius: 15px 0 15px 0;
+  border-radius: 10px 0 10px 0;
   height: 40px;
   width: 45%;
   display: flex;
@@ -207,8 +207,9 @@ ion-content {
   height: auto;
   background-color:transparent ;
 }
-
-.overlay-container-imagen{
+.overlay-container-imagen {
+  background-color: #ffffff7e;
+  backdrop-filter: blur(10px);
   padding: 10% 6% 0% 6%;
   position: fixed;
   top: 0;
@@ -216,28 +217,54 @@ ion-content {
   width: 100%;
   height: 100%;
   z-index: 9999;
-  display: block;
+  display: flex;
+  justify-content: flex-start;
   align-items: start;
-  justify-content: center;
-  h1{
-    background: #0acc61cb;
-    border-radius: 15px;
-    text-align: center;
-    font-family: Raleway-Bold;
-    font-size: 1.2rem;
-    color: #ffffff;
-    padding: 5% 0% 5% 0%;
-  }
-  p{
-    background: #ffffffde;
-    border-radius: 15px;
-    text-align: center;
-    font-family: Raleway-Medium;
-    font-size: 1.2rem;
-    color: #130202;
-    padding: 5% 0% 5% 0%;
-  }
 }
+
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay-container-imagen h1 {
+  width: 80%;
+  height: auto;
+  background: #0acc61cb;
+  border-radius: 15px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: Raleway-Bold;
+  font-size: 1.2rem;
+  color: #ffffff;
+  padding: 5% 0% 5% 0%;
+}
+
+.overlay-container-imagen img {
+  width: 80%;
+  height: auto;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay-container-imagen p {
+  width: 80%;
+  height: auto;
+  background: #ffffffde;
+  border-radius: 15px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: Raleway-Medium;
+  font-size: 1.2rem;
+  color: #130202;
+  padding: 5% 0% 5% 0%;
+}
+
 .overlay-container-select{
   padding: 0% 6% 0% 6%;
   backdrop-filter: blur(8px); /* Ajusta el valor de desenfoque según tus necesidades */

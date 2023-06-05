@@ -60,10 +60,12 @@ export class ActivateEntrenadoresPage implements OnInit {
   ngOnInit() {
     this.chanceColorFooter();
     this.ValidateSesionInicio();
+    this.cargarImagenesBefores();
   }
   ionViewDidEnter() {
     this.chanceColorFooter();
     this.ValidateSesionInicio();
+    this.cargarImagenesBefores();
   }
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' #9259f9');
@@ -80,6 +82,26 @@ export class ActivateEntrenadoresPage implements OnInit {
     StatusBar.setOverlaysWebView({ overlay: true });
     StatusBar.setBackgroundColor({ color: '#ffffff' });
   }
+  cargarImagenesBefores(){
+    let imagesLoaded = 0;
+    const image1 = new Image();
+    const image2 = new Image();
+    const image3 = new Image();
+    image1.src = IP_ADDRESS + '/media/images/objetive-muscular-bk-1.png';
+    image2.src = IP_ADDRESS + '/media/images/objetive-muscular-bk-2.png';
+    image3.src = IP_ADDRESS + '/media/images/objetive-muscular-bk-3.png';
+
+    const handleImageLoad = () => {
+      imagesLoaded++;
+      if (imagesLoaded === 3) {
+        this.loading = false;
+      }
+    };
+
+    image1.onload = handleImageLoad;
+    image2.onload = handleImageLoad;
+    image3.onload = handleImageLoad;
+  }
   private ValidateSesionInicio(){
     try{
       this.storage.get('sesion').then((sesion) => {
@@ -93,7 +115,6 @@ export class ActivateEntrenadoresPage implements OnInit {
               this.obtenerObjetivosPersonales();
               this.obtenerAllRolUsuario();
               this.obtenerAllEspecialidad();
-              this.loading = false;
               this.inicio();
             },
             (error) => {
@@ -170,6 +191,25 @@ export class ActivateEntrenadoresPage implements OnInit {
   }
 
 
+  getBackgroundImage(idGenero: number): string {
+    let imageUrl: string;
+
+    switch (idGenero) {
+      case 0:
+        imageUrl = this.ip_address + '/media/images/objetive-muscular-bk-1.png';
+        break;
+      case 1:
+        imageUrl = this.ip_address + '/media/images/objetive-muscular-bk-2.png';
+        break;
+      case 2:
+        imageUrl = this.ip_address + '/media/images/objetive-muscular-bk-3.png';
+        break;
+      default:
+        imageUrl = ''; // Imagen de fondo predeterminada en caso de que no haya coincidencia con las opciones anteriores
+    }
+
+    return 'url(' + imageUrl + ')';
+  }
 
   ordenarfilter(){
     this.filter.sort((a, b) => {

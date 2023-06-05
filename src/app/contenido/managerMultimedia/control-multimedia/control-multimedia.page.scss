@@ -3,6 +3,27 @@ ion-content {
   height: 100vh;
   overflow: hidden;
 }
+
+//css de Spinner de cargando ...
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(130, 123, 123, 0.5); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .header-up{
   padding: 0% 6% 3% 6%;
   display: block;
@@ -42,7 +63,7 @@ ion-content {
   height: 100px;
 }
 .container-body{
-  padding: 0% 6% 3% 6%;
+  padding: 0% 3% 3% 3%;
   overflow-y: auto;
   height: 72vh;
   ion-card{

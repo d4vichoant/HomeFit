@@ -1,4 +1,4 @@
-import { Component, OnInit,  ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit,  ViewChild, ElementRef,NgZone } from '@angular/core';
 import { IP_ADDRESS } from '../../../constantes';
 import { ApiServiceService } from '../../../api-service.service';
 import { StatusBar } from '@capacitor/status-bar';
@@ -58,7 +58,8 @@ export class CrearMultimediaPage implements OnInit   {
     private navController: NavController,
     public toastController: ToastController,
     private router: Router,
-    public alertController: AlertController) { }
+    public alertController: AlertController,
+    private ngZone: NgZone) { }
 
     ionViewDidEnter(){
       this.validateSesion();
@@ -72,12 +73,7 @@ export class CrearMultimediaPage implements OnInit   {
     }
 
     AfterViewChecked() {
-      if (this.mostrarImagen) {
-        this.mostrarImagen = false;
-        setTimeout(() => {
-          this.mostrarImagen = true;
-        }, 0);
-      }
+
     }
 
     test(){
@@ -268,8 +264,13 @@ export class CrearMultimediaPage implements OnInit   {
     }
 
     captureImage(video: HTMLVideoElement) {
-      this.AfterViewChecked();
-      // ...
+      if (this.mostrarImagen) {
+        this.mostrarImagen = false;
+        setTimeout(() => {
+          this.mostrarImagen = true;
+        }, 0);
+      }
+
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
 
@@ -281,17 +282,19 @@ export class CrearMultimediaPage implements OnInit   {
         canvas.toBlob((blob) => {
           if (blob) {
             const capturedImage = new File([blob], 'captured-image.jpg', { type: 'image/png' });
-            this.imagenFile=capturedImage;
-            this.mostrarImagen=!this.mostrarImagen;
-            //this.presentCustomToast('Captura Realizada Correctamente','success');
+
+            this.ngZone.run(() => {
+              this.imagenFile = capturedImage;
+              this.mostrarImagen = !this.mostrarImagen;
+            });
+
+            // ...
           } else {
-            // Manejar el caso en que blob sea nulo
-            this.presentCustomToast('No se pudo crear el blob','danger');
+            // ...
           }
         }, 'image/png');
       } else {
-        // Manejar el caso en que el contexto sea nulo
-        this.presentCustomToast('No se pudo obtener el contexto del canvas','danger');
+        // ...
       }
     }
 

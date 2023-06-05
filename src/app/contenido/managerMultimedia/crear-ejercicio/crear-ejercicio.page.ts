@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild  } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 import { IP_ADDRESS } from '../../../constantes';
 import { NavController, ToastController, IonRouterOutlet, AlertController} from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
 import { Storage } from '@ionic/storage-angular';
 import { ApiServiceService } from '../../../api-service.service';
-
+import { IonCard } from '@ionic/angular';
 
 @Component({
   selector: 'app-crear-ejercicio',
@@ -19,6 +19,15 @@ export class CrearEjercicioPage implements OnInit {
   public loading = true;
   public ip_address = IP_ADDRESS;
   variable: any;
+
+  @ViewChild(IonCard) card!: IonCard;
+  touchTimeout: any;
+  dataComentarioporEjercicio!: any[];
+  currentTab = 1;
+  mostarDialogComment:boolean=false;
+  dataComentarioporEjercicioUniq:any;
+
+  NumberStar :number=4;
 
   public userSesion!:string;
   private userSesionPerfil!:any;
@@ -81,7 +90,6 @@ export class CrearEjercicioPage implements OnInit {
   ionViewDidEnter() {
     this.route.queryParams.subscribe(params => {
       this.variable = params['variable'];
-      delete params['variable'];
     });
 
     this.validateSesion();
@@ -94,6 +102,7 @@ export class CrearEjercicioPage implements OnInit {
 
   completarDatos(){
     //console.log(this.variable);
+    this.currentTab=1;
     this.nombreEjercicio = this.variable.NOMBREEJERCICIO;
     this.nombreDescripcion = this.variable.DESCRIPCIONEJERCICIO;
     this.instruccion = this.variable.INTRUCCIONESEJERCICIO;
@@ -103,6 +112,8 @@ export class CrearEjercicioPage implements OnInit {
     this.numeroSeries = this.variable.SERIESEJERCICIO;
     this.variacionEjercicio = this.variable.VARIACIONESMODIFICACIONEJERCICIOPROGRESO;
     this.adicionalInformacion = this.variable.OBSERVACIONESEJERCICIO;
+    this.obtenerComentarioporEjercicio(this.variable.IDEJERCICIO);
+    console.log(this.dataComentarioporEjercicio);
   }
 
   private chanceColorFooter(){
@@ -502,6 +513,16 @@ export class CrearEjercicioPage implements OnInit {
       }
     );
   }
+  obtenerComentarioporEjercicio(idEjercicio:number){
+    this.apiService.ObtenerComentarioPorEjercicio(idEjercicio).subscribe(
+      (response) => {
+        this.dataComentarioporEjercicio=response as any[];
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
   inicio(){
     this.nombreEjercicio='';
     this.nombreDescripcion='';
@@ -512,5 +533,45 @@ export class CrearEjercicioPage implements OnInit {
     this.numeroSeries='';
     this.variacionEjercicio='';
     this.adicionalInformacion='';
+  }
+  showTab(tabNumber: number) {
+    this.presentCustomToast("Recuerde Guardar en cada Pestaña","warning");
+    this.currentTab = tabNumber;
+    if(tabNumber===2){
+      this.obtenerComentarioporEjercicio(this.variable.IDEJERCICIO);
+      //console.log(this.dataComentarioporEjercicio);
+    }
+  }
+  isTabSelected(tabNumber: number): boolean {
+    return this.currentTab === tabNumber;
+  }
+
+  onCardTouchStart(event: TouchEvent,data:any) {
+    this.touchTimeout = setTimeout(() => {
+      // Lógica para abrir otro card o mostrar un diálogo
+      console.log('El usuario ha mantenido presionado el card durante 2 segundos o más'+data.IDPROGRESO);
+      this.mostarDialogComment=!this.mostarDialogComment;
+      this.dataComentarioporEjercicioUniq=data;
+    }, 1000);
+  }
+
+  onCardTouchEnd(event: TouchEvent) {
+    clearTimeout(this.touchTimeout);
+  }
+  changeStatusProgreso(data:any){
+    if(data.STATUSPROGRESO===1){
+      data.STATUSPROGRESO=0;
+    }else{
+      data.STATUSPROGRESO=1;
+    }
+    this.apiService.UpdataStatus(data,"progreso").subscribe(
+      (response) => {
+        this.presentCustomToast("Comentario ha sido cambio la Visibilidad","success")
+        this.mostarDialogComment=!this.mostarDialogComment;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
   }
 }

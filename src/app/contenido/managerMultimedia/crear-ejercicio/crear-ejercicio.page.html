@@ -11,7 +11,7 @@
         <ion-button style="color: #9259f9;"  (click)="go_page('videos')">
          <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
        </ion-button>
-       <p (click)="go_page('videos')">Crear Nuevo Ejercicio</p>
+       <p (click)="go_page('videos')"> Regresar</p>
      </ion-buttons>
       <!-- <ion-buttons slot="end">
         <ion-button style="color: #ffffff;" (click)="goHome()">
@@ -20,86 +20,186 @@
       </ion-buttons> -->
     </ion-toolbar>
   </div>
-  <div class="container-body">
-    <div class="post-container-body">
-      <h2>Seleccione Multimedia</h2>
-      <div class="input-wrapper">
-        <div (click)="showSelected('dataMultimedia')"  class="title-up">
-          <h2>{{ selectedMultimedia ? selectedMultimedia.TITULOMULTIMEDIA : 'Ninguno' }}</h2>
-        </div>
-        <div  (click)="showSelected('dataMultimedia')" class="input-icon" >
-          <ion-icon name="chevron-down-outline"></ion-icon>
-        </div>
-      </div>
-      <h2>Seleccione Tipo Ejercicio</h2>
-      <div class="input-wrapper">
-        <div (click)="showSelected('dataTEjercicio')"  class="title-up">
-          <h2>{{ selectedTEjercicio ? selectedTEjercicio.NOMBRETIPOEJERCICIO : 'Ninguno' }}</h2>
-        </div>
-        <div  (click)="showSelected('dataTEjercicio')" class="input-icon" >
-          <ion-icon name="chevron-down-outline"></ion-icon>
-        </div>
-      </div>
-      <h2>Seleccione Nivel de Dificultad</h2>
-      <div class="input-wrapper">
-        <div (click)="showSelected('dataNDificultad')"  class="title-up">
-          <h2>{{ selectedNDificultad ? selectedNDificultad.tituloniveldificultadejercicio : 'Ninguno' }}</h2>
-        </div>
-        <div  (click)="showSelected('dataNDificultad')" class="input-icon" >
-          <ion-icon name="chevron-down-outline"></ion-icon>
-        </div>
-      </div>
-      <h2>Seleccione Objetivo Muscular</h2>
-      <div class="input-wrapper">
-        <div (click)="showSelected('dataOMuscular')"  class="title-up">
-          <h2>{{ selectedOMuscular ? selectedOMuscular.NOMBREOBJETIVOSMUSCULARES : 'Ninguno' }}</h2>
-        </div>
-        <div  (click)="showSelected('dataOMuscular')" class="input-icon" >
-          <ion-icon name="chevron-down-outline"></ion-icon>
-        </div>
-      </div>
-      <div>
-        <ion-label class="ion-label-body">Nombre</ion-label>
-        <ion-input  class="ion-input-body" [(ngModel)]="nombreEjercicio" type="text" name="nombre" placeholder="Ingresar Nombre" required></ion-input>
-      </div>
-      <div>
-        <ion-label class="ion-label-body">Descripcion</ion-label>
-        <ion-textarea  class="ion-input-body" [(ngModel)]="nombreDescripcion" type="text" name="descripcion" placeholder="Ingresar Descripcion" required></ion-textarea>
-      </div>
-      <div>
-        <ion-label class="ion-label-body">Intrucciones</ion-label>
-        <ion-textarea  class="ion-input-body" [(ngModel)]="instruccion" type="text" name="instruccion" placeholder="Ingresar Intrucciones" required></ion-textarea>
-      </div>
-      <div>
-        <ion-label class="ion-label-body">Peso Recomendando</ion-label>
-        <ion-input  class="ion-input-body" [(ngModel)]="pesoRecomendado" type="text" name="peso" placeholder="Ingresar Peso Recom." required></ion-input>
-      </div>
-      <div>
-        <ion-label class="ion-label-body">Repeticiones</ion-label>
-        <ion-input  class="ion-input-body" [(ngModel)]="repeticiones" type="text" name="repeticion" placeholder="Ingresar Numero de Repeticiones" required></ion-input>
-      </div>
-      <div>
-        <ion-label class="ion-label-body">Tiempo en Realizar</ion-label>
-        <ion-input class="ion-input-body" [(ngModel)]="tiempoRealizar" (input)="formatearTiempo()" (change)="completarTiempo()" type="text" name="nombre" placeholder="HH:mm:ss" required></ion-input>
-      </div>
-      <div>
-        <ion-label class="ion-label-body">Numero de Series</ion-label>
-        <ion-input  class="ion-input-body" [(ngModel)]="numeroSeries" type="text" name="series" placeholder="Ingresar Numero Series" required></ion-input>
-      </div>
-      <div>
-        <ion-label class="ion-label-body">Variación o Modicicación</ion-label>
-        <ion-textarea  class="ion-input-body" [(ngModel)]="variacionEjercicio" type="text" name="variacion" placeholder="Ingresar Variación o Modicicación" required></ion-textarea>
-      </div>
-      <div>
-        <ion-label class="ion-label-body">Información Adicional</ion-label>
-        <ion-textarea  class="ion-input-body" [(ngModel)]="adicionalInformacion" type="text" name="adicional" placeholder="Ingresar Información Adicional" required></ion-textarea>
-      </div>
-    </div>
-    <div class="buttons-tab1">
-      <ion-button (click)="go_page('videos')"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
-      <ion-button (click)="confirmchangeCreateData()"  class="ion-buttons-2" fill="clear">{{ this.variable ? 'Actualizar' : 'Crear' }}</ion-button>
+  <div *ngIf="variable ">
+    <div class="tab-buttons">
+      <div (click)="showTab(1)" [class.selected]="isTabSelected(1)">Informacion</div>
+      <div (click)="showTab(2)" [class.selected]="isTabSelected(2)" >Comentarios</div>
     </div>
   </div>
+    <div class="container-body" *ngIf="currentTab === 1">
+      <div class="post-container-body">
+        <h2>Seleccione Multimedia</h2>
+        <div class="input-wrapper">
+          <div (click)="showSelected('dataMultimedia')"  class="title-up">
+            <h2>{{ selectedMultimedia ? selectedMultimedia.TITULOMULTIMEDIA : 'Ninguno' }}</h2>
+          </div>
+          <div  (click)="showSelected('dataMultimedia')" class="input-icon" >
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </div>
+        </div>
+        <h2>Seleccione Tipo Ejercicio</h2>
+        <div class="input-wrapper">
+          <div (click)="showSelected('dataTEjercicio')"  class="title-up">
+            <h2>{{ selectedTEjercicio ? selectedTEjercicio.NOMBRETIPOEJERCICIO : 'Ninguno' }}</h2>
+          </div>
+          <div  (click)="showSelected('dataTEjercicio')" class="input-icon" >
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </div>
+        </div>
+        <h2>Seleccione Nivel de Dificultad</h2>
+        <div class="input-wrapper">
+          <div (click)="showSelected('dataNDificultad')"  class="title-up">
+            <h2>{{ selectedNDificultad ? selectedNDificultad.tituloniveldificultadejercicio : 'Ninguno' }}</h2>
+          </div>
+          <div  (click)="showSelected('dataNDificultad')" class="input-icon" >
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </div>
+        </div>
+        <h2>Seleccione Objetivo Muscular</h2>
+        <div class="input-wrapper">
+          <div (click)="showSelected('dataOMuscular')"  class="title-up">
+            <h2>{{ selectedOMuscular ? selectedOMuscular.NOMBREOBJETIVOSMUSCULARES : 'Ninguno' }}</h2>
+          </div>
+          <div  (click)="showSelected('dataOMuscular')" class="input-icon" >
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </div>
+        </div>
+        <div>
+          <ion-label class="ion-label-body">Nombre</ion-label>
+          <ion-input  class="ion-input-body" [(ngModel)]="nombreEjercicio" type="text" name="nombre" placeholder="Ingresar Nombre" required></ion-input>
+        </div>
+        <div>
+          <ion-label class="ion-label-body">Descripcion</ion-label>
+          <ion-textarea  class="ion-input-body" [(ngModel)]="nombreDescripcion" type="text" name="descripcion" placeholder="Ingresar Descripcion" required></ion-textarea>
+        </div>
+        <div>
+          <ion-label class="ion-label-body">Intrucciones</ion-label>
+          <ion-textarea  class="ion-input-body" [(ngModel)]="instruccion" type="text" name="instruccion" placeholder="Ingresar Intrucciones" required></ion-textarea>
+        </div>
+        <div>
+          <ion-label class="ion-label-body">Peso Recomendando</ion-label>
+          <ion-input  class="ion-input-body" [(ngModel)]="pesoRecomendado" type="text" name="peso" placeholder="Ingresar Peso Recom." required></ion-input>
+        </div>
+        <div>
+          <ion-label class="ion-label-body">Repeticiones</ion-label>
+          <ion-input  class="ion-input-body" [(ngModel)]="repeticiones" type="text" name="repeticion" placeholder="Ingresar Numero de Repeticiones" required></ion-input>
+        </div>
+        <div>
+          <ion-label class="ion-label-body">Tiempo en Realizar</ion-label>
+          <ion-input class="ion-input-body" [(ngModel)]="tiempoRealizar" (input)="formatearTiempo()" (change)="completarTiempo()" type="text" name="nombre" placeholder="HH:mm:ss" required></ion-input>
+        </div>
+        <div>
+          <ion-label class="ion-label-body">Numero de Series</ion-label>
+          <ion-input  class="ion-input-body" [(ngModel)]="numeroSeries" type="text" name="series" placeholder="Ingresar Numero Series" required></ion-input>
+        </div>
+        <div>
+          <ion-label class="ion-label-body">Variación o Modicicación</ion-label>
+          <ion-textarea  class="ion-input-body" [(ngModel)]="variacionEjercicio" type="text" name="variacion" placeholder="Ingresar Variación o Modicicación" required></ion-textarea>
+        </div>
+        <div>
+          <ion-label class="ion-label-body">Información Adicional</ion-label>
+          <ion-textarea  class="ion-input-body" [(ngModel)]="adicionalInformacion" type="text" name="adicional" placeholder="Ingresar Información Adicional" required></ion-textarea>
+        </div>
+      </div>
+      <div class="buttons-tab1">
+        <ion-button (click)="go_page('videos')"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
+        <ion-button (click)="confirmchangeCreateData()"  class="ion-buttons-2" fill="clear">{{ this.variable ? 'Actualizar' : 'Crear' }}</ion-button>
+      </div>
+    </div>
+  <div class="container-body" *ngIf="currentTab === 2  && dataComentarioporEjercicio && dataComentarioporEjercicio.length >0;else noDataMessage ">
+    <ion-card class="container-body-card" *ngFor="let data of dataComentarioporEjercicio"
+    [ngClass]="{'color-1': data.STATUSPROGRESO === 0, 'color-2': data.STATUSPROGRESO === 1}"
+    (touchstart)="onCardTouchStart($event,data)" (touchend)="onCardTouchEnd($event)">
+      <ion-card-content class="card-content">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="3" class="row-image">
+              <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+            </ion-col>
+            <ion-col size="9" class="row-text-right">
+              <div style="display: flex;">
+                <div style="width: 50%;">
+                  <div class="item-text">
+                    <ion-label>@{{data.NICKNAMEPERSONA}}</ion-label>
+                  </div>
+                </div>
+                <div class="stars">
+                  <ion-icon name="star-outline" [ngClass]="{ 'filled-star': data.CALIFICACIONPROGRESO >= 1 }"></ion-icon>
+                  <ion-icon name="star-outline" [ngClass]="{ 'filled-star': data.CALIFICACIONPROGRESO >= 2 }"></ion-icon>
+                  <ion-icon name="star-outline" [ngClass]="{ 'filled-star': data.CALIFICACIONPROGRESO >= 3 }"></ion-icon>
+                  <ion-icon name="star-outline" [ngClass]="{ 'filled-star': data.CALIFICACIONPROGRESO >= 4 }"></ion-icon>
+                  <ion-icon name="star-outline" [ngClass]="{ 'filled-star': data.CALIFICACIONPROGRESO >= 5 }"></ion-icon>
+                </div>
+              </div>
+              <div>
+                <div class="item-comment-p">
+                  <ion-text>{{data.OBSERVACIONPROGRESO}}</ion-text>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div class="overlay-container-select"
+   *ngIf="dataComentarioporEjercicioUniq && mostarDialogComment">
+    <div style="display: flex;
+    flex-direction: column; ">
+      <div>
+        <ion-card class="container-body-card"
+        [ngClass]="{'color-1': dataComentarioporEjercicioUniq.STATUSPROGRESO === 0, 'color-2': dataComentarioporEjercicioUniq.STATUSPROGRESO === 1}">
+          <ion-card-content class="card-content">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="3" class="row-image">
+                  <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+                </ion-col>
+                <ion-col size="9" class="row-text-right">
+                  <div style="display: flex;">
+                    <div style="width: 50%;">
+                      <div class="item-text">
+                        <ion-label>@{{dataComentarioporEjercicioUniq.NICKNAMEPERSONA}}</ion-label>
+                      </div>
+                    </div>
+                    <div class="stars">
+                      <ion-icon name="star-outline" [ngClass]="{ 'filled-star': dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO >= 1 }"></ion-icon>
+                      <ion-icon name="star-outline" [ngClass]="{ 'filled-star': dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO >= 2 }"></ion-icon>
+                      <ion-icon name="star-outline" [ngClass]="{ 'filled-star': dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO >= 3 }"></ion-icon>
+                      <ion-icon name="star-outline" [ngClass]="{ 'filled-star': dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO >= 4 }"></ion-icon>
+                      <ion-icon name="star-outline" [ngClass]="{ 'filled-star': dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO >= 5 }"></ion-icon>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="item-comment-p">
+                      <ion-text>{{dataComentarioporEjercicioUniq.OBSERVACIONPROGRESO}}</ion-text>
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </div>
+      <div>
+        <div class="buttons-tab1">
+          <ion-button (click)="mostarDialogComment=!mostarDialogComment" class="ion-buttons-1" fill="clear">Cancelar</ion-button>
+          <ion-button  (click)="changeStatusProgreso(dataComentarioporEjercicioUniq)" class="ion-buttons-2" fill="clear" >
+            {{ dataComentarioporEjercicioUniq.STATUSPROGRESO === 0 ? 'Mostrar' : 'Ocultar' }}
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noDataMessage>
+    <div class="no-data-message" *ngIf="dataComentarioporEjercicio && dataComentarioporEjercicio.length === 0">
+      <img src="{{ ip_address }}/media/images/notfound.png" alt="Imagen de datos no encontrados">
+      <h1 class="text-no-data-message">No Existe Comentarios para este ejercicio</h1>
+      <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>
+    </div>
+  </ng-template>
+
   <!-- SELECT BROWSEABLE DE SELECT MULTIMEDIA -->
   <div class="overlay-container-select"  *ngIf="mostrarSelectMultimedia">
     <div class="browser">

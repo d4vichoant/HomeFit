@@ -55,15 +55,34 @@ export class CrearObjetivoMuscularPage implements OnInit {
 
   ionViewDidEnter(){
      this.validateSesion();
+     this.cargarImagenesBefores();
     //this.test()
   }
   ngOnInit() {
     this.validateSesion();
+    this.cargarImagenesBefores();
     //this.test()
   }
   test(){
     this.obtenerOMuscular();
     this.loading=false;
+  }
+  cargarImagenesBefores(){
+    let imagesLoaded = 0;
+    const image1 = new Image();
+    const image2 = new Image();
+    image1.src = IP_ADDRESS + '/media/images/objetive-muscular-bk-1.png';
+    image2.src = IP_ADDRESS + '/media/images/objetive-muscular-bk-2.png';
+
+    const handleImageLoad = () => {
+      imagesLoaded++;
+      if (imagesLoaded === 2) {
+        this.loading = false;
+      }
+    };
+
+    image1.onload = handleImageLoad;
+    image2.onload = handleImageLoad;
   }
   StatusBar(){
     StatusBar.hide();
@@ -79,7 +98,7 @@ export class CrearObjetivoMuscularPage implements OnInit {
               this.chanceColorFooter();
               this.StatusBar();
               this.obtenerOMuscular();
-              this.loading = false;
+              //this.loading = false;
             },
             (error) => {
               this.handleError();

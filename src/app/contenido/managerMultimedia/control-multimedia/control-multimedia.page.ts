@@ -28,13 +28,14 @@ export class ControlMultimediaPage implements OnInit {
     this.validateSesion();
     this.updateCurrentDate();
     //this.test();
-
+    this.cargarImagenesBefore();
   }
   ionViewDidEnter() {
     //this.test();
     this.chanceColorFooter();
     this.updateCurrentDate();
     this.validateSesion();
+    this.cargarImagenesBefore();
   }
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
@@ -54,6 +55,30 @@ export class ControlMultimediaPage implements OnInit {
   }
   test(){
     this.loading = false;
+  }
+
+  cargarImagenesBefore(){
+    let imagesLoaded = 0;
+    const image1 = new Image();
+    const image2 = new Image();
+    const image3 = new Image();
+    const image4 = new Image();
+    image1.src = IP_ADDRESS + '/media/images/control-multimedia-1.png';
+    image2.src = IP_ADDRESS + '/media/images/control-multimedia-2.jpg';
+    image3.src = IP_ADDRESS + '/media/images/control-multimedia-3.jpg';
+    image4.src = IP_ADDRESS + '/media/images/control-multimedia-4.jpg';
+
+    const handleImageLoad = () => {
+      imagesLoaded++;
+      if (imagesLoaded === 9) {
+        this.loading = false;
+      }
+    };
+
+    image1.onload = handleImageLoad;
+    image2.onload = handleImageLoad;
+    image3.onload = handleImageLoad;
+    image4.onload = handleImageLoad;
   }
 
   go_page(name: string){

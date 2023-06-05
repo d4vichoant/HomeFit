@@ -155,4 +155,7 @@ export class ApiServiceService {
   UpdateEjercicio(data:any): Observable<any>{
     return this.http.post(IP_ADDRESS+/multimedia/+/UpdateDataEjercicio/,data );
   }
+  ObtenerComentarioPorEjercicio(idEjercicio:number){
+    return this.http.get(IP_ADDRESS+/multimedia/+/obtenerComentariosporEjercicio/+idEjercicio);
+  }
 }

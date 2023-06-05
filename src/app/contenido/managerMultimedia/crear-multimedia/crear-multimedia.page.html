@@ -198,10 +198,12 @@
     </div>
 
     <!-- Modificar Todo -->
-    <div class="overlay-container-imagen"  (click)="mostrarImagen=!mostrarImagen" *ngIf="mostrarImagen" >
-      <h1>¡Minuatura Guardada!</h1>
-      <img [src]="imagenFile ? getImagenURL(imagenFile) : ''" *ngIf="imagenFile" alt="Captured Image">
-      <p>Presiona afuera para salir</p>
+    <div class="overlay-container-imagen" (click)="mostrarImagen=!mostrarImagen" *ngIf="mostrarImagen">
+      <div class="centered-content">
+        <h1>¡Miniatura Guardada!</h1>
+        <img [src]="imagenFile ? getImagenURL(imagenFile) : ''" *ngIf="imagenFile" alt="Captured Image">
+        <p>Presiona afuera para salir</p>
+      </div>
     </div>
     <app-footer-designer></app-footer-designer>
 </ion-content>

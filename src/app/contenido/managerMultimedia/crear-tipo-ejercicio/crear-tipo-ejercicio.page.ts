@@ -54,10 +54,12 @@ export class CrearTipoEjercicioPage implements OnInit {
 
   ionViewDidEnter(){
     this.validateSesion();
+    this.cargarImagenesBefores();
     //this.test()
   }
   ngOnInit() {
     this.validateSesion();
+    this.cargarImagenesBefores();
     //this.test()
   }
   test(){
@@ -78,7 +80,7 @@ export class CrearTipoEjercicioPage implements OnInit {
               this.chanceColorFooter();
               this.StatusBar();
               this.obtenerTEjercicio();
-              this.loading = false;
+              //this.loading = false;
             },
             (error) => {
               this.handleError();
@@ -98,6 +100,7 @@ export class CrearTipoEjercicioPage implements OnInit {
     this.storage.remove('sesion');
   }
 
+
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
     document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
@@ -107,6 +110,23 @@ export class CrearTipoEjercicioPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
     document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
+  }
+  cargarImagenesBefores(){
+    let imagesLoaded = 0;
+    const image1 = new Image();
+    const image2 = new Image();
+    image1.src = IP_ADDRESS + '/media/images/objetive-muscular-bk-1.png';
+    image2.src = IP_ADDRESS + '/media/images/objetive-muscular-bk-2.png';
+
+    const handleImageLoad = () => {
+      imagesLoaded++;
+      if (imagesLoaded === 2) {
+        this.loading = false;
+      }
+    };
+
+    image1.onload = handleImageLoad;
+    image2.onload = handleImageLoad;
   }
   go_page(name: string){
     this.navController.navigateForward('/'+name);

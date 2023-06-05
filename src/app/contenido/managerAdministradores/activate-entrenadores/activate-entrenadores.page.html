@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="container-body" *ngIf="filter[0]?.name === 'Entrenador' && filter[0]?.iconstatus && data && data.length >0;else noDataMessage ">
-    <div class="item-body" [ngStyle]="{ 'background-color': item.ACTIVACIONENTRENADOR ? '#ac89fc' : '#c7b4fe' }" *ngFor="let item of data">
+    <div class="item-body" [style.background-image]="'url(' + ip_address + '/media/images/objetive-muscular-bk-' + (item.ACTIVACIONENTRENADOR ? '1' : '2') + '.png)'" *ngFor="let item of data">
       <div class="div-item-body">
         <div class="div-text-item-body"  >
           <h1>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}&nbsp;{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</h1><span class="age">|&nbsp;{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }} años</span>
@@ -71,7 +71,7 @@
     </div>
   </div>
   <div class="container-body" *ngIf="filter[0]?.name === 'Usuarios' && filter[0]?.iconstatus && data && data.length >0;else noDataMessageUser ">
-    <div class="item-body" [ngStyle]="{ 'background-color': item.IDGENERO === 0 ? '#c7b4fe' : item.IDGENERO === 1? '#ac89fc' : item.IDGENERO === 2? '#ded5ff' : 'transparent' }" *ngFor="let item of data" >
+    <div class="item-body" [style.background-image]="getBackgroundImage(item.IDGENERO)" *ngFor="let item of data" >
       <div class="div-item-body">
         <div class="div-text-item-body">
           <h1>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}&nbsp;{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</h1><span class="age">|&nbsp;{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }} años</span>
@@ -106,7 +106,7 @@
     </div>
   </div>
   <div class="container-body" *ngIf="filter[0]?.name === 'Entrenante' && filter[0]?.iconstatus && data && data.length >0;else noDataMessageEntrenante ">
-    <div class="item-body" [ngStyle]="{ 'background-color': item.IDGENERO === 0 ? '#c7b4fe' : item.IDGENERO === 1? '#ac89fc' : item.IDGENERO === 2? '#ded5ff' : 'transparent' }" *ngFor="let item of data" >
+    <div class="item-body" [style.background-image]="getBackgroundImage(item.IDGENERO)" *ngFor="let item of data" >
       <div class="div-item-body">
         <div class="div-text-item-body">
           <h1>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}&nbsp;{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</h1><span class="age">|&nbsp;{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }} años</span>
