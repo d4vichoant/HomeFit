@@ -11,10 +11,10 @@
         <ion-img class="icono-image" src="{{ ip_address }}/media/images/multimedia.png"></ion-img>
         <ion-label class="label-footer">Multimedia</ion-label>
       </ion-col>
-      <ion-col size="3" class="image-container-footer active-element3 ">
+      <ion-col size="3" (click)="go_page('control-programacion')" class="image-container-footer active-element3 ">
         <div class="notification-dot"></div>
         <ion-img class="icono-image" src="{{ ip_address }}/media/images/notificacion.png"></ion-img>
-        <ion-label class="label-footer">Inicio</ion-label>
+        <ion-label class="label-footer">Programación</ion-label>
       </ion-col>
       <ion-col (click)="go_page('perfile')" size="3" class="image-container-footer active-element4 ">
         <div class="notification-dot"></div>

@@ -15,6 +15,7 @@ export class ToolbarDesignerComponent  implements OnInit {
 
   ngOnInit() {}
   go_page(name: string){
+    console.log("ads");
     this.navController.navigateForward('/'+name);
   }
 }

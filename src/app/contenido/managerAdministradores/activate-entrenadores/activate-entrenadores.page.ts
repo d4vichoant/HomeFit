@@ -108,6 +108,7 @@ export class ActivateEntrenadoresPage implements OnInit {
         if (sesion && JSON.parse(sesion).rolUsuario == 99) {
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
+              this.StatusBar();
               this.obtenerAllGender();
               this.obtenerAllPeople();
               this.obtenerAllFrecuencias();

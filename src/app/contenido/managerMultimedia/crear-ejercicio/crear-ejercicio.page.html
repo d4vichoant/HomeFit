@@ -133,7 +133,7 @@
               </div>
               <div>
                 <div class="item-comment-p">
-                  <ion-text>{{data.OBSERVACIONPROGRESO}}</ion-text>
+                  <ion-text>{{data.OBSERVACIONPROGRESO && data.OBSERVACIONPROGRESO}}</ion-text>
                 </div>
               </div>
             </ion-col>
@@ -194,7 +194,7 @@
 
   <ng-template #noDataMessage>
     <div class="no-data-message" *ngIf="dataComentarioporEjercicio && dataComentarioporEjercicio.length === 0">
-      <img src="{{ ip_address }}/media/images/notfound.png" alt="Imagen de datos no encontrados">
+      <img src="{{ ip_address }}/media/errorpage/notfoundcomment.png" alt="Imagen de datos no encontrados">
       <h1 class="text-no-data-message">No Existe Comentarios para este ejercicio</h1>
       <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>
     </div>
