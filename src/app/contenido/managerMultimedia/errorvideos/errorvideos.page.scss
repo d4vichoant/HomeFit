@@ -68,13 +68,14 @@ ion-content {
 }
 .container-text {
   padding: 5% 12% 0% 12%;
-  font-family: Raleway-Medium;
-  font-size: 1.15rem;
-  text-align: center; /* Centra el texto horizontalmente */
-  color: #fb687f; /* Establece el color de texto a blanco */
   p{
     margin: 1%;
     padding: 0;
+    font-family: Raleway-Medium;
+    font-size: 1.20rem;
+    text-align: center;
+    color: #fb687f;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.144);
   }
 }
 .buttons {
@@ -88,7 +89,7 @@ ion-content {
   width: 100%;
   ion-button {
     --border-radius: 10px;
-    --background:#6069e8;
+    --background:#fcd863;
     --padding-top: 7%; /* ajusta el valor de acuerdo a tu preferencia */
     --padding-bottom: 7%;
     width: 100%;

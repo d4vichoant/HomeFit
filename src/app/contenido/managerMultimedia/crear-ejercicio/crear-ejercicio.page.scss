@@ -343,3 +343,56 @@ ion-content {
   margin: 0%;
   color: #9e9e9e;
 }
+
+.container-selects{
+  width: 100%;
+  display: block;
+  flex-direction: column;
+  padding: 1% 3% 2% 3%;
+  margin-top: 2%!important;
+  margin-bottom: 3%!important;
+}
+.inline-container{
+  display: flex;
+  align-items: center;
+  ion-label{
+    color: #524f52;
+    padding-left: 20px !important;
+    font-family: Raleway-Bold;
+    font-size: 1.1rem;
+  }
+  img{
+  width: 5%!important;
+  height: auto;
+  margin-left: 10px;
+  max-width: 5%!important;
+  }
+}
+
+.select-item {
+  background-color: #f8f9fb;
+  border-radius: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0px;
+  margin-top: 2%!important;
+  margin-bottom: 3%!important;
+  ion-select{
+    margin: 0px;
+    padding: 0px;
+    --padding-start:20px;
+    ion-select-option{
+      color: #524f52;
+      font-family: Raleway-Light;
+      font-size: .8rem;
+      padding: 0px;
+      margin: 0px;
+    }
+  }
+  img{
+    width: 5%!important;
+    max-width: 5%!important;
+    margin-right: 10px;
+    }
+}

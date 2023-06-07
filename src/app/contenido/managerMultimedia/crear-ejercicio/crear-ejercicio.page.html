@@ -93,12 +93,28 @@
           <ion-input  class="ion-input-body" [(ngModel)]="numeroSeries" type="text" name="series" placeholder="Ingresar Numero Series" required></ion-input>
         </div>
         <div>
-          <ion-label class="ion-label-body">Variación o Modicicación</ion-label>
+          <ion-label class="ion-label-body">Variación o Modificación</ion-label>
           <ion-textarea  class="ion-input-body" [(ngModel)]="variacionEjercicio" type="text" name="variacion" placeholder="Ingresar Variación o Modicicación" required></ion-textarea>
         </div>
         <div>
           <ion-label class="ion-label-body">Información Adicional</ion-label>
-          <ion-textarea  class="ion-input-body" [(ngModel)]="adicionalInformacion" type="text" name="adicional" placeholder="Ingresar Información Adicional" required></ion-textarea>
+          <ion-textarea class="ion-input-body" [(ngModel)]="adicionalInformacion" type="text" name="adicional" placeholder="Ingresar Información Adicional" required></ion-textarea>
+        </div>
+        <div class="inline-container" (click)="mostrarSelecERequerido=!mostrarSelecERequerido" *ngIf="equiporequeridoporEjercicio && equiporequeridoporEjercicio.length > 0">
+          <ion-label >Equipo Requerido:</ion-label><br>
+          <img src="{{ ip_address }}/media/images/plus.png"  alt="Agregar Objetivo">
+        </div>
+        <div class="container-selects">
+          <ng-container   *ngFor="let option of equiporequeridoporEjercicio">
+            <div class="select-item" >
+              <ion-select interface="popover" [(ngModel)]="option.id">
+                <ion-select-option *ngFor="let item of dataERequerido" [value]="item.IDEQUIPOREQUERIDO ">
+                  {{ item.NOMBREEQUIPOREQUERIDO }}
+                </ion-select-option>
+              </ion-select>
+              <img src="{{ ip_address }}/media/images/menos.png" alt="Remove Objetive"/>
+            </div>
+          </ng-container>
         </div>
       </div>
       <div class="buttons-tab1">
@@ -132,8 +148,8 @@
                 </div>
               </div>
               <div>
-                <div class="item-comment-p">
-                  <ion-text>{{data.OBSERVACIONPROGRESO && data.OBSERVACIONPROGRESO}}</ion-text>
+                <div *ngIf="data.OBSERVACIONPROGRESO" class="item-comment-p">
+                  <ion-text>{{ data.OBSERVACIONPROGRESO }}</ion-text>
                 </div>
               </div>
             </ion-col>
@@ -193,7 +209,7 @@
   </div>
 
   <ng-template #noDataMessage>
-    <div class="no-data-message" *ngIf="dataComentarioporEjercicio && dataComentarioporEjercicio.length === 0">
+    <div class="no-data-message" *ngIf=" currentTab ===2 && dataComentarioporEjercicio && dataComentarioporEjercicio.length === 0">
       <img src="{{ ip_address }}/media/errorpage/notfoundcomment.png" alt="Imagen de datos no encontrados">
       <h1 class="text-no-data-message">No Existe Comentarios para este ejercicio</h1>
       <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>

@@ -61,7 +61,6 @@ export class LoginPage implements OnInit {
             nickname:response.nickname,
             rolUsuario:response.rolUsuario
           }
-          console.log(sesion);
           if (response.message=="access user"){
             this.storage.set('sesion', JSON.stringify(sesion)).then(() => {
               this.navController.navigateForward('/main');

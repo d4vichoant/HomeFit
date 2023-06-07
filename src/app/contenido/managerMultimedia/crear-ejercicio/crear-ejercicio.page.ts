@@ -38,6 +38,11 @@ export class CrearEjercicioPage implements OnInit {
   searchTermMultimedia?: string;
   public dataMultimedia!: any[];
 
+  public mostrarSelecERequerido:boolean=false;
+  selecteERequerido:any;
+  searchERequerido?: string;
+  public dataERequerido!: any[];
+
   public mostrarSelecTEjercicio:boolean=false;
   selectedTEjercicio:any;
   searchTEjercicio?: string;
@@ -67,6 +72,7 @@ export class CrearEjercicioPage implements OnInit {
   public numeroSeries!:string;
   public variacionEjercicio!:string;
   public adicionalInformacion!:string;
+  public equiporequeridoporEjercicio!:any[];
 
   constructor(private route: ActivatedRoute,
     private navController: NavController,
@@ -113,9 +119,19 @@ export class CrearEjercicioPage implements OnInit {
     this.variacionEjercicio = this.variable.VARIACIONESMODIFICACIONEJERCICIOPROGRESO;
     this.adicionalInformacion = this.variable.OBSERVACIONESEJERCICIO;
     this.obtenerComentarioporEjercicio(this.variable.IDEJERCICIO);
-    console.log(this.dataComentarioporEjercicio);
+    this.textConvertir(this.variable.TITULOS_EQUIPOS_REQUERIDOS,this.variable.ID_EQUIPOS_REQUERIDOS);
+    //console.log(this.equiporequeridoporEjercicio)
   }
 
+  textConvertir(TITULOS_EQUIPOS_REQUERIDOS:string,EQUIPOS_REQUERIDOS:string){
+    const titulosArray = TITULOS_EQUIPOS_REQUERIDOS.split(',');
+    const equiposArray = EQUIPOS_REQUERIDOS.split(',');
+    const resultado = [];
+    for (let i = 0; i < titulosArray.length; i++) {
+      resultado.push({ nombre: titulosArray[i], id: Number(equiposArray[i]) });
+    }
+    this.equiporequeridoporEjercicio=resultado;
+  }
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
     document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
@@ -142,6 +158,7 @@ export class CrearEjercicioPage implements OnInit {
     this.obtenerTEjercicio();
     this.obtenerNDificultad();
     this.obtenerOMuscular();
+    this.obtenerEquipoRequerido();
   }
   validateSesion(){
     try{
@@ -157,6 +174,7 @@ export class CrearEjercicioPage implements OnInit {
               this.obtenerTEjercicio();
               this.obtenerNDificultad();
               this.obtenerOMuscular();
+              this.obtenerEquipoRequerido();
               this.loading = false;
             },
             (error) => {
@@ -179,7 +197,7 @@ export class CrearEjercicioPage implements OnInit {
   }
   public onInputChange(event: any,nameData:string) {
     const currentSearchTerm = event.target.value;
-    if (currentSearchTerm.length < this.previousSearchTerm.length) {
+    if (this.previousSearchTerm && currentSearchTerm.length < this.previousSearchTerm.length) {
       this.cargarDatos(nameData);
     }
     this.previousSearchTerm = currentSearchTerm;
@@ -497,6 +515,17 @@ export class CrearEjercicioPage implements OnInit {
         this.dataOMuscular=response;
         if(this.variable)
         this.selectedOMuscular = this.dataOMuscular.find(item => item.IDOBJETIVOSMUSCULARES  === this.variable.IDOBJETIVOMUSCULAR);
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerEquipoRequerido(){
+    this.apiService.allEquipoRequerido().subscribe(
+      (response) => {
+        this.dataERequerido=response;
+        //console.log(this.dataERequerido);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

@@ -122,7 +122,19 @@ const routes: Routes = [
   {
     path: 'control-multimedia',
     loadChildren: () => import('./contenido/managerMultimedia/control-multimedia/control-multimedia.module').then( m => m.ControlMultimediaPageModule)
+  },  {
+    path: 'control-programacion',
+    loadChildren: () => import('./contenido/managerSesiones/control-programacion/control-programacion.module').then( m => m.ControlProgramacionPageModule)
   },
+  {
+    path: 'error-sesiones',
+    loadChildren: () => import('./contenido/managerSesiones/error-sesiones/error-sesiones.module').then( m => m.ErrorSesionesPageModule)
+  },
+  {
+    path: 'crear-erequerido',
+    loadChildren: () => import('./contenido/managerMultimedia/crear-erequerido/crear-erequerido.module').then( m => m.CrearERequeridoPageModule)
+  },
+
 
 ];
 

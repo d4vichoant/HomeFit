@@ -169,7 +169,7 @@ export class CrearMultimediaPage implements OnInit   {
     }
     public onInputChange(event: any) {
       const currentSearchTerm = event.target.value;
-      if (currentSearchTerm.length < this.previousSearchTerm.length) {
+      if (this.previousSearchTerm && currentSearchTerm.length < this.previousSearchTerm.length) {
         this.dataMultimedia=this.selectData;
       }
       this.previousSearchTerm = currentSearchTerm;

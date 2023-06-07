@@ -119,6 +119,31 @@
         </ion-grid>
       </ion-card-content>
     </ion-card>
+
+    <ion-card (click)="go_page('crear-erequerido')">
+      <div class="custom-image">
+      <img alt="Silhouette of mountains" src="{{ ip_address }}/media/images/control-multimedia-5.jpg" />
+    </div>
+      <ion-card-header>
+        <ion-card-title>Equipos Requeridos</ion-card-title>
+        <ion-card-subtitle>Administrar</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              Aquí podrás administrar todos los equipo requeridos que va a requerir el Entrenante por Ejercicio que vaya a realizar.
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-end">
+              <p class="ion-button " (click)="go_page('videos')">Configurar</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
   </div>
   <app-footer-designer></app-footer-designer>
 </ion-content>

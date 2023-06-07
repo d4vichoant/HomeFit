@@ -1,0 +1,129 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <app-toolbar-designer></app-toolbar-designer>
+  <ion-toolbar class="toolbar-header">
+    <div class="onboard-top" >
+      <ion-toolbar >
+        <ion-buttons slot="start">
+          <ion-button style="color: #9259f9;"   (click)="go_page('control-multimedia')">
+           <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+         </ion-button>
+         <p (click)="go_page('control-multimedia')">Regresar</p>
+       </ion-buttons>
+        <!-- <ion-buttons slot="end">
+          <ion-button style="color: #ffffff;" (click)="goHome()">
+            <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons> -->
+      </ion-toolbar>
+    </div>
+  </ion-toolbar>
+  <div class="browser">
+    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
+  </div>
+  <div class="container-body" *ngIf=" dataERequerido && dataERequerido.length >0;else noDataMessage ">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-col-car " size="6" >
+          <ion-card (click)="showCreateDara()">
+            <img class="imageShow" alt="Silhouette of mountains" src="{{ ip_address }}/media/equipoRequerido/plus.png" />
+            <ion-card-header>
+              <ion-card-title>Crear Nuevo</ion-card-title>
+              <ion-card-subtitle>Equipo Requerido</ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <ion-col (click)="confirmchangeStatus(card)" class="ion-col-car" size="6" *ngFor="let card of dataERequerido"
+        (touchstart)="onCardTouchStart($event,card)" (touchend)="onCardTouchEnd($event)">
+        <ion-card  class="container-body-card"[ngClass]="{'color-1': card.STATUSEQUIPOREQUERIDO === 0, 'color-2': card.STATUSEQUIPOREQUERIDO === 1}">
+            <img class="imageShow" alt="Silhouette of mountains" src="{{ ip_address }}/media/equipoRequerido/{{card.IMAGENEQUIPOREQUERIDO}}" />
+            <ion-card-header>
+              <ion-card-title>{{card.NOMBREEQUIPOREQUERIDO}} </ion-card-title>
+              <ion-card-subtitle>Equipo Requerido</ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ng-template #noDataMessage>
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-col-car " size="6" >
+          <ion-card (click)="showCreateDara()">
+            <img class="imageShow" alt="Silhouette of mountains" src="{{ ip_address }}/media/equipoRequerido/plus.png" />
+            <ion-card-header>
+              <ion-card-title>Crear Nuevo</ion-card-title>
+              <ion-card-subtitle>Equipo Requerido</ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <ion-col class="ion-col-car " size="6" >
+          <ion-card>
+            <img alt="Silhouette of mountains" src="{{ ip_address }}/media/errorpage/notfoundEquipoRequerido.png" />
+            <ion-card-header>
+              <ion-card-title>No Encontrado</ion-card-title>
+              <ion-card-subtitle>Equipo Requerido</ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
+
+  <div class="overlay-container-select"
+   *ngIf="dataERequeridoUniq && mostarDialogEdit">
+   <div style="display: block;">
+    <div class="card-container ">
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-col-car-overlay" size="8">
+              <ion-card  class="container-body-card" [ngClass]="{'color-1': dataERequeridoUniq.STATUSEQUIPOREQUERIDO === 0, 'color-2': dataERequeridoUniq.STATUSEQUIPOREQUERIDO === 1}">
+                <ion-icon (click)="uploadImage()"  name="push-outline"  class="edit-icon-imag"></ion-icon>
+                <ng-container *ngIf="!selectedImageUrl && dataERequeridoUniq.IMAGENEQUIPOREQUERIDO; else otherImage">
+                  <img (click)="uploadImage()" class="imageShow" alt="Silhouette of mountains" [src]="ip_address + '/media/equipoRequerido/' + dataERequeridoUniq.IMAGENEQUIPOREQUERIDO" />
+                </ng-container>
+                <ng-template #otherImage>
+                  <div *ngIf="selectedImageUrl; else otherotherImage">
+                    <img class="imageupdate" alt="Default Image" (click)="uploadImage()"  [src]="selectedImageUrl"  />
+                  </div>
+                </ng-template>
+                <ng-template #otherotherImage>
+                    <img alt="Default Image" (click)="uploadImage()" src="{{ ip_address }}/media/images/notImagenERequerido.png" />
+                </ng-template>
+                <input type="file" style="display: none;" id="fileInput" class="file-input" accept=".png" (change)="handleFileInput($event)" #fileInputRef>
+                <ion-card-header>
+                  <ion-card-title>
+                    <ion-textarea type="text" name="NOMBREEQUIPOREQUERIDO" placeholder="Escriba el Nombre" [(ngModel)]="dataERequeridoUniq && dataERequeridoUniq.NOMBREEQUIPOREQUERIDO" required></ion-textarea>
+                    <ion-icon name="create-outline" class="edit-icon"></ion-icon>
+                  </ion-card-title>
+                  <ion-card-subtitle>Equipo Requerido</ion-card-subtitle>
+                </ion-card-header>
+              </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      </div>
+      <div style="display: block;">
+        <div class="buttons-tab1">
+          <ion-button (click)="cancelERequerido()" class="ion-buttons-1" fill="clear">Cancelar</ion-button>
+          <ion-button (click)="changeStatusERequerido(dataERequeridoUniq)" class="ion-buttons-2" fill="clear">
+            {{ dataERequeridoUniq.STATUSEQUIPOREQUERIDO === 0 || !dataERequeridoUniq.STATUSEQUIPOREQUERIDO ? 'Mostrar' : 'Ocultar' }}
+          </ion-button>
+        </div>
+        <div class="buttons-tab2">
+          <ion-button (click)="dataERequeridoUniq.IMAGENEQUIPOREQUERIDO ? updatedatesERequerido(dataERequeridoUniq) : createERequerido(dataERequeridoUniq)" class="ion-buttons-3" fill="clear">
+            {{ dataERequeridoUniq.IMAGENEQUIPOREQUERIDO ? 'Actualizar' : 'Crear' }}
+          </ion-button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer-designer></app-footer-designer>
+</ion-content>

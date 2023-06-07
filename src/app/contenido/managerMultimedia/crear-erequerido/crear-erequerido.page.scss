@@ -1,0 +1,235 @@
+ion-content {
+  --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.toolbar-header{
+  z-index: -1;
+  margin-top: 2%;
+  background: transparent;
+  padding: 0% 3% 0% 3%;
+  --background: transparent;
+
+}
+.onboard-top{
+  padding-top: 0%;
+  padding-bottom: 1%;
+  margin-top:0%;
+  ion-toolbar{
+    --background:transparent;
+    p{
+      font-family: Raleway-Light;
+      font-size: 1rem;
+      color:  #6b6a6b;
+    }
+  }
+}
+
+
+//css de Spinner de cargando ...
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(130, 123, 123, 0.5); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container-body{
+  padding: 2% 3% 15% 3%;
+  width: 100%;
+}
+.browser{
+  padding: 0% 3% 0% 3%;
+}
+
+.ion-col-car{
+  //border: 1px solid #000000;
+  width: 100%;
+  margin: 0px!important;
+  padding: 0px!important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ion-card{
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #b48ef9;
+    img{
+      width: 100%;
+    }
+    ion-card-header{
+      ion-card-title{
+        font-family: Raleway-Bold;
+        font-size: 1rem;
+        color:  #9259f9;
+        text-align: center;
+      }
+      ion-card-subtitle{
+        text-align: center;
+        font-family: Raleway-Light;
+        font-size: .8rem;
+        color:  #6b6a6b;
+      }
+    }
+  }
+}
+.overlay-container-select{
+  padding: 0% 6% 0% 6%;
+  backdrop-filter: blur(8px); /* Ajusta el valor de desenfoque según tus necesidades */
+  background-color: rgba(255, 255, 255, 0.445); /* Cambia los valores RGBA según el color deseado */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttons-tab1{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 5%;
+  height: auto;
+}
+.buttons-tab2{
+  width: 100%;
+  padding-top: 5%;
+  height: auto;
+}
+.ion-buttons-1{
+  padding: 20px 0px;
+  height: 100%;
+  //border: 2px solid #9259f9;
+  font-family: Raleway-Medium;
+  font-size: 1.1rem;
+  color: #f57272;
+  border-radius: 10px;
+  flex-basis: 50%;
+}
+.ion-buttons-2{
+  padding: 20px 0px;
+  height: 100%;
+  width: 100%;
+  border: 2px solid #9259f9;
+  background-color: #9259f9;
+  font-family: Raleway-Medium;
+  font-size: 1.1rem;
+  color: #f0f0f0;
+  border-radius: 10px;
+  flex-basis: 50%;
+  box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
+}
+.ion-buttons-3{
+  padding: 20px 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  color: #b48ef9;
+  //border: 2px solid #9259f9;
+  font-family: Raleway-Medium;
+  font-size: 1.1rem;
+  color: #9259f9;
+  border-radius: 10px;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
+}
+.card-container {
+  display: flex!important;
+  justify-content: center!important;
+  margin: 0 auto;
+}
+
+.ion-col-car-overlay{
+  margin: 0 auto;
+  ion-card{
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #b48ef9;
+    img{
+      width: 100%;
+    }
+    ion-card-header{
+      ion-card-title{
+        ion-textarea{
+          font-family: Raleway-Bold;
+          font-size: 1rem;
+          color:  #9259f9;
+          text-align: center;
+        }
+      }
+      ion-card-subtitle{
+        text-align: center;
+        font-family: Raleway-Light;
+        font-size: .8rem;
+        color:  #6b6a6b;
+      }
+    }
+  }
+}
+.container-body-card::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-right: 20px solid transparent;
+  z-index: 99;
+}
+.container-body-card.color-1::before {
+  border-bottom: 20px solid #f07a7a;
+  border-left: 20px solid #f07a7a;
+
+}
+.container-body-card.color-2::before {
+  border-bottom: 20px solid #6bda90;
+  border-left: 20px solid #6bda90;
+}
+.edit-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #9259f9;
+  width: 20px;
+  height: 20px;
+}
+
+.edit-icon-imag {
+  position: absolute;
+  top: 8%;
+  right: 8%;
+  color: #9259f9;
+  width: 30px;
+  height: 30px;
+}
+
+.imageupdate{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 50%!important;
+  padding: 20%;
+}
+.imageShow{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 50%!important;
+  padding: 22%;
+}

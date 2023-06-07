@@ -43,6 +43,9 @@ export class ApiServiceService {
   allObjetivosPersonales():Observable<any>{
     return this.http.get(this.apiUrl+/OBJETIVOSPERSONALES/);
   }
+  allEquipoRequerido():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/equiporequerido/);
+  }
   allEspecialidadentrenador():Observable<any>{
     return this.http.get(this.apiUrl+/especialidadentrenador/);
   }
@@ -94,9 +97,6 @@ export class ApiServiceService {
   getMultimediaActivate():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/+/multimediaActivate/);
   }
-  getEquipoRequerido():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/equiporequerido/);
-  }
   getTipoEjercicio():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/+/tipoejercicio/);
   }
@@ -139,6 +139,12 @@ export class ApiServiceService {
   CreteDataMultimedia(data:any,nombre:string): Observable<any>{
     return this.http.post(IP_ADDRESS+/multimedia/+/CreateDataMultimedia/+nombre,data );
   }
+  UpdataDataERequerido(data:any,nombre:string): Observable<any>{
+    return this.http.post(IP_ADDRESS+/multimedia/+/UpdateDataERequerido/+nombre,data );
+  }
+  CreateDataERequerido(data:any,nombre:string): Observable<any>{
+    return this.http.post(IP_ADDRESS+/multimedia/+/CreateDataERequerido/+nombre,data );
+  }
   uploadFileMp3(file: File,filename :string): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file,filename);
@@ -148,6 +154,11 @@ export class ApiServiceService {
     const formData: FormData = new FormData();
     formData.append('file', file,filename);
     return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen', formData);
+  }
+  uploadcaptureImagenERequerido(file: File,filename :string): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file,filename);
+    return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen-erequerido', formData);
   }
     CreteDatEjercicio(data:any): Observable<any>{
     return this.http.post(IP_ADDRESS+/multimedia/+/CreateDataEjercicio/,data );

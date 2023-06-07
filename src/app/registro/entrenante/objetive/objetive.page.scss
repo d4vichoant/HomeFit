@@ -142,6 +142,12 @@ ion-content {
 
   }
 }
+.container-body{
+  margin: 6% 0% 6% 0%;
+  height: 45vh;
+  border-radius: 0px;
+  overflow: auto;
+}
 .button-container{
   padding-top: 1%;
   padding-left: 6%;
@@ -161,12 +167,14 @@ ion-content {
   .checkbox-content{
     display: flex;
     align-items: center;
-    span{
+    ion-text{
+      overflow-y: auto;
       text-align: center;
       color: #818286;
       font-family: Raleway-Medium;
       font-size: 0.85rem;
       flex: 1;
+      height: auto;
     }
     img{
       margin-left: 5px;
@@ -176,7 +184,7 @@ ion-content {
   }
 }
 
-@for $index from 1 through 5 {
+@for $index from 1 through 7 {
   $background-variable: --BackgroundButton#{$index};
   $checkmark-color-variable: --BackgroundButton--checkmark#{$index};
 
@@ -186,7 +194,8 @@ ion-content {
     --checkbox-background-checked: #ffffff;
     --border-color-checked: #ffffff;
     .checkbox-content {
-      span {
+      ion-text {
+        overflow-y: auto;
         color: #f8f8f8;
         font-family: Raleway-Bold;
       }

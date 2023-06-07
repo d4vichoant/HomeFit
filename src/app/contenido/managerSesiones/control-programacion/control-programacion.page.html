@@ -1,0 +1,9 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <app-toolbar-designer></app-toolbar-designer>
+  <app-footer-designer></app-footer-designer>
+</ion-content>
