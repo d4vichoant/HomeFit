@@ -164,7 +164,6 @@ export class VideosPage implements OnInit {
         variable: data
       }
     });
-    this.dataEjercicio=[];
   }
 
   getVideoName(url: string): string {

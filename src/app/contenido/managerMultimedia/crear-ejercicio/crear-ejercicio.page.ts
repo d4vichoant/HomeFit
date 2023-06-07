@@ -39,7 +39,7 @@ export class CrearEjercicioPage implements OnInit {
   public dataMultimedia!: any[];
 
   public mostrarSelecERequerido:boolean=false;
-  selecteERequerido:any;
+  selectERequerido:any;
   searchERequerido?: string;
   public dataERequerido!: any[];
 
@@ -73,6 +73,7 @@ export class CrearEjercicioPage implements OnInit {
   public variacionEjercicio!:string;
   public adicionalInformacion!:string;
   public equiporequeridoporEjercicio!:any[];
+  public OriginequiporequeridoporEjercicio!:any[];
 
   constructor(private route: ActivatedRoute,
     private navController: NavController,
@@ -91,6 +92,9 @@ export class CrearEjercicioPage implements OnInit {
     if(this.variable){
       this.completarDatos();
     }
+    if(!this.equiporequeridoporEjercicio){
+      this.equiporequeridoporEjercicio=[];
+    }
   }
 
   ionViewDidEnter() {
@@ -103,11 +107,13 @@ export class CrearEjercicioPage implements OnInit {
     if(this.variable){
       this.completarDatos();
     }
-
+    if(!this.equiporequeridoporEjercicio){
+      this.equiporequeridoporEjercicio=[];
+    }
   }
 
   completarDatos(){
-    //console.log(this.variable);
+    console.log(this.variable);
     this.currentTab=1;
     this.nombreEjercicio = this.variable.NOMBREEJERCICIO;
     this.nombreDescripcion = this.variable.DESCRIPCIONEJERCICIO;
@@ -119,7 +125,11 @@ export class CrearEjercicioPage implements OnInit {
     this.variacionEjercicio = this.variable.VARIACIONESMODIFICACIONEJERCICIOPROGRESO;
     this.adicionalInformacion = this.variable.OBSERVACIONESEJERCICIO;
     this.obtenerComentarioporEjercicio(this.variable.IDEJERCICIO);
-    this.textConvertir(this.variable.TITULOS_EQUIPOS_REQUERIDOS,this.variable.ID_EQUIPOS_REQUERIDOS);
+    if(this.variable.TITULOS_EQUIPOS_REQUERIDOS && this.variable.ID_EQUIPOS_REQUERIDOS){
+      this.textConvertir(this.variable.TITULOS_EQUIPOS_REQUERIDOS,this.variable.ID_EQUIPOS_REQUERIDOS);
+    }else{
+      this.equiporequeridoporEjercicio=[];
+    }
     //console.log(this.equiporequeridoporEjercicio)
   }
 
@@ -128,7 +138,7 @@ export class CrearEjercicioPage implements OnInit {
     const equiposArray = EQUIPOS_REQUERIDOS.split(',');
     const resultado = [];
     for (let i = 0; i < titulosArray.length; i++) {
-      resultado.push({ nombre: titulosArray[i], id: Number(equiposArray[i]) });
+      resultado.push({ NOMBREEQUIPOREQUERIDO: titulosArray[i], IDEQUIPOREQUERIDO: Number(equiposArray[i]) });
     }
     this.equiporequeridoporEjercicio=resultado;
   }
@@ -143,8 +153,8 @@ export class CrearEjercicioPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
   }
   go_page(name: string){
-    this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
-    //this.navController.navigateForward('/'+name);
+     //this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
+    this.navController.navigateForward('/'+name);
   }
   StatusBar(){
     StatusBar.hide();
@@ -203,6 +213,7 @@ export class CrearEjercicioPage implements OnInit {
     this.previousSearchTerm = currentSearchTerm;
     this.filterItems(nameData);
   }
+
   private filterItems(nameData:string) {
     if (!this.selectData) {
       this.cargarDatos(nameData);
@@ -236,6 +247,13 @@ export class CrearEjercicioPage implements OnInit {
         for (const term of searchTerms) {
           const filteredItems = this.selectData.filter(item =>
             item.NOMBREOBJETIVOSMUSCULARES.toLowerCase().includes(term)
+          );
+          filteredArray = filteredArray.concat(filteredItems);
+        }
+      }else if (nameData==="dataERequerido"){
+        for (const term of searchTerms) {
+          const filteredItems = this.selectData.filter(item =>
+            item.NOMBREEQUIPOREQUERIDO.toLowerCase().includes(term)
           );
           filteredArray = filteredArray.concat(filteredItems);
         }
@@ -282,6 +300,22 @@ export class CrearEjercicioPage implements OnInit {
         this.mostrarSelecOMuscular=!this.mostrarSelecOMuscular;
         const rawData = this.dataOMuscular;
         this.selectData = rawData.map(item => ({ ...item }));
+      }else if(nameData =="dataERequerido"){
+        this.mostrarSelecERequerido=!this.mostrarSelecERequerido;
+        const rawData = this.dataERequerido;
+        this.selectData = rawData.map(item => ({ ...item }));
+        this.selectERequerido={};
+      }
+    }
+    showSelectedERequerido(nameData:string,data:any){
+      if (nameData =="dataERequerido"){
+        this.mostrarSelecERequerido=!this.mostrarSelecERequerido;
+        const rawData = this.dataERequerido;
+        this.selectData = rawData.map(item => ({ ...item }));
+        this.selectERequerido=data;
+        const rawData2 = this.equiporequeridoporEjercicio;
+        this.OriginequiporequeridoporEjercicio = rawData2.map(item => ({ ...item }));
+        this.RemoveItemERequerido(data);
       }
     }
     cargarDatos(nameData:string){
@@ -296,6 +330,9 @@ export class CrearEjercicioPage implements OnInit {
         this.selectData = rawData.map(item => ({ ...item }));
       }else if(nameData==="dataOMuscular"){
         const rawData = this.dataOMuscular;
+        this.selectData = rawData.map(item => ({ ...item }));
+      }else if(nameData==="dataERequerido"){
+        const rawData = this.dataERequerido;
         this.selectData = rawData.map(item => ({ ...item }));
       }
     }
@@ -313,6 +350,28 @@ export class CrearEjercicioPage implements OnInit {
         this.selectedOMuscular = title;
         this.mostrarSelecOMuscular = false;
       }
+    }
+    selectItemERequerido(data: any) {
+
+      const existingObject = this.equiporequeridoporEjercicio.find(item => item.IDEQUIPOREQUERIDO === data.IDEQUIPOREQUERIDO);
+      if (!existingObject) {
+        this.equiporequeridoporEjercicio.push(data);
+        this.mostrarSelecERequerido = false;
+      }else{
+        this.presentCustomToast('Ese equipo Requerido ya esta Seleccionado',"danger");
+      }
+      if(this.OriginequiporequeridoporEjercicio){
+        this.OriginequiporequeridoporEjercicio=[];
+      }
+    }
+    cancelarItemRequerido(){
+      this.equiporequeridoporEjercicio=this.OriginequiporequeridoporEjercicio;
+      this.mostrarSelecERequerido = !this.mostrarSelecERequerido
+    }
+    RemoveItemERequerido(data:any){
+      //console.log(data);
+      const newArray = this.equiporequeridoporEjercicio.filter(item => item.IDEQUIPOREQUERIDO !== data.IDEQUIPOREQUERIDO);
+      this.equiporequeridoporEjercicio=newArray;
     }
     cleanSelecItem(){
       this.mostrarSelectMultimedia =false;
@@ -352,6 +411,9 @@ export class CrearEjercicioPage implements OnInit {
 
     }
 
+    getVideoName(url: string): string {
+      return url.split('.')[0];
+    }
     formatearTiempo(): void {
       // Eliminar todos los caracteres que no sean números
       const tiempoNumeros = this.tiempoRealizar.replace(/[^0-9]/g, '');
@@ -429,8 +491,16 @@ export class CrearEjercicioPage implements OnInit {
                   this.dataEjercicio.USUARIOMODIFICAICONEJERCICIO=this.userSesionPerfil[0].IDPERSONA;
                   this.dataEjercicio.IDEJERCICIO=this.variable.IDEJERCICIO;
                   this.dataEjercicio.ESTADOEJERCICIO= this.variable.ESTADOEJERCICIO;
+                  if(this.equiporequeridoporEjercicio.length>0){
+                    const idArray = this.equiporequeridoporEjercicio.map(item => item.IDEQUIPOREQUERIDO).join(',');
+                    this.dataEjercicio.ID_EQUIPOS_REQUERIDOS= idArray;
+                  }
                   this.UpdateData();
                 }else{
+                  if(this.equiporequeridoporEjercicio.length>0){
+                    const idArray = this.equiporequeridoporEjercicio.map(item => item.IDEQUIPOREQUERIDO).join(',');
+                    this.dataEjercicio.ID_EQUIPOS_REQUERIDOS= idArray;
+                  }
                   this.CreateData();
                 }
                 this.go_page('videos');
@@ -441,14 +511,16 @@ export class CrearEjercicioPage implements OnInit {
         await alert.present();
       }
     }
+    OpenDialogNewERequ(){
 
+    }
     CreateData()
     {
       this.apiService.CreteDatEjercicio(this.dataEjercicio).subscribe(
         (response) => {
           this.presentCustomToast(response.message,"success");
           this.ngOnInit();
-          this.dataEjercicio={};
+          this.dataEjercicio=[];
           this.inicio();
         },
         (error) => {
@@ -463,7 +535,7 @@ export class CrearEjercicioPage implements OnInit {
         (response) => {
           this.presentCustomToast(response.message,"success");
           this.ngOnInit();
-          this.dataEjercicio={};
+          this.dataEjercicio=[];
           this.inicio();
         },
         (error) => {
@@ -522,7 +594,7 @@ export class CrearEjercicioPage implements OnInit {
     );
   }
   obtenerEquipoRequerido(){
-    this.apiService.allEquipoRequerido().subscribe(
+    this.apiService.allEquipoRequeridoActivate().subscribe(
       (response) => {
         this.dataERequerido=response;
         //console.log(this.dataERequerido);
@@ -578,7 +650,7 @@ export class CrearEjercicioPage implements OnInit {
   onCardTouchStart(event: TouchEvent,data:any) {
     this.touchTimeout = setTimeout(() => {
       // Lógica para abrir otro card o mostrar un diálogo
-      console.log('El usuario ha mantenido presionado el card durante 2 segundos o más'+data.IDPROGRESO);
+      //console.log('El usuario ha mantenido presionado el card durante 2 segundos o más'+data.IDPROGRESO);
       this.mostarDialogComment=!this.mostarDialogComment;
       this.dataComentarioporEjercicioUniq=data;
     }, 1000);

@@ -25,6 +25,7 @@ export class CrearERequeridoPage implements OnInit {
   public previousSearchTerm!:string;
   public mostarDialogEdit:boolean=false;
 
+
   selectedFile: File | null = null;
   nameFile:string='';
   selectedImageUrl!:string;
@@ -218,42 +219,31 @@ export class CrearERequeridoPage implements OnInit {
 
   updatedatesERequerido(data:any){
     if(this.selectedFile){
-      //this.dataERequeridoUniq.IMAGENEQUIPOREQUERIDO = this.sanitizeFileName(this.dataERequeridoUniq.NOMBREEQUIPOREQUERIDO)+".png";
-      this.updateFileImage(this.selectedFile,this.dataERequeridoUniq.IMAGENEQUIPOREQUERIDO)
+      this.updateFileImage(data,this.selectedFile,this.sanitizeFileName(data.NOMBREEQUIPOREQUERIDO)+".png");
+    }else{
+      this.preupdatedatesERequerido(data);
     }
+  }
+  preupdatedatesERequerido(data:any){
     this.apiService.UpdataDataERequerido(data,"equiporequerido").subscribe(
       (response) => {
         this.presentCustomToast(response.message,"success")
-        this.ionViewDidEnter();
         this.originData=[];
         this.mostarDialogEdit=!this.mostarDialogEdit;
         this.dataERequeridoUniq={};
+        this.nameFile="";
         //location.reload();
       },
       (error) => {
         this.presentCustomToast(error.error,"danger");
       }
-    );
-  }
+    );  }
 
   createERequerido(data:any){
     if(this.selectedFile){
       if (this.dataERequeridoUniq.STATUSEQUIPOREQUERIDO){
         if(this.dataERequeridoUniq.NOMBREEQUIPOREQUERIDO){
-          this.dataERequeridoUniq.IMAGENEQUIPOREQUERIDO = this.sanitizeFileName(this.dataERequeridoUniq.NOMBREEQUIPOREQUERIDO)+".png";
-          this.dataERequeridoUniq.OBSERVACIONEEQUIPOREQUERIDO="N/A";
-          this.apiService.CreateDataERequerido(data,"equiporequerido").subscribe(
-            (response) => {
-              if(this.selectedFile)
-              this.updateFileImage(this.selectedFile,this.dataERequeridoUniq.IMAGENEQUIPOREQUERIDO);
-              this.presentCustomToast(response.message,"success")
-              this.mostarDialogEdit=!this.mostarDialogEdit;
-              this.dataERequeridoUniq={};
-            },
-            (error) => {
-              this.presentCustomToast(error.error,"danger");
-            }
-          );
+          this.updateFileImageCreate(data,this.selectedFile,this.sanitizeFileName(this.dataERequeridoUniq.NOMBREEQUIPOREQUERIDO)+".png");
         }else{
           this.presentCustomToast("Debe llenar Todos los campos","danger");
         }
@@ -264,16 +254,50 @@ export class CrearERequeridoPage implements OnInit {
     }else{
       this.presentCustomToast("Debe Subir Una Imagen","danger");
     }
-
   }
 
-  updateFileImage(file: File,filename :string){
+  precreateERequerido(data:any){
+    this.apiService.CreateDataERequerido(data,"equiporequerido").subscribe(
+      (response) => {
+        if(this.selectedFile)
+        this.presentCustomToast(response.message,"success")
+        this.mostarDialogEdit=!this.mostarDialogEdit;
+        this.dataERequeridoUniq={};
+      },
+      (error) => {
+        this.presentCustomToast(error.error,"danger");
+      }
+    );
+  }
+
+  updateFileImage(data:any,file: File,filename :string){
     this.apiService.uploadcaptureImagenERequerido(file,filename).subscribe(
       (response) => {
-        this.presentCustomToast(response.message,"success")
+        data.OBSERVACIONEQUIPOREQUERIDO="N/A";
+        data.IMAGENEQUIPOREQUERIDO = response.fileNameNew+".png";
+        this.preupdatedatesERequerido(data);
+        this.presentCustomToast(response.message,"success");
+        this.nameFile="";
         this.selectedFile = null;
-        this.nameFile = "";
         this.selectedImageUrl ="";
+      },
+      (error) => {
+        this.presentCustomToast(error.error,"danger");
+      }
+    );
+  }
+
+  updateFileImageCreate(data:any,file: File,filename :string){
+    this.apiService.uploadcaptureImagenERequerido(file,filename).subscribe(
+      (response) => {
+        data.OBSERVACIONEQUIPOREQUERIDO="N/A";
+        data.IMAGENEQUIPOREQUERIDO = response.fileNameNew+".png";
+        this.precreateERequerido(data);
+        this.presentCustomToast(response.message,"success");
+        this.nameFile="";
+        this.selectedFile = null;
+        this.selectedImageUrl ="";
+        this.ionViewDidEnter();
       },
       (error) => {
         this.presentCustomToast(error.error,"danger");
@@ -309,7 +333,7 @@ export class CrearERequeridoPage implements OnInit {
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.selectedImageUrl = e.target.result;
-      this.presentCustomToast("Imagen seleccionada correctamente", "success");
+      //this.presentCustomToast("Imagen seleccionada correctamente", "success");
     };
     reader.readAsDataURL(file);
   }

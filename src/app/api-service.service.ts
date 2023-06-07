@@ -46,6 +46,9 @@ export class ApiServiceService {
   allEquipoRequerido():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/+/equiporequerido/);
   }
+  allEquipoRequeridoActivate():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/equiporequeridoActivate/);
+  }
   allEspecialidadentrenador():Observable<any>{
     return this.http.get(this.apiUrl+/especialidadentrenador/);
   }
@@ -160,7 +163,7 @@ export class ApiServiceService {
     formData.append('file', file,filename);
     return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen-erequerido', formData);
   }
-    CreteDatEjercicio(data:any): Observable<any>{
+  CreteDatEjercicio(data:any): Observable<any>{
     return this.http.post(IP_ADDRESS+/multimedia/+/CreateDataEjercicio/,data );
   }
   UpdateEjercicio(data:any): Observable<any>{

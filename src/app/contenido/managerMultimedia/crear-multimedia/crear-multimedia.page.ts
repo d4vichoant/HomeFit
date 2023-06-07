@@ -378,12 +378,19 @@ export class CrearMultimediaPage implements OnInit   {
                 if(item.STATUSMULTIMEDIA === 1 ){
                   item.OBSERVACIONMULTIMEDIA="N/A";
                 }
-                if(this.selectedFile){
-                  this.UpdateFile();
-                  this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4";
+                  if(this.selectedFile){
+                    this.UpdateFile().then((fileName) => {
+                      item.ALMACENAMIENTOMULTIMEDIA= fileName;
+                      this.UpdateDates(item,nombre);
+                      this.mostrarSelectEdit=!this.mostrarSelectEdit;
+                    }).catch((error) => {
+                      console.error("Error al subir el archivo:", error);
+                    });
+                  //this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4";
+                }else{
+                  this.UpdateDates(item,nombre);
+                  this.mostrarSelectEdit=!this.mostrarSelectEdit;
                 }
-                this.UpdateDates(item,nombre);
-                this.mostrarSelectEdit=!this.mostrarSelectEdit;
               }
             }
           ]
@@ -407,20 +414,24 @@ export class CrearMultimediaPage implements OnInit   {
         }
       );
     }
-    UpdateFile() {
-      if (this.selectedFile) {
-        this.apiService.uploadFileMp3(this.selectedFile,this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4").subscribe(
-          (response) => {
-            this.presentCustomToast(response.message, "success");
-          },
-          (error) => {
-            this.presentCustomToast(error.error.error, "danger");
-          }
-        );
-      } else {
-        // Manejar caso cuando this.selectedFile es null
-        this.presentCustomToast("No se ha seleccionado ningún archivo", "danger");
-      }
+    UpdateFile(): Promise<string> {
+      return new Promise((resolve, reject) => {
+        if (this.selectedFile) {
+          this.apiService.uploadFileMp3(this.selectedFile, this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA) + ".mp4").subscribe(
+            (response) => {
+              this.presentCustomToast(response.message, "success");
+              resolve(response.fileName+".mp4");
+            },
+            (error) => {
+              this.presentCustomToast(error.error.error, "danger");
+              reject(error);
+            }
+          );
+        } else {
+          this.presentCustomToast("No se ha seleccionado ningún archivo", "danger");
+          reject(new Error("No se ha seleccionado ningún archivo"));
+        }
+      });
     }
     saveImageFile() {
       if (this.imagenFile) {
@@ -468,15 +479,22 @@ export class CrearMultimediaPage implements OnInit   {
                 if(item.STATUSMULTIMEDIA === 1 ){
                   item.OBSERVACIONMULTIMEDIA="N/A";
                 }
-                if(this.selectedFile){
-                  this.UpdateFile();
-                  this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4";
-                }
                 if(this.imagenFile){
                   this.saveImageFile();
                 }
-                this.createsDates(item,nombre);
-                this.mostrarSelectCreate=!this.mostrarSelectCreate;
+                if(this.selectedFile){
+                  this.UpdateFile().then((fileName) => {
+                    item.ALMACENAMIENTOMULTIMEDIA= fileName;
+                    this.createsDates(item,nombre);
+                    this.mostrarSelectCreate=!this.mostrarSelectCreate;
+                  }).catch((error) => {
+                    console.error("Error al subir el archivo:", error);
+                  });
+                //this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4";
+                }else{
+                  this.createsDates(item,nombre);
+                  this.mostrarSelectCreate=!this.mostrarSelectCreate;
+                }
               }
             }
           ]
@@ -490,7 +508,6 @@ export class CrearMultimediaPage implements OnInit   {
     }
     createsDates(item:any, nombre:string)
     {
-      console.log(item);
       this.apiService.CreteDataMultimedia(item,nombre).subscribe(
         (response) => {
           this.dataMultimediaUniq={};

@@ -20,10 +20,10 @@
       </ion-buttons> -->
     </ion-toolbar>
   </div>
-  <div *ngIf="variable ">
+  <div >
     <div class="tab-buttons">
       <div (click)="showTab(1)" [class.selected]="isTabSelected(1)">Informacion</div>
-      <div (click)="showTab(2)" [class.selected]="isTabSelected(2)" >Comentarios</div>
+      <div *ngIf="variable " (click)="showTab(2)" [class.selected]="isTabSelected(2)" >Comentarios</div>
     </div>
   </div>
     <div class="container-body" *ngIf="currentTab === 1">
@@ -100,21 +100,25 @@
           <ion-label class="ion-label-body">Información Adicional</ion-label>
           <ion-textarea class="ion-input-body" [(ngModel)]="adicionalInformacion" type="text" name="adicional" placeholder="Ingresar Información Adicional" required></ion-textarea>
         </div>
-        <div class="inline-container" (click)="mostrarSelecERequerido=!mostrarSelecERequerido" *ngIf="equiporequeridoporEjercicio && equiporequeridoporEjercicio.length > 0">
+        <div class="inline-container" (click)="showSelected('dataERequerido')" *ngIf="equiporequeridoporEjercicio && equiporequeridoporEjercicio.length > 0">
           <ion-label >Equipo Requerido:</ion-label><br>
           <img src="{{ ip_address }}/media/images/plus.png"  alt="Agregar Objetivo">
         </div>
-        <div class="container-selects">
+        <div class="container-selects"  *ngIf="equiporequeridoporEjercicio && equiporequeridoporEjercicio.length > 0">
           <ng-container   *ngFor="let option of equiporequeridoporEjercicio">
-            <div class="select-item" >
-              <ion-select interface="popover" [(ngModel)]="option.id">
-                <ion-select-option *ngFor="let item of dataERequerido" [value]="item.IDEQUIPOREQUERIDO ">
-                  {{ item.NOMBREEQUIPOREQUERIDO }}
-                </ion-select-option>
-              </ion-select>
-              <img src="{{ ip_address }}/media/images/menos.png" alt="Remove Objetive"/>
+            <div class="input-wrapper">
+              <div (click)="showSelectedERequerido('dataERequerido',option)"  class="title-up">
+                <h2>{{ option.NOMBREEQUIPOREQUERIDO }}</h2>
+              </div>
+              <div  (click)="showSelectedERequerido('dataERequerido',option)" class="input-icon" >
+                <ion-icon name="chevron-down-outline"></ion-icon>
+              </div>
             </div>
           </ng-container>
+        </div>
+        <div  (click)="showSelected('dataERequerido')"  *ngIf=" equiporequeridoporEjercicio && equiporequeridoporEjercicio.length === 0" style="padding-top: 2%;">
+          <ion-label   class="ion-label-body" style="padding-bottom: 2%!important;">Información Adicional</ion-label>
+          <ion-button  class="buttonaddObjPers" *ngIf=" equiporequeridoporEjercicio && equiporequeridoporEjercicio.length === 0"  (click)="OpenDialogNewERequ()" fill="clear">+ Obj. Personales</ion-button>
         </div>
       </div>
       <div class="buttons-tab1">
@@ -232,7 +236,10 @@
       <ion-list lines="none"  *ngIf=" selectData && selectData.length >0;else noDataMessage" >
         <ion-item *ngFor="let data of selectData" (click)="selectItem(data,'dataMultimedia')"
         [class.selected]="selectedMultimedia && selectedMultimedia.TITULOMULTIMEDIA === data.TITULOMULTIMEDIA">
-          {{data.TITULOMULTIMEDIA}}
+        <ion-avatar slot="start" >
+          <img  src="{{ ip_address }}/multimedia/{{getVideoName(data.ALMACENAMIENTOMULTIMEDIA)}}.jpg"alt="Imagen" />
+        </ion-avatar>
+        {{data.TITULOMULTIMEDIA}}
         </ion-item>
       </ion-list>
       <ng-template #noDataMessage>
@@ -320,5 +327,34 @@
         </ng-template>
       </div>
     </div>
+        <!-- SELECT BROWSEABLE DE SELECT Equipo Requerido -->
+        <div class="overlay-container-select"  *ngIf="mostrarSelecERequerido">
+          <div class="browser">
+            <div class="up-title">
+              <div class="title-select">
+                <p>Equipo Requerido</p>
+              </div>
+              <div class="back-select"  (click)="cancelarItemRequerido()" >
+                <p (click)="cancelarItemRequerido()" >Cancelar</p>
+              </div>
+            </div>
+            <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataERequerido')"   (ionInput)="onInputChange($event,'dataERequerido')" (ionClear)="onInputChange($event,'dataERequerido')"  placeholder="Buscar"></ion-searchbar>
+            <!-- <ion-button class="ion-button-select" fill="clear">(+) Agregar Nuevo</ion-button> -->
+            <ion-list lines="none"  *ngIf=" selectData && selectData.length >0;else noDataMessage" >
+              <ion-item *ngFor="let data of selectData" (click)="selectItemERequerido(data)"
+              [class.selected]="selectERequerido && selectERequerido.NOMBREEQUIPOREQUERIDO === data.NOMBREEQUIPOREQUERIDO">
+              <ion-avatar slot="start" >
+                <img src="{{ ip_address }}/media/equipoRequerido/{{data.IMAGENEQUIPOREQUERIDO}}" alt="Imagen" />
+              </ion-avatar>
+              {{data.NOMBREEQUIPOREQUERIDO}}
+              </ion-item>
+            </ion-list>
+            <ng-template #noDataMessage>
+              <ion-list lines="none" >
+                <ion-item>Resultado no encontrado</ion-item>
+              </ion-list>
+            </ng-template>
+          </div>
+        </div>
     <app-footer-designer></app-footer-designer>
 </ion-content>
