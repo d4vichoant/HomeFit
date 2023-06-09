@@ -115,6 +115,9 @@ export class ApiServiceService {
   getEjercicio():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/+/ejercicio/);
   }
+  getEjercicioActivate():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/ejercicioActivate/);
+  }
   getPreEjercicio():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/+/preejercicio/);
   }

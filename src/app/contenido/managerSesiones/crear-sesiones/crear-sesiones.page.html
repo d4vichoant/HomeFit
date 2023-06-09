@@ -1,0 +1,30 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
+    </div>
+  </div>
+  <app-toolbar-designer></app-toolbar-designer>
+  <ion-toolbar class="toolbar-header">
+    <div class="onboard-top" >
+      <ion-toolbar >
+        <ion-buttons slot="start">
+          <ion-button style="color: #9259f9;"   (click)="go_page('control-programacion')">
+           <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+         </ion-button>
+         <p (click)="go_page('control-programacion')">Regresar</p>
+       </ion-buttons>
+        <!-- <ion-buttons slot="end">
+          <ion-button style="color: #ffffff;" (click)="goHome()">
+            <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons> -->
+      </ion-toolbar>
+    </div>
+  </ion-toolbar>
+  <div class="browser">
+    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
+  </div>
+  <div class="container-body"></div>
+  <app-footer-designer></app-footer-designer>
+</ion-content>

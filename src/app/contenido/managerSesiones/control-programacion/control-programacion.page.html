@@ -1,9 +1,103 @@
 <ion-content [fullscreen]="true">
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
-      <ion-spinner name="crescent"></ion-spinner>
+      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
   <app-toolbar-designer></app-toolbar-designer>
+  <div class="header-up">
+    <div class="up-date">
+      <ion-icon name="sunny-outline"></ion-icon>
+      <span class="date">{{ currentDate }}</span>
+    </div>
+    <div class="header-name">
+      <h1>
+          Programación
+      </h1>
+    </div>
+  </div>
+  <div class="container-body">
+    <ion-card (click)="go_page('sesiones')">
+      <div class="custom-image">
+        <img alt="Silhouette of mountains" src="{{ ip_address }}/media/images/control-sesiones-1.png" />
+        <div class="custom-avatar">
+          <ion-avatar >
+            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user-plus.png" />
+          </ion-avatar>
+          <ion-avatar >
+            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user2.png" />
+          </ion-avatar>
+          <ion-avatar >
+            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user3.png" />
+          </ion-avatar>
+          <ion-avatar >
+            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user4.png" />
+          </ion-avatar>
+          <ion-avatar >
+            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user1.png" />
+          </ion-avatar>
+        </div>
+      </div>
+        <ion-card-header>
+        <ion-card-title>Sesiones</ion-card-title>
+        <ion-card-subtitle>Administrar</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              Puedes configurar las sesiones con diferentes ejercicios, repeticiones, series y cualquier otra información relevante. Puedes establecer metas para cada sesión y registrar tus progresos a medida que avanzas. Las sesiones te permiten detallar y adaptar tu entrenamiento de acuerdo a tus necesidades y preferencias.
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-end">
+              <p class="ion-button " (click)="go_page('videos')">Configurar</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card (click)="go_page('rutinas')">
+      <div class="custom-image">
+        <img alt="Silhouette of mountains" src="{{ ip_address }}/media/images/control-sesiones-2.png" />
+        <div class="custom-avatar">
+          <ion-avatar >
+            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user-plus.png" />
+          </ion-avatar>
+          <ion-avatar >
+            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user2.png" />
+          </ion-avatar>
+          <ion-avatar >
+            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user3.png" />
+          </ion-avatar>
+          <ion-avatar >
+            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user4.png" />
+          </ion-avatar>
+          <ion-avatar >
+            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user1.png" />
+          </ion-avatar>
+        </div>
+      </div>
+        <ion-card-header>
+        <ion-card-title>Rutinas</ion-card-title>
+        <ion-card-subtitle>Administrar</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              Puedes crear rutinas personalizadas según tus objetivos y preferencias. Cada rutina puede tener un nombre descriptivo y puedes ajustar su duración, frecuencia y días de la semana en los que deseas realizarla. Las rutinas te ayudan a mantener una estructura en tu entrenamiento y te permiten tener un plan establecido para seguir.
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-end">
+              <p class="ion-button " (click)="go_page('videos')">Configurar</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
   <app-footer-designer></app-footer-designer>
 </ion-content>

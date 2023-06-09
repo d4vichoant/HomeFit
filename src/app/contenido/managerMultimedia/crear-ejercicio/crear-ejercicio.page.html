@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
-      <ion-spinner name="crescent"></ion-spinner>
+      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
   <app-toolbar-designer></app-toolbar-designer>
@@ -105,8 +105,8 @@
           <img src="{{ ip_address }}/media/images/plus.png"  alt="Agregar Objetivo">
         </div>
         <div class="container-selects"  *ngIf="equiporequeridoporEjercicio && equiporequeridoporEjercicio.length > 0">
-          <ng-container   *ngFor="let option of equiporequeridoporEjercicio">
-            <div class="input-wrapper">
+          <ng-container  *ngFor="let option of equiporequeridoporEjercicio">
+            <div (touchstart)="onCardTouchStartRemoveItemERequerido($event,option)" (touchend)="onCardTouchEndRemoveItemERequerido($event)"  class="input-wrapper">
               <div (click)="showSelectedERequerido('dataERequerido',option)"  class="title-up">
                 <h2>{{ option.NOMBREEQUIPOREQUERIDO }}</h2>
               </div>
@@ -117,8 +117,8 @@
           </ng-container>
         </div>
         <div  (click)="showSelected('dataERequerido')"  *ngIf=" equiporequeridoporEjercicio && equiporequeridoporEjercicio.length === 0" style="padding-top: 2%;">
-          <ion-label   class="ion-label-body" style="padding-bottom: 2%!important;">Información Adicional</ion-label>
-          <ion-button  class="buttonaddObjPers" *ngIf=" equiporequeridoporEjercicio && equiporequeridoporEjercicio.length === 0"  (click)="OpenDialogNewERequ()" fill="clear">+ Obj. Personales</ion-button>
+          <ion-label   class="ion-label-body" style="padding-bottom: 2%!important;">Equipo Requerido</ion-label>
+          <ion-button  class="buttonaddObjPers" *ngIf=" equiporequeridoporEjercicio && equiporequeridoporEjercicio.length === 0"  (click)="OpenDialogNewERequ()" fill="clear">+ Eq. Requerido</ion-button>
         </div>
       </div>
       <div class="buttons-tab1">

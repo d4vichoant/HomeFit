@@ -1,0 +1,40 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
+    </div>
+  </div>
+  <app-toolbar-designer></app-toolbar-designer>
+  <ion-toolbar class="toolbar-header">
+    <div class="onboard-top" >
+      <ion-toolbar >
+        <ion-buttons slot="start">
+          <ion-button style="color: #9259f9;"   (click)="go_page('control-programacion')">
+           <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+         </ion-button>
+         <p (click)="go_page('control-programacion')">Regresar</p>
+       </ion-buttons>
+        <!-- <ion-buttons slot="end">
+          <ion-button style="color: #ffffff;" (click)="goHome()">
+            <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons> -->
+      </ion-toolbar>
+    </div>
+  </ion-toolbar>
+  <div class="browser">
+    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
+  </div>
+  <div class="container-body">
+    <ion-card (click)="go_page('crear-rutinas')" class="custom-card" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/rutinas/crear_rutina.jpg');">
+      <ion-card-header>
+        <img class="background-image" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
+        <ion-card-title>Crear Rutina</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <br>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <app-footer-designer></app-footer-designer>
+</ion-content>

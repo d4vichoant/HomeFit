@@ -4,21 +4,20 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ControlProgramacionPageRoutingModule } from './control-programacion-routing.module';
+import { CrearSesionesPageRoutingModule } from './crear-sesiones-routing.module';
 
-import { ControlProgramacionPage } from './control-programacion.page';
+import { CrearSesionesPage } from './crear-sesiones.page';
 import { SharedModule } from '../../../shared.module';
-
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ControlProgramacionPageRoutingModule,
+    CrearSesionesPageRoutingModule,
     SharedModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [ControlProgramacionPage]
+  declarations: [CrearSesionesPage]
 })
-export class ControlProgramacionPageModule {}
+export class CrearSesionesPageModule {}

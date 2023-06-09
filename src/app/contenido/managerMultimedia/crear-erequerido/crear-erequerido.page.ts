@@ -105,7 +105,10 @@ export class CrearERequeridoPage implements OnInit {
         imageUrls.push(imageUrl);
       }
     }
+    const imageUrl = this.ip_address+'/media/equipoRequerido/plus.png';
+    imageUrls.push(imageUrl);
     let imagesLoaded = 0;
+    //console.log(imageUrls);
     const totalImages = imageUrls.length;
     const handleImageLoad = () => {
       imagesLoaded++;

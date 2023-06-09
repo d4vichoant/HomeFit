@@ -134,6 +134,22 @@ const routes: Routes = [
     path: 'crear-erequerido',
     loadChildren: () => import('./contenido/managerMultimedia/crear-erequerido/crear-erequerido.module').then( m => m.CrearERequeridoPageModule)
   },
+  {
+    path: 'crear-rutinas',
+    loadChildren: () => import('./contenido/managerSesiones/crear-rutinas/crear-rutinas.module').then( m => m.CrearRutinasPageModule)
+  },
+  {
+    path: 'crear-sesiones',
+    loadChildren: () => import('./contenido/managerSesiones/crear-sesiones/crear-sesiones.module').then( m => m.CrearSesionesPageModule)
+  },
+  {
+    path: 'sesiones',
+    loadChildren: () => import('./contenido/managerSesiones/sesiones/sesiones.module').then( m => m.SesionesPageModule)
+  },
+  {
+    path: 'rutinas',
+    loadChildren: () => import('./contenido/managerSesiones/rutinas/rutinas.module').then( m => m.RutinasPageModule)
+  },
 
 
 ];

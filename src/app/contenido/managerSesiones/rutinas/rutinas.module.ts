@@ -4,21 +4,20 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ControlProgramacionPageRoutingModule } from './control-programacion-routing.module';
+import { RutinasPageRoutingModule } from './rutinas-routing.module';
 
-import { ControlProgramacionPage } from './control-programacion.page';
+import { RutinasPage } from './rutinas.page';
 import { SharedModule } from '../../../shared.module';
-
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ControlProgramacionPageRoutingModule,
+    RutinasPageRoutingModule,
     SharedModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [ControlProgramacionPage]
+  declarations: [RutinasPage]
 })
-export class ControlProgramacionPageModule {}
+export class RutinasPageModule {}

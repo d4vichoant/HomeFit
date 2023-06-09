@@ -31,6 +31,10 @@ export class VideosPage implements OnInit {
     public alertController: AlertController) { }
 
   ngOnInit() {
+    if(this.dataEjercicio){
+      //console.log(this.dataEjercicio);
+      this.dataEjercicio=[]
+    }
     //this.test();
     this.validateSesion();
     this.chanceColorFooter();
@@ -39,6 +43,10 @@ export class VideosPage implements OnInit {
   }
   ionViewDidEnter() {
     //this.test();
+    if(this.dataEjercicio){
+      //console.log(this.dataEjercicio);
+      this.dataEjercicio=[]
+    }
     this.validateSesion();
     this.chanceColorFooter();
     this.cargarImagenesBeforesNdif();

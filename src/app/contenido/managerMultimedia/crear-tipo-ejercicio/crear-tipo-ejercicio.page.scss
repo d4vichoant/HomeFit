@@ -34,7 +34,7 @@ ion-content {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(130, 123, 123, 0.5); /* Fondo semitransparente */
+  background-color: rgb(255, 255, 255); /* Fondo semitransparente */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,6 +65,9 @@ ion-content {
     padding-left: 20px !important;
     font-family: Raleway-Bold;
     font-size: 1.1rem;
+  }
+  .browser{
+    padding: 0% 3% 0% 3%;
   }
 }
 

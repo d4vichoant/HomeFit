@@ -15,6 +15,8 @@ export class ControlProgramacionPage implements OnInit {
   public loading = true;
   public userSesion!:string;
   public userSesionPerfil!:any;
+
+  currentDate!: string;
   constructor(private storage: Storage,
     private apiService: ApiServiceService,
     public toastController: ToastController,
@@ -25,12 +27,14 @@ export class ControlProgramacionPage implements OnInit {
     this.validateSesion();
     //this.test();
     this.cargarImagenesBefore();
+    this.updateCurrentDate();
   }
   ionViewDidEnter() {
     //this.test();
     this.chanceColorFooter();
     this.validateSesion();
     this.cargarImagenesBefore();
+    this.updateCurrentDate();
   }
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
@@ -46,24 +50,21 @@ export class ControlProgramacionPage implements OnInit {
     let imagesLoaded = 0;
     const image1 = new Image();
     const image2 = new Image();
-    const image3 = new Image();
-    const image4 = new Image();
-    image1.src = IP_ADDRESS + '/media/images/control-multimedia-1.png';
-    image2.src = IP_ADDRESS + '/media/images/control-multimedia-2.jpg';
-    image3.src = IP_ADDRESS + '/media/images/control-multimedia-3.jpg';
-    image4.src = IP_ADDRESS + '/media/images/control-multimedia-4.jpg';
+    image1.src = IP_ADDRESS + '/media/images/control-sesiones-1.png';
+    image2.src = IP_ADDRESS + '/media/images/control-sesiones-2.png';
 
     const handleImageLoad = () => {
       imagesLoaded++;
-      if (imagesLoaded === 9) {
+      if (imagesLoaded === 2) {
         this.loading = false;
       }
     };
 
     image1.onload = handleImageLoad;
     image2.onload = handleImageLoad;
-    image3.onload = handleImageLoad;
-    image4.onload = handleImageLoad;
+  }
+  test(){
+    this.StatusBar();
   }
   StatusBar(){
     StatusBar.hide();
@@ -79,7 +80,6 @@ export class ControlProgramacionPage implements OnInit {
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
               this.StatusBar();
-              this.loading = false;
             },
             (error) => {
               this.handleError();
@@ -99,6 +99,17 @@ export class ControlProgramacionPage implements OnInit {
     this.storage.remove('sesion');
   }
 
+  go_page(name: string){
+    //this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
+    this.navController.navigateForward('/'+name);
+  }
+  updateCurrentDate() {
+    const currentDate = new Date();
+    const dayOfWeek = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(currentDate);
+    const day = currentDate.getDate();
+    const month = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(currentDate);
+    this.currentDate = `${dayOfWeek}, ${day} de ${month}`;
+  }
 
   async presentCustomToast(message: string, color: string) {
     const toast = await this.toastController.create({

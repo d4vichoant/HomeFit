@@ -113,7 +113,7 @@ export class CrearEjercicioPage implements OnInit {
   }
 
   completarDatos(){
-    console.log(this.variable);
+    //console.log(this.variable);
     this.currentTab=1;
     this.nombreEjercicio = this.variable.NOMBREEJERCICIO;
     this.nombreDescripcion = this.variable.DESCRIPCIONEJERCICIO;
@@ -153,6 +153,7 @@ export class CrearEjercicioPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
   }
   go_page(name: string){
+    this.dataEjercicio=[];
      //this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
     this.navController.navigateForward('/'+name);
   }
@@ -352,26 +353,59 @@ export class CrearEjercicioPage implements OnInit {
       }
     }
     selectItemERequerido(data: any) {
-
       const existingObject = this.equiporequeridoporEjercicio.find(item => item.IDEQUIPOREQUERIDO === data.IDEQUIPOREQUERIDO);
       if (!existingObject) {
         this.equiporequeridoporEjercicio.push(data);
         this.mostrarSelecERequerido = false;
+        if(this.OriginequiporequeridoporEjercicio && this.OriginequiporequeridoporEjercicio.length>0){
+          this.OriginequiporequeridoporEjercicio=[];
+        }
       }else{
         this.presentCustomToast('Ese equipo Requerido ya esta Seleccionado',"danger");
       }
-      if(this.OriginequiporequeridoporEjercicio){
-        this.OriginequiporequeridoporEjercicio=[];
-      }
     }
     cancelarItemRequerido(){
-      this.equiporequeridoporEjercicio=this.OriginequiporequeridoporEjercicio;
+      if(this.OriginequiporequeridoporEjercicio && this.OriginequiporequeridoporEjercicio.length>0 ){
+        this.equiporequeridoporEjercicio=this.OriginequiporequeridoporEjercicio;
+      }
       this.mostrarSelecERequerido = !this.mostrarSelecERequerido
     }
     RemoveItemERequerido(data:any){
       //console.log(data);
       const newArray = this.equiporequeridoporEjercicio.filter(item => item.IDEQUIPOREQUERIDO !== data.IDEQUIPOREQUERIDO);
       this.equiporequeridoporEjercicio=newArray;
+    }
+    async confirmRemoveItemERequerido(data:any) {
+        const alert = await this.alertController.create({
+          header: 'Confirmar Estado',
+          message: '¿Estás seguro que desea eliminar este Eq. Requerido ?',
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                this.presentCustomToast('Proceso cancelada',"danger");
+              }
+            }, {
+              text: 'Eliminar',
+              handler: () => {
+                this.RemoveItemERequerido(data);
+              }
+            }
+          ]
+        });
+        await alert.present();
+    }
+
+    onCardTouchStartRemoveItemERequerido(event: TouchEvent,data:any) {
+      this.touchTimeout = setTimeout(() => {
+        this.confirmRemoveItemERequerido(data);
+      }, 1000);
+    }
+
+    onCardTouchEndRemoveItemERequerido(event: TouchEvent) {
+      clearTimeout(this.touchTimeout);
     }
     cleanSelecItem(){
       this.mostrarSelectMultimedia =false;
@@ -512,7 +546,6 @@ export class CrearEjercicioPage implements OnInit {
       }
     }
     OpenDialogNewERequ(){
-
     }
     CreateData()
     {
