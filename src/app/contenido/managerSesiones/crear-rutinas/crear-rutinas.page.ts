@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IP_ADDRESS } from '../../../constantes';
 import { ApiServiceService } from '../../../api-service.service';
 import { Storage } from '@ionic/storage-angular';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController, ToastController,ItemReorderEventDetail  } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
 
 @Component({
@@ -30,6 +30,11 @@ export class CrearRutinasPage implements OnInit {
   selectedTEjercicio:any;
   searchTEjercicio?: string;
   public dataTEjercicio!: any[];
+
+  public mostrarTrainerBasic:boolean=false;
+  selectedTrainerBasic:any;
+  searchTrainerBasic?: string;
+  public dataTrainerBasic!: any[];
 
   public mostrarSelecEjercicio:boolean=false;
   selectedEjercicio:any;
@@ -102,6 +107,7 @@ export class CrearRutinasPage implements OnInit {
       this.obtenerTEjercicio();
       this.obtenerEjercicios();
       this.obtenerOMuscular();
+      this.obtenerEntrenadoresBasic();
     }
     StatusBar(){
       StatusBar.hide();
@@ -120,6 +126,7 @@ export class CrearRutinasPage implements OnInit {
                 this.obtenerTEjercicio();
                 this.obtenerEjercicios();
                 this.obtenerOMuscular();
+                this.obtenerEntrenadoresBasic();
               },
               (error) => {
                 this.handleError();
@@ -213,6 +220,10 @@ export class CrearRutinasPage implements OnInit {
         this.mostrarSelecOMuscular=!this.mostrarSelecOMuscular;
         const rawData = this.dataOMuscular;
         this.selectData = rawData.map(item => ({ ...item }));
+      }else if(nameData==="dataTrainerBasic"){
+        this.mostrarTrainerBasic=!this.mostrarTrainerBasic;
+        const rawData = this.dataTrainerBasic;
+        this.selectData = rawData.map(item => ({ ...item }));
       }else if(nameData==="dataEjercicio"){
         if(!this.dataEjercicioporRutina){
           this.dataEjercicioporRutina=[];
@@ -232,6 +243,9 @@ export class CrearRutinasPage implements OnInit {
       }else if(nameData==="dataOMuscular"){
         this.selectedOMuscular = title;
         this.mostrarSelecOMuscular = false;
+      }else if(nameData==="dataTrainerBasic"){
+        this.selectedTrainerBasic = title;
+        this.mostrarTrainerBasic = false;
       }else if(nameData==="dataEjercicio"){
         if(this.EjercicioporRutinaUniq === null || this.EjercicioporRutinaUniq === undefined){
           this.EjercicioporRutinaUniq=null;
@@ -249,6 +263,9 @@ export class CrearRutinasPage implements OnInit {
     getVideoName(url: string): string {
       return url.split('.')[0];
     }
+    getfirstName(url: string): string {
+      return url.split(' ')[0];
+    }
 
     replaceLastWithIndex(newData: any, replacementIndex: number) {
       this.dataEjercicioporRutina[replacementIndex]=newData;
@@ -260,10 +277,17 @@ export class CrearRutinasPage implements OnInit {
 
     EditItemERequerido(data:any,index:number){
       this.index=index;
+      console.log(index);
       this.EjercicioporRutinaUniq=data as any;
       this.mostrarSelecEjercicio=!this.mostrarSelecEjercicio;
       const rawData = this.dataEjercicio;
       this.selectData = rawData.map(item => ({ ...item }));
+    }
+    handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+      const itemToMove = this.dataEjercicioporRutina[ev.detail.from]; // Guardamos el elemento que queremos mover en una variable temporal
+      this.dataEjercicioporRutina.splice(ev.detail.from, 1);
+      this.dataEjercicioporRutina.splice(ev.detail.to, 0, itemToMove);
+      ev.detail.complete();
     }
     async presentCustomToast(message: string, color: string) {
       const toast = await this.toastController.create({
@@ -308,6 +332,16 @@ export class CrearRutinasPage implements OnInit {
       this.apiService.getTipoEjercicio().subscribe(
         (response) => {
           this.dataTEjercicio=response;
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
+    obtenerEntrenadoresBasic(){
+      this.apiService.allTrainerBasic().subscribe(
+        (response) => {
+          this.dataTrainerBasic=response;
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");

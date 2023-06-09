@@ -458,9 +458,53 @@ ion-content {
   height: 30px!important;
 }
 
-.ion-card-content-ejercicio-2 .ion-icon-edit-2 ion-icon {
-  color: #ffffff;
-  width: 30px!important;
-  height: 30px!important;
+.ion-card-content-ejercicio-2 .ion-icon-edit-2 ion-reorder {
+  ion-icon{
+    color: #ffffff;
+    width: 30px!important;
+    height: 30px!important;
+  }
 }
 
+.ion-chip-mostrar{
+  margin: 0 auto;
+  width: 100%!important;
+  background-color: #c2e0ff;
+  height: 45px;
+  ion-label{
+    font-family: Raleway-Light;
+    font-size: 1.1rem;
+    color:  #ffffff;
+  }
+}
+select-trainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectEjerciciodiv{
+  margin: 0 auto;
+  width: 100%;
+    height: 65vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 2%;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.overlay-container-select-ejercicio{
+  padding: 0% 3% 0% 3%;
+  backdrop-filter: blur(8px); /* Ajusta el valor de desenfoque según tus necesidades */
+  background-color: transparent; /* Cambia los valores RGBA según el color deseado */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

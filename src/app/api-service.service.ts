@@ -64,6 +64,9 @@ export class ApiServiceService {
   allTrainer(): Observable<any> {
     return this.http.get(IP_ADDRESS+/manager/);
   }
+  allTrainerBasic(): Observable<any> {
+    return this.http.get(IP_ADDRESS+/manager/+/entrenadorBasic/);
+  }
   allEntrenantes(): Observable<any> {
     return this.http.get(IP_ADDRESS+/manager/+/entrenante/ );
   }

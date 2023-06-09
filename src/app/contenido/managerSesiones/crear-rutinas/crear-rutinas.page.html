@@ -26,13 +26,15 @@
     <ion-card  style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
       <div class="custom-card-image-container">
         <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" class="custom-card-image" />
-        <div class="ion-chip">
+        <div class="ion-chip" (click)="showSelected('dataTrainerBasic')" >
           <ion-chip >
             <ion-avatar>
-              <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              <img *ngIf="!selectedTrainerBasic" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              <img *ngIf="selectedTrainerBasic" src="{{ip_address}}/media/perfile/{{selectedTrainerBasic.IMAGEPERSONA}}" />
             </ion-avatar>
             <div class="ion-item-chip">
-              <ion-label>Chip Avatar</ion-label>
+
+              <ion-label> {{ selectedTrainerBasic ? getfirstName(selectedTrainerBasic.NOMBREPERSONA )+ ' ' + getfirstName(selectedTrainerBasic.APELLDOPERSONA):'Manager' }}</ion-label>
               <ion-icon name="caret-down" slot="end"></ion-icon>
             </div>
           </ion-chip>
@@ -115,7 +117,6 @@
         </ion-row>
       </ion-grid>
     </ion-card>
-
     <ion-card  style=" background-image: url('{{ip_address}}/media/images/objetive-muscular-bk-3.png');">
       <ion-card-header>
         <ion-card-title style="color: #ffffff!important;">Ejercicios</ion-card-title>
@@ -132,6 +133,7 @@
     </ion-card>
     <div *ngIf=" dataEjercicioporRutina" style="margin: 0% 3% 0% 3%;
     justify-content: center;">
+    <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
       <ion-card class="ion-card-ejercicio"  style="margin: 0 auto!important; margin-bottom: 3%; width: 100%;  background-image: linear-gradient(0deg,  #0000001a,#8457eab3), url('{{ ip_address }}/multimedia/{{getVideoName(data.ALMACENAMIENTOMULTIMEDIA)}}.jpg');" *ngFor="let data of dataEjercicioporRutina;let i=index;" >
         <ion-card-content >
           <ion-grid>
@@ -185,7 +187,9 @@
               <ion-col size="12">
                 <div class="ion-card-content-ejercicio-2" >
                   <div  class="ion-icon-edit-2">
-                    <ion-icon  style="color:  #ffffff;" name="chevron-expand"></ion-icon>
+                    <ion-reorder >
+                      <ion-icon name="chevron-expand"></ion-icon>
+                    </ion-reorder>
                   </div>
                   <div class="ion-icon-edit">
                     <ion-icon  (click)="EditItemERequerido(data,i)" name="create"></ion-icon>
@@ -197,6 +201,7 @@
             </ion-grid>
           </ion-card-content>
         </ion-card>
+      </ion-reorder-group>
     </div>
   </div>
     <!-- SELECT BROWSEABLE DE SELECT Tipo Ejercicio  -->
@@ -251,8 +256,37 @@
         </ng-template>
       </div>
     </div>
+        <!-- SELECT BROWSEABLE DE SELECT BAsic Trainer -->
+        <div class="overlay-container-select"  *ngIf="mostrarTrainerBasic">
+          <div class="browser">
+            <div class="up-title">
+              <div class="title-select">
+                <p>Entrenadores</p>
+              </div>
+              <div class="back-select"  (click)="mostrarTrainerBasic = !mostrarTrainerBasic" >
+                <p (click)="mostrarTrainerBasic=!mostrarTrainerBasic" >Cancelar</p>
+              </div>
+            </div>
+            <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataTrainerBasic')"   (ionInput)="onInputChange($event,'dataTrainerBasic')" (ionClear)="onInputChange($event,'dataTrainerBasic')"  placeholder="Buscar"></ion-searchbar>
+            <!-- <ion-button class="ion-button-select" (click)="go_page('crear-objetivo-muscular')"  fill="clear">(+) Agregar Nuevo</ion-button> -->
+            <div   class="select-trainer" *ngIf=" selectData && selectData.length >0;else noDataMessage" >
+              <ion-chip *ngFor="let data of selectData" (click)="selectItem(data,'dataTrainerBasic')"
+              [class.selected]="selectedTrainerBasic && selectedTrainerBasic.IDPERSONA === data.IDPERSONA" class="ion-chip-mostrar">
+                <ion-avatar>
+                  <img src="{{ ip_address }}/media/perfile/{{data.IMAGEPERSONA}}" />
+                </ion-avatar>
+                <ion-label>{{getfirstName(data.NOMBREPERSONA)}}&nbsp;{{getfirstName(data.APELLDOPERSONA)}}</ion-label>
+              </ion-chip>
+            </div>
+            <ng-template #noDataMessage>
+              <ion-list lines="none" >
+                <ion-item>Resultado no encontrado</ion-item>
+              </ion-list>
+            </ng-template>
+          </div>
+        </div>
  <!-- SELECT BROWSEABLE DE SELECT Tipo Ejercicio  -->
- <div class="overlay-container-select"  *ngIf="mostrarSelecEjercicio">
+ <div class="overlay-container-select-ejercicio"  *ngIf="mostrarSelecEjercicio">
   <div class="browser">
     <div class="up-title">
       <div class="title-select">
@@ -265,8 +299,8 @@
     <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataEjercicio')"   (ionInput)="onInputChange($event,'dataEjercicio')" (ionClear)="onInputChange($event,'dataEjercicio')"  placeholder="Buscar"></ion-searchbar>
     <ion-button class="ion-button-select" (click)="go_page('videos')" fill="clear">(+) Agregar Nuevo</ion-button>
 
-    <ion-list lines="none"  *ngIf=" selectData && selectData.length >0;else noDataMessage" >
-      <ion-item *ngFor="let data of selectData;" (click)="selectItem(data,'dataEjercicio')"
+    <div class="selectEjerciciodiv" lines="none"  *ngIf=" selectData && selectData.length >0;else noDataMessage" >
+      <div *ngFor="let data of selectData;" (click)="selectItem(data,'dataEjercicio')"
       [class.selected]="EjercicioporRutinaUniq && EjercicioporRutinaUniq.NOMBREEJERCICIO === data.NOMBREEJERCICIO">
       <ion-card class="ion-card-ejercicio" style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
         <div class="custom-card-image-container-ejercicio">
@@ -342,8 +376,8 @@
           </ion-grid>
         </ion-card-content>
       </ion-card>
-      </ion-item>
-    </ion-list>
+    </div>
+  </div>
 
     <ng-template #noDataMessage>
       <ion-list lines="none" >
