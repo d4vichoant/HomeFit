@@ -28,14 +28,14 @@ export class ControlMultimediaPage implements OnInit {
     this.validateSesion();
     this.updateCurrentDate();
     //this.test();
-    this.cargarImagenesBefore();
+    //this.cargarImagenesBefore();
   }
   ionViewDidEnter() {
     //this.test();
     this.chanceColorFooter();
     this.updateCurrentDate();
     this.validateSesion();
-    this.cargarImagenesBefore();
+    //this.cargarImagenesBefore();
   }
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
@@ -97,6 +97,10 @@ export class ControlMultimediaPage implements OnInit {
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
               this.StatusBar();
+              setTimeout(() => {
+                this.cargarImagenesBefore();
+              }, 500);
+
               //this.loading = false;
             },
             (error) => {

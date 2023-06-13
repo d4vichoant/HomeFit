@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ElementRef,ViewChild } from '@angular/core';
 import { StatusBar } from '@capacitor/status-bar';
 import { NavController, ToastController ,Animation, AnimationController } from '@ionic/angular';
 import { ApiServiceService } from '../../api-service.service';
@@ -12,6 +12,14 @@ import { IP_ADDRESS } from '../../constantes';
   styleUrls: ['./perfile.page.scss'],
 })
 export class PerfilePage implements OnInit {
+  @ViewChild('fileInputRef') fileInputRef!: ElementRef;
+
+  selectedFile: File | null = null;
+  nameFile:string='';
+  selectedImageUrl!:string;
+
+  public selectImage!:string;
+
   public loading = true;
   public ip_address = IP_ADDRESS;
   public password!: string;
@@ -152,6 +160,32 @@ export class PerfilePage implements OnInit {
     }
   }
 
+  sanitizeFileName(fileName:string) {
+    const sanitizedText = fileName
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_.-]/g, "");
+
+    return sanitizedText ;
+  }
+  updateFileImage(file: File,filename :string){
+    this.apiService.uploadImagenPerfile(file,filename).subscribe(
+      (response) => {
+        this.presentCustomToast(response.message,"success")
+        this.apiService.uploadImagenPerfileText(response.fileName+"."+ this.nameFile.split('.').pop(),this.dataPerfil[0]).subscribe(
+          (res) => {
+            this.presentCustomToast(res.message,"success")
+          },
+          (err) => {
+            this.presentCustomToast(err.error.error,"danger");
+          }
+        );
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
 validatePassword(password: string): boolean {
   const minLength = 8;
   const symbolRegex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
@@ -271,6 +305,35 @@ passwordEncode(item:any) {
   const day = ('0' + date.getDate()).slice(-2);
 
   return `${year}-${month}-${day}`;
+}
+uploadImage() {
+  this.fileInputRef.nativeElement.click();
+}
+handleFileInput(event: any) {
+  const file = event.target.files[0];
+
+  // Validar el tipo de archivo
+  if (!file.type.includes('image/jpeg') && !file.type.includes('image/png')) {
+    this.presentCustomToast("La imagen debe ser .png o .jpg", "danger");
+    return;
+  }
+
+  // Validar el tamaño del archivo
+  if (file.size > 1024 * 1024) {
+    this.presentCustomToast("La imagen no puede ser mayor de 1MB","danger");
+    return;
+  }
+
+  this.selectedFile = file;
+  this.nameFile = file.name;
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+    this.selectedImageUrl = e.target.result;
+    if(this.selectedFile){
+      this.updateFileImage(this.selectedFile,this.sanitizeFileName(this.dataPerfil[0].NICKNAMEPERSONA)+"."+ this.nameFile.split('.').pop());
+    }
+  };
+  reader.readAsDataURL(file);
 }
 
 updateNgModel(event: any, dataall:any){

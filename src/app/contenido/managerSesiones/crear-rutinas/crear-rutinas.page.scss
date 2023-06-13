@@ -46,9 +46,9 @@ ion-content {
 }
 
 .container-body{
-  padding: 0% 3% 0% 3%!important;
+  padding: 0% 3% 5% 3%!important;
   overflow-y: auto;
-  height: 74vh;
+  height: 75vh;
   ion-card{
     border-radius: 15px;
     ion-card-header{
@@ -63,17 +63,33 @@ ion-content {
 
 .custom-card-image-container {
   position: relative;
+  height: auto;
+}
+
+.container-imagen{
+  .iamgendefault{
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+  }
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg,  rgba(0,0,0,0.7), rgba(0,0,0,0.1));
+  }
 }
 .ion-chip{
   position: absolute;
   top:  0;
   left: 0;
   padding: 0px 0px 10px 10px;
-  width: 70%;
+  width: auto;
   ion-chip {
     border-radius: 30px;
     margin: 5%!important;
-    background: #ffffffbb;
     ion-avatar{
       img{
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -90,6 +106,7 @@ ion-content {
         height: 20px;
       }
       ion-label{
+        white-space: nowrap;
         font-family: Raleway-Light;
         font-size: 1.1rem;
         color:  #ffffff;
@@ -132,6 +149,10 @@ ion-content {
   align-items: center;
   justify-content: space-between;
   ion-input{
+    --padding-start:20px;
+    --padding-end:10px;
+  }
+  ion-textarea{
     --padding-start:20px;
     --padding-end:10px;
   }
@@ -201,10 +222,11 @@ ion-content {
 
 .custom-card {
   background-size: cover; /* Ajusta el tamaño de la imagen al contenedor */
-  background-position: top; /* Posición de la imagen en el contenedor */
+  background-position: center; /* Posición de la imagen en el contenedor */
+  height: 30%;
   ion-card-header{
     display: flex;
-    align-items: center; /* Centra verticalmente */
+    align-items: center;
     justify-content: center;
     img{
       max-width: 100%;
@@ -212,7 +234,7 @@ ion-content {
     }
     ion-card-title{
       font-family: Raleway-Bold;
-      font-size: 2rem;
+      font-size: 3rem;
       color:  #e2dae2a1!important;
     }
   }
@@ -320,6 +342,13 @@ ion-content {
   }
 }
 .selected {
+  background: #9259f9;
+  color: #ffffff;
+  border-radius: 10px;
+  background-color: #9259f9!important;
+  padding: 1% 1% 0.5  % 1%;
+}
+.selected2{
   --background: #9660f98e;
   color: #f0f0f0;
   border-radius: 10px;
@@ -337,7 +366,10 @@ ion-content {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .ion-card-ejercicio{
+  margin: 0 auto;
   width: 100%;
+  margin-top: 3%;
+  margin-bottom: 3%;
 }
 
 .custom-card-image-container-ejercicio{
@@ -469,33 +501,37 @@ ion-content {
 .ion-chip-mostrar{
   margin: 0 auto;
   width: 100%!important;
-  background-color: #c2e0ff;
+  border-radius: 50px;
   height: 45px;
+  margin-bottom: 10px;
+  ion-avatar{
+    margin-left: 5px;
+  }
   ion-label{
     font-family: Raleway-Light;
     font-size: 1.1rem;
     color:  #ffffff;
   }
 }
-select-trainer{
+.select-trainer{
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 .selectEjerciciodiv{
   margin: 0 auto;
   width: 100%;
-    height: 65vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-top: 2%;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 65vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 2%;
+  border-radius: 10px;
 }
 
 .overlay-container-select-ejercicio{
-  padding: 0% 3% 0% 3%;
+  padding: 0% 6% 0% 6%;
   backdrop-filter: blur(8px); /* Ajusta el valor de desenfoque según tus necesidades */
   background-color: transparent; /* Cambia los valores RGBA según el color deseado */
   position: fixed;
@@ -507,4 +543,37 @@ select-trainer{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.contenedor-padre {
+  display: flex;
+  align-items: center; /* Centrar verticalmente */
+  justify-content: center; /* Centrar horizontalmente */
+}
+
+.imagen {
+  left: 0;
+  margin: 0 auto;
+  display: flex;
+  align-items: center; /* Centrar verticalmente */
+  justify-content: center;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+}
+.text-im{
+  margin: 0 auto;
+  display: flex;
+  align-items: center; /* Centrar verticalmente */
+  justify-content: center;
+  text-align: center;
+  position: absolute;
+  font-family: Raleway-Bold;
+  font-size: 1.1rem;
+  color:  #ffffff;
+}
+
+.full-text {
+  white-space: normal;
+  text-overflow: unset;
 }

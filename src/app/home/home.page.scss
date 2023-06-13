@@ -2,6 +2,7 @@
   padding-top:5%;
   height: 100%;
   ion-fab{
+    z-index: 2;
     bottom: 33%;
     right: 9.5%;
     ion-fab-button {
@@ -98,11 +99,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  background-color: rgb(255, 255, 255); /* Fondo semitransparente */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  z-index: 999;
 }
 
 .loading-spinner {

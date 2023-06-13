@@ -164,10 +164,28 @@ export class ApiServiceService {
     formData.append('file', file,filename);
     return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen', formData);
   }
+  uploadcaptureImagenRutinas(file: File,filename :string): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file,filename);
+    return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen-rutinas', formData);
+  }
   uploadcaptureImagenERequerido(file: File,filename :string): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file,filename);
     return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen-erequerido', formData);
+  }
+  uploadImagenPerfile(file: File,filename :string): Observable<any> {
+    console.log("ASdas");
+    const formData: FormData = new FormData();
+    formData.append('file', file,filename);
+    return this.http.post(this.apiUrl+ "/subir-imagen-perfile", formData);
+  }
+  uploadImagenPerfileText(imagepersona:string,idpersona:number): Observable<any>{
+    const data={
+      IMAGEPERSONA:imagepersona,
+      IDPERSONA:idpersona
+    }
+    return this.http.post(this.apiUrl+"/uploadImagenPerfileText/",data );
   }
   CreteDatEjercicio(data:any): Observable<any>{
     return this.http.post(IP_ADDRESS+/multimedia/+/CreateDataEjercicio/,data );
@@ -177,5 +195,17 @@ export class ApiServiceService {
   }
   ObtenerComentarioPorEjercicio(idEjercicio:number){
     return this.http.get(IP_ADDRESS+/multimedia/+/obtenerComentariosporEjercicio/+idEjercicio);
+  }
+  CreteDataRutinas(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+/programacion/+/CreateDataRutina/,data );
+  }
+  UpdateDataRutinas(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+/programacion/+/UpdateDataRutina/,data );
+  }
+  getRutinas():Observable<any>{
+    return this.http.get(IP_ADDRESS+/programacion/+/rutinas/);
+  }
+  imagenEntrenadorRutina():Observable<any>{
+    return this.http.get(IP_ADDRESS+/programacion/+/imagePorEntrenadorRutina/);
   }
 }

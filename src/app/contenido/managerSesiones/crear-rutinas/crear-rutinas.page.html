@@ -14,37 +14,67 @@
          </ion-button>
          <p (click)="go_page('rutinas')">Regresar</p>
        </ion-buttons>
-        <!-- <ion-buttons slot="end">
-          <ion-button style="color: #ffffff;" (click)="goHome()">
-            <ion-icon name='close-outline' slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-buttons> -->
+        <ion-buttons slot="end">
+          <ion-button  (click)="confirmchangeCreateData()"  style="color: #9259f9; margin-right: 10px;"  >
+            <ng-container *ngIf="variable ; else otherIcon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"></path>
+                <path d="M10 12l4 0"></path>
+             </svg>&nbsp;<span class="spaniconup">ACTUALIZAR</span>
+            </ng-container>
+            <ng-template #otherIcon>
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+                <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                <path d="M14 4l0 4l-6 0l0 -4"></path>
+             </svg>&nbsp;<span class="spaniconup">Crear</span>
+             </ng-template>
+             </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </div>
   </ion-toolbar>
   <div class="container-body">
     <ion-card  style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
       <div class="custom-card-image-container">
-        <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" class="custom-card-image" />
-        <div class="ion-chip" (click)="showSelected('dataTrainerBasic')" >
-          <ion-chip >
+        <div class="container-imagen">
+          <ng-container *ngIf="(!selectedImageUrl && selectImage) ||( variable);else otherImage">
+            <img class="iamgendefault" alt="Silhouette of mountains" *ngIf=" variable"   src="{{ ip_address }}/media/rutinas/portadasrutinas/{{imagePortada}}"  class="custom-card-image" />
+            <img alt="DefaultImage" class="iamgendefault" *ngIf="!variable "  (click)="uploadImage()" src="https://ionicframework.com/docs/img/demos/card-media.png"  />
+          </ng-container>
+          <ng-template #otherImage>
+            <div *ngIf="selectedImageUrl; else otherotherImage">
+              <img class="iamgendefault" alt="Default Image" (click)="uploadImage()"  [src]="selectedImageUrl"  />
+              <div class="image-overlay"></div>
+            </div>
+          </ng-template>
+          <ng-template #otherotherImage>
+            <img alt="DefaultImage" class="iamgendefault" (click)="uploadImage()" src="https://ionicframework.com/docs/img/demos/card-media.png"  />
+          </ng-template>
+        </div>
+        <div class="ion-chip"
+        (click)="showSelected('dataTrainerBasic')" >
+          <ion-chip  [ngStyle]="{ 'background-color': getColorByValue(selectedTrainerBasic) }">
             <ion-avatar>
               <img *ngIf="!selectedTrainerBasic" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
               <img *ngIf="selectedTrainerBasic" src="{{ip_address}}/media/perfile/{{selectedTrainerBasic.IMAGEPERSONA}}" />
             </ion-avatar>
             <div class="ion-item-chip">
-
               <ion-label> {{ selectedTrainerBasic ? getfirstName(selectedTrainerBasic.NOMBREPERSONA )+ ' ' + getfirstName(selectedTrainerBasic.APELLDOPERSONA):'Manager' }}</ion-label>
               <ion-icon name="caret-down" slot="end"></ion-icon>
             </div>
           </ion-chip>
         </div>
-        <div class="ion-header">
+        <div (click)="uploadImage()" class="ion-header">
           <ion-icon name="download"></ion-icon>
+          <input type="file" style="display: none;" id="fileInput" class="file-input" accept=".jpg" (change)="handleFileInput($event)" #fileInputRef>
         </div>
         <ion-card-header class="custom-card-header">
           <div class="ion-item">
-            <ion-input class="ion-input-body-title" [(ngModel)]="tituloRutina" type="text" name="titulo" placeholder="Título Rutina" required></ion-input>
+            <ion-textarea  class=" full-text ion-input-body-title" [(ngModel)]="tituloRutina" type="text" name="titulo" placeholder="Título Rutina" required></ion-textarea>
             <ion-icon class="ion-icon-title" name="create" slot="end"></ion-icon>
           </div>
         </ion-card-header>
@@ -67,13 +97,13 @@
         </div>
       </ion-card-content>
     </ion-card>
-    <ion-card  (click)="showSelected('dataOMuscular')" style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
+    <ion-card  (click)="showSelected('dataOPersonal')" style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
       <ion-card-header>
         <ion-card-title>Objetivo de la Rutina</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <div class="ion-item-content">
-          <h2 >{{ selectedOMuscular ? selectedOMuscular.NOMBREOBJETIVOSMUSCULARES : 'Seleccione alguno' }}</h2>
+          <h2 >{{ selectedOPersonal ? selectedOPersonal.DESCRIPCIONOBJETIVOSPERSONALES : 'Seleccione alguno' }}</h2>
           <ion-icon class="ion-icon-content" name="create" slot="end" ></ion-icon>
         </div>
       </ion-card-content>
@@ -117,12 +147,17 @@
         </ion-row>
       </ion-grid>
     </ion-card>
-    <ion-card  style=" background-image: url('{{ip_address}}/media/images/objetive-muscular-bk-3.png');">
+    <ion-card    (click)="showSelected('dataEjercicio')"  style=" background-image: url('{{ip_address}}/media/images/objetive-muscular-bk-3.png');">
       <ion-card-header>
-        <ion-card-title style="color: #ffffff!important;">Ejercicios</ion-card-title>
+        <ion-card-title style="color: #ffffff!important;">
+          <div class="contenedor-padre">
+            <h2 [style]="dataEjercicioporRutina && dataEjercicioporRutina.length > 0 ? 'left: 30px;' : 'left: 0px;'" class="text-im">Ejercicios</h2>
+            <img *ngIf=" dataEjercicioporRutina && dataEjercicioporRutina.length>0" class="imagen" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
+          </div>
+        </ion-card-title>
       </ion-card-header>
     </ion-card>
-    <ion-card   (click)="showSelected('dataEjercicio')" class="custom-card" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/rutinas/crear_ejerciciorutina.jpg');">
+    <ion-card *ngIf=" !dataEjercicioporRutina || dataEjercicioporRutina.length===0"   (click)="showSelected('dataEjercicio')" class="custom-card" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/rutinas/crear_ejerciciorutina.jpg');">
       <ion-card-header>
         <img class="background-image" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
         <ion-card-title>Agregar Ejercicio</ion-card-title>
@@ -134,7 +169,7 @@
     <div *ngIf=" dataEjercicioporRutina" style="margin: 0% 3% 0% 3%;
     justify-content: center;">
     <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-      <ion-card class="ion-card-ejercicio"  style="margin: 0 auto!important; margin-bottom: 3%; width: 100%;  background-image: linear-gradient(0deg,  #0000001a,#8457eab3), url('{{ ip_address }}/multimedia/{{getVideoName(data.ALMACENAMIENTOMULTIMEDIA)}}.jpg');" *ngFor="let data of dataEjercicioporRutina;let i=index;" >
+      <ion-card class="ion-card-ejercicio"  style="margin: 0 auto!important; margin-bottom: 3%; width: 100%;  background-image: linear-gradient(0deg,  #0000001a,#8457eab3), url('{{ ip_address }}/multimedia/{{getVideoName(data.ALMACENAMIENTOMULTIMEDIA)}}.jpg');background-repeat: no-repeat;background-size: cover;" *ngFor="let data of dataEjercicioporRutina;let i=index;" >
         <ion-card-content >
           <ion-grid>
             <ion-row>
@@ -151,7 +186,7 @@
                 <div class="ion-card-content-ejercicio">
                   <ion-label style="min-width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; "><span style=" font-family: Raleway-Bold;
                     font-size: 1.5rem;
-                    color: #ffffff;">{{data.NOMBREEJERCICIO}}</span></ion-label>
+                    color: #ffffff;" class="full-text">{{data.NOMBREEJERCICIO}}</span></ion-label>
                 </div>
               </ion-col>
               <ion-col size="6">
@@ -219,7 +254,7 @@
         <ion-button class="ion-button-select" (click)="go_page('crear-tipo-ejercicio')" fill="clear">(+) Agregar Nuevo</ion-button>
         <ion-list lines="none"  *ngIf=" selectData && selectData.length >0;else noDataMessage" >
           <ion-item *ngFor="let data of selectData" (click)="selectItem(data,'dataTEjercicio')"
-          [class.selected]="selectedTEjercicio && selectedTEjercicio.NOMBRETIPOEJERCICIO === data.NOMBRETIPOEJERCICIO">
+          [class.selected2]="selectedTEjercicio && selectedTEjercicio.NOMBRETIPOEJERCICIO === data.NOMBRETIPOEJERCICIO">
             {{data.NOMBRETIPOEJERCICIO}}
           </ion-item>
         </ion-list>
@@ -230,23 +265,23 @@
         </ng-template>
       </div>
     </div>
-    <!-- SELECT BROWSEABLE DE SELECT Objetivo Muscular -->
-    <div class="overlay-container-select"  *ngIf="mostrarSelecOMuscular">
+    <!-- SELECT BROWSEABLE DE SELECT Objetivo Personal -->
+    <div class="overlay-container-select"  *ngIf="mostrarSelecOPersonal">
       <div class="browser">
         <div class="up-title">
           <div class="title-select">
-            <p>Objetivo Muscular</p>
+            <p>Objetivo Personal</p>
           </div>
-          <div class="back-select"  (click)="mostrarSelecOMuscular = !mostrarSelecOMuscular" >
-            <p (click)="mostrarSelecOMuscular=!mostrarSelecOMuscular" >Cancelar</p>
+          <div class="back-select"  (click)="mostrarSelecOPersonal = !mostrarSelecOPersonal" >
+            <p (click)="mostrarSelecOPersonal=!mostrarSelecOPersonal" >Cancelar</p>
           </div>
         </div>
-        <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataOMuscular')"   (ionInput)="onInputChange($event,'dataOMuscular')" (ionClear)="onInputChange($event,'dataOMuscular')"  placeholder="Buscar"></ion-searchbar>
-        <ion-button class="ion-button-select" (click)="go_page('crear-objetivo-muscular')"  fill="clear">(+) Agregar Nuevo</ion-button>
+        <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataOPersonal')"   (ionInput)="onInputChange($event,'dataOPersonal')" (ionClear)="onInputChange($event,'dataOPersonal')"  placeholder="Buscar"></ion-searchbar>
+        <!-- <ion-button class="ion-button-select" (click)="go_page('crear-objetivo-personal')"  fill="clear">(+) Agregar Nuevo</ion-button> -->
         <ion-list lines="none"  *ngIf=" selectData && selectData.length >0;else noDataMessage" >
-          <ion-item *ngFor="let data of selectData" (click)="selectItem(data,'dataOMuscular')"
-          [class.selected]="selectedOMuscular && selectedOMuscular.NOMBREOBJETIVOSMUSCULARES === data.NOMBREOBJETIVOSMUSCULARES">
-            {{data.NOMBREOBJETIVOSMUSCULARES}}
+          <ion-item *ngFor="let data of selectData" (click)="selectItem(data,'dataOPersonal')"
+          [class.selected2]="selectedOPersonal && selectedOPersonal.DESCRIPCIONOBJETIVOSPERSONALES === data.DESCRIPCIONOBJETIVOSPERSONALES">
+            {{data.DESCRIPCIONOBJETIVOSPERSONALES}}
           </ion-item>
         </ion-list>
         <ng-template #noDataMessage>
@@ -268,10 +303,11 @@
               </div>
             </div>
             <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataTrainerBasic')"   (ionInput)="onInputChange($event,'dataTrainerBasic')" (ionClear)="onInputChange($event,'dataTrainerBasic')"  placeholder="Buscar"></ion-searchbar>
-            <!-- <ion-button class="ion-button-select" (click)="go_page('crear-objetivo-muscular')"  fill="clear">(+) Agregar Nuevo</ion-button> -->
+            <!-- <ion-button class="ion-button-select" (click)="go_page('crear-objetivo-personal')"  fill="clear">(+) Agregar Nuevo</ion-button> -->
             <div   class="select-trainer" *ngIf=" selectData && selectData.length >0;else noDataMessage" >
               <ion-chip *ngFor="let data of selectData" (click)="selectItem(data,'dataTrainerBasic')"
-              [class.selected]="selectedTrainerBasic && selectedTrainerBasic.IDPERSONA === data.IDPERSONA" class="ion-chip-mostrar">
+              [class.selected]="selectedTrainerBasic && selectedTrainerBasic.IDPERSONA === data.IDPERSONA" class="ion-chip-mostrar"
+              [ngStyle]="{ 'background-color': getColorByValue(data) }">
                 <ion-avatar>
                   <img src="{{ ip_address }}/media/perfile/{{data.IMAGEPERSONA}}" />
                 </ion-avatar>
@@ -285,7 +321,7 @@
             </ng-template>
           </div>
         </div>
- <!-- SELECT BROWSEABLE DE SELECT Tipo Ejercicio  -->
+ <!-- SELECT BROWSEABLE DE SELECT  Ejercicio  -->
  <div class="overlay-container-select-ejercicio"  *ngIf="mostrarSelecEjercicio">
   <div class="browser">
     <div class="up-title">
@@ -293,7 +329,7 @@
         <p>Ejercicio </p>
       </div>
       <div class="back-select"  (click)="mostrarSelecEjercicio = !mostrarSelecEjercicio" >
-        <p (click)="mostrarSelecEjercicio=!mostrarSelecEjercicio" >Cancelar</p>
+        <p (click)="cancelarmostrarSelecEjercicio()" >Cancelar</p>
       </div>
     </div>
     <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataEjercicio')"   (ionInput)="onInputChange($event,'dataEjercicio')" (ionClear)="onInputChange($event,'dataEjercicio')"  placeholder="Buscar"></ion-searchbar>
@@ -377,7 +413,7 @@
         </ion-card-content>
       </ion-card>
     </div>
-  </div>
+    </div>
 
     <ng-template #noDataMessage>
       <ion-list lines="none" >

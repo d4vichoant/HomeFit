@@ -61,7 +61,7 @@
           </button>
         </div>
 
-        <div  class="item-body-right-bottom" (click)="showSelect(option,'multimedia')" [ngStyle]="{ 'background-color': option.STATUSMULTIMEDIA === 0 ? '#fdfec3' : (option.STATUSMULTIMEDIA === 1 ? '#fcfee7' : '#fdfec3') }" >
+        <div  class="item-body-right-bottom" (click)="showSelect(option,'multimedia')" [ngStyle]="{ 'background-color': option.STATUSMULTIMEDIA === 0 ? '#fd8d89b2' : (option.STATUSMULTIMEDIA === 1 ? '#d4f738b2' : '#f8e21fb7') }" >
           <div>
             <img class="icono-item-botton" src="{{ ip_address }}/media/images/{{ option.STATUSMULTIMEDIA === 0 ? 'noactive.png' : (option.STATUSMULTIMEDIA === 1 ? 'check.png' : 'time.png') }}" alt="Imagen Subtítulo">
             <h2> {{ option.STATUSMULTIMEDIA === 0 ? 'Inactivo' : (option.STATUSMULTIMEDIA === 1 ? 'Activo' : 'Revisión') }}</h2>
@@ -123,13 +123,19 @@
                 </div>
               </div>
               <div  class="full-width" >
-                <video  #videoPlayer  controls></video>
-                <ion-button (click)="captureImage(videoPlayer)" fill="clear">2 veces pa´ Miniatura</ion-button>
+                <video #videoPlayer controls>
+                  <source [src]="ip_address + '/multimedia/'+dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA" type="video/mp4">
+                </video>
+                <ion-button *ngIf="selectedFile!==null" (click)="captureImage(videoPlayer)" fill="clear">Tomar Miniatura</ion-button>
               </div>
             </div>
           </div>
           <div class="title-select">
-            <p>Cambiar Estado</p>
+            <p>Tiempo de Multimedia</p>
+            <ion-textarea type="text" rea donly [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.TIEMPOMULTIMEDIA" ></ion-textarea>
+          </div>
+          <div class="title-select">
+            <p>Cambiar Visibilidad</p>
           </div>
           <ion-select name="selectStatus" interface="popover"  [(ngModel)]="dataMultimediaUniq && dataMultimediaUniq.STATUSMULTIMEDIA" required>
             <ion-select-option *ngFor="let option of dataSelect" [value]="option.id">{{ option.nombre }}</ion-select-option>
@@ -173,7 +179,7 @@
               </div>
               <div  class="full-width" >
                 <video  #videoPlayer  controls></video>
-                <ion-button (click)="captureImage(videoPlayer)" fill="clear">2 veces pa´ Miniatura</ion-button>
+                <ion-button (click)="captureImage(videoPlayer)" fill="clear">Tomar Miniatura</ion-button>
               </div>
             </div>
           </div>

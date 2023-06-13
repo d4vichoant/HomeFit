@@ -13,11 +13,26 @@
        </ion-button>
        <p (click)="go_page('videos')"> Regresar</p>
      </ion-buttons>
-      <!-- <ion-buttons slot="end">
-        <ion-button style="color: #ffffff;" (click)="goHome()">
-          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+      <ion-buttons slot="end">
+        <ion-button  (click)="confirmchangeCreateData()"  style="color: #9259f9; margin-right: 10px;"  >
+          <ng-container *ngIf="variable ; else otherIcon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+              <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"></path>
+              <path d="M10 12l4 0"></path>
+           </svg>&nbsp;<span class="spaniconup">ACTUALIZAR</span>
+          </ng-container>
+          <ng-template #otherIcon>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+              <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+              <path d="M14 4l0 4l-6 0l0 -4"></path>
+           </svg>&nbsp;<span class="spaniconup">Crear</span>
+          </ng-template>
         </ion-button>
-      </ion-buttons> -->
+      </ion-buttons>
     </ion-toolbar>
   </div>
   <div >
@@ -27,7 +42,7 @@
     </div>
   </div>
     <div class="container-body" *ngIf="currentTab === 1">
-      <div class="post-container-body">
+      <!-- <div class="post-container-body"> -->
         <h2>Seleccione Multimedia</h2>
         <div class="input-wrapper">
           <div (click)="showSelected('dataMultimedia')"  class="title-up">
@@ -86,7 +101,7 @@
         </div>
         <div>
           <ion-label class="ion-label-body">Tiempo en Realizar</ion-label>
-          <ion-input class="ion-input-body" [(ngModel)]="tiempoRealizar" (input)="formatearTiempo()" (change)="completarTiempo()" type="text" name="nombre" placeholder="HH:mm:ss" required></ion-input>
+          <ion-input class="ion-input-body" readonly [value]="selectedMultimedia?.TIEMPOMULTIMEDIA || ''" placeholder="HH:mm:ss" required></ion-input>
         </div>
         <div>
           <ion-label class="ion-label-body">Numero de Series</ion-label>
@@ -120,11 +135,11 @@
           <ion-label   class="ion-label-body" style="padding-bottom: 2%!important;">Equipo Requerido</ion-label>
           <ion-button  class="buttonaddObjPers" *ngIf=" equiporequeridoporEjercicio && equiporequeridoporEjercicio.length === 0"  (click)="OpenDialogNewERequ()" fill="clear">+ Eq. Requerido</ion-button>
         </div>
-      </div>
-      <div class="buttons-tab1">
+      <!-- </div> -->
+      <!-- <div class="buttons-tab1">
         <ion-button (click)="go_page('videos')"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
         <ion-button (click)="confirmchangeCreateData()"  class="ion-buttons-2" fill="clear">{{ this.variable ? 'Actualizar' : 'Crear' }}</ion-button>
-      </div>
+      </div> -->
     </div>
   <div class="container-body" *ngIf="currentTab === 2  && dataComentarioporEjercicio && dataComentarioporEjercicio.length >0;else noDataMessage ">
     <ion-card class="container-body-card" *ngFor="let data of dataComentarioporEjercicio"
@@ -144,11 +159,21 @@
                   </div>
                 </div>
                 <div class="stars">
-                  <ion-icon name="star-outline" [ngClass]="{ 'filled-star': data.CALIFICACIONPROGRESO >= 1 }"></ion-icon>
-                  <ion-icon name="star-outline" [ngClass]="{ 'filled-star': data.CALIFICACIONPROGRESO >= 2 }"></ion-icon>
-                  <ion-icon name="star-outline" [ngClass]="{ 'filled-star': data.CALIFICACIONPROGRESO >= 3 }"></ion-icon>
-                  <ion-icon name="star-outline" [ngClass]="{ 'filled-star': data.CALIFICACIONPROGRESO >= 4 }"></ion-icon>
-                  <ion-icon name="star-outline" [ngClass]="{ 'filled-star': data.CALIFICACIONPROGRESO >= 5 }"></ion-icon>
+                  <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+                    <div style="color: #9259f9;">
+                      <svg *ngIf="star <= data.CALIFICACIONPROGRESO" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor" />
+                      </svg>
+                    </div>
+                    <div style="color: #6b6b6b;">
+                      <svg *ngIf="star > data.CALIFICACIONPROGRESO" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
+                      </svg>
+                    </div>
+                  </ng-container>
+
                 </div>
               </div>
               <div>
@@ -183,11 +208,20 @@
                       </div>
                     </div>
                     <div class="stars">
-                      <ion-icon name="star-outline" [ngClass]="{ 'filled-star': dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO >= 1 }"></ion-icon>
-                      <ion-icon name="star-outline" [ngClass]="{ 'filled-star': dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO >= 2 }"></ion-icon>
-                      <ion-icon name="star-outline" [ngClass]="{ 'filled-star': dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO >= 3 }"></ion-icon>
-                      <ion-icon name="star-outline" [ngClass]="{ 'filled-star': dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO >= 4 }"></ion-icon>
-                      <ion-icon name="star-outline" [ngClass]="{ 'filled-star': dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO >= 5 }"></ion-icon>
+                      <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+                        <div style="color: #9259f9;">
+                          <svg *ngIf="star <= dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor" />
+                          </svg>
+                        </div>
+                        <div style="color: #6b6b6b;">
+                          <svg *ngIf="star > dataComentarioporEjercicioUniq.CALIFICACIONPROGRESO" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
+                          </svg>
+                        </div>
+                      </ng-container>
                     </div>
                   </div>
                   <div>
@@ -239,7 +273,7 @@
         <ion-avatar slot="start" >
           <img  src="{{ ip_address }}/multimedia/{{getVideoName(data.ALMACENAMIENTOMULTIMEDIA)}}.jpg"alt="Imagen" />
         </ion-avatar>
-        {{data.TITULOMULTIMEDIA}}
+        {{data.TITULOMULTIMEDIA}} &nbsp;&nbsp;<span class="timemultimediaspan">({{data.TIEMPOMULTIMEDIA}})</span>
         </ion-item>
       </ion-list>
       <ng-template #noDataMessage>

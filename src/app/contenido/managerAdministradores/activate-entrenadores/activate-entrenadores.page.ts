@@ -859,7 +859,6 @@ actualizarEntrenantes(dataPerson: any) {
     this.searchTerm='';
     this.previousSearchTerm = '';
     this.overlayVisible = false;
-    this.currentTab = 1;
     this.notificacionInt=99;
     this.ExperienciaInt=99;
     this.selectedOption=null;

@@ -38,8 +38,8 @@ export class VideosPage implements OnInit {
     //this.test();
     this.validateSesion();
     this.chanceColorFooter();
-    this.cargarImagenesBeforesNdif();
-    this.cargarImagenesBefores();
+    //this.cargarImagenesBeforesNdif();
+    //this.cargarImagenesBefores();
   }
   ionViewDidEnter() {
     //this.test();
@@ -49,8 +49,8 @@ export class VideosPage implements OnInit {
     }
     this.validateSesion();
     this.chanceColorFooter();
-    this.cargarImagenesBeforesNdif();
-    this.cargarImagenesBefores();
+    //this.cargarImagenesBeforesNdif();
+    //this.cargarImagenesBefores();
   }
 
   goBackToPreviousPage() {
@@ -125,10 +125,12 @@ export class VideosPage implements OnInit {
       }
     }
     let imagesLoaded = 0;
+    //console.log(imageUrls);
     const totalImages = imageUrls.length;
     const handleImageLoad = () => {
       imagesLoaded++;
       if (imagesLoaded === totalImages) {
+        this.loading=false;
       }
     };
     imageUrls.forEach((imageUrl) => {
@@ -149,12 +151,13 @@ export class VideosPage implements OnInit {
     }
     const imageUrlAdd = this.ip_address+'/media/images/crear_video.jpg';
     imageUrls.push(imageUrlAdd);
+    //console.log(imageUrls);
     let imagesLoaded = 0;
     const totalImages = imageUrls.length;
     const handleImageLoad = () => {
       imagesLoaded++;
       if (imagesLoaded === totalImages) {
-        this.loading = false;
+        //this.loading = false;
       }
     };
     imageUrls.forEach((imageUrl) => {
@@ -173,6 +176,7 @@ export class VideosPage implements OnInit {
       }
     });
   }
+
 
   getVideoName(url: string): string {
     return url.split('.')[0];
@@ -299,6 +303,10 @@ async buttonfilterhabilitate(filter: any,index:number) {
     this.apiService.getNivelDificultaDejercicio().subscribe(
       (response) => {
         this.dataNivelDificultad=response;
+        setTimeout(() => {
+          this.cargarImagenesBeforesNdif();
+        }, 1000);
+
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -309,6 +317,9 @@ async buttonfilterhabilitate(filter: any,index:number) {
     this.apiService.getEjercicio().subscribe(
       (response) => {
         this.dataEjercicio=response;
+        setTimeout(() => {
+          this.cargarImagenesBefores();
+        }, 1000);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

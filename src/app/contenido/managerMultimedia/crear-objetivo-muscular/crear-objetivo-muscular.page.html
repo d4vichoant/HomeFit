@@ -74,7 +74,7 @@
               </ion-col>
             </ion-row>
             <ion-row>
-              <div  class="item-body-right-bottom"  (click)="showSelect(option,'objetivosmusculares')" [ngStyle]="{ 'background-color': option.STATUSOBJETIVOSMUSCULARES === 0 ? '#fdfec3' : (option.STATUSOBJETIVOSMUSCULARES === 1 ? '#fcfee7' : '#fdfec3') }" >
+              <div  class="item-body-right-bottom"  (click)="showSelect(option,'objetivosmusculares')" [ngStyle]="{ 'background-color': option.STATUSOBJETIVOSMUSCULARES === 0 ? '#fd8d89b2' : (option.STATUSOBJETIVOSMUSCULARES === 1 ? '#d4f738b2' : '#f8e21fb7') }" >
                 <div>
                   <img class="icono-item-botton" src="{{ ip_address }}/media/images/{{ option.STATUSOBJETIVOSMUSCULARES === 0 ? 'noactive.png' : (option.STATUSOBJETIVOSMUSCULARES === 1 ? 'check.png' : 'time.png') }}" alt="Imagen Subtítulo">
                   <h2> {{ option.STATUSOBJETIVOSMUSCULARES === 0 ? 'Inactivo' : (option.STATUSOBJETIVOSMUSCULARES === 1 ? 'Activo' : 'Revisión') }}</h2>

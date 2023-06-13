@@ -27,16 +27,17 @@ ion-content {
 
 //css de Spinner de cargando ...
 .loading-overlay {
+  height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.5); /* Fondo semitransparente */
+  background-color: rgb(255, 255, 255); /* Fondo semitransparente */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  z-index: 10;
 }
 
 .loading-spinner {
@@ -195,7 +196,7 @@ ion-content {
     align-items: center;
     font-family: Raleway-Medium;
     font-size: 1rem;
-    color: #524f52;
+    color: #ffffff;
     margin-left: 5px;
     margin-right: 20px;
     padding-bottom: 8px;

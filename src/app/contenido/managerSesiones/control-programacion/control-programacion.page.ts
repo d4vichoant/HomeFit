@@ -16,6 +16,8 @@ export class ControlProgramacionPage implements OnInit {
   public userSesion!:string;
   public userSesionPerfil!:any;
 
+  imagenEntrenadorRutina!:any[];
+
   currentDate!: string;
   constructor(private storage: Storage,
     private apiService: ApiServiceService,
@@ -24,17 +26,19 @@ export class ControlProgramacionPage implements OnInit {
 
   ngOnInit() {
     this.chanceColorFooter();
+    this.updateCurrentDate();
     this.validateSesion();
     //this.test();
-    this.cargarImagenesBefore();
-    this.updateCurrentDate();
+    //this.cargarImagenesBefore();
+
   }
   ionViewDidEnter() {
     //this.test();
+    this.updateCurrentDate();
     this.chanceColorFooter();
     this.validateSesion();
-    this.cargarImagenesBefore();
-    this.updateCurrentDate();
+    //this.cargarImagenesBefore();
+
   }
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
@@ -47,21 +51,35 @@ export class ControlProgramacionPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
   }
   cargarImagenesBefore(){
-    let imagesLoaded = 0;
-    const image1 = new Image();
-    const image2 = new Image();
-    image1.src = IP_ADDRESS + '/media/images/control-sesiones-1.png';
-    image2.src = IP_ADDRESS + '/media/images/control-sesiones-2.png';
-
-    const handleImageLoad = () => {
-      imagesLoaded++;
-      if (imagesLoaded === 2) {
-        this.loading = false;
+    const imageUrls = []; // Array para almacenar las URL de las imágenes
+      if (Array.isArray(this.imagenEntrenadorRutina)) {
+        for (let i = 0; i < this.imagenEntrenadorRutina.length; i++) {
+          const videoName = this.imagenEntrenadorRutina[i].IMAGEPERSONA;
+          const imageUrl = this.ip_address+'/media/perfile/'+videoName;
+          imageUrls.push(imageUrl);
+        }
       }
-    };
+      //console.log(ejercicios);
 
-    image1.onload = handleImageLoad;
-    image2.onload = handleImageLoad;
+      const imageUrlAdd = this.ip_address+ '/media/images/control-sesiones-1.png';
+      imageUrls.push(imageUrlAdd);
+      const imageUrlAdd1 = this.ip_address+'/media/images/control-sesiones-2.png';
+      imageUrls.push(imageUrlAdd1);
+      //console.log(imageUrls);
+      let imagesLoaded = 0;
+      const totalImages = imageUrls.length;
+      const handleImageLoad = () => {
+        imagesLoaded++;
+        if (imagesLoaded === totalImages) {
+          this.loading = false;
+        }
+      };
+      imageUrls.forEach((imageUrl) => {
+        const image = new Image();
+        image.onload = handleImageLoad;
+        image.src = imageUrl;
+      });
+
   }
   test(){
     this.StatusBar();
@@ -80,6 +98,7 @@ export class ControlProgramacionPage implements OnInit {
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
               this.StatusBar();
+              this.obtenerImagenEntrenadorRutina();
             },
             (error) => {
               this.handleError();
@@ -130,6 +149,18 @@ export class ControlProgramacionPage implements OnInit {
       toast.present();
     }
 
+    obtenerImagenEntrenadorRutina(){
+      this.apiService.imagenEntrenadorRutina().subscribe(
+        (response) => {
+          this.imagenEntrenadorRutina=response;
+          this.imagenEntrenadorRutina = this.imagenEntrenadorRutina.slice(0,4);
+          this.cargarImagenesBefore();
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
   obtenerGetPerfilCompleto(nickname:string){
     this.apiService.connsultPerfilCompleto(nickname).subscribe(
       (response) => {

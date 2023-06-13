@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { IP_ADDRESS } from '../../../constantes';
 import { ApiServiceService } from '../../../api-service.service';
+import { ActivatedRoute,Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController, ToastController,IonContent } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-rutinas',
@@ -11,33 +13,44 @@ import { StatusBar } from '@capacitor/status-bar';
   styleUrls: ['./rutinas.page.scss'],
 })
 export class RutinasPage implements OnInit {
+  @ViewChild(IonContent) content!: IonContent;
   public ip_address = IP_ADDRESS;
   public loading = true;
   public userSesion!:string;
   public userSesionPerfil!:any;
   public searchTerm!:string;
   private previousSearchTerm: string = '';
-  selectedItem: number = -1;
+  //selectedItem: number = -1;
 
-  public dataRutinasUniq!:any[];
+  //public dataRutinasUniq!:any[];
   public origindata!:any[];
 
+  public dataRtuinas!:any[];
+  public dataEjercicio!:any[];
+
+  mostrarEjerciciosSelect: boolean[] = [];
+
+  variabledata: any;
+
   constructor(private storage: Storage,
+    private route: ActivatedRoute,
     private apiService: ApiServiceService,
     public toastController: ToastController,
-    private navController: NavController) { }
+    private navController: NavController,
+    public alertController: AlertController) { }
 
     ngOnInit() {
       this.chanceColorFooter();
-      //this.validateSesion();
-      this.test();
-      this.cargarImagenesBefore();
+      this.validateSesion();
+
+      //this.test();
+      //this.cargarImagenesBefore();
     }
     ionViewDidEnter() {
-      this.test();
       this.chanceColorFooter();
-      //this.validateSesion();
-      this.cargarImagenesBefore();
+      this.validateSesion();
+      //this.test();
+      //this.cargarImagenesBefore();
     }
     private chanceColorFooter(){
       document.documentElement.style.setProperty('--activate-foot10',' transparent');
@@ -50,24 +63,44 @@ export class RutinasPage implements OnInit {
       document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
     }
     cargarImagenesBefore(){
-      let imagesLoaded = 0;
-      const image1 = new Image();
-      const image2 = new Image();
-      image1.src = IP_ADDRESS + '/media/images/control-sesiones-1.png';
-      image2.src = IP_ADDRESS + '/media/images/control-sesiones-2.png';
+      const imageUrls = []; // Array para almacenar las URL de las imágenes
+      if (Array.isArray(this.dataRtuinas)) {
+        for (let i = 0; i < this.dataRtuinas.length; i++) {
+          const videoName = this.dataRtuinas[i].IMAGENRUTINA;
+          const imageUrl = this.ip_address+'/media/rutinas/portadasrutinas/'+videoName;
+          imageUrls.push(imageUrl);
+        }
+      }
+      if (Array.isArray(this.dataEjercicio)) {
+        for (let i = 0; i < this.dataEjercicio.length; i++) {
+          const videoName = this.getVideoName(this.dataEjercicio[i].ALMACENAMIENTOMULTIMEDIA)+".jpg";
+          const imageUrl = this.ip_address+'/multimedia/'+videoName;
+          imageUrls.push(imageUrl);
+        }
+      }
+      //
+      const imageUrlAdd = this.ip_address+'/media/rutinas/crear_rutina.jpg';
+      imageUrls.push(imageUrlAdd);
+      //console.log(imageUrls);
 
+      let imagesLoaded = 0;
+      const totalImages = imageUrls.length;
       const handleImageLoad = () => {
         imagesLoaded++;
-        if (imagesLoaded === 2) {
+        if (imagesLoaded === totalImages) {
           this.loading = false;
         }
       };
-
-      image1.onload = handleImageLoad;
-      image2.onload = handleImageLoad;
+      imageUrls.forEach((imageUrl) => {
+        const image = new Image();
+        image.onload = handleImageLoad;
+        image.src = imageUrl;
+      });
     }
     test(){
       this.StatusBar();
+      this.obtenerRutinas();
+      this.obtenerEjercicios();
     }
     StatusBar(){
       StatusBar.hide();
@@ -83,6 +116,8 @@ export class RutinasPage implements OnInit {
             this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
               (response) => {
                 this.StatusBar();
+                this.obtenerEjercicios();
+                this.obtenerRutinas();
               },
               (error) => {
                 this.handleError();
@@ -106,12 +141,19 @@ export class RutinasPage implements OnInit {
       //this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
       this.navController.navigateForward('/'+name);
     }
+    go_page_create(name: string, data: any) {
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableRutinas: data
+        }
+      });
+    }
 
     public onInputChange(event: any) {
       const currentSearchTerm = event.target.value;
       if (currentSearchTerm.length < this.previousSearchTerm.length) {
-        this.dataRutinasUniq=this.origindata;
-        this.selectedItem = -1;
+        this.dataRtuinas=this.origindata;
+        //this.selectedItem = -1;
       }
       this.previousSearchTerm = currentSearchTerm;
       this.filterItems();
@@ -119,7 +161,7 @@ export class RutinasPage implements OnInit {
 
     private filterItems() {
       if (!this.origindata) {
-        const rawData = this.dataRutinasUniq;
+        const rawData = this.dataRtuinas;
         this.origindata = rawData.map(item => ({ ...item }));
       }
 
@@ -128,18 +170,87 @@ export class RutinasPage implements OnInit {
         let filteredArray: any[] = [];
 
         for (const term of searchTerms) {
-          const filteredItems = this.dataRutinasUniq.filter(item =>
+          const filteredItems = this.dataRtuinas.filter(item =>
             item.NOMBRETIPOEJERCICIO.toLowerCase().includes(term) ||
-            item.tituloniveldificultadejercicio.toLowerCase().includes(term) ||
-            item.NOMBREEJERCICIO.toLowerCase().includes(term)
+            item.DESCRIPCIONOBJETIVOSPERSONALES.toLowerCase().includes(term) ||
+            item.NOMBRERUTINA.toLowerCase().includes(term) ||
+            item.DESCRIPCIONRUTINA.toLowerCase().includes(term) ||
+            item.DURACIONRUTINA.toLowerCase().includes(term) ||
+            item.IMAGENRUTINA.toLowerCase().includes(term) ||
+            item.OBSERVACIONRUTINA.toLowerCase().includes(term)
           );
 
           filteredArray = filteredArray.concat(filteredItems);
         }
 
         // Eliminar duplicados del array filtrado
-        this.dataRutinasUniq = Array.from(new Set(filteredArray));
+        this.dataRtuinas = Array.from(new Set(filteredArray));
       }
+    }
+
+    async confirmaractualizarEjercicioActivacion(data :any) {
+      const alert = await this.alertController.create({
+        header: 'Confirmar Estado',
+        message: '¿Estás seguro de activar/desactivar esta Rutina?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              this.presentCustomToast('Proceso cancelada',"danger");
+            }
+          }, {
+            text: 'Aceptar',
+            handler: () => {
+              if (data.STATUSRUTINA===0){
+                data.STATUSRUTINA=1;
+              }else{
+                data.STATUSRUTINA=0;
+              }
+              this.actualizarEjercicioActivacion(data);
+            }
+          }
+        ]
+      });
+
+      await alert.present();
+    }
+
+    actualizarEjercicioActivacion(data:any){
+      this.apiService.UpdataStatus(data,"rutina").subscribe(
+        (response) => {
+          this.presentCustomToast(response.message,"success");
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
+
+    showSelect(item:any, nombre:string)
+    {
+    }
+    showSelectEdit(item:any, nombre:string)
+    {
+    }
+    showEjerciciosxItem(data: any, index: number) {
+      this.mostrarEjerciciosSelect[index] = !this.mostrarEjerciciosSelect[index];
+      if (this.mostrarEjerciciosSelect[index] ===true){
+        setTimeout(() => {
+          const elementoDestino = document.getElementById('elemento-destino-' + index);
+          if (elementoDestino) {
+            elementoDestino.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 50);
+      }
+    }
+    findEjercicioRutina(IDEJERCICIORUTINA: number): any {
+      const elemento = this.dataEjercicio.find(objeto => objeto.IDEJERCICIO === IDEJERCICIORUTINA);
+      return elemento;
+    }
+    getVideoName(url: string): string {
+      return url.split('.')[0];
     }
 
     async presentCustomToast(message: string, color: string) {
@@ -165,6 +276,34 @@ export class RutinasPage implements OnInit {
       this.apiService.connsultPerfilCompleto(nickname).subscribe(
         (response) => {
           this.userSesionPerfil=response;
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
+
+    obtenerRutinas(){
+      this.apiService.getRutinas().subscribe(
+        (response) => {
+          this.dataRtuinas=response;
+          this.dataRtuinas = this.dataRtuinas.map(objeto => ({
+            ...objeto,
+            IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
+          }));
+          setTimeout(() => {
+            this.cargarImagenesBefore();
+          }, 1000);
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
+    obtenerEjercicios(){
+      this.apiService.getEjercicio().subscribe(
+        (response) => {
+          this.dataEjercicio=response;
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");

@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./crear-multimedia.page.scss'],
 })
 export class CrearMultimediaPage implements OnInit   {
-  @ViewChild('videoPlayer') videoPlayer!: ElementRef;
+  @ViewChild('videoPlayer', { static: false }) videoPlayer!: ElementRef;
+  //@ViewChild('videoPlayer') videoPlayer!: ElementRef;
 
   public loading = true;
   public ip_address = IP_ADDRESS;
@@ -63,12 +64,12 @@ export class CrearMultimediaPage implements OnInit   {
 
     ionViewDidEnter(){
       this.validateSesion();
-      this.cargarImagenesBefores();
+      //this.cargarImagenesBefores();
       //this.test()
     }
     ngOnInit() {
       this.validateSesion();
-      this.cargarImagenesBefores();
+      //this.cargarImagenesBefores();
       //this.test()
     }
 
@@ -127,6 +128,7 @@ export class CrearMultimediaPage implements OnInit   {
       }
       const imageUrlAdd = this.ip_address+'/media/images/crear_Multimedia.jpg';
       imageUrls.push(imageUrlAdd);
+      //console.log(imageUrls);
       let imagesLoaded = 0;
       const totalImages = imageUrls.length;
       const handleImageLoad = () => {
@@ -259,8 +261,26 @@ export class CrearMultimediaPage implements OnInit   {
       this.presentCustomToast("Archivo subido correctamente", "success");
 
       const videoURL = URL.createObjectURL(file);
+      //const videoURL: string = this.ip_address+"/multimedia/"+this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA;
       this.videoPlayer.nativeElement.src = videoURL;
 
+      const videoElement: HTMLVideoElement = this.videoPlayer.nativeElement;
+      videoElement.addEventListener("loadedmetadata", () => {
+        const durationInSeconds = videoElement.duration;
+        const durationFormatted = this.formatVideoDuration(durationInSeconds);
+        this.dataMultimediaUniq.TIEMPOMULTIMEDIA = durationFormatted; // Asigna el valor a la variable videoDuration
+      });
+
+    }
+    formatVideoDuration(durationInSeconds: number): string {
+      const hours = Math.floor(durationInSeconds / 3600);
+      const minutes = Math.floor((durationInSeconds % 3600) / 60);
+      const seconds = Math.floor(durationInSeconds % 60);
+      return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
+    }
+
+    pad(value: number): string {
+      return value.toString().padStart(2, "0");
     }
 
     captureImage(video: HTMLVideoElement) {
@@ -358,69 +378,75 @@ export class CrearMultimediaPage implements OnInit   {
       if(item.OBSERVACIONMULTIMEDIA ==="N/A"  && item.STATUSMULTIMEDIA !== 1){
         this.presentCustomToast('Debe escribir alguna razon',"danger");
       }else{
-        const alert = await this.alertController.create({
-          header: 'Confirmar Estado',
-          message: '¿Estás seguro que desea realizar estos cambios en '+nombre+'?',
-          buttons: [
-            {
-              text: 'Cancelar',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: () => {
-                this.presentCustomToast('Proceso cancelada',"danger");
+        if(this.imagenFile){
+            const alert = await this.alertController.create({
+              header: 'Confirmar Actualizar Datos',
+              message: '¿Estás seguro que desea realizar estos cambios en '+nombre+'?',
+              buttons: [
+                {
+                  text: 'Cancelar',
+                  role: 'cancel',
+                  cssClass: 'secondary',
+                handler: () => {
+                  this.presentCustomToast('Proceso cancelada',"danger");
+                }
+              }, {
+                text: 'Aceptar',
+                handler: () => {
+                  if(this.imagenFile){
+                    this.saveImageFile();
+                  }
+                  if(item.STATUSMULTIMEDIA === 1 ){
+                    item.OBSERVACIONMULTIMEDIA="N/A";
+                  }
+                    if(this.selectedFile){
+                      this.UpdateFile().then((fileName) => {
+                        item.ALMACENAMIENTOMULTIMEDIA= fileName;
+                        this.UpdateDates(item,nombre);
+                        this.mostrarSelectEdit=!this.mostrarSelectEdit;
+                      }).catch((error) => {
+                        console.error("Error al subir el archivo:", error);
+                      });
+                    //this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4";
+                  }else{
+                    this.UpdateDates(item,nombre);
+                    this.mostrarSelectEdit=!this.mostrarSelectEdit;
+                  }
+                }
               }
-            }, {
-              text: 'Aceptar',
-              handler: () => {
-                if(this.imagenFile){
-                  this.saveImageFile();
-                }
-                if(item.STATUSMULTIMEDIA === 1 ){
-                  item.OBSERVACIONMULTIMEDIA="N/A";
-                }
-                  if(this.selectedFile){
-                    this.UpdateFile().then((fileName) => {
-                      item.ALMACENAMIENTOMULTIMEDIA= fileName;
-                      this.UpdateDates(item,nombre);
-                      this.mostrarSelectEdit=!this.mostrarSelectEdit;
-                    }).catch((error) => {
-                      console.error("Error al subir el archivo:", error);
-                    });
-                  //this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4";
-                }else{
-                  this.UpdateDates(item,nombre);
-                  this.mostrarSelectEdit=!this.mostrarSelectEdit;
-                }
-              }
-            }
-          ]
-        });
-        await alert.present();
+            ]
+          });
+          await alert.present();
+        }else{
+          this.presentCustomToast('Debe existir una miniatura',"danger");
+        }
       }
     }
-    UpdateDates(item:any, nombre:string)
-    {
-      this.apiService.UpdataDataMultimedia(item,nombre).subscribe(
-        (response) => {
-          this.presentCustomToast(response.message,"success");
-          this.originData=[];
-          this.dataMultimediaUniq={}
-          this.imagenFile =null;
-          this.selectedFile=null;
-          this.ngOnInit();
-        },
-        (error) => {
-          this.presentCustomToast(error.error.error,"danger");
-        }
-      );
+    async UpdateDates(item: any, nombre: string) {
+      try {
+        this.loading=true;
+        const response = await this.apiService.UpdataDataMultimedia(item, nombre).toPromise();
+        this.loading=false;
+        this.presentCustomToast(response.message, "success");
+        this.originData = [];
+        this.dataMultimediaUniq = {};
+        this.imagenFile = null;
+        this.selectedFile = null;
+        this.ngOnInit();
+      } catch (error:any) {
+        this.presentCustomToast(error.error.error, "danger");
+      }
     }
-    UpdateFile(): Promise<string> {
+
+    async UpdateFile(): Promise<string> {
       return new Promise((resolve, reject) => {
         if (this.selectedFile) {
           this.apiService.uploadFileMp3(this.selectedFile, this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA) + ".mp4").subscribe(
             (response) => {
+              this.loading = true;
               this.presentCustomToast(response.message, "success");
-              resolve(response.fileName+".mp4");
+              resolve(response.fileName + ".mp4");
+              this.loading = false;
             },
             (error) => {
               this.presentCustomToast(error.error.error, "danger");
@@ -433,11 +459,14 @@ export class CrearMultimediaPage implements OnInit   {
         }
       });
     }
+
     saveImageFile() {
       if (this.imagenFile) {
         this.apiService.uploadcaptureImagen(this.imagenFile,this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".jpg").subscribe(
           (response) => {
+            this.loading=true;
             this.presentCustomToast(response.message, "success");
+            this.loading=false;
           },
           (error) => {
             this.presentCustomToast(error.error.error, "danger");
@@ -462,7 +491,7 @@ export class CrearMultimediaPage implements OnInit   {
       }else{
         if(this.imagenFile){
            const alert = await this.alertController.create({
-          header: 'Confirmar Estado',
+          header: 'Confirmar Creación de Datos',
           message: '¿Estás seguro que desea guardar estos datos en '+nombre+'?',
           buttons: [
             {
@@ -488,7 +517,7 @@ export class CrearMultimediaPage implements OnInit   {
                     this.createsDates(item,nombre);
                     this.mostrarSelectCreate=!this.mostrarSelectCreate;
                   }).catch((error) => {
-                    console.error("Error al subir el archivo:", error);
+                    this.presentCustomToast("Error al subir el archivo:"+error,"danger")
                   });
                 //this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4";
                 }else{
@@ -506,19 +535,21 @@ export class CrearMultimediaPage implements OnInit   {
 
       }
     }
-    createsDates(item:any, nombre:string)
-    {
-      this.apiService.CreteDataMultimedia(item,nombre).subscribe(
-        (response) => {
-          this.dataMultimediaUniq={};
-          this.presentCustomToast(response.message,"success");
-          this.ngOnInit();
-        },
-        (error) => {
-          this.presentCustomToast(error.error.error,"danger");
-        }
-      );
+    async createsDates(item: any, nombre: string) {
+      try {
+        this.loading=false;
+        const response = await this.apiService.CreteDataMultimedia(item, nombre).toPromise();
+        this.loading=true;
+        this.dataMultimediaUniq = {};
+        this.presentCustomToast(response.message, "success");
+        this.imagenFile = null;
+        this.selectedFile = null;
+        this.ngOnInit();
+      } catch (error:any) {
+        this.presentCustomToast(error.error.error, "danger");
+      }
     }
+
     buttonfilterhabilitate(filtro:any,index:number){
       this.toggleIconStatus(index);
       if(!filtro.iconstatus){
@@ -561,6 +592,10 @@ export class CrearMultimediaPage implements OnInit   {
       this.apiService.getMultimedia().subscribe(
         (response) => {
           this.dataMultimedia=response;
+          setTimeout(() => {
+            this.cargarImagenesBefores();
+          }, 1000);
+
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");

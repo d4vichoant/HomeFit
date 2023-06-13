@@ -25,7 +25,7 @@
   <div class="browser">
     <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
   </div>
-  <div class="container-body">
+  <div class="container-body container-videos">
     <ion-card (click)="go_page('crear-rutinas')" class="custom-card" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/rutinas/crear_rutina.jpg');">
       <ion-card-header>
         <img class="background-image" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
@@ -35,6 +35,151 @@
         <br>
       </ion-card-content>
     </ion-card>
+
+    <div class="item-video-setup" *ngFor="let option of dataRtuinas; let i = index;"  >
+      <ion-card style="background: linear-gradient(0deg, rgb(0, 0, 0), rgb(0, 0, 0));">
+        <div class="image-container">
+          <img alt="Silhouette of mountains" src="{{ ip_address }}/media/rutinas/portadasrutinas/{{option.IMAGENRUTINA}}" class="image"/>
+          <div class="filter-overlay"></div>
+            <div class="item-body-right-top">
+              <button >
+                <img class="icono-item-top"  (click)="go_page_create('crear-rutinas',option)" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"  alt="Icono 1">
+              </button>
+              <button>
+                <img  class="icono-item-top" (click)="confirmaractualizarEjercicioActivacion(option)" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
+              </button>
+          </div>
+          <div class="title-body-left-bottom">
+            <p class="text2">{{option.NOMBRERUTINA}}</p>
+          </div>
+          <div class="ion-chip-selected">
+            <ion-chip >
+              <div class="ion-item-chip-selected">
+                <ion-label >{{option.DURACIONRUTINA}}</ion-label>
+              </div>
+            </ion-chip>
+          </div>
+        </div>
+        <ion-card-header  (click)="showEjerciciosxItem(option,i)">
+          <ion-card-title>
+            <p class="text1">{{option.DESCRIPCIONRUTINA}}</p>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-card-content (click)="showEjerciciosxItem(option,i)" >
+                <div class="ion-card-content ">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clipboard-list" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path>
+                    <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"></path>
+                    <path d="M9 12l.01 0"></path>
+                    <path d="M13 12l2 0"></path>
+                    <path d="M9 16l.01 0"></path>
+                    <path d="M13 16l2 0"></path>
+                 </svg>
+                 <p class="text-description">{{option.DESCRIPCIONOBJETIVOSPERSONALES}}</p>
+                </div>
+                <div class="ion-card-content ">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-align-box-bottom-left-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M18.333 2c1.96 0 3.56 1.537 3.662 3.472l.005 .195v12.666c0 1.96 -1.537 3.56 -3.472 3.662l-.195 .005h-12.666a3.667 3.667 0 0 1 -3.662 -3.472l-.005 -.195v-12.666c0 -1.96 1.537 -3.56 3.472 -3.662l.195 -.005h12.666zm-12.333 13a1 1 0 0 0 -1 1v2l.007 .117a1 1 0 0 0 1.993 -.117v-2l-.007 -.117a1 1 0 0 0 -.993 -.883zm3 -4a1 1 0 0 0 -1 1v6l.007 .117a1 1 0 0 0 1.993 -.117v-6l-.007 -.117a1 1 0 0 0 -.993 -.883zm3 2a1 1 0 0 0 -1 1v4l.007 .117a1 1 0 0 0 1.993 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z" stroke-width="0" fill="currentColor"></path>
+                    </svg>
+                    <p class="text-description">{{option.NOMBRETIPOEJERCICIO}}</p>
+                </div>
+                <div class="ion-card-content ">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-stretching" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M16 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M5 20l5 -.5l1 -2"></path>
+                    <path d="M18 20v-5h-5.5l2.5 -6.5l-5.5 1l1.5 2"></path>
+                 </svg>
+                    <p class="text-description">¿Conoce los Ejercicios?</p>
+                </div>
+              </ion-card-content>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <div  class="item-body-right-bottom"  (click)="confirmaractualizarEjercicioActivacion(option)" [ngStyle]="{ 'background-color': option.STATUSRUTINA === 0 ? '#fdfec3' : (option.STATUSRUTINA === 1 ? '#fcfee7' : '#fdfec3') }" >
+              <div>
+                <img class="icono-item-botton" src="{{ ip_address }}/media/images/{{ option.STATUSRUTINA === 0 ? 'noactive.png' : (option.STATUSRUTINA === 1 ? 'check.png' : 'time.png') }}" alt="Imagen Subtítulo">
+                <h2> {{ option.STATUSRUTINA === 0 ? 'Inactivo' : (option.STATUSRUTINA === 1 ? 'Activo' : 'Revisión') }}</h2>
+              </div>
+            </div>
+          </ion-row>
+        </ion-grid>
+      </ion-card>
+      <div *ngIf="mostrarEjerciciosSelect[i]" [attr.id]="'elemento-destino-' + i" >
+        <ion-card class="ion-card-ejercicios">
+          <ion-card-header (click)="mostrarEjerciciosSelect[i]=!mostrarEjerciciosSelect[i]">
+            <ion-card-title>Ejercicios<ion-icon  name="chevron-expand"></ion-icon></ion-card-title>
+          </ion-card-header>
+          <div class="ion-card-ejer-content">
+            <ion-card-content>
+              <ion-card class="ion-card-ejercicio"  style="margin: 0 auto!important; margin-bottom: 3%; width: 100%;  background-image: linear-gradient(45deg,  #0000008e,#000000a8), url('{{ ip_address }}/multimedia/{{getVideoName(findEjercicioRutina(data).ALMACENAMIENTOMULTIMEDIA)}}.jpg');background-repeat: no-repeat;background-size: cover;" *ngFor="let data of option.IDEJERCICIOS ;" >
+                <div class="ion-chip-selected2">
+                  <ion-chip >
+                    <div class="ion-item-chip-selected2">
+                      <ion-label >{{findEjercicioRutina(data).TIEMPOMULTIMEDIA}}</ion-label>
+                    </div>
+                  </ion-chip>
+                </div>
+                <div class="ion-activate">
+                  <div  class="ion-activate-bottom "   [ngStyle]="{ 'background-color': findEjercicioRutina(data).ESTADOEJERCICIO === 0 ? '#fd8d89b2' : (findEjercicioRutina(data).ESTADOEJERCICIO === 1 ? '#d4f738b2' : '#f8e21fb7') }" >
+                    <div>
+                      <img class="icono-item-botton-activate" src="{{ ip_address }}/media/images/{{ findEjercicioRutina(data).ESTADOEJERCICIO === 0 ? 'noactive.png' : (findEjercicioRutina(data).ESTADOEJERCICIO === 1 ? 'check.png' : 'time.png') }}" alt="Imagen Subtítulo">
+                      <h2> {{ findEjercicioRutina(data).ESTADOEJERCICIO === 0 ? 'Inactivo' : (findEjercicioRutina(data).ESTADOEJERCICIO === 1 ? 'Activo' : 'Revisión') }}</h2>
+                    </div>
+                  </div>
+                </div>
+                <ion-card-content >
+                  <ion-grid>
+                    <ion-row>
+                      <ion-col size="12">
+                        <div class="ion-card-content-ejercicio">
+                          <ion-label style="min-width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; "><span style=" font-family: Raleway-Bold;
+                            font-size: 1.5rem;
+                            color: #ffffff;" class="full-text">{{findEjercicioRutina(data).NOMBREEJERCICIO}}</span></ion-label>
+                        </div>
+                      </ion-col>
+                      <ion-col size="6">
+                        <div class="ion-card-content-ejercicio">
+                          <ion-icon  style="color: #ffffff;" name="sync"></ion-icon>
+                          <ion-label style="color: #ffffff;" >{{findEjercicioRutina(data).REPETICIONESEJERCICIO}}</ion-label>
+                        </div>
+                      </ion-col>
+                      <ion-col size="6">
+                        <div class="ion-card-content-ejercicio">
+                          <ion-icon style="color: #ffffff;" name="shuffle"></ion-icon>
+                          <ion-label style="color: #ffffff;">{{findEjercicioRutina(data).SERIESEJERCICIO}}</ion-label>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col size="12">
+                        <div class="ion-card-content-ejercicio">
+                          <ion-icon  style="color: #ffffff;" name="ribbon"></ion-icon>
+                          <ion-label style=" color: #ffffff; min-width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">{{findEjercicioRutina(data).tituloniveldificultadejercicio}}</ion-label>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col size="12">
+                        <div class="ion-card-content-ejercicio">
+                          <ion-icon style="color: #ffffff;" name="flame"></ion-icon>
+                          <ion-label style="color: #ffffff; min-width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; " ><span style="margin-right: 10px;">Tip. Ejer.</span>{{findEjercicioRutina(data).NOMBRETIPOEJERCICIO}}</ion-label>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                    </ion-grid>
+                  </ion-card-content>
+                </ion-card>
+            </ion-card-content>
+          </div>
+        </ion-card>
+      </div>
+    </div>
   </div>
   <app-footer-designer></app-footer-designer>
 </ion-content>

@@ -68,7 +68,7 @@ export class CrearEjercicioPage implements OnInit {
   public instruccion!:string;
   public pesoRecomendado!:string;
   public repeticiones!:string;
-  public tiempoRealizar!:string;
+  //public tiempoRealizar!:string;
   public numeroSeries!:string;
   public variacionEjercicio!:string;
   public adicionalInformacion!:string;
@@ -84,6 +84,7 @@ export class CrearEjercicioPage implements OnInit {
     public alertController: AlertController) { }
 
   ngOnInit() {
+    this.chanceColorFooter();
     this.route.queryParams.subscribe(params => {
       this.variable = params['variable'];
     });
@@ -95,9 +96,11 @@ export class CrearEjercicioPage implements OnInit {
     if(!this.equiporequeridoporEjercicio){
       this.equiporequeridoporEjercicio=[];
     }
+    this.loading = false;
   }
 
   ionViewDidEnter() {
+    this.chanceColorFooter();
     this.route.queryParams.subscribe(params => {
       this.variable = params['variable'];
     });
@@ -110,6 +113,8 @@ export class CrearEjercicioPage implements OnInit {
     if(!this.equiporequeridoporEjercicio){
       this.equiporequeridoporEjercicio=[];
     }
+    this.loading = false;
+
   }
 
   completarDatos(){
@@ -120,7 +125,6 @@ export class CrearEjercicioPage implements OnInit {
     this.instruccion = this.variable.INTRUCCIONESEJERCICIO;
     this.pesoRecomendado=this.variable.PESOLEVANTADOEJERCICIO;
     this.repeticiones = this.variable.REPETICIONESEJERCICIO;
-    this.tiempoRealizar = this.variable.TIEMPOREALIZACIONEJERCICIO;
     this.numeroSeries = this.variable.SERIESEJERCICIO;
     this.variacionEjercicio = this.variable.VARIACIONESMODIFICACIONEJERCICIOPROGRESO;
     this.adicionalInformacion = this.variable.OBSERVACIONESEJERCICIO;
@@ -154,8 +158,13 @@ export class CrearEjercicioPage implements OnInit {
   }
   go_page(name: string){
     this.dataEjercicio=[];
+    this.navController.navigateForward('/'+name, {
+      queryParams: {
+        variable: null // Puedes asignar null o cualquier otro valor para eliminar la variable
+      }
+    });
      //this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
-    this.navController.navigateForward('/'+name);
+    //this.navController.navigateForward('/'+name);
   }
   StatusBar(){
     StatusBar.hide();
@@ -179,14 +188,12 @@ export class CrearEjercicioPage implements OnInit {
           this.obtenerGetPerfilCompleto(this.userSesion);
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
-              this.chanceColorFooter();
               this.StatusBar();
               this.obtenerMultimedia();
               this.obtenerTEjercicio();
               this.obtenerNDificultad();
               this.obtenerOMuscular();
               this.obtenerEquipoRequerido();
-              this.loading = false;
             },
             (error) => {
               this.handleError();
@@ -413,85 +420,25 @@ export class CrearEjercicioPage implements OnInit {
       this.mostrarSelecNDificultad=false;
       this.mostrarSelecOMuscular=false;
     }
-    completarTiempo():void{
-       // Si la variable tiene el formato "HH:mm" (ejemplo: "1")
-       if (this.tiempoRealizar.length === 1) {
-        this.tiempoRealizar = this.tiempoRealizar + "0:00:00";
-      }
-      // Si la variable tiene el formato "HH:mm" (ejemplo: "12")
-      if (this.tiempoRealizar.length === 2) {
-        this.tiempoRealizar = this.tiempoRealizar + ":00:00";
-      }
-      // Si la variable tiene el formato "HH:mm" (ejemplo: "12:")
-      if (this.tiempoRealizar.length === 3) {
-        this.tiempoRealizar = this.tiempoRealizar + "00:00";
-      }
-      // Si la variable tiene el formato "HH:mm" (ejemplo: "12:0")
-      if (this.tiempoRealizar.length === 4) {
-        this.tiempoRealizar = this.tiempoRealizar + "0:00";
-      }
-      // Si la variable tiene el formato "HH:mm" (ejemplo: "12:00")
-      if (this.tiempoRealizar.length === 5) {
-      this.tiempoRealizar = this.tiempoRealizar + ":00";
-    }
-        // Si la variable tiene el formato "HH:mm" (ejemplo: "12:00:")
-      if (this.tiempoRealizar.length === 6) {
-      this.tiempoRealizar = this.tiempoRealizar + ":00";
-      }
-       // Si la variable tiene el formato "HH:mm" (ejemplo: "12:00:0")
-      if (this.tiempoRealizar.length === 7) {
-      this.tiempoRealizar = this.tiempoRealizar + "0";
-      }
 
-    }
 
     getVideoName(url: string): string {
       return url.split('.')[0];
     }
-    formatearTiempo(): void {
-      // Eliminar todos los caracteres que no sean números
-      const tiempoNumeros = this.tiempoRealizar.replace(/[^0-9]/g, '');
 
-      // Formatear los números ingresados
-      let tiempoFormateado = '';
-      if (tiempoNumeros.length > 0) {
-        tiempoFormateado += tiempoNumeros[0];
-
-        if (tiempoNumeros.length > 1) {
-          tiempoFormateado += tiempoNumeros[1] + ':';
-
-          if (tiempoNumeros.length > 2) {
-            tiempoFormateado += tiempoNumeros[2];
-
-            if (tiempoNumeros.length > 3) {
-              tiempoFormateado += tiempoNumeros[3];
-
-              if (tiempoNumeros.length > 4) {
-                tiempoFormateado += ":" +tiempoNumeros[4];
-                if (tiempoNumeros.length > 5) {
-                  tiempoFormateado += tiempoNumeros[5];
-                }
-              }
-            }
-          }
-        }
-      }
-
-      this.tiempoRealizar = tiempoFormateado;
-    }
 
 
     async confirmchangeCreateData() {
       if(!this.selectedMultimedia || !this.selectedTEjercicio
       || !this.selectedNDificultad || !this.selectedOMuscular
       || !this.nombreEjercicio || !this.nombreDescripcion  || !this.instruccion
-      || !this.pesoRecomendado || !this.repeticiones || !this.tiempoRealizar
+      || !this.pesoRecomendado || !this.repeticiones
       || !this.numeroSeries || !this.variacionEjercicio  || !this.adicionalInformacion){
         this.presentCustomToast('Debe llenar todos los campos',"danger");
       }else{
         const alert = await this.alertController.create({
-          header: 'Confirmar Estado',
-          message: '¿Estás seguro que desea realizar guardar/actualizar este ejercicio ?',
+          header: 'Confirmar Creación/Actualizacion de Datos',
+          message: '¿Estás seguro que desea realizar craeción/actualización este ejercicio ?',
           buttons: [
             {
               text: 'Cancelar',
@@ -514,7 +461,7 @@ export class CrearEjercicioPage implements OnInit {
                   INTRUCCIONESEJERCICIO:this.instruccion  ,
                   PESOLEVANTADOEJERCICIO: this.pesoRecomendado,
                   REPETICIONESEJERCICIO: this.repeticiones,
-                  TIEMPOREALIZACIONEJERCICIO: this.tiempoRealizar,
+                  //TIEMPOREALIZACIONEJERCICIO: this.tiempoRealizar,
                   SERIESEJERCICIO: this.numeroSeries,
                   VARIACIONESMODIFICACIONEJERCICIOPROGRESO: this.variacionEjercicio,
                   OBSERVACIONESEJERCICIO: this.adicionalInformacion,
@@ -537,7 +484,6 @@ export class CrearEjercicioPage implements OnInit {
                   }
                   this.CreateData();
                 }
-                this.go_page('videos');
               }
             }
           ]
@@ -547,35 +493,36 @@ export class CrearEjercicioPage implements OnInit {
     }
     OpenDialogNewERequ(){
     }
-    CreateData()
-    {
-      this.apiService.CreteDatEjercicio(this.dataEjercicio).subscribe(
-        (response) => {
-          this.presentCustomToast(response.message,"success");
-          this.ngOnInit();
-          this.dataEjercicio=[];
-          this.inicio();
-        },
-        (error) => {
-          this.presentCustomToast(error.error.error,"danger");
-        }
-      );
+    async CreateData() {
+      try {
+        this.loading=true;
+        const response = await this.apiService.CreteDatEjercicio(this.dataEjercicio).toPromise();
+        this.loading=false;
+        this.presentCustomToast(response.message, "success");
+        this.go_page('videos');
+        this.ngOnInit();
+        this.dataEjercicio = [];
+        this.inicio();
+      } catch (error:any) {
+        this.presentCustomToast(error.error.error, "danger");
+      }
     }
-    UpdateData()
-    {
-      //console.log(this.dataEjercicio);
-      this.apiService.UpdateEjercicio(this.dataEjercicio).subscribe(
-        (response) => {
-          this.presentCustomToast(response.message,"success");
-          this.ngOnInit();
-          this.dataEjercicio=[];
-          this.inicio();
-        },
-        (error) => {
-          this.presentCustomToast(error.error.error,"danger");
-        }
-      );
+
+    async UpdateData() {
+      try {
+        this.loading=true;
+        const response = await this.apiService.UpdateEjercicio(this.dataEjercicio).toPromise();
+        this.loading=false;
+        this.presentCustomToast(response.message, "success");
+        this.go_page('videos');
+        this.ngOnInit();
+        this.dataEjercicio = [];
+        this.inicio();
+      } catch (error:any) {
+        this.presentCustomToast(error.error.error, "danger");
+      }
     }
+
 
   obtenerMultimedia(){
     this.apiService.getMultimediaActivate().subscribe(
@@ -663,7 +610,7 @@ export class CrearEjercicioPage implements OnInit {
     this.instruccion='';
     this.pesoRecomendado='';
     this.repeticiones='';
-    this.tiempoRealizar='';
+    //this.tiempoRealizar='';
     this.numeroSeries='';
     this.variacionEjercicio='';
     this.adicionalInformacion='';

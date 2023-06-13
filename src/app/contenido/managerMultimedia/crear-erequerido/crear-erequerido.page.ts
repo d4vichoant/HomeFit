@@ -38,12 +38,12 @@ export class CrearERequeridoPage implements OnInit {
 
   ionViewDidEnter(){
     this.validateSesion();
-    this.cargarImagenesBefores();
+    //this.cargarImagenesBefores();
     //this.test()
   }
   ngOnInit() {
     this.validateSesion();
-    this.cargarImagenesBefores();
+    //this.cargarImagenesBefores();
     //this.test()
   }
   test(){
@@ -353,6 +353,10 @@ export class CrearERequeridoPage implements OnInit {
     this.apiService.allEquipoRequerido().subscribe(
       (response) => {
         this.dataERequerido=response;
+        setTimeout(() => {
+          this.cargarImagenesBefores();
+        }, 1000);
+
         //console.log(this.dataERequerido);
       },
       (error) => {
