@@ -258,6 +258,13 @@ ion-content {
   border-left: 20px solid #6bda90;
 }
 
+.container-body-card.color-1 {
+  background:  linear-gradient(45deg, #fca6a660, #0000000e);
+}
+.container-body-card.color-2 {
+  background:  linear-gradient(45deg, #8df17460, #0000000e);
+}
+
 .card-content {
   padding: 3%;
 }
@@ -293,6 +300,9 @@ ion-content {
     font-family: Raleway-Light;
     font-size: .9rem;
     color: #524f52;
+    span{
+      color: #f14747;
+    }
   }
 }
 .filled-star{
@@ -414,3 +424,4 @@ ion-avatar {
   font-size: .9rem;
   color: #5c5c5c;
 }
+

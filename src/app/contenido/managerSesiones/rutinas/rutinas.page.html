@@ -39,9 +39,12 @@
     <div class="item-video-setup" *ngFor="let option of dataRtuinas; let i = index;"  >
       <ion-card style="background: linear-gradient(0deg, rgb(0, 0, 0), rgb(0, 0, 0));">
         <div class="image-container">
-          <img alt="Silhouette of mountains" src="{{ ip_address }}/media/rutinas/portadasrutinas/{{option.IMAGENRUTINA}}" class="image"/>
+          <img alt="Silhouette of mountains"  (click)="go_page_create('crear-rutinas',option)"  src="{{ ip_address }}/media/rutinas/portadasrutinas/{{option.IMAGENRUTINA}}" class="image"/>
           <div class="filter-overlay"></div>
             <div class="item-body-right-top">
+              <button >
+                <img  class="icono-item-top" (click)="savecopy(option)"  style="margin-right: 15px;" src="{{ ip_address }}/media/images/copy.png" alt="Icono 2">
+              </button>
               <button >
                 <img class="icono-item-top"  (click)="go_page_create('crear-rutinas',option)" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"  alt="Icono 1">
               </button>
@@ -49,7 +52,7 @@
                 <img  class="icono-item-top" (click)="confirmaractualizarEjercicioActivacion(option)" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
               </button>
           </div>
-          <div class="title-body-left-bottom">
+          <div  (click)="go_page_create('crear-rutinas',option)"  class="title-body-left-bottom">
             <p class="text2">{{option.NOMBRERUTINA}}</p>
           </div>
           <div class="ion-chip-selected">
@@ -151,8 +154,8 @@
                       </ion-col>
                       <ion-col size="6">
                         <div class="ion-card-content-ejercicio">
-                          <ion-icon style="color: #ffffff;" name="shuffle"></ion-icon>
-                          <ion-label style="color: #ffffff;">{{findEjercicioRutina(data).SERIESEJERCICIO}}</ion-label>
+                          <ion-icon style="color: #ffffff;" name="sparkles-outline"></ion-icon>
+                          <ion-label style="color: #ffffff;">{{findEjercicioRutina(data).METEJERCICIO}}</ion-label>
                         </div>
                       </ion-col>
                     </ion-row>

@@ -149,6 +149,42 @@ export class RutinasPage implements OnInit {
       });
     }
 
+    async savecopy(data:any){
+      const alert = await this.alertController.create({
+        header: 'Confirmar Copia',
+        message: '¿Estás seguro que desea realizar una Copia de esta Rutina?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              this.presentCustomToast('Proceso cancelada',"danger");
+            }
+          }, {
+            text: 'Aceptar',
+            handler: () => {
+              data.ID_EJERCICIOS_RUTINA=data.IDEJERCICIOS.map((elemento:any) => elemento.toString()).join(',');
+              data.USUARIOCREACIONRUTINA=this.userSesionPerfil[0].IDPERSONA;
+              this.CreateData(data);
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }
+    async CreateData(data:any) {
+      try {
+        this.loading=true;
+        const response = await this.apiService.CreteDataRutinas(data).toPromise();
+        this.loading=false;
+        this.ngOnInit();
+        this.presentCustomToast(response.message, "success");
+      } catch (error:any) {
+        this.presentCustomToast(error.error.errror, "danger");
+      }
+    }
+
     public onInputChange(event: any) {
       const currentSearchTerm = event.target.value;
       if (currentSearchTerm.length < this.previousSearchTerm.length) {

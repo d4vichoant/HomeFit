@@ -418,7 +418,44 @@ export class CrearMultimediaPage implements OnInit   {
           });
           await alert.present();
         }else{
-          this.presentCustomToast('Debe existir una miniatura',"danger");
+          const alert = await this.alertController.create({
+            header: 'Confirmar Actualizar Datos',
+            message: '¿Estás seguro que desea realizar estos cambios en '+nombre+'?',
+            buttons: [
+              {
+                text: 'Cancelar',
+                role: 'cancel',
+                cssClass: 'secondary',
+              handler: () => {
+                this.presentCustomToast('Proceso cancelada',"danger");
+              }
+            }, {
+              text: 'Aceptar',
+              handler: () => {
+                if(this.imagenFile){
+                  this.saveImageFile();
+                }
+                if(item.STATUSMULTIMEDIA === 1 ){
+                  item.OBSERVACIONMULTIMEDIA="N/A";
+                }
+                  if(this.selectedFile){
+                    this.UpdateFile().then((fileName) => {
+                      item.ALMACENAMIENTOMULTIMEDIA= fileName;
+                      this.UpdateDates(item,nombre);
+                      this.mostrarSelectEdit=!this.mostrarSelectEdit;
+                    }).catch((error) => {
+                      console.error("Error al subir el archivo:", error);
+                    });
+                  //this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4";
+                }else{
+                  this.UpdateDates(item,nombre);
+                  this.mostrarSelectEdit=!this.mostrarSelectEdit;
+                }
+              }
+            }
+          ]
+        });
+        await alert.present();
         }
       }
     }
@@ -549,6 +586,40 @@ export class CrearMultimediaPage implements OnInit   {
         this.presentCustomToast(error.error.error, "danger");
       }
     }
+    async savecopy(data:any){
+      const alert = await this.alertController.create({
+        header: 'Confirmar Copia',
+        message: '¿Estás seguro que desea realizar una Copia de esta Multimedia',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              this.presentCustomToast('Proceso cancelada',"danger");
+            }
+          }, {
+            text: 'Aceptar',
+            handler: () => {
+              this.CreateDataCopy(data);
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }
+    async CreateDataCopy(data:any) {
+      try {
+        this.loading=true;
+        const response = await this.apiService.CreteDataMultimedia(data, 'multimedia').toPromise();
+        this.loading=false;
+        this.ngOnInit();
+        this.presentCustomToast(response.message, "success");
+      } catch (error:any) {
+        this.presentCustomToast(error.error.errror, "danger");
+      }
+    }
+
 
     buttonfilterhabilitate(filtro:any,index:number){
       this.toggleIconStatus(index);

@@ -32,27 +32,37 @@
                 <path d="M14 4l0 4l-6 0l0 -4"></path>
              </svg>&nbsp;<span class="spaniconup">Crear</span>
              </ng-template>
-             </ion-button>
+          </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </div>
   </ion-toolbar>
+  <ion-card *ngIf="dataEjercicioporRutina && dataEjercicioporRutina.length>=2" class=" flotante" (click)=" dataEjercicioporRutina && dataEjercicioporRutina.length > 0  ? showSelected('dataEjercicio'):''"
+    style=" background-image: url('{{ip_address}}/media/images/objetive-muscular-bk-3.png');">
+    <ion-card-header>
+      <ion-card-title style="color: #ffffff!important;">
+        <div class="contenedor-padre-2">
+          <img *ngIf=" dataEjercicioporRutina && dataEjercicioporRutina.length>0" class="imagen2" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
+        </div>
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
   <div class="container-body">
     <ion-card  style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
       <div class="custom-card-image-container">
         <div class="container-imagen">
-          <ng-container *ngIf="(!selectedImageUrl && selectImage) ||( variable);else otherImage">
-            <img class="iamgendefault" alt="Silhouette of mountains" *ngIf=" variable"   src="{{ ip_address }}/media/rutinas/portadasrutinas/{{imagePortada}}"  class="custom-card-image" />
-            <img alt="DefaultImage" class="iamgendefault" *ngIf="!variable "  (click)="uploadImage()" src="https://ionicframework.com/docs/img/demos/card-media.png"  />
+          <ng-container *ngIf="!selectedImageUrl  && imagePortada; else otherImage">
+            <img class="iamgendefault" (click)="uploadImage()" alt="Silhouette of mountains"  [src]="ip_address+'/media/rutinas/portadasrutinas/'+imagePortada"  class="custom-card-image" />
+            <div class="image-overlay"></div>
           </ng-container>
           <ng-template #otherImage>
             <div *ngIf="selectedImageUrl; else otherotherImage">
-              <img class="iamgendefault" alt="Default Image" (click)="uploadImage()"  [src]="selectedImageUrl"  />
+              <img class="iamgendefault" alt="Default Image" (click)="uploadImage()" [src]="selectedImageUrl" />
               <div class="image-overlay"></div>
             </div>
           </ng-template>
           <ng-template #otherotherImage>
-            <img alt="DefaultImage" class="iamgendefault" (click)="uploadImage()" src="https://ionicframework.com/docs/img/demos/card-media.png"  />
+            <img alt="DefaultImage" class="iamgendefault" (click)="uploadImage()" src="https://ionicframework.com/docs/img/demos/card-media.png" />
           </ng-template>
         </div>
         <div class="ion-chip"
@@ -147,7 +157,7 @@
         </ion-row>
       </ion-grid>
     </ion-card>
-    <ion-card    (click)="showSelected('dataEjercicio')"  style=" background-image: url('{{ip_address}}/media/images/objetive-muscular-bk-3.png');">
+    <ion-card (click)="dataEjercicioporRutina && dataEjercicioporRutina.length > 0 ?showSelected('dataEjercicio'):''"  style=" background-image: url('{{ip_address}}/media/images/objetive-muscular-bk-3.png');">
       <ion-card-header>
         <ion-card-title style="color: #ffffff!important;">
           <div class="contenedor-padre">
@@ -169,7 +179,7 @@
     <div *ngIf=" dataEjercicioporRutina" style="margin: 0% 3% 0% 3%;
     justify-content: center;">
     <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-      <ion-card class="ion-card-ejercicio"  style="margin: 0 auto!important; margin-bottom: 3%; width: 100%;  background-image: linear-gradient(0deg,  #0000001a,#8457eab3), url('{{ ip_address }}/multimedia/{{getVideoName(data.ALMACENAMIENTOMULTIMEDIA)}}.jpg');background-repeat: no-repeat;background-size: cover;" *ngFor="let data of dataEjercicioporRutina;let i=index;" >
+      <ion-card class="ion-card-ejercicio"  style="margin: 0 auto!important; margin-bottom: 3%; width: 100%;  background-image: linear-gradient(0deg,  #0000001a,#8457eab3), url('{{ ip_address }}/multimedia/{{getVideoName(data.ALMACENAMIENTOMULTIMEDIA)}}.jpg');background-repeat: no-repeat;background-size: cover;" *ngFor="let data of dataEjercicioporRutina;let i=index;" [attr.id]="'elemento-rutinasejercicios'+ i">
         <ion-card-content >
           <ion-grid>
             <ion-row>
@@ -198,7 +208,7 @@
               <ion-col size="6">
                 <div class="ion-card-content-ejercicio">
                   <ion-icon style="color: #ffffff;" name="shuffle"></ion-icon>
-                  <ion-label style="color: #ffffff;">{{data.SERIESEJERCICIO}}</ion-label>
+                  <ion-label style="color: #ffffff;">{{data.METEJERCICIO}}</ion-label>
                 </div>
               </ion-col>
             </ion-row>
@@ -336,9 +346,9 @@
     <ion-button class="ion-button-select" (click)="go_page('videos')" fill="clear">(+) Agregar Nuevo</ion-button>
 
     <div class="selectEjerciciodiv" lines="none"  *ngIf=" selectData && selectData.length >0;else noDataMessage" >
-      <div *ngFor="let data of selectData;" (click)="selectItem(data,'dataEjercicio')"
+      <div *ngFor="let data of selectData;let i=index;" (click)="selectItem(data,'dataEjercicio')"
       [class.selected]="EjercicioporRutinaUniq && EjercicioporRutinaUniq.NOMBREEJERCICIO === data.NOMBREEJERCICIO">
-      <ion-card class="ion-card-ejercicio" style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
+      <ion-card class="ion-card-ejercicio" style=" background-image: url('{{ip_address}}/media/rutinas/background.png');" >
         <div class="custom-card-image-container-ejercicio">
           <div class="custom-image" >
             <img alt="Silhouette of mountains"  src="{{ ip_address }}/multimedia/{{getVideoName(data.ALMACENAMIENTOMULTIMEDIA)}}.jpg"  class="custom-card-image-ejercicio" />
@@ -366,7 +376,7 @@
               <ion-col size="6">
                 <div class="ion-card-content-ejercicio">
                   <ion-icon name="shuffle"></ion-icon>
-                  <ion-label>{{data.SERIESEJERCICIO}}</ion-label>
+                  <ion-label>{{data.METEJERCICIO}}</ion-label>
                 </div>
               </ion-col>
             </ion-row>

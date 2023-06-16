@@ -105,7 +105,7 @@
         </div>
         <div>
           <ion-label class="ion-label-body">Numero de Series</ion-label>
-          <ion-input  class="ion-input-body" [(ngModel)]="numeroSeries" type="text" name="series" placeholder="Ingresar Numero Series" required></ion-input>
+          <ion-input  class="ion-input-body" [(ngModel)]="metEjercicio" type="number" name="series" placeholder="Ingresar Numero Series" required></ion-input>
         </div>
         <div>
           <ion-label class="ion-label-body">Variación o Modificación</ion-label>
@@ -149,7 +149,7 @@
         <ion-grid>
           <ion-row>
             <ion-col size="3" class="row-image">
-              <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+              <img alt="Silhouette of mountains" src="{{ip_address}}/media/perfile/{{data.IMAGEPERSONA}}" />
             </ion-col>
             <ion-col size="9" class="row-text-right">
               <div style="display: flex;">
@@ -176,10 +176,14 @@
 
                 </div>
               </div>
-              <div>
-                <div *ngIf="data.OBSERVACIONPROGRESO" class="item-comment-p">
-                  <ion-text>{{ data.OBSERVACIONPROGRESO }}</ion-text>
-                </div>
+              <div class="item-comment-p">
+                <ion-text *ngIf="data.OBSERVACIONPROGRESO; else sinComentarios" >
+                  {{ data.OBSERVACIONPROGRESO }}
+                </ion-text>
+
+                <ng-template #sinComentarios>
+                  <ion-text><span>*Sin Comentarios </span></ion-text>
+                </ng-template>
               </div>
             </ion-col>
           </ion-row>
@@ -198,7 +202,7 @@
             <ion-grid>
               <ion-row>
                 <ion-col size="3" class="row-image">
-                  <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+                  <img alt="Silhouette of mountains" src="{{ip_address}}/media/perfile/{{dataComentarioporEjercicioUniq.IMAGEPERSONA}}" />
                 </ion-col>
                 <ion-col size="9" class="row-text-right">
                   <div style="display: flex;">
@@ -224,10 +228,13 @@
                       </ng-container>
                     </div>
                   </div>
-                  <div>
-                    <div class="item-comment-p">
-                      <ion-text>{{dataComentarioporEjercicioUniq.OBSERVACIONPROGRESO}}</ion-text>
-                    </div>
+                  <div class="item-comment-p">
+                    <ion-text *ngIf="dataComentarioporEjercicioUniq.OBSERVACIONPROGRESO; else sinComentarios">
+                      {{ dataComentarioporEjercicioUniq.OBSERVACIONPROGRESO }}
+                    </ion-text>
+                    <ng-template #sinComentarios>
+                      <ion-text><span>*Sin Comentarios </span></ion-text>
+                    </ng-template>
                   </div>
                 </ion-col>
               </ion-row>

@@ -87,7 +87,7 @@ export class CrearRutinasPage implements OnInit {
       if(this.variable){
         this.completarDatos();
       }
-
+      //console.log(this.selectedImageUrl);
       //this.cargarImagenesBefore();
     }
     ionViewDidEnter() {
@@ -100,6 +100,7 @@ export class CrearRutinasPage implements OnInit {
       if(this.variable){
         this.completarDatos();
       }
+      //console.log(this.selectedImageUrl);
       //this.cargarImagenesBefore();
     }
 
@@ -163,9 +164,9 @@ export class CrearRutinasPage implements OnInit {
     test(){
       this.StatusBar();
       this.obtenerTEjercicio();
-      this.obtenerEjercicios();
       this.obtenerOPersonales();
       this.obtenerEntrenadoresBasic();
+      this.obtenerEjercicios();
     }
     StatusBar(){
       StatusBar.hide();
@@ -221,21 +222,17 @@ export class CrearRutinasPage implements OnInit {
     go_page(name: string){
       //this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
       this.navController.navigateForward('/'+name);
+      this.inicio();
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableRutinas: ""
+        }
+      });
       this.variable=null|| {};
       this.dataRutinas=null|| {};
     }
-
-    public onInputChange(event: any,nameData:string) {
-      const currentSearchTerm = event.target.value;
-      if (this.previousSearchTerm && currentSearchTerm.length < this.previousSearchTerm.length) {
-        this.cargarDatos(nameData);
-      }
-      this.previousSearchTerm = currentSearchTerm;
-      this.filterItems(nameData);
-    }
     handleFileInput(event: any) {
       const file = event.target.files[0];
-
       // Validar el tipo de archivo
       if (!file.type.includes('image/jpeg')) {
         // El archivo seleccionado no es un archivo JPG
@@ -256,11 +253,20 @@ export class CrearRutinasPage implements OnInit {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.selectedImageUrl = e.target.result;
+        this.imagePortada="";
         this.presentCustomToast("Imagen seleccionada correctamente", "success");
       };
       reader.readAsDataURL(file);
     }
 
+    public onInputChange(event: any,nameData:string) {
+      const currentSearchTerm = event.target.value;
+      if (this.previousSearchTerm && currentSearchTerm.length < this.previousSearchTerm.length) {
+        this.cargarDatos(nameData);
+      }
+      this.previousSearchTerm = currentSearchTerm;
+      this.filterItems(nameData);
+    }
 
     private filterItems(nameData:string) {
       if (!this.selectData) {
@@ -347,6 +353,15 @@ export class CrearRutinasPage implements OnInit {
         this.selectData = rawData.map(item => ({ ...item }));
       }
     }
+    enfocarenRutinasporSesion(){
+      const index=this.dataEjercicioporRutina.length as number;
+      setTimeout(() => {
+        const elementoDestino = document.getElementById('elemento-rutinasejercicios' + (index -1));
+        if (elementoDestino) {
+          elementoDestino.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
+    }
     selectItem(title: any,nameData:string) {
       if(this.selectData){
         this.selectData=[]
@@ -375,6 +390,7 @@ export class CrearRutinasPage implements OnInit {
           this.EjercicioporRutinaUniq=null;
           this.index=-1;
         }
+        this.enfocarenRutinasporSesion();
       }
     }
     getVideoName(url: string): string {
@@ -546,7 +562,10 @@ export class CrearRutinasPage implements OnInit {
     }
     cancelarmostrarSelecEjercicio(){
       this.mostrarSelecEjercicio=!this.mostrarSelecEjercicio;
-      this.duracionRutina=this.duracionRutinaOrig;
+      if(this.EjercicioporRutinaUniq ){
+        this.duracionRutina=this.duracionRutinaOrig;
+      }
+      this.EjercicioporRutinaUniq=null;
       this.duracionRutinaOrig="";
     }
 

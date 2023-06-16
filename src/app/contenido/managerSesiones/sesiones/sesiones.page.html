@@ -25,15 +25,14 @@
   <div class="browser">
     <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
   </div>
-  <div class="container-body">
-    <ion-card>
+  <div class="container-body container-videos">
+    <ion-card (click)="go_page('crear-sesiones')" class="custom-card" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/sesiones/crear_sesion.jpg');">
       <ion-card-header>
-        <ion-card-title>Card Title</ion-card-title>
-        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+        <img class="background-image" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
+        <ion-card-title>Crear Rutina</ion-card-title>
       </ion-card-header>
-
       <ion-card-content>
-        Here's a small text description for the card content. Nothing more, nothing less.
+        <br>
       </ion-card-content>
     </ion-card>
   </div>

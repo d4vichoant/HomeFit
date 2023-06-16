@@ -74,7 +74,6 @@ export class ApiServiceService {
     return this.http.get(this.apiUrl+/genero/);
   }
   UpdatePersona(data:any): Observable<any>{
-    console.log(data);
     return this.http.post(this.apiUrl+"/updatePersona",data);
   }
   UpdateEntrenantes(data:any): Observable<any>{
@@ -175,7 +174,6 @@ export class ApiServiceService {
     return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen-erequerido', formData);
   }
   uploadImagenPerfile(file: File,filename :string): Observable<any> {
-    console.log("ASdas");
     const formData: FormData = new FormData();
     formData.append('file', file,filename);
     return this.http.post(this.apiUrl+ "/subir-imagen-perfile", formData);
@@ -204,6 +202,9 @@ export class ApiServiceService {
   }
   getRutinas():Observable<any>{
     return this.http.get(IP_ADDRESS+/programacion/+/rutinas/);
+  }
+  getRutinasActivate():Observable<any>{
+    return this.http.get(IP_ADDRESS+/programacion/+/rutinasActivate/);
   }
   imagenEntrenadorRutina():Observable<any>{
     return this.http.get(IP_ADDRESS+/programacion/+/imagePorEntrenadorRutina/);

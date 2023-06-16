@@ -22,6 +22,9 @@ export class VideosPage implements OnInit {
   public dataEjercicio!:any[];
   public origindata!:any[];
 
+  public userSesion!:string;
+  private userSesionPerfil!:any;
+
   selectedItem: number = -1;
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
@@ -90,6 +93,8 @@ export class VideosPage implements OnInit {
     try{
       this.storage.get('sesion').then((sesion) => {
         if (sesion && JSON.parse(sesion).rolUsuario == 99) {
+          this.userSesion = JSON.parse(sesion).nickname;
+          this.obtenerGetPerfilCompleto(this.userSesion);
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
               this.StatusBar();
@@ -238,6 +243,17 @@ public onInputChange(event: any) {
   this.filterItems();
 }
 
+obtenerGetPerfilCompleto(nickname:string){
+  this.apiService.connsultPerfilCompleto(nickname).subscribe(
+    (response) => {
+      this.userSesionPerfil=response;
+    },
+    (error) => {
+      this.presentCustomToast(error.error.error,"danger");
+    }
+  );
+}
+
 async buttonfilterhabilitate(filter: any,index:number) {
   if (!this.origindata){
     const rawData = this.dataEjercicio;
@@ -278,7 +294,41 @@ async buttonfilterhabilitate(filter: any,index:number) {
       this.dataEjercicio = Array.from(new Set(filteredArray));
     }
   }
-
+  async savecopy(data:any){
+    const alert = await this.alertController.create({
+      header: 'Confirmar Copia',
+      message: '¿Estás seguro que desea realizar una Copia de este ejercicio',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.presentCustomToast('Proceso cancelada',"danger");
+          }
+        }, {
+          text: 'Aceptar',
+          handler: () => {
+            data.USUARIOMODIFICAICONEJERCICIO=null;
+            data.FECHAMODIFICACIONEJERCICIO=null;
+            this.CreateData(data);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  async CreateData(data:any) {
+    try {
+      this.loading=true;
+      const response = await this.apiService.CreteDatEjercicio(data).toPromise();
+      this.loading=false;
+      this.ngOnInit();
+      this.presentCustomToast(response.message, "success");
+    } catch (error:any) {
+      this.presentCustomToast(error.error.errror, "danger");
+    }
+  }
 
 
   async presentCustomToast(message: string, color: string) {

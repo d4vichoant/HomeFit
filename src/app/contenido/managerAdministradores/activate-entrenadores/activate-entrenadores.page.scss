@@ -17,6 +17,13 @@ ion-content {
   justify-content: center;
   z-index: 2;
 }
+.kg-label {
+  display: inline-block;
+  margin-right: 10px; /* Ajusta el margen según tus preferencias */
+  font-family: Raleway-Light;
+  font-size:.9rem;/* Ajusta el tamaño de fuente según tus preferencias */
+  color: #63616385; /* Ajusta el color según tus preferencias */
+}
 
 .loading-spinner {
   display: flex;
@@ -575,5 +582,22 @@ ion-content {
     color: #ffffff;
     width: 100%;
     margin: 5% 5% 5% 5%!important;
+  }
+}
+.container-input{
+  display: flex!important;
+  justify-content: center!important;
+  align-items: center!important;
+}
+
+.icon-input{
+  display: flex!important;
+  justify-content: center!important;
+  align-items: center!important;
+  margin: 0 auto;
+  color: #979393;
+  padding-top: 5%;
+  ion-icon{
+    margin: 0 auto!important;
   }
 }

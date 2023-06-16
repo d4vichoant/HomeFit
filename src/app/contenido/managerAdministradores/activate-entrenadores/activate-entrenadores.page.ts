@@ -26,6 +26,8 @@ export class ActivateEntrenadoresPage implements OnInit {
   public dataRolUsers!: any[] ;
   public dataEspecialidad!: any[] ;
   public dataUniq!: any;
+
+  bottonavailable:boolean=true;
   public filter: any[]=[
     {
       name: 'Entrenador',
@@ -140,6 +142,29 @@ export class ActivateEntrenadoresPage implements OnInit {
     const nombres = nombreCompleto.split(" ");
     return nombres[0];
   }
+
+  async checkNickname( nickname:string) {
+    var f = nickname;
+
+    this.apiService.checkNickname(f).subscribe(
+      (response) => {
+        const isAvailable = response.available;
+        console.log(isAvailable);
+        if (isAvailable) {
+          this.bottonavailable=true;
+          this.presentCustomToast('Usuario disponible', 'success');
+        } else {
+          this.bottonavailable=false;
+          this.presentCustomToast('Usuario No disponible', 'danger');
+        }
+      },
+      (error) => {
+        const errorMessage = error?.error?.message || 'Error desconocido';
+        this.presentCustomToast(errorMessage, 'danger');
+      }
+    );
+  }
+
 
   calcularEdad(fechaNacimiento: string): number {
     const fechaActual = new Date();

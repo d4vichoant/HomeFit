@@ -159,10 +159,7 @@ export class CrearERequeridoPage implements OnInit {
   }
   onCardTouchStart(event: TouchEvent,data:any) {
     this.touchTimeout = setTimeout(() => {
-      const rawData = this.dataERequerido;
-      this.originData = rawData.map(item => ({ ...item }));
-      this.mostarDialogEdit=!this.mostarDialogEdit;
-      this.dataERequeridoUniq=data;
+      this.confirmchangeStatus(data);
     }, 1000);
   }
 
@@ -173,6 +170,13 @@ export class CrearERequeridoPage implements OnInit {
       data.STATUSEQUIPOREQUERIDO=1;
     }
     //this.mostarDialogEdit=!this.mostarDialogEdit;
+  }
+
+  cambiardateS(data:any){
+    const rawData = this.dataERequerido;
+    this.originData = rawData.map(item => ({ ...item }));
+    this.mostarDialogEdit=!this.mostarDialogEdit;
+    this.dataERequeridoUniq=data;
   }
 
   async confirmchangeStatus(item:any) {

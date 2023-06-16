@@ -357,6 +357,40 @@ export class CrearObjetivoMuscularPage implements OnInit {
     );
   }
 
+  async savecopy(data:any){
+    const alert = await this.alertController.create({
+      header: 'Confirmar Copia',
+      message: '¿Estás seguro que desea realizar una Copia de este Obj. Muscular',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.presentCustomToast('Proceso cancelada',"danger");
+          }
+        }, {
+          text: 'Aceptar',
+          handler: () => {
+            this.CreateData(data);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  async CreateData(data:any) {
+    try {
+      this.loading=true;
+      const response = await this.apiService.CreteData(data,'objetivosmusculares').toPromise();
+      this.loading=false;
+      this.ngOnInit();
+      this.presentCustomToast(response.message, "success");
+    } catch (error:any) {
+      this.presentCustomToast(error.error.errror, "danger");
+    }
+  }
+
   buttonfilterhabilitate(filtro:any,index:number){
     this.toggleIconStatus(index);
     if(!filtro.iconstatus){

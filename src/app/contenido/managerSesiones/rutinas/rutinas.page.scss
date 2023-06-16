@@ -388,7 +388,8 @@ ion-content {
 
 .ion-card-ejercicios{
   //box-shadow: none;
-  background: #ba95ffb9;
+  border: 1px solid #ba95ffb9;
+  //background: #ba95ffb9;
   backdrop-filter: blur(5px);
   padding: 3% 3% 0% 3%!important;
   ion-card-header{

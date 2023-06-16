@@ -37,7 +37,7 @@
             </ion-card-header>
           </ion-card>
         </ion-col>
-        <ion-col (click)="confirmchangeStatus(card)" class="ion-col-car" size="6" *ngFor="let card of dataERequerido"
+        <ion-col (click)="cambiardateS(card)" class="ion-col-car" size="6" *ngFor="let card of dataERequerido"
         (touchstart)="onCardTouchStart($event,card)" (touchend)="onCardTouchEnd($event)">
         <ion-card  class="container-body-card"[ngClass]="{'color-1': card.STATUSEQUIPOREQUERIDO === 0, 'color-2': card.STATUSEQUIPOREQUERIDO === 1}">
             <img class="imageShow" alt="Silhouette of mountains" src="{{ ip_address }}/media/equipoRequerido/{{card.IMAGENEQUIPOREQUERIDO}}" />

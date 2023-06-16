@@ -167,6 +167,15 @@ ion-content {
   }
 }
 
+.item-body-left-top{
+  position: absolute;
+  top: 0; left: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+  button{
+    margin-bottom: 10px;
+    background-color:transparent;
+  }}
 
 .item-body-right-top{
   position: absolute;

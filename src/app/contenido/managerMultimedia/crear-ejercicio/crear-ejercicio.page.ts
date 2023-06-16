@@ -69,7 +69,7 @@ export class CrearEjercicioPage implements OnInit {
   public pesoRecomendado!:string;
   public repeticiones!:string;
   //public tiempoRealizar!:string;
-  public numeroSeries!:string;
+  public metEjercicio!:string;
   public variacionEjercicio!:string;
   public adicionalInformacion!:string;
   public equiporequeridoporEjercicio!:any[];
@@ -125,7 +125,7 @@ export class CrearEjercicioPage implements OnInit {
     this.instruccion = this.variable.INTRUCCIONESEJERCICIO;
     this.pesoRecomendado=this.variable.PESOLEVANTADOEJERCICIO;
     this.repeticiones = this.variable.REPETICIONESEJERCICIO;
-    this.numeroSeries = this.variable.SERIESEJERCICIO;
+    this.metEjercicio = this.variable.METEJERCICIO;
     this.variacionEjercicio = this.variable.VARIACIONESMODIFICACIONEJERCICIOPROGRESO;
     this.adicionalInformacion = this.variable.OBSERVACIONESEJERCICIO;
     this.obtenerComentarioporEjercicio(this.variable.IDEJERCICIO);
@@ -433,7 +433,7 @@ export class CrearEjercicioPage implements OnInit {
       || !this.selectedNDificultad || !this.selectedOMuscular
       || !this.nombreEjercicio || !this.nombreDescripcion  || !this.instruccion
       || !this.pesoRecomendado || !this.repeticiones
-      || !this.numeroSeries || !this.variacionEjercicio  || !this.adicionalInformacion){
+      || !this.metEjercicio || !this.variacionEjercicio  || !this.adicionalInformacion){
         this.presentCustomToast('Debe llenar todos los campos',"danger");
       }else{
         const alert = await this.alertController.create({
@@ -462,7 +462,7 @@ export class CrearEjercicioPage implements OnInit {
                   PESOLEVANTADOEJERCICIO: this.pesoRecomendado,
                   REPETICIONESEJERCICIO: this.repeticiones,
                   //TIEMPOREALIZACIONEJERCICIO: this.tiempoRealizar,
-                  SERIESEJERCICIO: this.numeroSeries,
+                  METEJERCICIO: this.metEjercicio,
                   VARIACIONESMODIFICACIONEJERCICIOPROGRESO: this.variacionEjercicio,
                   OBSERVACIONESEJERCICIO: this.adicionalInformacion,
                   USUARIOCREACIONEJERCICIO: this.userSesionPerfil[0].IDPERSONA,
@@ -611,7 +611,7 @@ export class CrearEjercicioPage implements OnInit {
     this.pesoRecomendado='';
     this.repeticiones='';
     //this.tiempoRealizar='';
-    this.numeroSeries='';
+    this.metEjercicio='';
     this.variacionEjercicio='';
     this.adicionalInformacion='';
   }

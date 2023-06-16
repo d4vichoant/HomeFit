@@ -173,50 +173,73 @@
 
     <div class="tab-content" *ngIf="currentTab === 1 && overlayVisible">
       <ion-list>
-        <div>
+        <div class="container-input">
           <ion-label >Nombre:</ion-label>
           <ion-input type="text" name="nombre" [(ngModel)]="dataUniq && dataUniq.NOMBREPERSONA" required></ion-input>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label>Apellido:</ion-label>
           <ion-input    type="text" name="apellido" [(ngModel)]="dataUniq && dataUniq.APELLDOPERSONA" required></ion-input>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label >Edad:</ion-label>
           <ion-input  type="number" name="edad" [(ngModel)]="dataUniq && dataUniq.age"  readonly disabled></ion-input>
-
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label >Nickname:</ion-label>
-          <ion-input  type="text" name="nickname" [(ngModel)]="dataUniq &&  dataUniq.NICKNAMEPERSONA"  required></ion-input>
+          <ion-input  type="text" name="nickname"  [ngStyle]="{ 'color': bottonavailable ? '#180000' : '#faa0a0' }"  (ionChange)="checkNickname( dataUniq.NICKNAMEPERSONA)"   [(ngModel)]="dataUniq &&  dataUniq.NICKNAMEPERSONA"  required></ion-input>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label>Genero:</ion-label>
           <ion-select name="genero" interface="popover"  [(ngModel)]="dataUniq && dataUniq.IDGENERO" required>
             <ion-select-option *ngFor="let option of datagender" [value]="option.IDGENERO ">{{ option.DESCRIPCIONGENERO }}</ion-select-option>
           </ion-select>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label>Estado:</ion-label>
           <ion-select name="estadoPersona" interface="popover"  [(ngModel)]="dataUniq && dataUniq.ESTADOPERSONA" required>
             <ion-select-option [value]="1">Activo</ion-select-option>
             <ion-select-option [value]="0">Inactivo</ion-select-option>
           </ion-select>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label >Correo:</ion-label>
           <ion-input type="email" name="correo" [(ngModel)]="dataUniq && dataUniq.CORREOPERSONA"  required></ion-input>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label >Creado como:</ion-label>
           <ion-select name="rolusuario" interface="popover" [(ngModel)]="dataUniq && dataUniq.IDROLUSUARIO " required>
-            <ion-select-option  *ngFor="let option of filteredOptionsRol" [value]="option.IDROLUSUARIO  ">{{ option.DESCRIPCIONROLUSUARIO }}</ion-select-option>
+            <ion-select-option  *ngFor="let option of dataRolUsers" [value]="option.IDROLUSUARIO ">{{ option.DESCRIPCIONROLUSUARIO }}</ion-select-option>
           </ion-select>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
       </ion-list>
       <div class="buttons-tab1">
         <ion-button (click)="hidePopup()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
-        <ion-button (click)="actualizarUsuario(dataUniq)"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
+        <ion-button (click)="actualizarUsuario(dataUniq)"  [disabled]="!bottonavailable" class="ion-buttons-2" fill="clear">Actualizar</ion-button>
       </div>
     </div>
 
@@ -226,32 +249,47 @@
           <ion-label>Agregar Sesión:</ion-label>
           <ion-button class="buttonaddObjPers" *ngIf="dataUniq.OBJETIVOSPERSONALES && dataUniq.OBJETIVOSPERSONALES.length === 0"  (click)="OpenDialogObjPers('ObjetivePersonal', dataUniq)" fill="clear">+ Obj. Personales</ion-button>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label>Profesion:</ion-label>
           <ion-select name="profesion" interface="popover" [(ngModel)]=" dataUniq && dataUniq.IDPROFESION " required>
             <ion-select-option *ngFor="let option of dataProfession" [value]="option.IDPROFESION ">{{ option.DESCRIPCIONPROFESION }}</ion-select-option>
           </ion-select>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label>Frecuencia:</ion-label>
           <ion-select name="frecuencia" interface="popover"  [(ngModel)]="dataUniq && dataUniq.IDFRECUENCIA " required>
             <ion-select-option *ngFor="let option of dataFrecuency" [value]="option.IDFRECUENCIA ">{{ option.TituloFrecuenciaEjercicio }}</ion-select-option>
           </ion-select>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label >Peso:</ion-label>
-          <ion-input type="text" name="nombre" [(ngModel)]="dataUniq && dataUniq.PESOUSUARIO" required></ion-input>
+          <ion-input type="text" name="nombre" [(ngModel)]="dataUniq && dataUniq.PESOUSUARIO" required></ion-input><span class="kg-label">kg</span>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label>Altura:</ion-label>
-          <ion-input type="text" name="apellido" [(ngModel)]=" dataUniq && dataUniq.ALTURAUSUARIO" required></ion-input>
+          <ion-input type="text" name="apellido" [(ngModel)]=" dataUniq && dataUniq.ALTURAUSUARIO" required></ion-input><span class="kg-label">cm</span>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label>Notificación:</ion-label>
           <ion-select name="estadoPersona" interface="popover" [(ngModel)]="notificacionInt" required>
             <ion-select-option [value]="1">Activo</ion-select-option>
             <ion-select-option [value]="0">Inactivo</ion-select-option>
           </ion-select>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
         <div class="inline-container" *ngIf="dataUniq.OBJETIVOSPERSONALES && dataUniq.OBJETIVOSPERSONALES.length > 0" (click)="OpenDialogObjPers('ObjetivePersonal', dataUniq)" >
           <ion-label >Objetivos Personales:</ion-label><br>
@@ -289,13 +327,19 @@
           <ion-label>Agregar Sesión:</ion-label>
           <ion-button class="buttonaddObjPers" *ngIf="!dataUniq.CERTIFICACIONESENTRENADOR || dataUniq.CERTIFICACIONESENTRENADOR.length === 0"  (click)="OpenDialogObjPers('CertificacionesEntrenador',dataUniq)"  fill="clear">+ Certificación </ion-button>
         </div>
-        <div >
+        <div class="container-input" >
           <ion-label>Tarifas: <span>(USD/mensual)</span> </ion-label>
           <ion-input  class="input-container-tarifa"  type="text" name="tarifas" [(ngModel)]="dataUniq && dataUniq.TARIFASENTRENADOR" required></ion-input>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
-        <div>
+        <div class="container-input">
           <ion-label>Acerca de:</ion-label>
           <ion-input type="text" name="about"  [(ngModel)]="dataUniq && dataUniq.DESCRIPCIONENTRENADOR" required></ion-input>
+          <div  class="icon-input">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
         </div>
         <div>
           <ion-label>Experiencia:</ion-label>
