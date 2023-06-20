@@ -43,14 +43,14 @@
       <ion-card-header>
         <ion-card-title style="color: #ffffff!important;">
           <div class="contenedor-padre">
-            <img *ngIf=" dataRutinasporSesion && dataRutinasporSesion.length>0" class="imagen" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
+            <img *ngIf=" dataRutinasporSesion && dataRutinasporSesion.length>0"   class="imagen" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
           </div>
         </ion-card-title>
       </ion-card-header>
     </ion-card>
     <ion-card  style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
       <div class="custom-card-image-container">
-        <div class="container-imagen">
+        <div class="container-imagen" *ngIf="dataRutinasporSesion && dataRutinasporSesion.length>1">
           <ng-container *ngIf="!selectedImageUrl  && imagePortada; else otherImage">
             <img class="iamgendefault" (click)="uploadImage()" alt="Silhouette of mountains"  [src]="ip_address+'/media/rutinas/portadasrutinas/'+imagePortada"  class="custom-card-image" />
             <div class="image-overlay"></div>
@@ -82,90 +82,45 @@
           <ion-icon name="download"></ion-icon>
           <input type="file" style="display: none;" id="fileInput" class="file-input" accept=".jpg" (change)="handleFileInput($event)" #fileInputRef>
         </div>
-        <ion-card-header class="custom-card-header">
+        <ion-card-header class="custom-card-header" *ngIf="dataRutinasporSesion && dataRutinasporSesion.length>1">
           <div class="ion-item">
             <ion-textarea  class=" full-text ion-input-body-title" [(ngModel)]="nombreSesion" type="text" name="titulo" placeholder="Título Sesión" required></ion-textarea>
             <ion-icon class="ion-icon-title" name="create" slot="end"></ion-icon>
           </div>
         </ion-card-header>
       </div>
-      <ion-card-content>
+      <ion-card-content *ngIf="dataRutinasporSesion && dataRutinasporSesion.length>1">
         <div class="ion-item-content">
           <ion-textarea class="ion-input-body-subtitle" [(ngModel)]="objetivoSesion" type="text" name="subtitulo" placeholder="Objetivo Sesión" required></ion-textarea>
           <ion-icon class="ion-icon-content" name="create" slot="end" ></ion-icon>
         </div>
       </ion-card-content>
     </ion-card>
-    <div >
-      <ion-grid >
-        <ion-row>
-          <div class="custom-row">
-            <ion-card  (click)="showSelected('dataUsuariosBasic')"  class="custom-card custom-card-3" >
-              <ion-card-header>
-                <ion-card-title>
-                  <div class="custom-badge">
-                    <img style="box-shadow: none!important;"
-                      src="{{ ip_address }}/media/images/plus-invisible-white.png"
-                      alt="The Wisconsin State Capitol building in Madison, WI at night"
-                    >
-                    <div class="color-overlay"></div>
-                  </div>
-                  <div class="custom-title">
-                    <p class="p-user-container">
-                      Seleccionar
-                    </p>
-                    <p class="p-user-container">
-                      Usuarios
-                    </p>
-                  </div>
-                </ion-card-title>
-                <ion-card-subtitle>
-                  <div>
-                    <div class="icon-text">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-scale-outline" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M3 3m0 4a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z"></path>
-                        <path d="M12 7c1.956 0 3.724 .802 5 2.095l-2.956 2.904a3 3 0 0 0 -2.038 -.799a3 3 0 0 0 -2.038 .798l-2.956 -2.903a6.979 6.979 0 0 1 5 -2.095z"></path>
-                     </svg>
-                      <p>-- kg</p>
-                    </div>
-                    <div class="icon-text" style="margin-top: 5px;">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-ruler" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M5 4h14a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-7a1 1 0 0 0 -1 1v7a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1"></path>
-                        <path d="M4 8l2 0"></path>
-                        <path d="M4 12l3 0"></path>
-                        <path d="M4 16l2 0"></path>
-                        <path d="M8 4l0 2"></path>
-                        <path d="M12 4l0 3"></path>
-                        <path d="M16 4l0 2"></path>
-                      </svg>
-                      <p>--,-- cm</p>
-                    </div>
-                  </div>
-               </ion-card-subtitle>
-              </ion-card-header>
-              <!-- <ion-card-content>
-                Card Content
-              </ion-card-content> -->
-            </ion-card>
-            <ng-container *ngIf="dataUsersSesiones && dataUsersSesiones.length>0" >
-              <ion-card class="custom-card custom-card-{{i%4}}" *ngFor="let item of dataUsersSesiones; let i=index;">
+    <div>
+      <!-- <div class="tab-buttons">
+        <div (click)="showTab(1)" [class.selected-button]="isTabSelected(1)">Por Usuarios</div>
+        <div (click)="showTab(2)" [class.selected-button]="isTabSelected(2)" >Por Objetivos</div>
+      </div> -->
+      <!-- <div *ngIf="currentTab===1;">
+        <ion-grid >
+          <ion-row>
+            <div class="custom-row">
+              <ion-card  (click)="showSelected('dataUsuariosBasic')"  class="custom-card custom-card-3" >
                 <ion-card-header>
                   <ion-card-title>
                     <div class="custom-badge">
-                      <img
-                        src="{{ ip_address }}/media/perfile/{{ item.IMAGEPERSONA }}"
+                      <img style="box-shadow: none!important;"
+                        src="{{ ip_address }}/media/images/plus-invisible-white.png"
                         alt="The Wisconsin State Capitol building in Madison, WI at night"
                       >
                       <div class="color-overlay"></div>
                     </div>
                     <div class="custom-title">
                       <p class="p-user-container">
-                        {{ getfirstName(item.NOMBREPERSONA) }}
+                        Seleccionar
                       </p>
                       <p class="p-user-container">
-                        {{ getfirstName(item.APELLDOPERSONA) }}
+                        Usuarios
                       </p>
                     </div>
                   </ion-card-title>
@@ -176,8 +131,8 @@
                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                           <path d="M3 3m0 4a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z"></path>
                           <path d="M12 7c1.956 0 3.724 .802 5 2.095l-2.956 2.904a3 3 0 0 0 -2.038 -.799a3 3 0 0 0 -2.038 .798l-2.956 -2.903a6.979 6.979 0 0 1 5 -2.095z"></path>
-                       </svg>
-                        <p>{{ item.PESOUSUARIO }} kg</p>
+                      </svg>
+                        <p>-- kg</p>
                       </div>
                       <div class="icon-text" style="margin-top: 5px;">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-ruler" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -190,22 +145,145 @@
                           <path d="M12 4l0 3"></path>
                           <path d="M16 4l0 2"></path>
                         </svg>
-                        <p>{{item.ALTURAUSUARIO}} cm</p>
+                        <p>--,-- cm</p>
                       </div>
                     </div>
-                 </ion-card-subtitle>
+                </ion-card-subtitle>
                 </ion-card-header>
-                <!-- <ion-card-content>
+                <ion-card-content>
                   Card Content
-                </ion-card-content> -->
+                </ion-card-content>
               </ion-card>
-            </ng-container>
-          </div>
-        </ion-row>
-      </ion-grid>
+              <ng-container *ngIf="dataUsersSesiones && dataUsersSesiones.length>0" >
+                <ion-card class="custom-card custom-card-{{i%4}}" *ngFor="let item of dataUsersSesiones; let i=index;">
+                  <ion-card-header>
+                    <ion-card-title>
+                      <div class="custom-badge">
+                        <img
+                          src="{{ ip_address }}/media/perfile/{{ item.IMAGEPERSONA }}"
+                          alt="The Wisconsin State Capitol building in Madison, WI at night"
+                        >
+                        <div class="color-overlay"></div>
+                      </div>
+                      <div class="custom-title">
+                        <p class="p-user-container">
+                          {{ getfirstName(item.NOMBREPERSONA) }}
+                        </p>
+                        <p class="p-user-container">
+                          {{ getfirstName(item.APELLDOPERSONA) }}
+                        </p>
+                      </div>
+                    </ion-card-title>
+                    <ion-card-subtitle>
+                      <div>
+                        <div class="icon-text">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-scale-outline" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M3 3m0 4a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z"></path>
+                            <path d="M12 7c1.956 0 3.724 .802 5 2.095l-2.956 2.904a3 3 0 0 0 -2.038 -.799a3 3 0 0 0 -2.038 .798l-2.956 -2.903a6.979 6.979 0 0 1 5 -2.095z"></path>
+                        </svg>
+                          <p>{{ item.PESOUSUARIO }} kg</p>
+                        </div>
+                        <div class="icon-text" style="margin-top: 5px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-ruler" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 4h14a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-7a1 1 0 0 0 -1 1v7a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1"></path>
+                            <path d="M4 8l2 0"></path>
+                            <path d="M4 12l3 0"></path>
+                            <path d="M4 16l2 0"></path>
+                            <path d="M8 4l0 2"></path>
+                            <path d="M12 4l0 3"></path>
+                            <path d="M16 4l0 2"></path>
+                          </svg>
+                          <p>{{item.ALTURAUSUARIO}} cm</p>
+                        </div>
+                      </div>
+                  </ion-card-subtitle>
+                  </ion-card-header>
+                   <ion-card-content>
+                    Card Content
+                  </ion-card-content>
+                </ion-card>
+              </ng-container>
+            </div>
+          </ion-row>
+        </ion-grid>
+      </div> -->
+      <div >
+        <ion-card style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
+          <ion-grid>
+            <ion-row  class="ion-card-title-container">
+              <ion-col size="4">
+                <ion-card-header>
+                  <ion-card-title class="ion-card-title">Objetivo Sesión</ion-card-title>
+                </ion-card-header>
+              </ion-col>
+              <ion-col size="8">
+                <ion-card-content>
+                  <div class="container-input">
+                    <ion-select (ionChange)="selectObjetiveFuntion()" class="ion-card-subtitle-select" name="objetivoSesion" interface="popover" [(ngModel)]=" ObjetivoPersonal " required>
+                      <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
+                      <ion-select-option *ngFor="let option of dataObjetivosPersonales"  [value]="option.IDOBJETIVOSPERSONALES ">{{ option.DESCRIPCIONOBJETIVOSPERSONALES }}</ion-select-option>
+                      <ion-select-option value="" >Ninguno</ion-select-option>
+                    </ion-select>
+                  </div>
+                </ion-card-content>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </div>
+      <div >
+        <ion-card style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
+          <ion-grid>
+            <ion-row  class="ion-card-title-container">
+              <ion-col size="4">
+                <ion-card-header>
+                  <ion-card-title class="ion-card-title">Frecuencia Ejercicio</ion-card-title>
+                </ion-card-header>
+              </ion-col>
+              <ion-col size="8">
+                <ion-card-content>
+                  <div class="container-input">
+                    <ion-select  class="ion-card-subtitle-select" name="frecuenciaSesion" interface="popover" [(ngModel)]="FrecuenciaPersonales " required>
+                      <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
+                      <ion-select-option *ngFor="let option of dataFrecuenciaPersonales"  [value]="option.IDFRECUENCIA  ">{{ option.TituloFrecuenciaEjercicio }}</ion-select-option>
+                      <ion-select-option value="" >Ninguno</ion-select-option>
+                    </ion-select>
+                  </div>
+                </ion-card-content>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </div>
+      <div >
+        <ion-card style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
+          <ion-grid>
+            <ion-row  class="ion-card-title-container">
+              <ion-col size="4">
+                <ion-card-header>
+                  <ion-card-title class="ion-card-title">Profesion</ion-card-title>
+                </ion-card-header>
+              </ion-col>
+              <ion-col size="8">
+                <ion-card-content>
+                  <div class="container-input">
+                    <ion-select  class="ion-card-subtitle-select" name="profesionSesion" interface="popover" [(ngModel)]="profesion" required>
+                      <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
+                      <ion-select-option *ngFor="let option of dataProfesion"  [value]="option.IDPROFESION  ">{{ option.DESCRIPCIONPROFESION }}</ion-select-option>
+                      <ion-select-option value="" >Ninguno</ion-select-option>
+                    </ion-select>
+                  </div>
+                </ion-card-content>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </div>
       <ion-card style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
         <ion-grid>
-          <ion-row>
+          <ion-row  class="ion-card-title-container">
             <ion-col size="6">
               <ion-card-header>
                 <ion-card-title class="ion-card-title">Duración</ion-card-title>
@@ -214,6 +292,93 @@
             <ion-col size="6">
               <ion-card-content>
                 <h2  class="ion-card-subtitle">{{ duracionSesion ? duracionSesion : 'HH:mm:ss' }}</h2>
+              </ion-card-content>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card>
+      <ion-card [ngClass]="{ 'active-card': visibilidaSesion === '1', 'inactive-card': visibilidaSesion === '0' }" [style.background-image]="visibilidaSesion === '' ?  'url(' + ip_address + '/media/rutinas/background.png)':'none'">
+        <ion-card-header>
+          <ion-card-title>Visibilidad de Rutina</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="ion-item-content">
+            <ion-select name="selectStatus" interface="popover"  [(ngModel)]="visibilidaSesion " required>
+              <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
+              <ion-select-option value="1">Activo</ion-select-option>
+              <ion-select-option value="0">Inactivo</ion-select-option>
+            </ion-select>
+            <ion-icon class="ion-icon-content" name="create" slot="end" ></ion-icon>
+          </div>
+          <div  class="div-select" *ngIf="visibilidaSesion && visibilidaSesion === '0' ">
+            <p>Indique las Razones</p>
+            <div class="ion-item-content">
+              <ion-textarea type="text"  [(ngModel)]="observacionSesion" ></ion-textarea>
+              <ion-icon class="ion-icon-content" name="create" slot="end" ></ion-icon>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- <ion-grid class="datetime-general" *ngIf="currentTab===1 "  [attr.id]="'elemento-destino-horario'">
+        <ion-row>
+          <ion-col size="6">
+            <ion-card   (click)="openCalendar(1)"   style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
+              <ion-card-header>
+                <ion-card-title>Inicio</ion-card-title>
+                <ion-card-subtitle  *ngIf="dateinitialicedStart===false "  >Porfavor seleccione ..</ion-card-subtitle>
+                <ion-datetime-button   datetime="datetime1"  class="hidden" color="tertiary"></ion-datetime-button>
+                <ion-modal [keepContentsMounted]="true" [isOpen]="showCalendarStart"  (didDismiss)="cancelCalendar(1)">
+                  <ng-template>
+                    <ion-datetime  presentation="date" [(ngModel)]="startdate"  [isOpen]="true" mode="md" [showDefaultButtons]="true"
+                    doneText="Guardar" cancelText="Cancelar" (ionChange)="updateEndDate()"
+                      [preferWheel]="false" [highlightedDates]="highlightedDates" color="violet" id="datetime1"
+                      ></ion-datetime>
+                  </ng-template>
+                </ion-modal>
+              </ion-card-header>
+              <ion-card-content>
+                {{dateinitialicedStart===true? startdate:''}}
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col size="6">
+            <ion-card   (click)="openCalendar(2)"  style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
+              <ion-card-header>
+                <ion-card-title>Fin</ion-card-title>
+                <ion-card-subtitle *ngIf="dateinitialicedEnd===false"  >Porfavor seleccione ..</ion-card-subtitle>
+                <ion-datetime-button   datetime="datetime2"  class="hidden" color="tertiary"></ion-datetime-button>
+                <ion-modal [keepContentsMounted]="true" [isOpen]="showCalendarEnd"  (didDismiss)="cancelCalendar(2)">
+                  <ng-template>
+                    <ion-datetime  presentation="date" readonly="true" [(ngModel)]='enddate'
+                    [isOpen]="true" mode="md" [showDefaultButtons]="false"
+                    doneText="Guardar" cancelText="Cancelar"
+                    [preferWheel]="false" [highlightedDates]="highlightedDates" color="violet" id="datetime2"  >
+                    </ion-datetime>
+                  </ng-template>
+                </ion-modal>
+              </ion-card-header>
+              <ion-card-content>
+                {{dateinitialicedEnd===true?enddate:''}}
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid> -->
+      <ion-card style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
+        <ion-grid>
+          <ion-row class="ion-card-title-container">
+            <ion-col size="6">
+              <ion-card-header>
+                <ion-card-title class="ion-card-title">Dias Programados </ion-card-title>
+              </ion-card-header>
+            </ion-col>
+            <ion-col size="6">
+              <ion-card-content>
+                <!-- <h2 *ngIf="currentTab===1;else otherdayCount" class="ion-card-subtitle">{{ dateinitialicedStart && dateinitialicedEnd ? obtenerDiferenciaEnDias(startdate,enddate) +1 +' dia (s)' : '0 días' }}</h2> -->
+                <!-- <ng-template #otherdayCount> -->
+                  <h2  class="ion-card-subtitle">{{ dataRutinasporSesion && dataRutinasporSesion.length>0 ?  dataRutinasporSesion.length + ' dia (s)' : '0 días' }}</h2>
+              <!-- </ng-template> -->
               </ion-card-content>
             </ion-col>
           </ion-row>
@@ -229,7 +394,7 @@
           </ion-card-title>
         </ion-card-header>
       </ion-card>
-      <ion-card id="myDiv" *ngIf=" !dataRutinasporSesion || dataRutinasporSesion.length===0"   (click)="showSelected('dataRutinasporSesiones')" class="custom-card-imagen-agr" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/sesiones/crear_sesion.jpg');">
+      <ion-card id="myDiv" *ngIf=" (!dataRutinasporSesion || dataRutinasporSesion.length===0) "  (click)="showSelected('dataRutinasporSesiones')" class="custom-card-imagen-agr" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/sesiones/crear_sesion.jpg');">
         <ion-card-header>
           <img class="background-image" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
           <ion-card-title>Agregar Rutina</ion-card-title>
@@ -246,6 +411,7 @@
                 <img alt="Silhouette of mountains"   src="{{ ip_address }}/media/rutinas/portadasrutinas/{{option.IMAGENRUTINA}}" class="image"/>
                 <div class="filter-overlay"></div>
                 <div   class="title-body-left-bottom">
+                  <p class="textspan">Creado por  <span>@ {{option.NICKNAMEPERSONA}}</span></p>
                   <p class="text2">{{option.NOMBRERUTINA}}</p>
                 </div>
                 <div class="ion-chip-selected">
@@ -254,6 +420,18 @@
                       <ion-label >{{option.DURACIONRUTINA}}</ion-label>
                     </div>
                   </ion-chip>
+                </div>
+                <div class="ion-dia-selected">
+                  <div class="fecha-container">
+                    <!-- <div class="dia" *ngIf="currentTab===1;else otherday">{{splitFecha(sumarDias(startdate,i+1))[2]}}</div> -->
+                    <!-- <ng-template #otherday> -->
+                        <div class="dia" >{{i+1}}</div>
+                    <!-- </ng-template> -->
+                    <!-- <div class="mes" *ngIf="currentTab===1;else othermoth">{{obtenerNombreMes(splitFecha(startdate)[1])}}</div> -->
+                    <!-- <ng-template #othermoth> -->
+                      <div class="mes" >Día</div>
+                    <!-- </ng-template> -->
+                  </div>
                 </div>
               </div>
               <!-- <ion-card-header >
@@ -447,6 +625,7 @@
               <img alt="Silhouette of mountains" (click)="selectItem(option,'dataRutinasporSesiones')"  src="{{ ip_address }}/media/rutinas/portadasrutinas/{{option.IMAGENRUTINA}}" class="image"/>
               <div class="filter-overlay"></div>
               <div   class="title-body-left-bottom" >
+                <p class="textspan">Creado por  <span>@ {{option.NICKNAMEPERSONA}}</span></p>
                 <p class="text2">{{option.NOMBRERUTINA}}</p>
               </div>
               <div class="ion-chip-selected">

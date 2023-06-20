@@ -69,7 +69,6 @@ export class CrearRutinasPage implements OnInit {
   private previousSearchTerm: string = '';
   public mostrarSelect:boolean=false;
 
-
   constructor(private storage: Storage,
     private route: ActivatedRoute,
     private apiService: ApiServiceService,

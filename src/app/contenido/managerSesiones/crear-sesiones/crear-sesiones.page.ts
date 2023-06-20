@@ -2,7 +2,7 @@ import { Component, OnInit,ElementRef, ViewChild} from '@angular/core';
 import { IP_ADDRESS } from '../../../constantes';
 import { ApiServiceService } from '../../../api-service.service';
 import { Storage } from '@ionic/storage-angular';
-import { NavController, ItemReorderEventDetail,ToastController } from '@ionic/angular';
+import { NavController, ItemReorderEventDetail,ToastController, AlertController } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
 
 @Component({
@@ -19,8 +19,8 @@ export class CrearSesionesPage implements OnInit {
   public userSesionPerfil!:any;
   selectedItem: number = -1;
 
-  public dataSesiones!:any[];
-  public origindata!:any[];
+  public dataSesiones!:any;
+  public origindata!:any;
 
   public dataRtuinas!:any[];
   public dataEjercicio!:any[];
@@ -32,9 +32,21 @@ export class CrearSesionesPage implements OnInit {
   public dataRutinasporSesion:any[]=[];
   public dataRutinasporSesionUniq!:any;
 
-  public nombreSesion!:string;
-  public objetivoSesion!:string;
-  public imagePortada!:string;
+  public dataObjetivosPersonales!:any[];
+  public ObjetivoPersonal:string="";
+
+  public dataFrecuenciaPersonales!:any[];
+  public FrecuenciaPersonales:string ="";
+
+  public dataProfesion!:any[];
+  public profesion:string="";
+
+  public nombreSesion:string="";
+  public objetivoSesion:string="";
+  public imagePortada:string="";
+
+  public visibilidaSesion:string ="";
+  public observacionSesion:string="";
 
   selectedFile: File | null = null;
   nameFile:string='';
@@ -63,22 +75,47 @@ export class CrearSesionesPage implements OnInit {
   mostrarEjerciciosSelect: boolean[] = [];
   mostrarEjerciciosSelectExt: boolean[] = [];
 
+  public startdate!:string;
+  public enddate! :string ;
+  dateinitialicedStart=false;
+  dateinitialicedEnd=false;
+  public showCalendarStart = false;
+  public showCalendarEnd = false;
+  highlightedDates! :any[];
+
+  //currentTab:number=1;
+
   constructor(private storage: Storage,
     private apiService: ApiServiceService,
     public toastController: ToastController,
-    private navController: NavController) { }
+    private navController: NavController,
+    public alertController: AlertController) {
+      const fechaActual = new Date();
+      const anio = fechaActual.getFullYear();
+      const mes = fechaActual.getMonth() + 1; // Los meses en JavaScript se indexan desde 0, por lo que se suma 1
+      const dia = fechaActual.getDate();
+      const fechaFormateada = `${anio}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
+      fechaActual.setDate(fechaActual.getDate() );
+      const anio1 = fechaActual.getFullYear();
+      const mes1 = fechaActual.getMonth() + 1;
+      const dia1 = fechaActual.getDate();
+      const fechaAumentadaFormateada = `${anio1}-${mes1.toString().padStart(2, '0')}-${dia1.toString().padStart(2, '0')}`;
+      this.startdate = fechaFormateada; // Imprime la fecha formateada
+      this.enddate=fechaAumentadaFormateada;
+      this.llenardates();
+    }
 
     ngOnInit() {
       this.chanceColorFooter();
-      //this.validateSesion();
-      this.test();
+      this.validateSesion();
+      //this.test();
       this.cargarImagenesBefore();
     }
 
     ionViewDidEnter() {
-      this.test();
+      //this.test();
       this.chanceColorFooter();
-      //this.validateSesion();
+      this.validateSesion();
       this.cargarImagenesBefore();
     }
 
@@ -112,7 +149,10 @@ export class CrearSesionesPage implements OnInit {
     test(){
       this.StatusBar();
       this.obtenerEntrenadoresBasic();
-      this.obteneUsuariosBasic();
+      this.obtenerObjetivosPersonales();
+      this.obtenerFrecuencia();
+      this.obtenerProfesion();
+      //this.obteneUsuariosBasic();
       this.obtenerEjercicios();
       this.obtenerRutinas();
     }
@@ -130,7 +170,10 @@ export class CrearSesionesPage implements OnInit {
             this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
               (response) => {
                 this.obtenerEntrenadoresBasic();
-                this.obteneUsuariosBasic();
+                this.obtenerFrecuencia();
+                this.obtenerProfesion();
+                this.obtenerObjetivosPersonales();
+                //this.obteneUsuariosBasic();
                 this.StatusBar();
                 this.obtenerEjercicios();
                 this.obtenerRutinas();
@@ -169,7 +212,147 @@ export class CrearSesionesPage implements OnInit {
     getfirstName(url: string): string {
       return url.split(' ')[0];
     }
+/*     showTab(tabNumber: number) {
+      this.currentTab = tabNumber;
+      if(tabNumber===2){
+        this.obtenerObjetivosPersonales();
+        this.ObjetivoPersonal="";
+      }else{
+        if(this.dataRutinasporSesion.length===0){
+        this.dateinitialicedEnd=false;
+        this.dateinitialicedStart=false;}
+        else{
+          this.dateinitialicedStart=true;
+          this.dateinitialicedEnd=true;
+          this.enddate=this.sumarDias(this.startdate,this.dataRutinasporSesion.length);
+        }
+        this.obtenerRutinas();
+      }
+    } */
+   /*  isTabSelected(tabNumber: number): boolean {
+      return this.currentTab === tabNumber;
+    } */
 
+    selectObjetiveFuntion(){
+      if(this.ObjetivoPersonal!==""){
+        this.obtenerRutinasbyObjetive(Number(this.ObjetivoPersonal));
+        this.filterdataRutinasporSesion();
+      }else{
+        this.obtenerRutinas();
+      }
+
+    }
+    filterdataRutinasporSesion(){
+      this.dataRutinasporSesion = this.dataRutinasporSesion.filter(item => item.IDOBJETIVOSPERSONALESRUTINA === this.ObjetivoPersonal);
+      if (this.dataRutinasporSesion.length>0){
+        this.dataRutinasporSesion.forEach(item => {
+          // Accede a la propiedad DURACIONRUTINA y realiza la suma en otra función
+          const duracion = item.DURACIONRUTINA;
+          this.duracionSesion= this.sumarTiempos("",duracion);
+        });
+      }else{
+        this.duracionSesion="00:00:00";
+      }
+
+    }
+    openCalendar(calendarType:number) {
+      if(this.dateinitialicedStart===false){
+        this.dateinitialicedStart=true;
+      }
+      else if(this.dateinitialicedEnd===false){
+        this.dateinitialicedEnd=true;
+      }
+      if (calendarType === 1) {
+        this.showCalendarStart = true;
+      } else if (calendarType === 2) {
+        this.showCalendarEnd = true;
+      }
+    }
+    cancelCalendar(calendarType:number) {
+      this.llenardates();
+
+      if (calendarType === 1) {
+        this.showCalendarStart = false;
+      } else if (calendarType === 2) {
+        this.showCalendarEnd = false;
+      }
+    }
+    saveDateTime(){
+      console.log("Holaaa")
+    }
+    cancelDateTime(){
+      console.log("asd");
+    }
+
+    llenardates(){
+      if(this.dateinitialicedEnd===false || (this.startdate>this.enddate)){
+        this.highlightedDates = [
+          {
+            date: this.startdate,
+            textColor: '#843dff',
+            backgroundColor: '#c2b5fd',
+          }]
+      }else{
+        this.highlightedDates = this.generateColorArray(this.startdate, this.enddate, "#c2b5fd", "#a48bfa");
+      }
+      setTimeout(() => {
+        const elementoDestino = document.getElementById('elemento-destino-horario');
+        if (elementoDestino) {
+          elementoDestino.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
+    }
+
+    compareDates(startDate: Date, endDate: Date): boolean {
+      return startDate <= endDate;
+    }
+
+    colorearAgain(){
+      this.highlightedDates = this.generateColorArray(this.startdate, this.enddate, "#c2b5fd", "#a48bfa");
+    }
+
+    generateColorArray(startDateString: string, endDateString: string, startColor: string, endColor: string): any[] {
+      const startDate = new Date(startDateString);
+      const endDate = new Date(endDateString);
+      const numDays = Math.round((endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
+
+      const startRGB = this.hexToRGB(startColor);
+      const endRGB = this.hexToRGB(endColor);
+
+      const colorArray = [];
+
+      for (let i = 0; i <= numDays; i++) {
+        const currentDate = new Date(startDate.getTime() + i * (24 * 60 * 60 * 1000));
+        const colorRatio = i / numDays;
+
+        const r = Math.round(startRGB.r + (endRGB.r - startRGB.r) * colorRatio);
+        const g = Math.round(startRGB.g + (endRGB.g - startRGB.g) * colorRatio);
+        const b = Math.round(startRGB.b + (endRGB.b - startRGB.b) * colorRatio);
+        const textColor = this.RGBToHex(r, g, b);
+
+        const dateString = currentDate.toISOString().split('T')[0]; // Obtener fecha en formato 'yyyy-mm-dd'
+
+        colorArray.push({
+          date: dateString,
+          backgroundColor: textColor,
+          textColor: "#843dff",
+        });
+      }
+
+      return colorArray;
+    }
+
+    hexToRGB(hex: string): { r: number; g: number; b: number } {
+      const bigint = parseInt(hex.replace("#", ""), 16);
+      const r = (bigint >> 16) & 255;
+      const g = (bigint >> 8) & 255;
+      const b = bigint & 255;
+      return { r, g, b };
+    }
+
+    RGBToHex(r: number, g: number, b: number): string {
+      return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+    }
     go_page(name: string){
       //this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
       this.navController.navigateForward('/'+name);
@@ -188,12 +371,109 @@ export class CrearSesionesPage implements OnInit {
       return '#ffffffbb'; // Color de fondo predeterminado
     }
 
-    confirmchangeCreateData(){
+    async confirmchangeCreateData(){
+      console.log(this.dataRutinasporSesion);
+      let flag=false;
+      if(this.visibilidaSesion === "1") {
+        this.observacionSesion="N/A";
+      }
+      if(this.dataRutinasporSesion && this.dataRutinasporSesion.length>0){
+        if (this.dataRutinasporSesion.length==1){
+          if((this.ObjetivoPersonal!== "" || this.profesion!== "" || this.FrecuenciaPersonales!== "") && this.visibilidaSesion!=="" && this.observacionSesion!=="") {
+            flag=true;
+          }else{
+          flag=false;}
+        }else{
+            if(this.selectedTrainerBasic && this.nombreSesion !=="" && this.visibilidaSesion!=="" && this.objetivoSesion!=="" && this.selectedFile
+            && (this.ObjetivoPersonal!== "" || this.profesion!== "" || this.FrecuenciaPersonales!== "") && this.observacionSesion!=="" ){
+              flag=true;
+            }else{
+              flag=false;
+            }
+        }
+      }else{
+        this.presentCustomToast("Debe Obtener al menos 1 Rutina","danger");
+      }
+      if(flag){
+        const alert = await this.alertController.create({
+          header: 'Confirmar Creación/Actualizacion de Datos',
+          message: '¿Estás seguro que desea realizar creación/actualización este ejercicio ?',
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                this.presentCustomToast('Proceso cancelada',"danger");
+              }
+            }, {
+              text: 'Aceptar',
+              handler: () => {
+                this.dataSesiones={
+                  USUARIOCREACIONSESION : this.userSesionPerfil[0].IDPERSONA,
+                  STATUSSESION: Number(this.visibilidaSesion),
+                  OBSERVACIONSESION: this.observacionSesion
+                }
+                if(this.nombreSesion!=="" && this.objetivoSesion!=="" ){
+                  this.dataSesiones.NOMBRESESION= this.nombreSesion;
+                  this.dataSesiones.OBJETIVOSESION= this.objetivoSesion;
+                }
+                if (this.dataRutinasporSesion.length===1){
+                  this.dataSesiones.IDENTRENADOR= this.dataRutinasporSesion[0].IDENTRENADOR;
+                }else{
+                  this.dataSesiones.IDENTRENADOR= this.selectedTrainerBasic.IDPERSONA;
+                }
+                if (this.FrecuenciaPersonales!==""){
+                  this.dataSesiones.IDFRECUENCIASESION =Number(this.FrecuenciaPersonales);
+                }
+                if (this.profesion!==""){
+                  this.dataSesiones.IDPROFESIONSESION=Number(this.profesion);
+                }
+                if(this.ObjetivoPersonal!==""){
+                  this.dataSesiones.IDOBJETIVOSPERSONALESSESION= Number(this.ObjetivoPersonal);
+                }
+                if(this.selectedFile){
+                  this.dataSesiones.IMAGESESION= this.sanitizeFileName(this.nombreSesion)+".jpg";
+                  this.copyFileRutinawithSesionesPortadas(this.dataRutinasporSesion[0].IMAGENRUTINA,this.dataSesiones.IMAGENRUTINA);
+                  //this.updateFileImage(this.dataRutinas.IMAGENRUTINA);
+                }else{
+                  //this.dataSesiones.IMAGESESION= this.sanitizeFileName(this.nombreSesion)+".jpg";
+                  this.copyFileRutinawithSesionesPortadas(this.dataRutinasporSesion[0].IMAGENRUTINA,this.dataRutinasporSesion[0].IMAGENRUTINA);
+                  //this.dataRutinas.IMAGENRUTINA=this.imagePortada;
+                }
+                console.log(this.dataSesiones);
+                if(this.variable){
+                  //this.dataRutinas. USUARIOMODIFICAIONRUTINA =this.userSesionPerfil[0].IDPERSONA,
+                  //this.dataRutinas.IDRUTINA=this.variable.IDRUTINA;
+                  //this.UpdateData();
+                }else{
+                  //this.CreateData();
+                }
 
+              }
+            }
+          ]
+        });
+        await alert.present();
+      }
+
+      else
+        this.presentCustomToast("Debe llenar todos los Campos","danger");
     }
+
+    sanitizeFileName(fileName:string) {
+      const sanitizedText = fileName
+        .toLowerCase()
+        .replace(/\s+/g, "_")
+        .replace(/[^a-z0-9_.-]/g, "");
+
+      return sanitizedText ;
+    }
+
     getVideoName(url: string): string {
       return url.split('.')[0];
     }
+
 
     cargarDatos(nameData:string){
      if(nameData==="dataTrainerBasic"){
@@ -213,6 +493,9 @@ export class CrearSesionesPage implements OnInit {
       }
     }
     enfocarenRutinasporSesion(){
+      if(this.dataRutinasporSesion.length>1){
+        this.presentCustomToast("Recuerde Ingresar Portada","warning");
+      }
       const index=this.dataRutinasporSesion.length as number;
       setTimeout(() => {
         const elementoDestino = document.getElementById('elemento-sesionesrutinas' + (index -1));
@@ -241,6 +524,7 @@ export class CrearSesionesPage implements OnInit {
     RemoveItemERequerido(index:number){
       this.duracionSesion=this.restarTiempos(this.duracionSesion,this.dataRutinasporSesion[index].DURACIONRUTINA);
       this.dataRutinasporSesion.splice(index, 1);
+      this.updateEndDate();
     }
 
     cancelarmostrarSelecEjercicio(){
@@ -340,6 +624,9 @@ export class CrearSesionesPage implements OnInit {
       if(this.selectData){
         this.selectData=[]
       }
+      if(this.dateinitialicedEnd==false){
+        this.dateinitialicedEnd=true;
+      }
      if(nameData==="dataTrainerBasic"){
         this.selectedTrainerBasic = title;
         this.mostrarTrainerBasic = false;
@@ -358,10 +645,54 @@ export class CrearSesionesPage implements OnInit {
         this.dataRutinasporSesionUniq={};
         this.index=-1;
       }
+      this.updateEndDate();
+      this.llenardates();
       this.enfocarenRutinasporSesion();
      }
     }
+    obtenerDiferenciaEnDias(fechaInicio: string, fechaFin: string): number {
+      const fechaInicioMs = new Date(fechaInicio).getTime();
+      const fechaFinMs = new Date(fechaFin).getTime();
+      const diferenciaMs = fechaFinMs - fechaInicioMs;
+      const diferenciaDias = Math.floor(diferenciaMs / (1000 * 60 * 60 * 24));
+      return diferenciaDias;
+    }
 
+    updateEndDate(){
+      if (this.dateinitialicedEnd && this.dataRutinasporSesion.length>0)
+      this.enddate=this.sumarDias( this.startdate,this.dataRutinasporSesion.length);
+      else if( this.dataRutinasporSesion.length===0)
+      this.dateinitialicedEnd=false;
+      this.llenardates();
+    }
+
+     sumarDias(fechaString: string, dias: number): string {
+      const fecha = new Date(fechaString);
+      fecha.setDate(fecha.getDate() + dias);
+
+      const anio = fecha.getFullYear();
+      const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+      const dia = fecha.getDate().toString().padStart(2, '0');
+
+      return `${anio}-${mes}-${dia}`;
+    }
+    splitFecha(fecha: string): string[] {
+      return fecha.split('-');
+    }
+    obtenerNombreMes(numeroMes: string): string {
+      const meses = [
+        'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+      ];
+
+      const numMes = parseInt(numeroMes, 10);
+
+      if (!isNaN(numMes) && numMes >= 1 && numMes <= 12) {
+        return meses[numMes - 1];
+      } else {
+        return '';
+      }
+    }
     replaceLastWithIndex(newData: any, replacementIndex: number) {
       this.dataRutinasporSesion[replacementIndex]=newData;
     }
@@ -426,6 +757,18 @@ export class CrearSesionesPage implements OnInit {
           this.presentCustomToast(error.error.error,"danger");
         }
       );
+    };
+
+    copyFileRutinawithSesionesPortadas(newname:string, oldname:string){
+      this.apiService.copyPortadasRutinas(newname,oldname).subscribe(
+        (response) => {
+          this.presentCustomToast(response.message,"success");
+          console.log( response.newFileName);
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
     }
     obtenerEntrenadoresBasic(){
       this.apiService.allTrainerBasic().subscribe(
@@ -466,10 +809,58 @@ export class CrearSesionesPage implements OnInit {
         }
       );
     }
+    obtenerRutinasbyObjetive(idObjetive:Number){
+      this.apiService.getRutinasActivatebyObjetive(idObjetive).subscribe(
+        (response) => {
+          this.dataRtuinas=response;
+          this.dataRtuinas = this.dataRtuinas.map(objeto => ({
+            ...objeto,
+            IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
+          }));
+          setTimeout(() => {
+            this.cargarImagenesBefore();
+          }, 1000);
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
     obtenerEjercicios(){
       this.apiService.getEjercicio().subscribe(
         (response) => {
           this.dataEjercicio=response;
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
+
+    obtenerObjetivosPersonales(){
+      this.apiService.allObjetivosPersonales().subscribe(
+        (response) => {
+          this.dataObjetivosPersonales=response;
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
+    obtenerFrecuencia(){
+      this.apiService.allfrecuenciaejercicio().subscribe(
+        (response) => {
+          this.dataFrecuenciaPersonales=response;
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
+    obtenerProfesion(){
+      this.apiService.allprofesion().subscribe(
+        (response) => {
+          this.dataProfesion=response;
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");

@@ -146,25 +146,6 @@
   font-family:Raleway-Medium;
   text-align: center;
 }
-
-ion-calendar    .calendar-body .calendar-month .calendar-month-grid{
-  display: flex;
-  color: #6069e8;
-  justify-content: space-between;
-  --background: #28a74684;
-  background: #28a74684;
-  background-color: aqua;
-  --background-color: aqua;
-}
-
-ion-datetime{
-  color:#6069e8;
-  background-color: rgb(255, 255, 255);
-  ion-item::part(native){
-    padding-left: 0;
-    background-color:#6069e8;
-  }
-}
 .action-sheet-button.sc-ion-action-sheet-md {
   //display: block !important ;
   position: relative !important ;

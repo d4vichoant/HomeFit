@@ -41,7 +41,7 @@ export class ApiServiceService {
     return this.http.get(this.apiUrl+/rolUsers/);
   }
   allObjetivosPersonales():Observable<any>{
-    return this.http.get(this.apiUrl+/OBJETIVOSPERSONALES/);
+    return this.http.get(this.apiUrl+/objetivospersonales/);
   }
   allEquipoRequerido():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/+/equiporequerido/);
@@ -206,7 +206,20 @@ export class ApiServiceService {
   getRutinasActivate():Observable<any>{
     return this.http.get(IP_ADDRESS+/programacion/+/rutinasActivate/);
   }
+  getRutinasActivatebyObjetive(idObjetive:Number):Observable<any>{
+    return this.http.get(IP_ADDRESS+/programacion/+/rutinasActivatebyObjetive/+idObjetive);
+  }
   imagenEntrenadorRutina():Observable<any>{
     return this.http.get(IP_ADDRESS+/programacion/+/imagePorEntrenadorRutina/);
+  }
+  copyPortadasRutinas(oldnameFile:string,newnameFile:string):Observable<any>{
+    console.log(oldnameFile);
+    console.log(newnameFile);
+    const data={
+      oldnameFile:oldnameFile,
+      newnameFile:newnameFile
+    }
+    console.log(data);
+    return this.http.post(IP_ADDRESS+/multimedia/+/copyFiles-portadassesiones/,data );
   }
 }
