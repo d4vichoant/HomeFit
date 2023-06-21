@@ -150,6 +150,14 @@ const routes: Routes = [
     path: 'rutinas',
     loadChildren: () => import('./contenido/managerSesiones/rutinas/rutinas.module').then( m => m.RutinasPageModule)
   },
+  {
+    path: 'users-trainers',
+    loadChildren: () => import('./contenido/managerUsers/users-trainers/users-trainers.module').then( m => m.UsersTrainersPageModule)
+  },
+  {
+    path: 'error-page-users-trainers',
+    loadChildren: () => import('./contenido/managerUsers/error-page-users-trainers/error-page-users-trainers.module').then( m => m.ErrorPageUsersTrainersPageModule)
+  },
 
 
 ];

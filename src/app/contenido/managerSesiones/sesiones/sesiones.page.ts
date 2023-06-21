@@ -162,6 +162,7 @@ export class SesionesPage implements OnInit {
               data.ID_RUTINAS_SESION=data.IDRUTINAS.map((elemento:any) => elemento.toString()).join(',');
               data.USUARIOCREACIONSESION=this.userSesionPerfil[0].IDPERSONA;
               this.CreateData(data);
+              this.enfocarenRutinasporSesion();
             }
           }
         ]
@@ -176,6 +177,15 @@ export class SesionesPage implements OnInit {
       }
       this.previousSearchTerm = currentSearchTerm;
       this.filterItems();
+    }
+    enfocarenRutinasporSesion(){
+      const index=this.dataSesiones.length as number;
+      setTimeout(() => {
+        const elementoDestino = document.getElementById('elemento-sesiones' + (index ));
+        if (elementoDestino) {
+          elementoDestino.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
     }
 
     async CreateData(data:any) {

@@ -167,11 +167,21 @@ export class RutinasPage implements OnInit {
               data.ID_EJERCICIOS_RUTINA=data.IDEJERCICIOS.map((elemento:any) => elemento.toString()).join(',');
               data.USUARIOCREACIONRUTINA=this.userSesionPerfil[0].IDPERSONA;
               this.CreateData(data);
+              this.enfocarenRutinasporSesion();
             }
           }
         ]
       });
       await alert.present();
+    }
+    enfocarenRutinasporSesion(){
+      const index=this.dataRtuinas.length as number;
+      setTimeout(() => {
+        const elementoDestino = document.getElementById('elemento-rutinas' + (index ));
+        if (elementoDestino) {
+          elementoDestino.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
     }
     async CreateData(data:any) {
       try {

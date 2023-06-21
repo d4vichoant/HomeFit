@@ -73,7 +73,7 @@ export class LoginPage implements OnInit {
             }else {
               if (response.message=="access trainer"){
                 this.storage.set('sesion', JSON.stringify(sesion)).then(() => {
-                  this.navController.navigateForward('/main');
+                  this.navController.navigateForward('/users-trainers');
                 });
               }else{
                 if (response.message=="trainer not activated"){

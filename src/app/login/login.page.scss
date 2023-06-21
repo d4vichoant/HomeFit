@@ -20,18 +20,6 @@ ion-content {
   margin: auto;
   border-top-left-radius: 46px;
   border-top-right-radius: 46px;
-  .heading{
-    padding: 10% 0 0 10%;
-    h1{
-      font-size: 1.6rem;
-      font-weight: bolder;
-      color: black;
-    }
-    p{
-      font-size: 1rem;
-      color: #7b7b7b;
-    }
-  }
   .login-form{
     padding: 3% 6% 0 6%;
     .form-input{
@@ -194,11 +182,24 @@ ion-content {
   max-height: 100%;
 }
 .welcome-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
 }
 
 .welcome-text {
-  white-space: nowrap;
+  display: block;
+  margin-bottom: 10px;
+}
+
+
+.heading{
+  h1{
+    font-size: 1.6rem;
+    font-weight: bolder;
+    color: black;
+  }
+  p{
+    text-align: center;
+    font-size: 1rem;
+    color: #7b7b7b;
+  }
 }

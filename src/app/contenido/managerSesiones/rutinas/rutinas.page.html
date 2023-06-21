@@ -37,7 +37,7 @@
     </ion-card>
 
     <div class="item-video-setup" *ngFor="let option of dataRtuinas; let i = index;"  >
-      <ion-card style="background: linear-gradient(0deg, rgb(0, 0, 0), rgb(0, 0, 0));">
+      <ion-card style="background: linear-gradient(0deg, rgb(0, 0, 0), rgb(0, 0, 0));"  [attr.id]="'elemento-rutinas'+ i" >
         <div class="image-container">
           <img alt="Silhouette of mountains"  (click)="go_page_create('crear-rutinas',option)"  src="{{ ip_address }}/media/rutinas/portadasrutinas/{{option.IMAGENRUTINA}}" class="image"/>
           <div class="filter-overlay"></div>

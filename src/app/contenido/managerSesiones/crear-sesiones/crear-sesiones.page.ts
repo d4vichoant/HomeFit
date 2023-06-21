@@ -520,6 +520,8 @@ export class CrearSesionesPage implements OnInit {
                   });
                 }else{
                   if(!this.selectedFile && this.dataRutinasporSesion.length===1){
+                    this.dataSesiones.NOMBRESESION=this.dataRutinasporSesion[0].NOMBRERUTINA;
+                    this.dataSesiones.OBJETIVOSESION= null;
                     this.dataSesiones.IMAGESESION= this.sanitizeFileName(this.dataSesiones.NOMBRESESION)+".jpg";
                     this.copyFileRutinawithSesionesPortadas(this.dataSesiones.IMAGESESION, this.dataRutinasporSesion[0].IMAGENRUTINA)
                     .then((newFileName) => {
