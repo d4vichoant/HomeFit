@@ -220,7 +220,7 @@ export class CrearRutinasPage implements OnInit {
 
     go_page(name: string){
       //this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
-      this.navController.navigateForward('/'+name);
+      //this.navController.navigateForward('/'+name);
       this.inicio();
       this.navController.navigateForward('/' + name, {
         queryParams: {
@@ -508,7 +508,6 @@ export class CrearRutinasPage implements OnInit {
       }else{
         this.presentCustomToast("Portada de Rutina No seleccionada","danger");
       }
-
     }
     sanitizeFileName(fileName:string) {
       const sanitizedText = fileName

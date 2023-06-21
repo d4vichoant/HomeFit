@@ -168,6 +168,11 @@ export class ApiServiceService {
     formData.append('file', file,filename);
     return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen-rutinas', formData);
   }
+  uploadcaptureImagenSesiones(file: File,filename :string): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file,filename);
+    return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen-sesiones', formData);
+  }
   uploadcaptureImagenERequerido(file: File,filename :string): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file,filename);
@@ -200,6 +205,12 @@ export class ApiServiceService {
   UpdateDataRutinas(data:any): Observable<any>{
     return this.http.post(IP_ADDRESS+/programacion/+/UpdateDataRutina/,data );
   }
+  CreteDataSesion(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+/programacion/+/CreateDataSesion/,data );
+  }
+  UpdateDataSesion(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+/programacion/+/UpdateDataSesion/  ,data );
+  }
   getRutinas():Observable<any>{
     return this.http.get(IP_ADDRESS+/programacion/+/rutinas/);
   }
@@ -212,14 +223,20 @@ export class ApiServiceService {
   imagenEntrenadorRutina():Observable<any>{
     return this.http.get(IP_ADDRESS+/programacion/+/imagePorEntrenadorRutina/);
   }
+  imagenEntrenadorSesion():Observable<any>{
+    return this.http.get(IP_ADDRESS+/programacion/+/imagePorEntrenadorSesion/);
+  }
   copyPortadasRutinas(oldnameFile:string,newnameFile:string):Observable<any>{
-    console.log(oldnameFile);
-    console.log(newnameFile);
     const data={
       oldnameFile:oldnameFile,
       newnameFile:newnameFile
     }
-    console.log(data);
     return this.http.post(IP_ADDRESS+/multimedia/+/copyFiles-portadassesiones/,data );
+  }
+  getSesiones():Observable<any>{
+    return this.http.get(IP_ADDRESS+/programacion/+/sesiones/);
+  }
+  getSesionesActivate():Observable<any>{
+    return this.http.get(IP_ADDRESS+/programacion/+/sesionesActivate/);
   }
 }

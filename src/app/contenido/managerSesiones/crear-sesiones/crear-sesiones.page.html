@@ -52,17 +52,18 @@
       <div class="custom-card-image-container">
         <div class="container-imagen" *ngIf="dataRutinasporSesion && dataRutinasporSesion.length>1">
           <ng-container *ngIf="!selectedImageUrl  && imagePortada; else otherImage">
-            <img class="iamgendefault" (click)="uploadImage()" alt="Silhouette of mountains"  [src]="ip_address+'/media/rutinas/portadasrutinas/'+imagePortada"  class="custom-card-image" />
+            <img class="iamgendefault" (click)="uploadImage()" alt="Silhouette of mountains"  [src]="ip_address+'/media/sesiones/portadassesiones/'+imagePortada"  class="custom-card-image" />
             <div class="image-overlay"></div>
           </ng-container>
           <ng-template #otherImage>
             <div *ngIf="selectedImageUrl; else otherotherImage">
-              <img class="iamgendefault" alt="Default Image" (click)="uploadImage()" [src]="selectedImageUrl" />
+              <img class="iamgendefault" alt="Default Image" (click)="uploadImage()" [src]="selectedImageUrl" class="custom-card-image" />
               <div class="image-overlay"></div>
             </div>
           </ng-template>
           <ng-template #otherotherImage>
-            <img alt="DefaultImage" class="iamgendefault" (click)="uploadImage()" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+            <img alt="DefaultImage" class="iamgendefault" (click)="uploadImage()" src="https://ionicframework.com/docs/img/demos/card-media.png" class="custom-card-image"/>
+            <div class="image-overlay"></div>
           </ng-template>
         </div>
         <div class="ion-chip"
@@ -247,7 +248,7 @@
                   <div class="container-input">
                     <ion-select  class="ion-card-subtitle-select" name="frecuenciaSesion" interface="popover" [(ngModel)]="FrecuenciaPersonales " required>
                       <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
-                      <ion-select-option *ngFor="let option of dataFrecuenciaPersonales"  [value]="option.IDFRECUENCIA  ">{{ option.TituloFrecuenciaEjercicio }}</ion-select-option>
+                      <ion-select-option *ngFor="let option of dataFrecuenciaPersonales"  [value]="option.IDFRECUENCIA">{{ option.TituloFrecuenciaEjercicio }}</ion-select-option>
                       <ion-select-option value="" >Ninguno</ion-select-option>
                     </ion-select>
                   </div>
@@ -299,7 +300,7 @@
       </ion-card>
       <ion-card [ngClass]="{ 'active-card': visibilidaSesion === '1', 'inactive-card': visibilidaSesion === '0' }" [style.background-image]="visibilidaSesion === '' ?  'url(' + ip_address + '/media/rutinas/background.png)':'none'">
         <ion-card-header>
-          <ion-card-title>Visibilidad de Rutina</ion-card-title>
+          <ion-card-title>Visibilidad de Sesion</ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <div class="ion-item-content">
@@ -405,7 +406,7 @@
       </ion-card>
       <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
         <div class="item-video-setup  users-container" *ngFor="let option of dataRutinasporSesion; let i = index;"
-          [class.selected]="selectedTrainerBasic && selectedTrainerBasic.IDPERSONA === option.IDPERSONA" >
+            [class.selected]="selectedTrainerBasic && selectedTrainerBasic.IDPERSONA === option.IDPERSONA" >
             <ion-card style="background: linear-gradient(0deg, rgb(0, 0, 0), rgb(0, 0, 0));" [attr.id]="'elemento-sesionesrutinas'+ i" >
               <div class="image-container">
                 <img alt="Silhouette of mountains"   src="{{ ip_address }}/media/rutinas/portadasrutinas/{{option.IMAGENRUTINA}}" class="image"/>

@@ -22,19 +22,10 @@
         <img alt="Silhouette of mountains" src="{{ ip_address }}/media/images/control-sesiones-1.png" />
         <div class="custom-avatar">
           <ion-avatar >
-            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user-plus.png" />
+            <img alt="perfil plus"  *ngIf="imagenEntrenadorSesion && imagenEntrenadorSesion.length>4"   src="{{ ip_address }}/media/perfile/image-user-plus.png" />
           </ion-avatar>
-          <ion-avatar >
-            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user2.png" />
-          </ion-avatar>
-          <ion-avatar >
-            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user3.png" />
-          </ion-avatar>
-          <ion-avatar >
-            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user4.png" />
-          </ion-avatar>
-          <ion-avatar >
-            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/image-user1.png" />
+          <ion-avatar *ngFor="let item of imagenEntrenadorSesion">
+            <img alt="Silhouette of a person's head" src="{{ ip_address }}/media/perfile/{{item.IMAGEPERSONA}}" />
           </ion-avatar>
         </div>
       </div>
