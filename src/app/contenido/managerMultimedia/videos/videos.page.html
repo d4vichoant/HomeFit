@@ -31,7 +31,7 @@
       <ion-label [ngStyle]="{'color': selectedItem === i ? '#ffffff' : ''}" >{{item.tituloniveldificultadejercicio}}</ion-label>
     </div>
   </div>
-  <div class="container-videos" *ngIf=" dataEjercicio && dataEjercicio.length >0;else noDataMessage " >
+  <div class="container-videos" *ngIf=" dataEjercicio && dataEjercicio.length >=0;else noDataMessage " >
     <div class="item-video-setup"  (click)="go_page_create('crear-ejercicio','')"  >
       <img class="background-image" src="{{ ip_address }}/media/images/crear_video.jpg"alt="Imagen de fondo">
       <div class="text-container-up">
@@ -51,14 +51,17 @@
         </button>
       </div>
       <div class="item-body-right-top">
-        <button >
-          <img class="icono-item-top" (click)="go_page_create('crear-ejercicio',option)"style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"  alt="Icono 1">
+        <button *ngIf="(option.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && option.IDROLUSUARIO === 2) || this.userSesionPerfil[0].IDROLUSUARIO===99 " >
+          <img class="icono-item-top" (click)="go_page_create('crear-ejercicio',option)" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"  alt="Icono 1">
         </button>
-        <button>
+        <button *ngIf="(option.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && option.IDROLUSUARIO === 2) || this.userSesionPerfil[0].IDROLUSUARIO===99" >
           <img (click)="confirmaractualizarEjercicioActivacion(option)"   class="icono-item-top" src="{{ ip_address }}/media/images/reject_red.png" alt="Icono 2">
         </button>
+        <button *ngIf="(this.userSesionPerfil[0].IDROLUSUARIO=== 2 && option.IDENTRENADOR  !== this.userSesionPerfil[0].IDPERSONA )">
+          <img (click)="go_page_create('crear-ejercicio',option)"  class="icono-item-top" src="{{ ip_address }}/media/images/acercarset.png" alt="Icono 2">
+        </button>
       </div>
-      <div  (click)="confirmaractualizarEjercicioActivacion(option)" class="item-body-right-bottom" [ngStyle]="{ 'background-color': option.ESTADOEJERCICIO ? '#33af1496' : '#d62f2fa8' }">
+      <div  (click)="(option.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && option.IDROLUSUARIO === 2) || this.userSesionPerfil[0].IDROLUSUARIO===99 ? confirmaractualizarEjercicioActivacion(option):''" class="item-body-right-bottom" [ngStyle]="{ 'background-color': option.ESTADOEJERCICIO ? '#33af1496' : '#d62f2fa8' }">
         <div>
           <img  class="icono-item-botton" src="{{ ip_address }}/media/images/{{ option.ESTADOEJERCICIO ? 'check-white.png' : 'noactive-white.png' }}" alt="Imagen Subtítulo">
           <h2>{{ option.ESTADOEJERCICIO ? 'Activo' : 'Inactivo' }}</h2>
@@ -74,6 +77,11 @@
       <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>
     </div>
   </ng-template>
-  <app-footer-designer></app-footer-designer>
+  <div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
+    <app-footer-designer ></app-footer-designer>
+  </div>
+  <ng-template #otherfooter>
+    <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
+  </ng-template>
 
 </ion-content>

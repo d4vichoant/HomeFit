@@ -49,6 +49,9 @@ export class ApiServiceService {
   allEquipoRequeridoActivate():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/+/equiporequeridoActivate/);
   }
+  allMet():Observable<any>{
+    return this.http.get(IP_ADDRESS+/multimedia/+/met/);
+  }
   allEspecialidadentrenador():Observable<any>{
     return this.http.get(this.apiUrl+/especialidadentrenador/);
   }

@@ -110,7 +110,7 @@ export class RutinasPage implements OnInit {
     validateSesion(){
       try{
         this.storage.get('sesion').then((sesion) => {
-          if (sesion && JSON.parse(sesion).rolUsuario == 99) {
+          if (sesion && JSON.parse(sesion).rolUsuario == 99 || JSON.parse(sesion).rolUsuario == 2) {
             this.userSesion = JSON.parse(sesion).nickname;
             this.obtenerGetPerfilCompleto(this.userSesion);
             this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
@@ -166,6 +166,8 @@ export class RutinasPage implements OnInit {
             handler: () => {
               data.ID_EJERCICIOS_RUTINA=data.IDEJERCICIOS.map((elemento:any) => elemento.toString()).join(',');
               data.USUARIOCREACIONRUTINA=this.userSesionPerfil[0].IDPERSONA;
+              data.RUTINA=null;
+              data.IDENTRENADOR=this.userSesionPerfil[0].IDPERSONA;
               this.CreateData(data);
               this.enfocarenRutinasporSesion();
             }
@@ -177,7 +179,7 @@ export class RutinasPage implements OnInit {
     enfocarenRutinasporSesion(){
       const index=this.dataRtuinas.length as number;
       setTimeout(() => {
-        const elementoDestino = document.getElementById('elemento-rutinas' + (index ));
+        const elementoDestino = document.getElementById('elemento-rutinas-'+(index-1));
         if (elementoDestino) {
           elementoDestino.scrollIntoView({ behavior: 'smooth' });
         }
@@ -191,7 +193,7 @@ export class RutinasPage implements OnInit {
         this.ngOnInit();
         this.presentCustomToast(response.message, "success");
       } catch (error:any) {
-        this.presentCustomToast(error.error.errror, "danger");
+        this.presentCustomToast(error.error, "danger");
       }
     }
 
@@ -337,6 +339,22 @@ export class RutinasPage implements OnInit {
             ...objeto,
             IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
           }));
+          if (this.userSesionPerfil[0].IDROLUSUARIO===2 ){
+            this.dataRtuinas = this.dataRtuinas.filter(element => element.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA || element.IDROLUSUARIO  === 99 );
+            this.dataRtuinas.sort((a, b) => {
+              if (a.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && b.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA) {
+                return 0; // Mantener el orden relativo entre ellos
+              } else if (a.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+                return -1; // Colocar a antes de b
+              } else if (b.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+                return 1; // Colocar b antes de a
+              } else {
+                return 0; // No cambiar el orden entre a y b
+              }
+            });
+            //console.log(this.dataEjercicio);
+          }
+
           setTimeout(() => {
             this.cargarImagenesBefore();
           }, 1000);

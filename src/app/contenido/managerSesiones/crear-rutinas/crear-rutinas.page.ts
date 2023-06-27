@@ -130,7 +130,7 @@ export class CrearRutinasPage implements OnInit {
       const imageUrls = []; // Array para almacenar las URL de las imágenes
       if (Array.isArray(ejercicios)) {
         for (let i = 0; i < ejercicios.length; i++) {
-          const videoName = this.getVideoName(ejercicios[i].ALMACENAMIENTOMULTIMEDIA);
+          const videoName = this.getVideoName(ejercicios[i].ALMACENAMIENTOMULTIMEDIA)[0];
           const imageUrl = this.ip_address+'/multimedia/'+videoName+'.jpg';
           imageUrls.push(imageUrl);
         }
@@ -175,7 +175,7 @@ export class CrearRutinasPage implements OnInit {
     validateSesion(){
       try{
         this.storage.get('sesion').then((sesion) => {
-          if (sesion && JSON.parse(sesion).rolUsuario == 99) {
+          if (sesion && JSON.parse(sesion).rolUsuario == 99 || JSON.parse(sesion).rolUsuario == 2) {
             this.userSesion = JSON.parse(sesion).nickname;
             this.obtenerGetPerfilCompleto(this.userSesion);
             this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
@@ -378,12 +378,12 @@ export class CrearRutinasPage implements OnInit {
         if(this.EjercicioporRutinaUniq === null || this.EjercicioporRutinaUniq === undefined){
           this.EjercicioporRutinaUniq=null;
           this.index=-1;
-          this.duracionRutina=this.sumarTiempos(this.duracionRutina,title.TIEMPOREALIZACIONEJERCICIO);
+          this.duracionRutina=this.sumarTiempos(this.duracionRutina,title.TIEMPOMULTIMEDIA);
           this.dataEjercicioporRutina.push(title);
           this.mostrarSelecEjercicio = false;
         }else{
           this.replaceLastWithIndex(title,this.index);
-          this.duracionRutina=this.sumarTiempos(this.duracionRutina,title.TIEMPOREALIZACIONEJERCICIO);
+          this.duracionRutina=this.sumarTiempos(this.duracionRutina,title.TIEMPOMULTIMEDIA);
           this.duracionRutinaOrig="";
           this.mostrarSelecEjercicio = false;
           this.EjercicioporRutinaUniq=null;
@@ -392,8 +392,8 @@ export class CrearRutinasPage implements OnInit {
         this.enfocarenRutinasporSesion();
       }
     }
-    getVideoName(url: string): string {
-      return url.split('.')[0];
+    getVideoName(url: string): string[] {
+      return url.split('.');
     }
     getfirstName(url: string): string {
       return url.split(' ')[0];
@@ -531,6 +531,7 @@ export class CrearRutinasPage implements OnInit {
       if (!tiempo1){
         tiempo1="00:00:00";
       }
+
       const timeOrig = tiempo1;
       this.duracionRutinaOrig =timeOrig;
       const msTiempo1 = this.tiempoToMilliseconds(tiempo1);
@@ -575,12 +576,12 @@ export class CrearRutinasPage implements OnInit {
     }
 
     RemoveItemERequerido(index:number){
-      this.duracionRutina=this.restarTiempos(this.duracionRutina,this.dataEjercicioporRutina[index].TIEMPOREALIZACIONEJERCICIO);
+      this.duracionRutina=this.restarTiempos(this.duracionRutina,this.dataEjercicioporRutina[index].TIEMPOMULTIMEDIA);
       this.dataEjercicioporRutina.splice(index, 1);
     }
 
     EditItemERequerido(data:any,index:number){
-      this.duracionRutina = this.restarTiempos(this.duracionRutina,data.TIEMPOREALIZACIONEJERCICIO);
+      this.duracionRutina = this.restarTiempos(this.duracionRutina,data.TIEMPOMULTIMEDIA);
       this.index=index;
       this.EjercicioporRutinaUniq=data as any;
       this.mostrarSelecEjercicio=!this.mostrarSelecEjercicio;
@@ -650,8 +651,12 @@ export class CrearRutinasPage implements OnInit {
       this.apiService.allTrainerBasic().subscribe(
         (response) => {
           this.dataTrainerBasic=response;
-          if(this.variable)
+          if(this.variable){
           this.selectedTrainerBasic=this.dataTrainerBasic.find(item => item.IDPERSONA === this.variable.IDENTRENADOR);
+        }
+          else if (this.userSesionPerfil[0].IDROLUSUARIO===2){
+            this.selectedTrainerBasic=this.dataTrainerBasic.find(item => item.IDPERSONA === this.userSesionPerfil[0].IDPERSONA);
+        }
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");
@@ -673,6 +678,23 @@ export class CrearRutinasPage implements OnInit {
           if(this.variable){
             this.dataEjercicioporRutina = this.variable.IDEJERCICIOS.map((IDEJERCICIOS: number) => this.dataEjercicio.find(ejercicio => ejercicio.IDEJERCICIO === IDEJERCICIOS));
           }
+
+          if (this.userSesionPerfil[0].IDROLUSUARIO===2 ){
+            this.dataEjercicio = this.dataEjercicio.filter(element => element.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA || element.IDROLUSUARIO  === 99 );
+            this.dataEjercicio.sort((a, b) => {
+              if (a.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && b.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA) {
+                return 0; // Mantener el orden relativo entre ellos
+              } else if (a.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+                return -1; // Colocar a antes de b
+              } else if (b.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+                return 1; // Colocar b antes de a
+              } else {
+                return 0; // No cambiar el orden entre a y b
+              }
+            });
+            //console.log(this.dataEjercicio);
+          }
+
           setTimeout(() => {
             this.cargarImagenesBefore();
           }, 1000);

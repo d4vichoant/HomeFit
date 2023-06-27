@@ -100,7 +100,7 @@ export class ControlProgramacionPage implements OnInit {
   validateSesion(){
     try{
       this.storage.get('sesion').then((sesion) => {
-        if (sesion && JSON.parse(sesion).rolUsuario == 99) {
+        if (sesion && JSON.parse(sesion).rolUsuario == 99 || JSON.parse(sesion).rolUsuario == 2) {
           this.userSesion = JSON.parse(sesion).nickname;
           this.obtenerGetPerfilCompleto(this.userSesion);
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(

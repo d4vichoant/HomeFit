@@ -171,5 +171,13 @@
         </div>
     </div>
   </div>
-  <app-footer-designer></app-footer-designer>
+   <div *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===99;else otherfooter">
+      <app-footer-designer ></app-footer-designer>
+    </div>
+    <ng-template #otherfooter >
+      <app-footer-designer-trainer *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===2;else otherfooterother"></app-footer-designer-trainer>
+    </ng-template>
+    <ng-template #otherfooterother>
+      <app-footer-designer-users *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===1"></app-footer-designer-users>
+    </ng-template>
 </ion-content>

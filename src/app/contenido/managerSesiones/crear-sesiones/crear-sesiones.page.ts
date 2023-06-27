@@ -215,7 +215,7 @@ export class CrearSesionesPage implements OnInit {
     validateSesion(){
       try{
         this.storage.get('sesion').then((sesion) => {
-          if (sesion && JSON.parse(sesion).rolUsuario == 99) {
+          if (sesion && JSON.parse(sesion).rolUsuario == 99 || JSON.parse(sesion).rolUsuario == 2) {
             this.userSesion = JSON.parse(sesion).nickname;
             this.obtenerGetPerfilCompleto(this.userSesion);
             this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
@@ -228,7 +228,7 @@ export class CrearSesionesPage implements OnInit {
                 this.StatusBar();
                 this.obtenerEjercicios();
                 this.obtenerRutinas();
-                if(this.variable.IDOBJETIVOSPERSONALESSESION!==null){
+                if(this.variable && this.variable.IDOBJETIVOSPERSONALESSESION!==null){
                   this.obtenerRutinasbyObjetive(this.variable.IDOBJETIVOSPERSONALESSESION);
                   this.filterdataRutinasporSesion();
                 }
@@ -512,6 +512,7 @@ export class CrearSesionesPage implements OnInit {
                   this.updateFileImage(this.dataSesiones.IMAGESESION)
                   .then((fileName)=>{
                     this.dataSesiones.IMAGESESION=fileName+".jpg";
+                    this.dataSesiones.IDENTRENADOR = this.userSesionPerfil[0].IDPERSONA;
                     if(this.variable){
                       this.UpdateData(this.dataSesiones);
                     }else{
@@ -526,6 +527,7 @@ export class CrearSesionesPage implements OnInit {
                     this.copyFileRutinawithSesionesPortadas(this.dataSesiones.IMAGESESION, this.dataRutinasporSesion[0].IMAGENRUTINA)
                     .then((newFileName) => {
                       this.dataSesiones.IMAGESESION = newFileName;
+                      this.dataSesiones.IDENTRENADOR = this.userSesionPerfil[0].IDPERSONA;
                       if(this.variable){
                         this.UpdateData(this.dataSesiones);
                       }else{
@@ -535,6 +537,7 @@ export class CrearSesionesPage implements OnInit {
                   }else{
                     if(this.variable){
                       this.dataSesiones.IMAGESESION = this.variable.IMAGESESION;
+                      this.dataSesiones.IDENTRENADOR = this.userSesionPerfil[0].IDPERSONA;
                       this.UpdateData(this.dataSesiones);
                     }else{
                       this.CreateData(this.dataSesiones);
@@ -887,7 +890,6 @@ export class CrearSesionesPage implements OnInit {
       this.apiService.connsultPerfilCompleto(nickname).subscribe(
         (response) => {
           this.userSesionPerfil=response;
-          console.log(this.userSesionPerfil);
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");
@@ -918,6 +920,9 @@ export class CrearSesionesPage implements OnInit {
           this.dataTrainerBasic=response;
           if(this.variable)
           this.selectedTrainerBasic=this.dataTrainerBasic.find(item => item.IDPERSONA === this.variable.IDENTRENADOR);
+          else if (this.userSesionPerfil[0].IDROLUSUARIO===2){
+              this.selectedTrainerBasic=this.dataTrainerBasic.find(item => item.IDPERSONA === this.userSesionPerfil[0].IDPERSONA);
+          }
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");
@@ -948,6 +953,20 @@ export class CrearSesionesPage implements OnInit {
               this.duracionSesion =  this.sumarTiempos(this.duracionSesion,item.DURACIONRUTINA);
             });
           }
+          if (this.userSesionPerfil[0].IDROLUSUARIO===2 ){
+            this.dataRtuinas = this.dataRtuinas.filter(element => element.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA || element.IDROLUSUARIO  === 99 );
+            this.dataRtuinas.sort((a, b) => {
+              if (a.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && b.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA) {
+                return 0; // Mantener el orden relativo entre ellos
+              } else if (a.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+                return -1; // Colocar a antes de b
+              } else if (b.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+                return 1; // Colocar b antes de a
+              } else {
+                return 0; // No cambiar el orden entre a y b
+              }
+            });
+          }
           setTimeout(() => {
             this.cargarImagenesBefore();
           }, 1000);
@@ -965,6 +984,20 @@ export class CrearSesionesPage implements OnInit {
             ...objeto,
             IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
           }));
+          if (this.userSesionPerfil[0].IDROLUSUARIO===2 ){
+            this.dataRtuinas = this.dataRtuinas.filter(element => element.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA || element.IDROLUSUARIO  === 99 );
+            this.dataRtuinas.sort((a, b) => {
+              if (a.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && b.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA) {
+                return 0; // Mantener el orden relativo entre ellos
+              } else if (a.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+                return -1; // Colocar a antes de b
+              } else if (b.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+                return 1; // Colocar b antes de a
+              } else {
+                return 0; // No cambiar el orden entre a y b
+              }
+            });
+          }
           setTimeout(() => {
             this.cargarImagenesBefore();
           }, 1000);

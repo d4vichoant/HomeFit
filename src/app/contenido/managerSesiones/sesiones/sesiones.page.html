@@ -36,28 +36,31 @@
       </ion-card-content>
     </ion-card>
     <div class="item-video-setup" *ngFor="let option of dataSesiones; let i = index;"  >
-      <ion-card style="background: linear-gradient(0deg, rgb(0, 0, 0), rgb(0, 0, 0));" [attr.id]="'elemento-sesiones'+ i" >
+      <ion-card style="background: linear-gradient(0deg, rgb(0, 0, 0), rgb(0, 0, 0));" [attr.id]="'elemento-sesiones-'+ i" >
         <div class="image-container">
           <img alt="Silhouette of mountains"  (click)="go_page_create('crear-sesiones',option)"  src="{{ ip_address }}/media/sesiones/portadassesiones/{{option.IMAGESESION}}" class="image"/>
           <div class="filter-overlay"></div>
             <div class="item-body-right-top">
-              <button >
+              <button *ngIf="(option.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && option.IDROLUSUARIO === 2) || this.userSesionPerfil[0].IDROLUSUARIO===99">
                 <img  class="icono-item-top" (click)="savecopy(option)"  style="margin-right: 15px;" src="{{ ip_address }}/media/images/copy.png" alt="Icono 2">
               </button>
-              <button >
+              <button *ngIf="(option.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && option.IDROLUSUARIO === 2) || this.userSesionPerfil[0].IDROLUSUARIO===99">
                 <img class="icono-item-top"  (click)="go_page_create('crear-sesiones',option)" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"  alt="Icono 1">
               </button>
-              <button>
+              <button *ngIf="(option.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && option.IDROLUSUARIO === 2) || this.userSesionPerfil[0].IDROLUSUARIO===99">
                 <img  class="icono-item-top" (click)="confirmaractualizarEjercicioActivacion(option)" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
               </button>
+              <button *ngIf="(this.userSesionPerfil[0].IDROLUSUARIO=== 2 && option.IDENTRENADOR  !== this.userSesionPerfil[0].IDPERSONA )">
+                <img (click)="go_page_create('crear-sesiones',option)"  class="icono-item-top" src="{{ ip_address }}/media/images/acercarset.png" alt="Icono 2">
+              </button>
           </div>
-          <div  (click)="go_page_create('crear-rutinas',option)"  class="title-body-left-bottom">
+          <div  (click)="go_page_create('crear-sesiones',option)"  class="title-body-left-bottom">
             <p class="text2">{{option.NOMBRESESION}}</p>
           </div>
           <div class="ion-chip-selected">
             <ion-chip >
               <div class="ion-item-chip-selected">
-                <ion-label >{{getArrayLength(option.IDRUTINAS)}}&nbsp;Días</ion-label>
+                <ion-label >{{getArrayLength(option.IDRUTINAS)}}&nbsp;Día(s)</ion-label>
               </div>
             </ion-chip>
           </div>
@@ -114,7 +117,7 @@
             </ion-col>
           </ion-row>
           <ion-row>
-            <div  class="item-body-right-bottom"  (click)="confirmaractualizarEjercicioActivacion(option)" [ngStyle]="{ 'background-color': option.STATUSSESION === 0 ? '#fdfec3' : (option.STATUSSESION === 1 ? '#fcfee7' : '#fdfec3') }" >
+            <div  class="item-body-right-bottom"  (click)="(option.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && option.IDROLUSUARIO === 2) || this.userSesionPerfil[0].IDROLUSUARIO===99 ? confirmaractualizarEjercicioActivacion(option):''" [ngStyle]="{ 'background-color': option.STATUSSESION === 0 ? '#fdfec3' : (option.STATUSSESION === 1 ? '#fcfee7' : '#fdfec3') }" >
               <div>
                 <img class="icono-item-botton" src="{{ ip_address }}/media/images/{{ option.STATUSSESION === 0 ? 'noactive.png' : (option.STATUSSESION === 1 ? 'check.png' : 'time.png') }}" alt="Imagen Subtítulo">
                 <h2> {{ option.STATUSSESION === 0 ? 'Inactivo' : (option.STATUSSESION === 1 ? 'Activo' : 'Revisión') }}</h2>
@@ -146,12 +149,6 @@
                     </div>
                   </div>
                 </div>
-                <div class="ion-dia-selected">
-                  <div class="fecha-container">
-                        <div class="dia" >{{j+1}}</div>
-                      <div class="mes" >Día</div>
-                  </div>
-                </div>
                 <ion-card-content >
                   <ion-grid>
                     <ion-row>
@@ -160,6 +157,14 @@
                           <ion-label style="min-width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; "><span  class="full-text">{{findRutinasSesiones(data).NOMBRERUTINA}}</span></ion-label>
                         </div>
                       </ion-col>
+                      <ion-row>
+                        <ion-col size="12">
+                          <div class="ion-card-content-ejercicio">
+                            <ion-icon  style="color: #ffffff;" name="calendar-number-outline"></ion-icon>
+                            <ion-label style="color: #ffffff; min-width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; " ><span style="margin-right: 10px;"></span>{{j+1}}&nbsp;&nbsp;Día(s)</ion-label>
+                          </div>
+                        </ion-col>
+                      </ion-row>
                       <ion-col size="12">
                         <div class="ion-card-content-ejercicio">
                           <ion-icon  style="color: #ffffff;" name="sync"></ion-icon>
@@ -184,5 +189,10 @@
       </div>
     </div>
   </div>
-  <app-footer-designer></app-footer-designer>
+  <div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
+    <app-footer-designer ></app-footer-designer>
+  </div>
+  <ng-template #otherfooter>
+    <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
+  </ng-template>
 </ion-content>

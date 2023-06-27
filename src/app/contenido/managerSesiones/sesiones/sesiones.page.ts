@@ -103,7 +103,7 @@ export class SesionesPage implements OnInit {
     validateSesion(){
       try{
         this.storage.get('sesion').then((sesion) => {
-          if (sesion && JSON.parse(sesion).rolUsuario == 99) {
+          if (sesion && JSON.parse(sesion).rolUsuario == 99||JSON.parse(sesion).rolUsuario == 2) {
             this.userSesion = JSON.parse(sesion).nickname;
             this.obtenerGetPerfilCompleto(this.userSesion);
             this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
@@ -181,7 +181,7 @@ export class SesionesPage implements OnInit {
     enfocarenRutinasporSesion(){
       const index=this.dataSesiones.length as number;
       setTimeout(() => {
-        const elementoDestino = document.getElementById('elemento-sesiones' + (index ));
+        const elementoDestino = document.getElementById('elemento-sesiones-' + (index-1));
         if (elementoDestino) {
           elementoDestino.scrollIntoView({ behavior: 'smooth' });
         }
@@ -324,6 +324,21 @@ export class SesionesPage implements OnInit {
             ...objeto,
             IDRUTINAS: objeto.IDRUTINAS.split(",").map(Number)
           }));
+          if (this.userSesionPerfil[0].IDROLUSUARIO===2 ){
+            this.dataSesiones = this.dataSesiones.filter(element => element.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA || element.IDROLUSUARIO  === 99 );
+            this.dataSesiones.sort((a, b) => {
+              if (a.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && b.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA) {
+                return 0; // Mantener el orden relativo entre ellos
+              } else if (a.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+                return -1; // Colocar a antes de b
+              } else if (b.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+                return 1; // Colocar b antes de a
+              } else {
+                return 0; // No cambiar el orden entre a y b
+              }
+            });
+            //console.log(this.dataEjercicio);
+          }
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");

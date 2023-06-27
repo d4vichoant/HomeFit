@@ -148,7 +148,6 @@ export class PerfilePage implements OnInit {
       if(this.password === this.confirmPassword){
         if (this.validatePassword(this.password)){
           this.passwordEncode(item);
-          console.log(this.hashpassword);
         }else{
           this.presentCustomToast("No cumple como una contraseña segura","danger");
         }
@@ -230,7 +229,6 @@ passwordEncode(item:any) {
           var profiledat = JSON.parse(sesionString);
           item.USUARIOMODIFICACIONPERSONA = profiledat.nickname;
           this.loading = true;
-          console.log(item);
           this.apiService.UpdatePassword(item).subscribe(
             (response) => {
               this.presentCustomToast(response.message, "success");
@@ -272,7 +270,6 @@ passwordEncode(item:any) {
   }
 
   actualizarUsuario(dataUser :any){
-    console.log(dataUser);
     this.storage.get('sesion').then((sesionString) => {
       if (sesionString) {
         var profiledat = JSON.parse(sesionString);
@@ -290,8 +287,8 @@ passwordEncode(item:any) {
           }
         );
       } else {
+        this.presentCustomToast('No se encontró la sesión', "danger");
         // No se encontró la sesión en el storage
-        console.log('No se encontró la sesión');
       }
     });
 

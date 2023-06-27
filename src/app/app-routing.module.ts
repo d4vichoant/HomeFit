@@ -122,7 +122,8 @@ const routes: Routes = [
   {
     path: 'control-multimedia',
     loadChildren: () => import('./contenido/managerMultimedia/control-multimedia/control-multimedia.module').then( m => m.ControlMultimediaPageModule)
-  },  {
+  },
+  {
     path: 'control-programacion',
     loadChildren: () => import('./contenido/managerSesiones/control-programacion/control-programacion.module').then( m => m.ControlProgramacionPageModule)
   },
@@ -157,6 +158,14 @@ const routes: Routes = [
   {
     path: 'error-page-users-trainers',
     loadChildren: () => import('./contenido/managerUsers/error-page-users-trainers/error-page-users-trainers.module').then( m => m.ErrorPageUsersTrainersPageModule)
+  },
+  {
+    path: 'error-users',
+    loadChildren: () => import('./error-users/error-users.module').then( m => m.ErrorUsersPageModule)
+  },
+  {
+    path: 'contrato-entrenador',
+    loadChildren: () => import('./contenido/managerUsers/contrato-entrenador/contrato-entrenador.module').then( m => m.ContratoEntrenadorPageModule)
   },
 
 

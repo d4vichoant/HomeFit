@@ -16,22 +16,26 @@
        </ion-buttons>
         <ion-buttons slot="end">
           <ion-button  (click)="confirmchangeCreateData()"  style="color: #9259f9; margin-right: 10px;"  >
-            <ng-container *ngIf="variable ; else otherIcon">
+            <ng-container *ngIf="(variable && userSesionPerfil && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA)   || (variable && userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99); else otherIcon">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                 <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
                 <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"></path>
                 <path d="M10 12l4 0"></path>
-             </svg>&nbsp;<span class="spaniconup">ACTUALIZAR</span>
+             </svg>&nbsp;<span class="spaniconup">Actualizar</span>
             </ng-container>
             <ng-template #otherIcon>
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
-                <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                <path d="M14 4l0 4l-6 0l0 -4"></path>
-             </svg>&nbsp;<span class="spaniconup">Crear</span>
+              <ng-container  *ngIf="(!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ;else otherotherIcon" >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+                  <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                  <path d="M14 4l0 4l-6 0l0 -4"></path>
+               </svg>&nbsp;<span class="spaniconup">Crear</span>
+              </ng-container>
              </ng-template>
+             <ng-template #otherotherIcon>
+            </ng-template>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
@@ -66,7 +70,7 @@
           </ng-template>
         </div>
         <div class="ion-chip"
-        (click)="showSelected('dataTrainerBasic')" >
+        (click)="(userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?showSelected('dataTrainerBasic'):''" >
           <ion-chip  [ngStyle]="{ 'background-color': getColorByValue(selectedTrainerBasic) }">
             <ion-avatar>
               <img *ngIf="!selectedTrainerBasic" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
@@ -78,25 +82,25 @@
             </div>
           </ion-chip>
         </div>
-        <div (click)="uploadImage()" class="ion-header">
+        <div (click)="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?uploadImage():''" class="ion-header">
           <ion-icon name="download"></ion-icon>
           <input type="file" style="display: none;" id="fileInput" class="file-input" accept=".jpg" (change)="handleFileInput($event)" #fileInputRef>
         </div>
         <ion-card-header class="custom-card-header">
           <div class="ion-item">
-            <ion-textarea  class=" full-text ion-input-body-title" [(ngModel)]="tituloRutina" type="text" name="titulo" placeholder="Título Rutina" required></ion-textarea>
+            <ion-textarea [disabled]="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?false:true" class=" full-text ion-input-body-title" [(ngModel)]="tituloRutina" type="text" name="titulo" placeholder="Título Rutina" required></ion-textarea>
             <ion-icon class="ion-icon-title" name="create" slot="end"></ion-icon>
           </div>
         </ion-card-header>
       </div>
       <ion-card-content>
         <div class="ion-item-content">
-          <ion-textarea class="ion-input-body-subtitle" [(ngModel)]="descripcionRutina" type="text" name="subtitulo" placeholder="Descripcion Rutina" required></ion-textarea>
+          <ion-textarea  [disabled]="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?false:true" class="ion-input-body-subtitle" [(ngModel)]="descripcionRutina" type="text" name="subtitulo" placeholder="Descripcion Rutina" required></ion-textarea>
           <ion-icon class="ion-icon-content" name="create" slot="end" ></ion-icon>
         </div>
       </ion-card-content>
     </ion-card>
-    <ion-card  (click)="showSelected('dataTEjercicio')"  style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
+    <ion-card  (click)="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?showSelected('dataTEjercicio'):''"  style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
       <ion-card-header>
         <ion-card-title>Tipo Ejercicio</ion-card-title>
       </ion-card-header>
@@ -107,7 +111,7 @@
         </div>
       </ion-card-content>
     </ion-card>
-    <ion-card  (click)="showSelected('dataOPersonal')" style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
+    <ion-card  (click)="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?showSelected('dataOPersonal'):''" style=" background-image: url('{{ip_address}}/media/rutinas/background.png');">
       <ion-card-header>
         <ion-card-title>Objetivo de la Rutina</ion-card-title>
       </ion-card-header>
@@ -124,7 +128,7 @@
       </ion-card-header>
       <ion-card-content>
         <div class="ion-item-content">
-          <ion-select name="selectStatus" interface="popover"  [(ngModel)]="visibilidaRutina " required>
+          <ion-select [disabled]="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?false:true" name="selectStatus" interface="popover"  [(ngModel)]="visibilidaRutina " required>
             <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
             <ion-select-option value="1">Activo</ion-select-option>
             <ion-select-option value="0">Inactivo</ion-select-option>
@@ -134,7 +138,7 @@
         <div  class="div-select" *ngIf="visibilidaRutina && visibilidaRutina === '0' ">
           <p>Indique las Razones</p>
           <div class="ion-item-content">
-            <ion-textarea type="text"  [(ngModel)]="observacionRutina " ></ion-textarea>
+            <ion-textarea [disabled]="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?false:true" type="text"  [(ngModel)]="observacionRutina " ></ion-textarea>
             <ion-icon class="ion-icon-content" name="create" slot="end" ></ion-icon>
           </div>
         </div>
@@ -157,17 +161,17 @@
         </ion-row>
       </ion-grid>
     </ion-card>
-    <ion-card (click)="dataEjercicioporRutina && dataEjercicioporRutina.length > 0 ?showSelected('dataEjercicio'):''"  style=" background-image: url('{{ip_address}}/media/images/objetive-muscular-bk-3.png');">
+    <ion-card (click)="dataEjercicioporRutina && dataEjercicioporRutina.length > 0 && (variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ?showSelected('dataEjercicio'):''"  style=" background-image: url('{{ip_address}}/media/images/objetive-muscular-bk-3.png');">
       <ion-card-header>
         <ion-card-title style="color: #ffffff!important;">
           <div class="contenedor-padre">
             <h2 [style]="dataEjercicioporRutina && dataEjercicioporRutina.length > 0 ? 'left: 30px;' : 'left: 0px;'" class="text-im">Ejercicios</h2>
-            <img *ngIf=" dataEjercicioporRutina && dataEjercicioporRutina.length>0" class="imagen" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
+            <img *ngIf=" dataEjercicioporRutina && dataEjercicioporRutina.length>0 && (variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)" class="imagen" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
           </div>
         </ion-card-title>
       </ion-card-header>
     </ion-card>
-    <ion-card *ngIf=" !dataEjercicioporRutina || dataEjercicioporRutina.length===0"   (click)="showSelected('dataEjercicio')" class="custom-card" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/rutinas/crear_ejerciciorutina.jpg');">
+    <ion-card *ngIf=" !dataEjercicioporRutina || dataEjercicioporRutina.length===0 && (variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)"   (click)="showSelected('dataEjercicio')" class="custom-card" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/rutinas/crear_ejerciciorutina.jpg');">
       <ion-card-header>
         <img class="background-image" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
         <ion-card-title>Agregar Ejercicio</ion-card-title>
@@ -179,7 +183,7 @@
     <div *ngIf=" dataEjercicioporRutina" style="margin: 0% 3% 0% 3%;
     justify-content: center;">
     <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-      <ion-card class="ion-card-ejercicio"  style="margin: 0 auto!important; margin-bottom: 3%; width: 100%;  background-image: linear-gradient(0deg,  #0000001a,#8457eab3), url('{{ ip_address }}/multimedia/{{getVideoName(data.ALMACENAMIENTOMULTIMEDIA)}}.jpg');background-repeat: no-repeat;background-size: cover;" *ngFor="let data of dataEjercicioporRutina;let i=index;" [attr.id]="'elemento-rutinasejercicios'+ i">
+      <ion-card class="ion-card-ejercicio"  style="margin: 0 auto!important; margin-bottom: 3%; width: 100%;  background-image: linear-gradient(0deg,  #0000001a,#8457eab3), url('{{ ip_address }}/multimedia/{{data?getVideoName(data.ALMACENAMIENTOMULTIMEDIA)[0]:''}}.jpg');background-repeat: no-repeat;background-size: cover;" *ngFor="let data of dataEjercicioporRutina;let i=index;" [attr.id]="'elemento-rutinasejercicios'+ i">
         <ion-card-content >
           <ion-grid>
             <ion-row>
@@ -187,7 +191,7 @@
                 <div class="ion-chip-selected">
                   <ion-chip >
                     <div class="ion-item-chip-selected">
-                      <ion-label >{{data.TIEMPOREALIZACIONEJERCICIO}}</ion-label>
+                      <ion-label >{{data && data.TIEMPOMULTIMEDIA}}</ion-label>
                     </div>
                   </ion-chip>
                 </div>
@@ -196,19 +200,19 @@
                 <div class="ion-card-content-ejercicio">
                   <ion-label style="min-width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; "><span style=" font-family: Raleway-Bold;
                     font-size: 1.5rem;
-                    color: #ffffff;" class="full-text">{{data.NOMBREEJERCICIO}}</span></ion-label>
+                    color: #ffffff;" class="full-text">{{data && data.NOMBREEJERCICIO}}</span></ion-label>
                 </div>
               </ion-col>
               <ion-col size="6">
                 <div class="ion-card-content-ejercicio">
                   <ion-icon  style="color: #ffffff;" name="sync"></ion-icon>
-                  <ion-label style="color: #ffffff;" >{{data.REPETICIONESEJERCICIO}}</ion-label>
+                  <ion-label style="color: #ffffff;" >{{data && data.REPETICIONESEJERCICIO}}</ion-label>
                 </div>
               </ion-col>
               <ion-col size="6">
                 <div class="ion-card-content-ejercicio">
                   <ion-icon style="color: #ffffff;" name="shuffle"></ion-icon>
-                  <ion-label style="color: #ffffff;">{{data.METEJERCICIO}}</ion-label>
+                  <ion-label style="color: #ffffff;">{{data && data.METEJERCICIO}}</ion-label>
                 </div>
               </ion-col>
             </ion-row>
@@ -216,7 +220,7 @@
               <ion-col size="12">
                 <div class="ion-card-content-ejercicio">
                   <ion-icon  style="color: #ffffff;" name="ribbon"></ion-icon>
-                  <ion-label style=" color: #ffffff; min-width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">{{data.tituloniveldificultadejercicio}}</ion-label>
+                  <ion-label style=" color: #ffffff; min-width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">{{data && data.tituloniveldificultadejercicio}}</ion-label>
                 </div>
               </ion-col>
             </ion-row>
@@ -224,21 +228,21 @@
               <ion-col size="12">
                 <div class="ion-card-content-ejercicio">
                   <ion-icon style="color: #ffffff;" name="flame"></ion-icon>
-                  <ion-label style="color: #ffffff; min-width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; "><span style="margin-right: 10px;">Tip. Ejer.</span>{{data.NOMBRETIPOEJERCICIO}}</ion-label>
+                  <ion-label style="color: #ffffff; min-width: 220px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; "><span style="margin-right: 10px;">Tip. Ejer.</span>{{data && data.NOMBRETIPOEJERCICIO}}</ion-label>
                 </div>
               </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="12">
                 <div class="ion-card-content-ejercicio-2" >
-                  <div  class="ion-icon-edit-2">
+                  <div  class="ion-icon-edit-2" *ngIf="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)">
                     <ion-reorder >
                       <ion-icon name="chevron-expand"></ion-icon>
                     </ion-reorder>
                   </div>
                   <div class="ion-icon-edit">
-                    <ion-icon  (click)="EditItemERequerido(data,i)" name="create"></ion-icon>
-                    <ion-icon (click)="RemoveItemERequerido(i)"  name="close-circle"></ion-icon>
+                    <ion-icon  (click)="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ?EditItemERequerido(data,i):''" name="create"></ion-icon>
+                    <ion-icon (click)="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?RemoveItemERequerido(i):''"  name="close-circle"></ion-icon>
                   </div>
                 </div>
               </ion-col>
@@ -351,12 +355,12 @@
       <ion-card class="ion-card-ejercicio" style=" background-image: url('{{ip_address}}/media/rutinas/background.png');" >
         <div class="custom-card-image-container-ejercicio">
           <div class="custom-image" >
-            <img alt="Silhouette of mountains"  src="{{ ip_address }}/multimedia/{{getVideoName(data.ALMACENAMIENTOMULTIMEDIA)}}.jpg"  class="custom-card-image-ejercicio" />
+            <img alt="Silhouette of mountains"  src="{{ ip_address }}/multimedia/{{getVideoName(data.ALMACENAMIENTOMULTIMEDIA)[0]}}.jpg"  class="custom-card-image-ejercicio" />
           </div>
           <div class="ion-chip-ejercicio">
             <ion-chip >
               <div class="ion-item-chip-ejercicio">
-                <ion-label >{{data.TIEMPOREALIZACIONEJERCICIO}}</ion-label>
+                <ion-label >{{data.TIEMPOMULTIMEDIA}}</ion-label>
               </div>
             </ion-chip>
           </div>
@@ -432,6 +436,10 @@
     </ng-template>
   </div>
 </div>
-
-  <app-footer-designer></app-footer-designer>
+<div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
+  <app-footer-designer ></app-footer-designer>
+</div>
+<ng-template #otherfooter>
+  <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
+</ng-template>
 </ion-content>

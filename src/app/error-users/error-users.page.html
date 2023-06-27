@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div class="onboard-top" >
+    <ion-toolbar >
+ <!--      <ion-buttons slot="start">
+        <ion-button style="color: #ffffff;"  (click)="goBack()">
+         <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+       </ion-button>
+     </ion-buttons> -->
+      <ion-buttons slot="end">
+        <ion-button style="color: #ffffff;" (click)="goHome()">
+          <ion-icon name='close-outline' slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div class="heading">
+    <h1>404</h1>
+    <p>Página no encontrada</p>
+  </div>
+  <div class="imagenot">
+    <img src="{{ ip_address }}/media/errorpage/error.png" alt="notification-imagen"/>
+  </div>
+  <div class="container-text">
+    <p>La página que intenta ingresar</p>
+    <p>no existe. Comuniquese con el Administrador.</p>
+  </div>
+  <div class="buttons">
+    <ion-button (click)="goHome()">Aceptar</ion-button><br>
+  </div>
+</ion-content>

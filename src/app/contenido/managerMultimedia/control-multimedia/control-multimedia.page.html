@@ -67,7 +67,7 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-card (click)="go_page('crear-tipo-ejercicio')">
+    <ion-card (click)="go_page('crear-tipo-ejercicio')" *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99">
       <div class="custom-image">
         <img alt="Silhouette of mountains" src="{{ ip_address }}/media/images/control-multimedia-3.jpg" />
     </div>
@@ -91,7 +91,7 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-card (click)="go_page('crear-objetivo-muscular')">
+    <ion-card (click)="go_page('crear-objetivo-muscular')" *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99">
       <div class="custom-image">
       <img alt="Silhouette of mountains" src="{{ ip_address }}/media/images/control-multimedia-4.jpg" />
     </div>
@@ -116,7 +116,7 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-card (click)="go_page('crear-erequerido')">
+    <ion-card (click)="go_page('crear-erequerido')" *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99">
       <div class="custom-image">
       <img alt="Silhouette of mountains" src="{{ ip_address }}/media/images/control-multimedia-5.jpg" />
     </div>

@@ -23,7 +23,7 @@ export class VideosPage implements OnInit {
   public origindata!:any[];
 
   public userSesion!:string;
-  private userSesionPerfil!:any;
+  public userSesionPerfil!:any;
 
   selectedItem: number = -1;
   constructor(private navController: NavController,
@@ -92,7 +92,7 @@ export class VideosPage implements OnInit {
   validateSesion(){
     try{
       this.storage.get('sesion').then((sesion) => {
-        if (sesion && JSON.parse(sesion).rolUsuario == 99) {
+        if (sesion && JSON.parse(sesion).rolUsuario == 99 || JSON.parse(sesion).rolUsuario == 2) {
           this.userSesion = JSON.parse(sesion).nickname;
           this.obtenerGetPerfilCompleto(this.userSesion);
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
@@ -175,11 +175,20 @@ export class VideosPage implements OnInit {
     this.navController.navigateForward('/'+name);
   }
   go_page_create(name: string, data: any) {
-    this.navController.navigateForward('/' + name, {
-      queryParams: {
-        variable: data
-      }
-    });
+    if (data===''){
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variable: ""
+        }
+      });
+    }else{
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variable: data
+        }
+      });
+    }
+
   }
 
 
@@ -309,6 +318,9 @@ async buttonfilterhabilitate(filter: any,index:number) {
         }, {
           text: 'Aceptar',
           handler: () => {
+            data.IDEJERCICIO=null;
+            data.IDENTRENADOR=this.userSesionPerfil[0].IDPERSONA;
+            data.USUARIOCREACIONEJERCICIO=this.userSesionPerfil[0].IDPERSONA;
             data.USUARIOMODIFICAICONEJERCICIO=null;
             data.FECHAMODIFICACIONEJERCICIO=null;
             this.CreateData(data);
@@ -326,7 +338,7 @@ async buttonfilterhabilitate(filter: any,index:number) {
       this.ngOnInit();
       this.presentCustomToast(response.message, "success");
     } catch (error:any) {
-      this.presentCustomToast(error.error.errror, "danger");
+      this.presentCustomToast(error.error, "danger");
     }
   }
 
@@ -367,6 +379,21 @@ async buttonfilterhabilitate(filter: any,index:number) {
     this.apiService.getEjercicio().subscribe(
       (response) => {
         this.dataEjercicio=response;
+        if (this.userSesionPerfil[0].IDROLUSUARIO===2 ){
+          this.dataEjercicio = this.dataEjercicio.filter(element => element.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA || element.IDROLUSUARIO  === 99 );
+          this.dataEjercicio.sort((a, b) => {
+            if (a.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA && b.IDENTRENADOR === this.userSesionPerfil[0].IDPERSONA) {
+              return 0; // Mantener el orden relativo entre ellos
+            } else if (a.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+              return -1; // Colocar a antes de b
+            } else if (b.IDENTRENADOR ===  this.userSesionPerfil[0].IDPERSONA) {
+              return 1; // Colocar b antes de a
+            } else {
+              return 0; // No cambiar el orden entre a y b
+            }
+          });
+          //console.log(this.dataEjercicio);
+        }
         setTimeout(() => {
           this.cargarImagenesBefores();
         }, 1000);

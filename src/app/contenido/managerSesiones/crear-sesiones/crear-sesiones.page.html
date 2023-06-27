@@ -16,7 +16,7 @@
        </ion-buttons>
        <ion-buttons slot="end">
         <ion-button  (click)="confirmchangeCreateData()"  style="color: #9259f9; margin-right: 10px;"  >
-          <ng-container *ngIf="variable ; else otherIcon">
+          <ng-container *ngIf="(variable && userSesionPerfil && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA)   || (variable && userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ; else otherIcon">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
@@ -25,13 +25,17 @@
            </svg>&nbsp;<span class="spaniconup">ACTUALIZAR</span>
           </ng-container>
           <ng-template #otherIcon>
+            <ng-container  *ngIf="(!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ;else otherotherIcon" >
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
               <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
               <path d="M14 4l0 4l-6 0l0 -4"></path>
            </svg>&nbsp;<span class="spaniconup">Crear</span>
+          </ng-container>
            </ng-template>
+           <ng-template #otherotherIcon>
+          </ng-template>
         </ion-button>
       </ion-buttons>
       </ion-toolbar>
@@ -67,7 +71,7 @@
           </ng-template>
         </div>
         <div class="ion-chip"
-        (click)="showSelected('dataTrainerBasic')" >
+        (click)="(userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)? showSelected('dataTrainerBasic'):''" >
           <ion-chip  [ngStyle]="{ 'background-color': getColorByValue(selectedTrainerBasic) }">
             <ion-avatar>
               <img *ngIf="!selectedTrainerBasic" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
@@ -79,20 +83,20 @@
             </div>
           </ion-chip>
         </div>
-        <div (click)="uploadImage()" class="ion-header">
+        <div (click)="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?uploadImage():''" class="ion-header">
           <ion-icon name="download"></ion-icon>
           <input type="file" style="display: none;" id="fileInput" class="file-input" accept=".jpg" (change)="handleFileInput($event)" #fileInputRef>
         </div>
         <ion-card-header class="custom-card-header" *ngIf="dataRutinasporSesion && dataRutinasporSesion.length>1">
           <div class="ion-item">
-            <ion-textarea  class=" full-text ion-input-body-title" [(ngModel)]="nombreSesion" type="text" name="titulo" placeholder="Título Sesión" required></ion-textarea>
+            <ion-textarea  [disabled]="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?false:true" class=" full-text ion-input-body-title" [(ngModel)]="nombreSesion" type="text" name="titulo" placeholder="Título Sesión" required></ion-textarea>
             <ion-icon class="ion-icon-title" name="create" slot="end"></ion-icon>
           </div>
         </ion-card-header>
       </div>
       <ion-card-content *ngIf="dataRutinasporSesion && dataRutinasporSesion.length>1">
         <div class="ion-item-content">
-          <ion-textarea class="ion-input-body-subtitle" [(ngModel)]="objetivoSesion" type="text" name="subtitulo" placeholder="Objetivo Sesión" required></ion-textarea>
+          <ion-textarea  [disabled]="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?false:true" class="ion-input-body-subtitle" [(ngModel)]="objetivoSesion" type="text" name="subtitulo" placeholder="Objetivo Sesión" required></ion-textarea>
           <ion-icon class="ion-icon-content" name="create" slot="end" ></ion-icon>
         </div>
       </ion-card-content>
@@ -222,7 +226,7 @@
               <ion-col size="8">
                 <ion-card-content>
                   <div class="container-input">
-                    <ion-select (ionChange)="selectObjetiveFuntion()" class="ion-card-subtitle-select" name="objetivoSesion" interface="popover" [(ngModel)]=" ObjetivoPersonal " required>
+                    <ion-select  [disabled]="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?false:true" (ionChange)="selectObjetiveFuntion()" class="ion-card-subtitle-select" name="objetivoSesion" interface="popover" [(ngModel)]=" ObjetivoPersonal " required>
                       <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
                       <ion-select-option *ngFor="let option of dataObjetivosPersonales"  [value]="option.IDOBJETIVOSPERSONALES ">{{ option.DESCRIPCIONOBJETIVOSPERSONALES }}</ion-select-option>
                       <ion-select-option value="" >Ninguno</ion-select-option>
@@ -246,7 +250,7 @@
               <ion-col size="8">
                 <ion-card-content>
                   <div class="container-input">
-                    <ion-select  class="ion-card-subtitle-select" name="frecuenciaSesion" interface="popover" [(ngModel)]="FrecuenciaPersonales " required>
+                    <ion-select  [disabled]="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?false:true" class="ion-card-subtitle-select" name="frecuenciaSesion" interface="popover" [(ngModel)]="FrecuenciaPersonales " required>
                       <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
                       <ion-select-option *ngFor="let option of dataFrecuenciaPersonales"  [value]="option.IDFRECUENCIA">{{ option.TituloFrecuenciaEjercicio }}</ion-select-option>
                       <ion-select-option value="" >Ninguno</ion-select-option>
@@ -270,7 +274,7 @@
               <ion-col size="8">
                 <ion-card-content>
                   <div class="container-input">
-                    <ion-select  class="ion-card-subtitle-select" name="profesionSesion" interface="popover" [(ngModel)]="profesion" required>
+                    <ion-select  [disabled]="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?false:true" class="ion-card-subtitle-select" name="profesionSesion" interface="popover" [(ngModel)]="profesion" required>
                       <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
                       <ion-select-option *ngFor="let option of dataProfesion"  [value]="option.IDPROFESION  ">{{ option.DESCRIPCIONPROFESION }}</ion-select-option>
                       <ion-select-option value="" >Ninguno</ion-select-option>
@@ -304,7 +308,7 @@
         </ion-card-header>
         <ion-card-content>
           <div class="ion-item-content">
-            <ion-select name="selectStatus" interface="popover"  [(ngModel)]="visibilidaSesion " required>
+            <ion-select  [disabled]="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?false:true" name="selectStatus" interface="popover"  [(ngModel)]="visibilidaSesion " required>
               <ion-select-option value="" disabled selected>Selecciona una opción</ion-select-option>
               <ion-select-option value="1">Activo</ion-select-option>
               <ion-select-option value="0">Inactivo</ion-select-option>
@@ -314,7 +318,7 @@
           <div  class="div-select" *ngIf="visibilidaSesion && visibilidaSesion === '0' ">
             <p>Indique las Razones</p>
             <div class="ion-item-content">
-              <ion-textarea type="text"  [(ngModel)]="observacionSesion" ></ion-textarea>
+              <ion-textarea  [disabled]="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?false:true" type="text"  [(ngModel)]="observacionSesion" ></ion-textarea>
               <ion-icon class="ion-icon-content" name="create" slot="end" ></ion-icon>
             </div>
           </div>
@@ -385,7 +389,7 @@
           </ion-row>
         </ion-grid>
       </ion-card>
-      <ion-card  class="ion-card-ejercicio-title" (click)=" dataRutinasporSesion && dataRutinasporSesion.length > 0  ? showSelected('dataRutinasporSesiones'):''"  style=" background-image: url('{{ip_address}}/media/images/objetive-muscular-bk-3.png');">
+      <ion-card  class="ion-card-ejercicio-title" (click)=" dataRutinasporSesion && dataRutinasporSesion.length > 0 && (variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ? showSelected('dataRutinasporSesiones'):''"  style=" background-image: url('{{ip_address}}/media/images/objetive-muscular-bk-3.png');">
         <ion-card-header>
           <ion-card-title style="color: #ffffff!important;">
             <div class="contenedor-padre">
@@ -395,7 +399,7 @@
           </ion-card-title>
         </ion-card-header>
       </ion-card>
-      <ion-card id="myDiv" *ngIf=" (!dataRutinasporSesion || dataRutinasporSesion.length===0) "  (click)="showSelected('dataRutinasporSesiones')" class="custom-card-imagen-agr" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/sesiones/crear_sesion.jpg');">
+      <ion-card id="myDiv" *ngIf=" (!dataRutinasporSesion || dataRutinasporSesion.length===0) && (variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)"  (click)="showSelected('dataRutinasporSesiones')" class="custom-card-imagen-agr" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/sesiones/crear_sesion.jpg');">
         <ion-card-header>
           <img class="background-image" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
           <ion-card-title>Agregar Rutina</ion-card-title>
@@ -444,14 +448,14 @@
                 <ion-row>
                   <ion-col size="12">
                     <div class="ion-card-content-ejercicio-2" >
-                      <div  class="ion-icon-edit-2">
+                      <div  class="ion-icon-edit-2" *ngIf="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)">
                         <ion-reorder >
                           <ion-icon name="chevron-expand"></ion-icon>
                         </ion-reorder>
                       </div>
                       <div class="ion-icon-edit">
-                        <ion-icon  (click)="EditItemERequerido(option,i)" name="create"></ion-icon>
-                        <ion-icon (click)="RemoveItemERequerido(i)"  name="close-circle"></ion-icon>
+                        <ion-icon  (click)="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ?EditItemERequerido(option,i):''" name="create"></ion-icon>
+                        <ion-icon (click)="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ?RemoveItemERequerido(i):''"  name="close-circle"></ion-icon>
                       </div>
                     </div>
                   </ion-col>
@@ -799,6 +803,10 @@
         </ng-template>
       </div>
     </div>
-
-  <app-footer-designer></app-footer-designer>
+    <div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
+      <app-footer-designer ></app-footer-designer>
+    </div>
+    <ng-template #otherfooter>
+      <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
+    </ng-template>
 </ion-content>

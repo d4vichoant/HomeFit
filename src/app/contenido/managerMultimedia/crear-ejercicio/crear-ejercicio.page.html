@@ -11,25 +11,29 @@
         <ion-button style="color: #9259f9;"  (click)="go_page('videos')">
          <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
        </ion-button>
-       <p (click)="go_page('videos')"> Regresar</p>
+       <p (click)="go_page('videos')"> Regresar </p>
      </ion-buttons>
       <ion-buttons slot="end">
         <ion-button  (click)="confirmchangeCreateData()"  style="color: #9259f9; margin-right: 10px;"  >
-          <ng-container *ngIf="variable ; else otherIcon">
+          <ng-container *ngIf="(variable && userSesionPerfil && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA)   || (variable && userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99); else otherIcon">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
               <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"></path>
               <path d="M10 12l4 0"></path>
-           </svg>&nbsp;<span class="spaniconup">ACTUALIZAR</span>
+           </svg>&nbsp;<span class="spaniconup">Actualizar</span>
           </ng-container>
           <ng-template #otherIcon>
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
-              <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-              <path d="M14 4l0 4l-6 0l0 -4"></path>
-           </svg>&nbsp;<span class="spaniconup">Crear</span>
+            <ng-container  *ngIf="(!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ;else otherotherIcon" >
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="34" height="34" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+                <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                <path d="M14 4l0 4l-6 0l0 -4"></path>
+             </svg>&nbsp;<span class="spaniconup">Crear</span>
+            </ng-container>
+          </ng-template>
+          <ng-template #otherotherIcon>
           </ng-template>
         </ion-button>
       </ion-buttons>
@@ -44,94 +48,100 @@
     <div class="container-body" *ngIf="currentTab === 1">
       <!-- <div class="post-container-body"> -->
         <h2>Seleccione Multimedia</h2>
-        <div class="input-wrapper">
-          <div (click)="showSelected('dataMultimedia')"  class="title-up">
+        <div class="input-wrapper" (click)="(variable && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA ) ||( userSesionPerfil[0].IDROLUSUARIO===99 ) || (!variable) ? showSelected('dataMultimedia'):''" >
+          <div  class="title-up">
             <h2>{{ selectedMultimedia ? selectedMultimedia.TITULOMULTIMEDIA : 'Ninguno' }}</h2>
           </div>
-          <div  (click)="showSelected('dataMultimedia')" class="input-icon" >
+          <div   class="input-icon" >
             <ion-icon name="chevron-down-outline"></ion-icon>
           </div>
         </div>
         <h2>Seleccione Tipo Ejercicio</h2>
-        <div class="input-wrapper">
-          <div (click)="showSelected('dataTEjercicio')"  class="title-up">
+        <div class="input-wrapper" (click)="(variable && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA ) ||( userSesionPerfil[0].IDROLUSUARIO===99 ) || (!variable) ? showSelected('dataTEjercicio'):''" >
+          <div  class="title-up">
             <h2>{{ selectedTEjercicio ? selectedTEjercicio.NOMBRETIPOEJERCICIO : 'Ninguno' }}</h2>
           </div>
-          <div  (click)="showSelected('dataTEjercicio')" class="input-icon" >
+          <div  class="input-icon" >
             <ion-icon name="chevron-down-outline"></ion-icon>
           </div>
         </div>
         <h2>Seleccione Nivel de Dificultad</h2>
-        <div class="input-wrapper">
-          <div (click)="showSelected('dataNDificultad')"  class="title-up">
+        <div class="input-wrapper" (click)="(variable && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA ) ||( userSesionPerfil[0].IDROLUSUARIO===99 ) || (!variable) ? showSelected('dataNDificultad'):''" >
+          <div   class="title-up">
             <h2>{{ selectedNDificultad ? selectedNDificultad.tituloniveldificultadejercicio : 'Ninguno' }}</h2>
           </div>
-          <div  (click)="showSelected('dataNDificultad')" class="input-icon" >
+          <div  class="input-icon" >
             <ion-icon name="chevron-down-outline"></ion-icon>
           </div>
         </div>
         <h2>Seleccione Objetivo Muscular</h2>
-        <div class="input-wrapper">
-          <div (click)="showSelected('dataOMuscular')"  class="title-up">
+        <div class="input-wrapper" (click)="(variable && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA ) ||( userSesionPerfil[0].IDROLUSUARIO===99 ) || (!variable) ? showSelected('dataOMuscular'):''" >
+          <div   class="title-up">
             <h2>{{ selectedOMuscular ? selectedOMuscular.NOMBREOBJETIVOSMUSCULARES : 'Ninguno' }}</h2>
           </div>
-          <div  (click)="showSelected('dataOMuscular')" class="input-icon" >
+          <div   class="input-icon" >
             <ion-icon name="chevron-down-outline"></ion-icon>
           </div>
         </div>
         <div>
           <ion-label class="ion-label-body">Nombre</ion-label>
-          <ion-input  class="ion-input-body" [(ngModel)]="nombreEjercicio" type="text" name="nombre" placeholder="Ingresar Nombre" required></ion-input>
+          <!-- true true true false -->
+          <ion-input [disabled]=" (userSesionPerfil && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA)  || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ? false:true" class="ion-input-body" [(ngModel)]="nombreEjercicio" type="text" name="nombre" placeholder="Ingresar Nombre" required></ion-input>
         </div>
         <div>
           <ion-label class="ion-label-body">Descripcion</ion-label>
-          <ion-textarea  class="ion-input-body" [(ngModel)]="nombreDescripcion" type="text" name="descripcion" placeholder="Ingresar Descripcion" required></ion-textarea>
+          <ion-textarea [disabled]=" (userSesionPerfil && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA)  || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ? false:true"   class="ion-input-body" [(ngModel)]="nombreDescripcion" type="text" name="descripcion" placeholder="Ingresar Descripcion" required></ion-textarea>
         </div>
         <div>
           <ion-label class="ion-label-body">Intrucciones</ion-label>
-          <ion-textarea  class="ion-input-body" [(ngModel)]="instruccion" type="text" name="instruccion" placeholder="Ingresar Intrucciones" required></ion-textarea>
+          <ion-textarea [disabled]=" (userSesionPerfil && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA)  || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ? false:true"   class="ion-input-body" [(ngModel)]="instruccion" type="text" name="instruccion" placeholder="Ingresar Intrucciones" required></ion-textarea>
         </div>
         <div>
           <ion-label class="ion-label-body">Peso Recomendando</ion-label>
-          <ion-input  class="ion-input-body" [(ngModel)]="pesoRecomendado" type="text" name="peso" placeholder="Ingresar Peso Recom." required></ion-input>
+          <ion-input [disabled]=" (userSesionPerfil && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA)  || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ? false:true"  class="ion-input-body" [(ngModel)]="pesoRecomendado" type="text" name="peso" placeholder="Ingresar Peso Recom." required></ion-input>
         </div>
         <div>
           <ion-label class="ion-label-body">Repeticiones</ion-label>
-          <ion-input  class="ion-input-body" [(ngModel)]="repeticiones" type="text" name="repeticion" placeholder="Ingresar Numero de Repeticiones" required></ion-input>
+          <ion-input [disabled]=" (userSesionPerfil && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA)  || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ? false:true"   class="ion-input-body" [(ngModel)]="repeticiones" type="text" name="repeticion" placeholder="Ingresar Numero de Repeticiones" required></ion-input>
         </div>
         <div>
           <ion-label class="ion-label-body">Tiempo en Realizar</ion-label>
           <ion-input class="ion-input-body" readonly [value]="selectedMultimedia?.TIEMPOMULTIMEDIA || ''" placeholder="HH:mm:ss" required></ion-input>
         </div>
-        <div>
-          <ion-label class="ion-label-body">Unidad Metabólica de Reposo (MET)</ion-label>
-          <ion-input  class="ion-input-body" [(ngModel)]="metEjercicio" type="number" name="series" placeholder="Ingresar Numero Series" required></ion-input>
+        <h2>Equivalente Metabólico (MET)</h2>
+        <div class="input-wrapper" (click)="(variable && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA ) ||( userSesionPerfil[0].IDROLUSUARIO===99 ) || (!variable) ? showSelected('dataMET'):''"  >
+          <div   class="title-up">
+            <h2>{{ selectedMET ? selectedMET.valorMetabolicEquivalentOfTask : 'Ninguno' }}</h2>
+          </div>
+          <div  class="input-icon" >
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </div>
         </div>
         <div>
           <ion-label class="ion-label-body">Variación o Modificación</ion-label>
-          <ion-textarea  class="ion-input-body" [(ngModel)]="variacionEjercicio" type="text" name="variacion" placeholder="Ingresar Variación o Modicicación" required></ion-textarea>
+          <ion-textarea  [disabled]=" (userSesionPerfil && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA)  || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ? false:true"   class="ion-input-body" [(ngModel)]="variacionEjercicio" type="text" name="variacion" placeholder="Ingresar Variación o Modicicación" required></ion-textarea>
         </div>
         <div>
           <ion-label class="ion-label-body">Información Adicional</ion-label>
-          <ion-textarea class="ion-input-body" [(ngModel)]="adicionalInformacion" type="text" name="adicional" placeholder="Ingresar Información Adicional" required></ion-textarea>
+          <ion-textarea [disabled]=" (userSesionPerfil && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA)  || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99) ? false:true"  class="ion-input-body" [(ngModel)]="adicionalInformacion" type="text" name="adicional" placeholder="Ingresar Información Adicional" required></ion-textarea>
         </div>
-        <div class="inline-container" (click)="showSelected('dataERequerido')" *ngIf="equiporequeridoporEjercicio && equiporequeridoporEjercicio.length > 0">
+        <div class="inline-container" (click)="(variable && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA ) ||( userSesionPerfil[0].IDROLUSUARIO===99 ) || (!variable) ?showSelected('dataERequerido'):''" *ngIf="equiporequeridoporEjercicio && equiporequeridoporEjercicio.length > 0">
           <ion-label >Equipo Requerido:</ion-label><br>
           <img src="{{ ip_address }}/media/images/plus.png"  alt="Agregar Objetivo">
         </div>
         <div class="container-selects"  *ngIf="equiporequeridoporEjercicio && equiporequeridoporEjercicio.length > 0">
-          <ng-container  *ngFor="let option of equiporequeridoporEjercicio">
+          <ng-container  *ngFor="let option of equiporequeridoporEjercicio" (click)="(variable && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA ) ||( userSesionPerfil[0].IDROLUSUARIO===99 ) || (!variable) ? showSelectedERequerido('dataERequerido',option):''" >
             <div (touchstart)="onCardTouchStartRemoveItemERequerido($event,option)" (touchend)="onCardTouchEndRemoveItemERequerido($event)"  class="input-wrapper">
-              <div (click)="showSelectedERequerido('dataERequerido',option)"  class="title-up">
+              <div  class="title-up">
                 <h2>{{ option.NOMBREEQUIPOREQUERIDO }}</h2>
               </div>
-              <div  (click)="showSelectedERequerido('dataERequerido',option)" class="input-icon" >
+              <div  class="input-icon" >
                 <ion-icon name="chevron-down-outline"></ion-icon>
               </div>
             </div>
           </ng-container>
         </div>
-        <div  (click)="showSelected('dataERequerido')"  *ngIf=" equiporequeridoporEjercicio && equiporequeridoporEjercicio.length === 0" style="padding-top: 2%;">
+        <div  (click)="(variable && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA ) ||( userSesionPerfil[0].IDROLUSUARIO===99 ) || (!variable) ? showSelected('dataERequerido'):''"  *ngIf=" equiporequeridoporEjercicio && equiporequeridoporEjercicio.length === 0" style="padding-top: 2%;">
           <ion-label   class="ion-label-body" style="padding-bottom: 2%!important;">Equipo Requerido</ion-label>
           <ion-button  class="buttonaddObjPers" *ngIf=" equiporequeridoporEjercicio && equiporequeridoporEjercicio.length === 0"  (click)="OpenDialogNewERequ()" fill="clear">+ Eq. Requerido</ion-button>
         </div>
@@ -144,7 +154,7 @@
   <div class="container-body" *ngIf="currentTab === 2  && dataComentarioporEjercicio && dataComentarioporEjercicio.length >0;else noDataMessage ">
     <ion-card class="container-body-card" *ngFor="let data of dataComentarioporEjercicio"
     [ngClass]="{'color-1': data.STATUSPROGRESO === 0, 'color-2': data.STATUSPROGRESO === 1}"
-    (touchstart)="onCardTouchStart($event,data)" (touchend)="onCardTouchEnd($event)">
+    (touchstart)="(variable && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA ) ||( userSesionPerfil[0].IDROLUSUARIO===99 ) || (!variable) ?onCardTouchStart($event,data):''" (touchend)="(variable && variable.IDENTRENADOR===userSesionPerfil[0].IDPERSONA ) ||( userSesionPerfil[0].IDROLUSUARIO===99 ) || (!variable) ? onCardTouchEnd($event):''">
       <ion-card-content class="card-content">
         <ion-grid>
           <ion-row>
@@ -302,7 +312,7 @@
         </div>
       </div>
       <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataTEjercicio')"   (ionInput)="onInputChange($event,'dataTEjercicio')" (ionClear)="onInputChange($event,'dataTEjercicio')"  placeholder="Buscar"></ion-searchbar>
-      <ion-button class="ion-button-select" (click)="go_page('crear-tipo-ejercicio')" fill="clear">(+) Agregar Nuevo</ion-button>
+      <ion-button class="ion-button-select" *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99" (click)="go_page('crear-tipo-ejercicio')" fill="clear">(+) Agregar Nuevo</ion-button>
       <ion-list lines="none"  *ngIf=" selectData && selectData.length >0;else noDataMessage" >
         <ion-item *ngFor="let data of selectData" (click)="selectItem(data,'dataTEjercicio')"
         [class.selected]="selectedTEjercicio && selectedTEjercicio.NOMBRETIPOEJERCICIO === data.NOMBRETIPOEJERCICIO">
@@ -316,6 +326,32 @@
       </ng-template>
     </div>
   </div>
+    <!-- SELECT BROWSEABLE DE SELECT MET  -->
+    <div class="overlay-container-select"  *ngIf="mostrarSelecMET">
+      <div class="browser">
+        <div class="up-title">
+          <div class="title-select">
+            <p>Equivalente Metabólico (MET) </p>
+          </div>
+          <div class="back-select"  (click)="mostrarSelecMET = !mostrarSelecMET" >
+            <p (click)="mostrarSelecMET=!mostrarSelecMET" >Cancelar</p>
+          </div>
+        </div>
+        <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataMET')"   (ionInput)="onInputChange($event,'dataMET')" (ionClear)="onInputChange($event,'dataMET')"  placeholder="Buscar"></ion-searchbar>
+        <!-- <ion-button class="ion-button-select" (click)="go_page('crear-tipo-ejercicio')" fill="clear">(+) Agregar Nuevo</ion-button> -->
+        <ion-list lines="none"  *ngIf=" selectData && selectData.length >0;else noDataMessage" >
+          <ion-item *ngFor="let data of selectData" (click)="selectItem(data,'dataMET')"
+          [class.selected]="selectedTEjercicio && selectedTEjercicio.valorMetabolicEquivalentOfTask === data.valorMetabolicEquivalentOfTask">
+            {{data.valorMetabolicEquivalentOfTask}} || {{data.actividadMetabolicEquivalentOfTask	}}
+          </ion-item>
+        </ion-list>
+        <ng-template #noDataMessage>
+          <ion-list lines="none" >
+            <ion-item>Resultado no encontrado</ion-item>
+          </ion-list>
+        </ng-template>
+      </div>
+    </div>
     <!-- SELECT BROWSEABLE DE SELECT Nivel Difitultad -->
     <div class="overlay-container-select"  *ngIf="mostrarSelecNDificultad">
       <div class="browser">
@@ -354,7 +390,7 @@
           </div>
         </div>
         <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataOMuscular')"   (ionInput)="onInputChange($event,'dataOMuscular')" (ionClear)="onInputChange($event,'dataOMuscular')"  placeholder="Buscar"></ion-searchbar>
-        <ion-button class="ion-button-select" (click)="go_page('crear-objetivo-muscular')"  fill="clear">(+) Agregar Nuevo</ion-button>
+        <ion-button class="ion-button-select"  *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99" (click)="go_page('crear-objetivo-muscular')"  fill="clear">(+) Agregar Nuevo</ion-button>
         <ion-list lines="none"  *ngIf=" selectData && selectData.length >0;else noDataMessage" >
           <ion-item *ngFor="let data of selectData" (click)="selectItem(data,'dataOMuscular')"
           [class.selected]="selectedOMuscular && selectedOMuscular.NOMBREOBJETIVOSMUSCULARES === data.NOMBREOBJETIVOSMUSCULARES">
@@ -380,7 +416,7 @@
               </div>
             </div>
             <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataERequerido')"   (ionInput)="onInputChange($event,'dataERequerido')" (ionClear)="onInputChange($event,'dataERequerido')"  placeholder="Buscar"></ion-searchbar>
-            <!-- <ion-button class="ion-button-select" fill="clear">(+) Agregar Nuevo</ion-button> -->
+            <ion-button  *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99" class="ion-button-select"  (click)="go_page('crear-erequerido')" fill="clear">(+) Agregar Nuevo</ion-button>
             <ion-list lines="none"  *ngIf=" selectData && selectData.length >0;else noDataMessage" >
               <ion-item *ngFor="let data of selectData" (click)="selectItemERequerido(data)"
               [class.selected]="selectERequerido && selectERequerido.NOMBREEQUIPOREQUERIDO === data.NOMBREEQUIPOREQUERIDO">
@@ -397,5 +433,10 @@
             </ng-template>
           </div>
         </div>
-    <app-footer-designer></app-footer-designer>
+        <div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
+          <app-footer-designer ></app-footer-designer>
+        </div>
+        <ng-template #otherfooter>
+          <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
+        </ng-template>
 </ion-content>

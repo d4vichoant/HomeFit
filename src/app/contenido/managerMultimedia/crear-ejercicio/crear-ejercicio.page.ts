@@ -30,7 +30,7 @@ export class CrearEjercicioPage implements OnInit {
   NumberStar :number=4;
 
   public userSesion!:string;
-  private userSesionPerfil!:any;
+  public userSesionPerfil!:any;
   public dataEjercicio!:any;
 
   public mostrarSelectMultimedia:boolean=false;
@@ -42,6 +42,11 @@ export class CrearEjercicioPage implements OnInit {
   selectERequerido:any;
   searchERequerido?: string;
   public dataERequerido!: any[];
+
+  public mostrarSelecMET:boolean=false;
+  selectedMET:any;
+  searchMET?: string;
+  public dataMET!: any[];
 
   public mostrarSelecTEjercicio:boolean=false;
   selectedTEjercicio:any;
@@ -69,11 +74,13 @@ export class CrearEjercicioPage implements OnInit {
   public pesoRecomendado!:string;
   public repeticiones!:string;
   //public tiempoRealizar!:string;
-  public metEjercicio!:string;
+  //public metEjercicio!:string;
   public variacionEjercicio!:string;
   public adicionalInformacion!:string;
   public equiporequeridoporEjercicio!:any[];
   public OriginequiporequeridoporEjercicio!:any[];
+
+  public readonlyvalue :boolean =false;
 
   constructor(private route: ActivatedRoute,
     private navController: NavController,
@@ -84,6 +91,7 @@ export class CrearEjercicioPage implements OnInit {
     public alertController: AlertController) { }
 
   ngOnInit() {
+    this.inicio();
     this.chanceColorFooter();
     this.route.queryParams.subscribe(params => {
       this.variable = params['variable'];
@@ -96,10 +104,11 @@ export class CrearEjercicioPage implements OnInit {
     if(!this.equiporequeridoporEjercicio){
       this.equiporequeridoporEjercicio=[];
     }
-    this.loading = false;
+    this.loading = true;
   }
 
   ionViewDidEnter() {
+    this.inicio();
     this.chanceColorFooter();
     this.route.queryParams.subscribe(params => {
       this.variable = params['variable'];
@@ -118,6 +127,7 @@ export class CrearEjercicioPage implements OnInit {
   }
 
   completarDatos(){
+    this.readonlyvalue=true;
     //console.log(this.variable);
     this.currentTab=1;
     this.nombreEjercicio = this.variable.NOMBREEJERCICIO;
@@ -125,7 +135,7 @@ export class CrearEjercicioPage implements OnInit {
     this.instruccion = this.variable.INTRUCCIONESEJERCICIO;
     this.pesoRecomendado=this.variable.PESOLEVANTADOEJERCICIO;
     this.repeticiones = this.variable.REPETICIONESEJERCICIO;
-    this.metEjercicio = this.variable.METEJERCICIO;
+    //this.metEjercicio = this.variable.METEJERCICIO;
     this.variacionEjercicio = this.variable.VARIACIONESMODIFICACIONEJERCICIOPROGRESO;
     this.adicionalInformacion = this.variable.OBSERVACIONESEJERCICIO;
     this.obtenerComentarioporEjercicio(this.variable.IDEJERCICIO);
@@ -158,13 +168,12 @@ export class CrearEjercicioPage implements OnInit {
   }
   go_page(name: string){
     this.dataEjercicio=[];
-    this.navController.navigateForward('/'+name, {
+    this.inicio();
+    this.navController.navigateForward('/' + name, {
       queryParams: {
-        variable: null // Puedes asignar null o cualquier otro valor para eliminar la variable
+        variable: ""
       }
     });
-     //this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
-    //this.navController.navigateForward('/'+name);
   }
   StatusBar(){
     StatusBar.hide();
@@ -183,7 +192,7 @@ export class CrearEjercicioPage implements OnInit {
   validateSesion(){
     try{
       this.storage.get('sesion').then((sesion) => {
-        if (sesion && JSON.parse(sesion).rolUsuario == 99) {
+        if (sesion && JSON.parse(sesion).rolUsuario == 99 || JSON.parse(sesion).rolUsuario == 2) {
           this.userSesion = JSON.parse(sesion).nickname;
           this.obtenerGetPerfilCompleto(this.userSesion);
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
@@ -192,6 +201,7 @@ export class CrearEjercicioPage implements OnInit {
               this.obtenerMultimedia();
               this.obtenerTEjercicio();
               this.obtenerNDificultad();
+              this.obtenerMET();
               this.obtenerOMuscular();
               this.obtenerEquipoRequerido();
             },
@@ -313,6 +323,10 @@ export class CrearEjercicioPage implements OnInit {
         const rawData = this.dataERequerido;
         this.selectData = rawData.map(item => ({ ...item }));
         this.selectERequerido={};
+      }else if(nameData==="dataMET"){
+        this.mostrarSelecMET=!this.mostrarSelecMET;
+        const rawData = this.dataMET;
+        this.selectData = rawData.map(item => ({ ...item }));
       }
     }
     showSelectedERequerido(nameData:string,data:any){
@@ -357,6 +371,9 @@ export class CrearEjercicioPage implements OnInit {
       }else if(nameData==="dataOMuscular"){
         this.selectedOMuscular = title;
         this.mostrarSelecOMuscular = false;
+      }else if(nameData==="dataMET"){
+        this.selectedMET = title;
+        this.mostrarSelecMET = false;
       }
     }
     selectItemERequerido(data: any) {
@@ -433,7 +450,7 @@ export class CrearEjercicioPage implements OnInit {
       || !this.selectedNDificultad || !this.selectedOMuscular
       || !this.nombreEjercicio || !this.nombreDescripcion  || !this.instruccion
       || !this.pesoRecomendado || !this.repeticiones
-      || !this.metEjercicio || !this.variacionEjercicio  || !this.adicionalInformacion){
+      || !this.selectedMET || !this.variacionEjercicio  || !this.adicionalInformacion){
         this.presentCustomToast('Debe llenar todos los campos',"danger");
       }else{
         const alert = await this.alertController.create({
@@ -454,7 +471,7 @@ export class CrearEjercicioPage implements OnInit {
                   IDMULTIMEDIA: this.selectedMultimedia.IDMULTIMEDIA,
                   IDTIPOEJERCICIO:this.selectedTEjercicio.IDTIPOEJERCICIO,
                   IDNIVELDIFICULTADEJERCICIO :this.selectedNDificultad.IDNIVELDIFICULTADEJERCICIO,
-                  IDENTRENADOR:this.userSesionPerfil[0].IDROLUSUARIO === 99 ? null : this.userSesionPerfil[0].IDPERSONA,
+                  IDENTRENADOR:this.userSesionPerfil[0].IDPERSONA,
                   IDOBJETIVOMUSCULAR:this.selectedOMuscular.IDOBJETIVOSMUSCULARES,
                   NOMBREEJERCICIO:this.nombreEjercicio,
                   DESCRIPCIONEJERCICIO:this.nombreDescripcion ,
@@ -462,7 +479,7 @@ export class CrearEjercicioPage implements OnInit {
                   PESOLEVANTADOEJERCICIO: this.pesoRecomendado,
                   REPETICIONESEJERCICIO: this.repeticiones,
                   //TIEMPOREALIZACIONEJERCICIO: this.tiempoRealizar,
-                  METEJERCICIO: this.metEjercicio,
+                  METEJERCICIO: this.selectedMET.idMetabolicEquivalentOfTask ,
                   VARIACIONESMODIFICACIONEJERCICIOPROGRESO: this.variacionEjercicio,
                   OBSERVACIONESEJERCICIO: this.adicionalInformacion,
                   USUARIOCREACIONEJERCICIO: this.userSesionPerfil[0].IDPERSONA,
@@ -472,6 +489,7 @@ export class CrearEjercicioPage implements OnInit {
                   this.dataEjercicio.USUARIOMODIFICAICONEJERCICIO=this.userSesionPerfil[0].IDPERSONA;
                   this.dataEjercicio.IDEJERCICIO=this.variable.IDEJERCICIO;
                   this.dataEjercicio.ESTADOEJERCICIO= this.variable.ESTADOEJERCICIO;
+                  this.dataEjercicio.IDENTRENADOR=this.variable.IDENTRENADOR;
                   if(this.equiporequeridoporEjercicio.length>0){
                     const idArray = this.equiporequeridoporEjercicio.map(item => item.IDEQUIPOREQUERIDO).join(',');
                     this.dataEjercicio.ID_EQUIPOS_REQUERIDOS= idArray;
@@ -530,6 +548,21 @@ export class CrearEjercicioPage implements OnInit {
         this.dataMultimedia=response;
         if(this.variable)
           this.selectedMultimedia = this.dataMultimedia.find(item => item.IDMULTIMEDIA === this.variable.IDMULTIMEDIA);
+        if (this.userSesionPerfil[0].IDROLUSUARIO===2 ){
+          this.dataMultimedia = this.dataMultimedia.filter(element => element.IDENTRENADORMULTIMEDIA  === this.userSesionPerfil[0].IDPERSONA || element.IDROLUSUARIO  === 99 );
+          this.dataMultimedia.sort((a, b) => {
+            if (a.IDENTRENADORMULTIMEDIA === this.userSesionPerfil[0].IDPERSONA && b.IDENTRENADORMULTIMEDIA === this.userSesionPerfil[0].IDPERSONA) {
+              return 0; // Mantener el orden relativo entre ellos
+            } else if (a.IDENTRENADORMULTIMEDIA ===  this.userSesionPerfil[0].IDPERSONA) {
+              return -1; // Colocar a antes de b
+            } else if (b.IDENTRENADORMULTIMEDIA ===  this.userSesionPerfil[0].IDPERSONA) {
+              return 1; // Colocar b antes de a
+            } else {
+              return 0; // No cambiar el orden entre a y b
+            }
+          });
+          //console.log(this.dataEjercicio);
+        }
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -584,10 +617,24 @@ export class CrearEjercicioPage implements OnInit {
       }
     );
   }
+
+  obtenerMET(){
+    this.apiService.allMet().subscribe(
+      (response) => {
+        this.dataMET=response;
+        if(this.variable)
+        this.selectedMET = this.dataMET.find(item => item.idMetabolicEquivalentOfTask  === this.variable.METEJERCICIO);
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
   obtenerGetPerfilCompleto(nickname:string){
     this.apiService.connsultPerfilCompleto(nickname).subscribe(
       (response) => {
         this.userSesionPerfil=response;
+        //console.log(this.userSesionPerfil);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -598,6 +645,7 @@ export class CrearEjercicioPage implements OnInit {
     this.apiService.ObtenerComentarioPorEjercicio(idEjercicio).subscribe(
       (response) => {
         this.dataComentarioporEjercicio=response as any[];
+        //console.log(this.dataComentarioporEjercicio);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -605,15 +653,22 @@ export class CrearEjercicioPage implements OnInit {
     );
   }
   inicio(){
+    this.readonlyvalue=false;
+    this.selectedMultimedia=null;
+    this.selectedTEjercicio=null;
+    this.selectedNDificultad=null;
+    this.selectedOMuscular=null;
+    this.selectedMET=null;
     this.nombreEjercicio='';
     this.nombreDescripcion='';
     this.instruccion='';
     this.pesoRecomendado='';
     this.repeticiones='';
     //this.tiempoRealizar='';
-    this.metEjercicio='';
+    //this.metEjercicio='';
     this.variacionEjercicio='';
     this.adicionalInformacion='';
+    this.equiporequeridoporEjercicio=null as any;
   }
   showTab(tabNumber: number) {
     this.presentCustomToast("Recuerde Guardar en cada Pestaña","warning");

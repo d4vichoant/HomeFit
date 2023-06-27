@@ -54,7 +54,7 @@ ion-content {
 }
 
 .container-body{
-  padding: 0% 3% 2% 3%;
+  padding: 0% 3% 5% 3%;
   ion-card{
     border-radius: 20px;
   }
@@ -449,31 +449,4 @@ ion-content {
   right: 0;
   padding: 5% 5% 0px 0px;
   z-index: 9;
-}
-.fecha-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 50px;
-  border-radius: 10%;
-  background-color: #dcd6fe;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  font-size: 20px;
-  text-align: center;
-}
-
-.dia {
-  font-family: Raleway-Bold;
-  font-size: 1.5rem;
-  color:  #ffffff;
-}
-
-.mes {
-  font-family: Raleway-Light;
-  font-size: 1rem;
-  color:  #ffffff;
-  text-transform: uppercase;
 }

@@ -24,6 +24,8 @@ export class CrearMultimediaPage implements OnInit   {
   nameFile:string='';
   imagenFile: File | null = null;
 
+  public userSesion!:string;
+  public userSesionPerfil!:any;
 
   public selectData!: any[];
   public searchTerm:string="";
@@ -36,6 +38,7 @@ export class CrearMultimediaPage implements OnInit   {
   public mostrarSelectEdit:boolean=false;
   public mostrarSelectCreate:boolean=false;
 
+  public readonlyvalue: boolean = false;
   dataSelect: any[] = [
     { id: 1, nombre: 'Activo' },
     { id: 0, nombre: 'Inactivo' },
@@ -90,7 +93,9 @@ export class CrearMultimediaPage implements OnInit   {
     validateSesion(){
       try{
         this.storage.get('sesion').then((sesion) => {
-          if (sesion && JSON.parse(sesion).rolUsuario == 99) {
+          if (sesion && JSON.parse(sesion).rolUsuario == 99 || JSON.parse(sesion).rolUsuario == 2) {
+            this.userSesion = JSON.parse(sesion).nickname;
+            this.obtenerGetPerfilCompleto(this.userSesion);
             this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
               (response) => {
                 this.chanceColorFooter();
@@ -444,7 +449,7 @@ export class CrearMultimediaPage implements OnInit   {
                       this.UpdateDates(item,nombre);
                       this.mostrarSelectEdit=!this.mostrarSelectEdit;
                     }).catch((error) => {
-                      console.error("Error al subir el archivo:", error);
+                      this.presentCustomToast("Error al subir el archivo:" +error,"danger");
                     });
                   //this.dataMultimediaUniq.ALMACENAMIENTOMULTIMEDIA = this.sanitizeFileName(this.dataMultimediaUniq.TITULOMULTIMEDIA)+".mp4";
                 }else{
@@ -575,6 +580,7 @@ export class CrearMultimediaPage implements OnInit   {
     async createsDates(item: any, nombre: string) {
       try {
         this.loading=false;
+        item.IDENTRENADORMULTIMEDIA =this.userSesionPerfil[0].IDPERSONA;
         const response = await this.apiService.CreteDataMultimedia(item, nombre).toPromise();
         this.loading=true;
         this.dataMultimediaUniq = {};
@@ -611,6 +617,7 @@ export class CrearMultimediaPage implements OnInit   {
     async CreateDataCopy(data:any) {
       try {
         this.loading=true;
+        data.IDENTRENADORMULTIMEDIA =this.userSesionPerfil[0].IDPERSONA;
         const response = await this.apiService.CreteDataMultimedia(data, 'multimedia').toPromise();
         this.loading=false;
         this.ngOnInit();
@@ -663,6 +670,22 @@ export class CrearMultimediaPage implements OnInit   {
       this.apiService.getMultimedia().subscribe(
         (response) => {
           this.dataMultimedia=response;
+          if (this.userSesionPerfil[0].IDROLUSUARIO===2 ){
+            this.readonlyvalue=true;
+            this.dataMultimedia = this.dataMultimedia.filter(element => element.IDENTRENADORMULTIMEDIA  === this.userSesionPerfil[0].IDPERSONA || element.IDROLUSUARIO   === 99 );
+            this.dataMultimedia.sort((a, b) => {
+              if (a.IDENTRENADORMULTIMEDIA  === this.userSesionPerfil[0].IDPERSONA && b.IDENTRENADORMULTIMEDIA  === this.userSesionPerfil[0].IDPERSONA) {
+                return 0; // Mantener el orden relativo entre ellos
+              } else if (a.IDENTRENADORMULTIMEDIA  ===  this.userSesionPerfil[0].IDPERSONA) {
+                return -1; // Colocar a antes de b
+              } else if (b.IDENTRENADORMULTIMEDIA  ===  this.userSesionPerfil[0].IDPERSONA) {
+                return 1; // Colocar b antes de a
+              } else {
+                return 0; // No cambiar el orden entre a y b
+              }
+            });
+          }
+          //console.log(this.dataMultimedia);
           setTimeout(() => {
             this.cargarImagenesBefores();
           }, 1000);
@@ -674,4 +697,14 @@ export class CrearMultimediaPage implements OnInit   {
       );
     }
 
+    obtenerGetPerfilCompleto(nickname:string){
+      this.apiService.connsultPerfilCompleto(nickname).subscribe(
+        (response) => {
+          this.userSesionPerfil=response;
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
 }
