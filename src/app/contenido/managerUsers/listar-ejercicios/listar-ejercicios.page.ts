@@ -1,43 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { ApiServiceService } from '../../../api-service.service';
 import { StatusBar } from '@capacitor/status-bar';
 import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
-import { ActivatedRoute } from '@angular/router';
+import { IP_ADDRESS } from '../../../constantes';
+
+
 
 @Component({
-  selector: 'app-contrato-entrenador',
-  templateUrl: './contrato-entrenador.page.html',
-  styleUrls: ['./contrato-entrenador.page.scss'],
+  selector: 'app-listar-ejercicios',
+  templateUrl: './listar-ejercicios.page.html',
+  styleUrls: ['./listar-ejercicios.page.scss'],
 })
-export class ContratoEntrenadorPage implements OnInit {
+export class ListarEjerciciosPage implements OnInit {
+  public ip_address = IP_ADDRESS;
+
+  @ViewChild('slides', { static: false }) slides: any;
 
   public userSesion!:string;
   public userSesionPerfil!:any;
   public loading = true;
 
-  public variable!:any;
+  public dataSesiones!: any[];
+  public dataTEjercicio!: any[];
 
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
-    public toastController: ToastController,
-    private route: ActivatedRoute) { }
+    public toastController: ToastController) { }
+
   ngOnInit() {
     //this.validateSesion();
-    this.route.queryParams.subscribe(params => {
-      this.variable = params['variableSesionesUsuario'];
-    });
-    console.log(this.variable);
     this.test();
   }
   ionViewDidEnter() {
     //this.validateSesion();
     this.test();
   }
+
   test(){
     this.chanceColorFooter();
     this.StatusBar();
+    this.obtenerSesiones();
+    this.obtenerTEjercicios();
+    this.loading=false;
   }
   StatusBar(){
     StatusBar.hide();
@@ -54,6 +60,9 @@ export class ContratoEntrenadorPage implements OnInit {
             (response) => {
               this.chanceColorFooter();
               this.StatusBar();
+              this.obtenerSesiones();
+              this.obtenerTEjercicios();
+              this.loading=false;
             },
             (error) => {
               this.handleError();
@@ -75,12 +84,30 @@ export class ContratoEntrenadorPage implements OnInit {
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
     document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
-    document.documentElement.style.setProperty('--activate-foot20',' transparent');
-    document.documentElement.style.setProperty('--activate-foot21',' #6b6a6b');
-    document.documentElement.style.setProperty('--activate-foot30',' #9259f9');
-    document.documentElement.style.setProperty('--activate-foot31',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot20',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot21',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot30',' transparent');
+    document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
     document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
+  }
+
+  go_page_create(name: string, data: any) {
+    this.navController.navigateForward('/' + name, {
+      queryParams: {
+        variableSesionesUsuario: data
+      }
+    });
+  }
+  swiperSlideChanged(e: any){
+    //console.log(e);
+  }
+  swiperReady() {
+    // After the slides have loaded, start the autoplay
+    this.slides.startAutoplay();
+  }
+  selectSwiper(item:any){
+    console.log(item);
   }
 
   async presentCustomToast(message: string, color: string) {
@@ -101,7 +128,6 @@ export class ContratoEntrenadorPage implements OnInit {
       alertElement.style.setProperty('--alert-top', `calc(50% + (9% * 0) + 8%)`);
       toast.present();
     }
-
   obtenerGetPerfilCompleto(nickname:string){
     this.apiService.connsultPerfilCompleto(nickname).subscribe(
       (response) => {
@@ -112,5 +138,24 @@ export class ContratoEntrenadorPage implements OnInit {
       }
     );
   }
-
+  obtenerSesiones(){
+    this.apiService.getSesionesActivate().subscribe(
+      (response) => {
+        this.dataSesiones=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerTEjercicios(){
+    this.apiService.getTipoEjercicioActivate().subscribe(
+      (response) => {
+        this.dataTEjercicio=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
 }

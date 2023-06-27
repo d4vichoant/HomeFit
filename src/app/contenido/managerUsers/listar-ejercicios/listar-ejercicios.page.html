@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
+    </div>
+  </div>
+  <app-toolbar-designer></app-toolbar-designer>
+  <div class="container-body">
+    <div class="container-swiper">
+      <ion-slides #slides class="onb-container" (ionSlidesDidLoad)="swiperReady()" (ionSlideDidChange)="swiperSlideChanged($event)">
+        <ion-slide class="onb-slide" *ngFor="let item of dataTEjercicio" (click)="selectSwiper(item)">
+          <div class="slide-content">
+            <h2><span>FITNESS</span><br/>
+            {{item.NOMBRETIPOEJERCICIO}}</h2>
+            <p>{{item.DESCRIPCIONTIPOEJERCICIO}}</p>
+            <img [src]="ip_address + '/media/tipoEjercicio/' + item.IMAGETIPOEJERCICIO" />
+            <div class="filter-overlay"></div>
+          </div>
+        </ion-slide>
+      </ion-slides>
+    </div>
+    <div  *ngFor="let item of dataSesiones">
+      <ion-card (click)="go_page_create('contrato-entrenador',item)" class="card-item" style="--background: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/sesiones/portadassesiones/{{item.IMAGESESION}}') no-repeat center center / cover ;">
+        <ion-card-header>
+          <ion-card-title >{{item.NOMBRESESION}}</ion-card-title>
+          <ion-card-subtitle >{{item.NICKNAMEPERSONA}}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          {{item.DESCRIPCIONOBJETIVOSPERSONALES}}
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+  <app-footer-designer-users></app-footer-designer-users>
+</ion-content>
