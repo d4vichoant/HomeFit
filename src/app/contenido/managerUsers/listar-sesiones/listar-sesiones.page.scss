@@ -1,0 +1,253 @@
+ion-content {
+  --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
+  height: 100vh;
+  overflow: hidden;
+}
+
+//css de Spinner de cargando ...
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(255, 255, 255); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.header {
+  ion-card {
+    padding: 0;
+    margin: 0;
+    height: 35vh;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0px 0px 15px 15px;
+  }
+  .card-back {
+    color: #ffffffb2;
+    position: absolute;
+    margin: 5% 0% 0% 5%;
+    top: 0;
+    left: 0;
+  }
+  .card-like{
+    color: #ffffffb2;
+    position: absolute;
+    margin: 5% 5% 0% 0%;
+    top: 0;
+    right: 0;
+  }
+  .body-ionic{
+    position: absolute;
+    margin: 0% 5% 5% 1%;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    ion-card-header{
+      padding: 0% 0% 0% 3%!important;
+      margin: 0!important;
+      ion-card-title{
+        font-family: Raleway-ExtraBold;
+        font-size: 1.7rem;
+        color:  #ffffffee;
+        text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
+      }
+      ion-card-subtitle{
+        padding: 0% 0% 0% 0%!important;
+        margin: 0!important;
+        h1{
+          padding: 0% 0% 0% 2%!important;
+          margin: 0!important;
+          border-radius: 5px 0px 0px 5px;
+          padding-left: 10px;
+          background: linear-gradient(90deg,rgb(255, 255, 255), #ffffff00 )!important;
+          font-family: Raleway-Bold;
+          font-size: 1.2rem;
+          color:  #823ffdab;
+        }
+
+      }
+    }
+  }
+  }
+  .flex-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .flex-item {
+    flex: 1;
+    padding: 10px;
+    position: relative;
+    h1{
+      font-family: Raleway-Bold;
+      font-size: 1.5rem;
+      color:  #6b6a6bb2;
+    }
+    p{
+      font-family: Raleway-Bold;
+      font-size: .9rem;
+      color:  #6b6a6bb2;
+    }
+
+  }
+
+  /* Pseudo-elemento para la línea vertical */
+  .flex-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 15%; /* Ajusta el valor de top según desees */
+    bottom:15%; /* Ajusta el valor de bottom según desees */
+    right: 0;
+    width: 2px;
+    background-color: #949396b2;
+  }
+
+  .container {
+    width: 100%;
+    padding-bottom: 5%;
+    overflow-x: scroll;
+    white-space: nowrap;
+    padding-left: 8%;
+  }
+
+  .box {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    margin-right: 10px;
+    position: relative;
+    border-radius: 15px;
+    box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
+  }
+
+
+  @keyframes expandAnimation {
+    0% {
+      width: 150px;
+      height: 150px;
+      top: 10;
+      left: 0;
+      right: 0;
+      position: relative;
+      border-radius: 15px;
+    }
+    50% {
+      width: 400px;
+      height: 400px;
+      top: 20;
+      left: 0;
+      right: 0;
+      position: relative;
+      border-radius: 15px;
+    }
+    100% {
+      width: 100%;
+      height: 400px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      z-index: 9999;
+      background-color: #f0f3f7;
+      border-radius: 0px;
+    }
+  }
+
+
+  @keyframes collapseAnimation {
+    0% {
+      width: 400px;
+      height: 400px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      z-index: 9999;
+      background-color: #f0f3f7;
+      border-radius: 0px;
+    }
+    50% {
+      width: 400px;
+      height: 400px;
+      top: 20;
+      left: 0;
+      right: 0;
+      position: relative;
+      border-radius: 15px;
+    }
+    100% {
+      width: 150px;
+      height: 150px;
+      left: 0;
+      right: 0;
+      position: relative;
+      border-radius: 15px;
+    }
+  }
+
+
+
+  .box.expanded {
+    animation: expandAnimation .2s forwards;
+  }
+
+  .box.collapsed {
+    animation: collapseAnimation .2s  forwards;
+  }
+
+
+  .background-image {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+  color: #fff;
+  text-align: left;
+  overflow: hidden;
+}
+
+.text span {
+  display: block;
+  max-height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+.span1{
+  font-family: Raleway-Bold;
+  font-size: 1.2rem;
+  color:  #ffffffaf;
+}
+.span2{
+  font-family: Raleway-Bold;
+  font-size: 1rem;
+  color:  #838284e7;
+}
+.subtitle{
+  font-family: Raleway-Bold;
+  font-size: 2rem;
+  color:  #6829c793;
+  padding-left: 8%;
+}
+
+.non-touchable {
+  pointer-events: none;
+}

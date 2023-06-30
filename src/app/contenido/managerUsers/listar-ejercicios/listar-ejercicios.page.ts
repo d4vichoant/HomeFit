@@ -4,8 +4,10 @@ import { StatusBar } from '@capacitor/status-bar';
 import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../../../constantes';
+import SwiperCore, { Autoplay } from 'swiper';
 
 
+SwiperCore.use([Autoplay]);
 
 @Component({
   selector: 'app-listar-ejercicios',
@@ -21,27 +23,31 @@ export class ListarEjerciciosPage implements OnInit {
   public userSesionPerfil!:any;
   public loading = true;
 
-  public dataSesiones!: any[];
+  public dataOPersoales!: any[];
   public dataTEjercicio!: any[];
+  public dataOMusculares!: any[];
 
+  currentDate!: string;
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
     public toastController: ToastController) { }
 
   ngOnInit() {
-    //this.validateSesion();
-    this.test();
+    this.validateSesion();
+    //this.test();
   }
   ionViewDidEnter() {
-    //this.validateSesion();
-    this.test();
+    this.validateSesion();
+    //this.test();
   }
 
   test(){
+    this.obtenerOMuscular();
+    this.updateCurrentDate();
     this.chanceColorFooter();
     this.StatusBar();
-    this.obtenerSesiones();
+    this.obtenerOPersonales();
     this.obtenerTEjercicios();
     this.loading=false;
   }
@@ -58,11 +64,13 @@ export class ListarEjerciciosPage implements OnInit {
           this.obtenerGetPerfilCompleto(this.userSesion);
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
+              this.updateCurrentDate();
               this.chanceColorFooter();
               this.StatusBar();
-              this.obtenerSesiones();
+              this.obtenerOPersonales();
+              this.obtenerOMuscular();
               this.obtenerTEjercicios();
-              this.loading=false;
+              //this.loading=false;
             },
             (error) => {
               this.handleError();
@@ -92,12 +100,63 @@ export class ListarEjerciciosPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
   }
 
-  go_page_create(name: string, data: any) {
-    this.navController.navigateForward('/' + name, {
-      queryParams: {
-        variableSesionesUsuario: data
+  cargarImagenesBefores(){
+    const oPersonales = this.dataOPersoales;
+    const imageUrls = [];
+    if (Array.isArray(oPersonales)) {
+      for (let i = 0; i < oPersonales.length; i++) {
+        const nameImagen = oPersonales[i].IMAGEOBJETIVOSPERSONALES;
+        const imageUrl = this.ip_address+'/media/objetivospersonales/'+nameImagen;
+        imageUrls.push(imageUrl);
       }
+    }
+    const oMusculares = this.dataOMusculares;
+    if (Array.isArray(oMusculares)) {
+      for (let i = 0; i < oMusculares.length; i++) {
+        const nameImagen = oMusculares[i].IMAGENOBJETIVOSMUSCULARES;
+        const imageUrl = this.ip_address+'/media/objetivomuscular/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+    const TEjercicio = this.dataTEjercicio;
+    if (Array.isArray(TEjercicio)) {
+      for (let i = 0; i < TEjercicio.length; i++) {
+        const nameImagen = TEjercicio[i].IMAGETIPOEJERCICIO;
+        const imageUrl = this.ip_address+'/media/tipoEjercicio/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+
+    let imagesLoaded = 0;
+    //console.log(imageUrls);
+    const totalImages = imageUrls.length;
+    const handleImageLoad = () => {
+      imagesLoaded++;
+      if (imagesLoaded === totalImages) {
+        this.loading = false;
+      }
+    };
+    imageUrls.forEach((imageUrl) => {
+      const image = new Image();
+      image.onload = handleImageLoad;
+      image.src = imageUrl;
     });
+  }
+
+  go_page_create(name: string, data: any) {
+    if(name!== 'listar-sesiones'){
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableParametro: data
+        }
+      });
+    }else{
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableSesiones: data
+        }
+      });
+    }
   }
   swiperSlideChanged(e: any){
     //console.log(e);
@@ -106,8 +165,18 @@ export class ListarEjerciciosPage implements OnInit {
     // After the slides have loaded, start the autoplay
     this.slides.startAutoplay();
   }
-  selectSwiper(item:any){
-    console.log(item);
+  selectSwiper(item:any,page:string){
+    this.go_page_create(page,item);
+  }
+  obtenerPrimerNombre(nombre:string): string {
+    return nombre.split(' ')[0];
+  }
+  updateCurrentDate() {
+    const currentDate = new Date();
+    const dayOfWeek = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(currentDate);
+    const day = currentDate.getDate();
+    const month = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(currentDate);
+    this.currentDate = `${dayOfWeek}, ${day} de ${month}`;
   }
 
   async presentCustomToast(message: string, color: string) {
@@ -138,10 +207,10 @@ export class ListarEjerciciosPage implements OnInit {
       }
     );
   }
-  obtenerSesiones(){
-    this.apiService.getSesionesActivate().subscribe(
+  obtenerOPersonales(){
+    this.apiService.allObjetivosPersonales().subscribe(
       (response) => {
-        this.dataSesiones=response;
+        this.dataOPersoales=response;
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -152,6 +221,17 @@ export class ListarEjerciciosPage implements OnInit {
     this.apiService.getTipoEjercicioActivate().subscribe(
       (response) => {
         this.dataTEjercicio=response;
+        this.cargarImagenesBefores();
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerOMuscular(){
+    this.apiService.getObjetivosMuscularesActivate().subscribe(
+      (response) => {
+        this.dataOMusculares=response;
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

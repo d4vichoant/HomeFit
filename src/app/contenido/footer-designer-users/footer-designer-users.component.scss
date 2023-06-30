@@ -13,12 +13,13 @@
   border-radius: 10px;
   margin: 0px 7px 5px 0px;
   height: 5.5vh;
+  --background: transparent;
 }
 
 .container-footer {
   margin: 0 auto;
-  background-color: transparent;
-  /* background-color: #d41cd4; */
+  background-color: rgba(255, 255, 255, 0.938); /* Color con transparencia */
+  backdrop-filter: blur(5px); /* Aplica un efecto de desenfoque */
 }
 .image-container-footer {
   position: relative;

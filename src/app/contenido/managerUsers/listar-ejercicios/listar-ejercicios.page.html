@@ -5,10 +5,23 @@
     </div>
   </div>
   <app-toolbar-designer></app-toolbar-designer>
+  <div class="header-up">
+    <div class="up-date">
+      <ion-icon name="sunny-outline"></ion-icon>
+      <span class="date">{{ currentDate }}</span>
+    </div>
+    <div class="header-name">
+      <h1>Hola,
+        <ng-container *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0].NOMBREPERSONA">
+          {{ obtenerPrimerNombre(userSesionPerfil[0].NOMBREPERSONA) }}
+        </ng-container>
+      </h1>
+    </div>
+  </div>
   <div class="container-body">
     <div class="container-swiper">
-      <ion-slides #slides class="onb-container" (ionSlidesDidLoad)="swiperReady()" (ionSlideDidChange)="swiperSlideChanged($event)">
-        <ion-slide class="onb-slide" *ngFor="let item of dataTEjercicio" (click)="selectSwiper(item)">
+      <swiper-container #slides class="onb-container onb-container-1"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
+        <swiper-slide class="onb-slide" *ngFor="let item of dataTEjercicio" (click)="selectSwiper(item,'listar-parametros')">
           <div class="slide-content">
             <h2><span>FITNESS</span><br/>
             {{item.NOMBRETIPOEJERCICIO}}</h2>
@@ -16,20 +29,38 @@
             <img [src]="ip_address + '/media/tipoEjercicio/' + item.IMAGETIPOEJERCICIO" />
             <div class="filter-overlay"></div>
           </div>
-        </ion-slide>
-      </ion-slides>
+        </swiper-slide>
+      </swiper-container>
     </div>
-    <div  *ngFor="let item of dataSesiones">
-      <ion-card (click)="go_page_create('contrato-entrenador',item)" class="card-item" style="--background: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/sesiones/portadassesiones/{{item.IMAGESESION}}') no-repeat center center / cover ;">
-        <ion-card-header>
-          <ion-card-title >{{item.NOMBRESESION}}</ion-card-title>
-          <ion-card-subtitle >{{item.NICKNAMEPERSONA}}</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          {{item.DESCRIPCIONOBJETIVOSPERSONALES}}
-        </ion-card-content>
-      </ion-card>
+    <h2 class="text1">Según tú Objetivo</h2>
+    <div class="container-swiper">
+      <swiper-container #slides class="onb-container onb-container-2"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
+        <swiper-slide class="onb-slide" *ngFor="let item of dataOPersoales" (click)="selectSwiper(item,'listar-sesiones')">
+          <div class="slide-content">
+            <h2><span>OBJETIVO</span><br/>
+            {{item.DESCRIPCIONOBJETIVOSPERSONALES}}</h2>
+            <p>{{item.OBSERVACIONOBJETIVOSPERSONALES}}</p>
+            <img [src]="ip_address + '/media/objetivospersonales/' + item.IMAGEOBJETIVOSPERSONALES" />
+            <div class="filter-overlay"></div>
+          </div>
+        </swiper-slide>
+      </swiper-container>
     </div>
+    <h2 class="text1">Según la sección del cuerpo</h2>
+    <div class="container-swiper">
+      <swiper-container #slides class="onb-container onb-container-3"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
+        <swiper-slide class="onb-slide" *ngFor="let item of dataOMusculares" (click)="selectSwiper(item,'listar-parametros')">
+          <div class="slide-content">
+            <h2><span>MUSCULO</span><br/>
+            {{item.NOMBREOBJETIVOSMUSCULARES}}</h2>
+            <p>{{item.DESCRIPCIONOBJETIVOSMUSCULARES}}</p>
+            <img [src]="ip_address + '/media/objetivomuscular/' +item.IMAGENOBJETIVOSMUSCULARES" />
+            <div class="filter-overlay"></div>
+          </div>
+        </swiper-slide>
+      </swiper-container>
+    </div>
+
   </div>
   <app-footer-designer-users></app-footer-designer-users>
 </ion-content>

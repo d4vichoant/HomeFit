@@ -242,4 +242,15 @@ export class ApiServiceService {
   getSesionesActivate():Observable<any>{
     return this.http.get(IP_ADDRESS+/programacion/+/sesionesActivate/);
   }
+  allBookmarkpersona():Observable<any>{
+    return this.http.get(this.apiUrl+/bookmarkpersona/);
+  }
+  updateBookmarkpersona(idEjercicio:number, idPersona:number,status:boolean):Observable<any>{
+    const data={
+      IDEJERCICIO:idEjercicio,
+      IDPERSONA:idPersona,
+      STATUSBOOKMARK:status
+    }
+    return this.http.post(this.apiUrl+/bookmarkpersona/,data);
+  }
 }

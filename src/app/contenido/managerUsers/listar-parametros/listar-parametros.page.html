@@ -1,0 +1,92 @@
+<ion-content [fullscreen]="true">
+    <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
+    </div>
+  </div>
+  <!-- <app-toolbar-designer></app-toolbar-designer> -->
+  <div class="header">
+    <ion-card [style]="'background-image: linear-gradient(0deg, #f1f3f8, rgba(0, 0, 0, 0.034)), url(\'' + ip_address + '/media/' + (variable.IDTIPOEJERCICIO!==undefined ? 'tipoEjercicio' : 'objetivomuscular') + '/' +  (variable.IDTIPOEJERCICIO!==undefined ? variable.IMAGETIPOEJERCICIO : variable.IMAGENOBJETIVOSMUSCULARES) + '\');background-size: cover;'">
+      <div class="card-back" (click)="go_page('listar-ejercicios')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M9 14l-4 -4l4 -4"></path>
+          <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
+       </svg>
+      </div>
+      <div class="card-like" (click)="isFilled=!isFilled">
+        <div *ngIf="isFilled===false;else othericonlike">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+         </svg>
+        </div>
+        <ng-template #othericonlike>
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor"></path>
+         </svg>
+        </ng-template>
+      </div>
+      <div class="body-ionic">
+        <ion-card-header>
+          <ion-card-title>{{this.variable.IDTIPOEJERCICIO!==undefined ? variable.NOMBRETIPOEJERCICIO :variable.NOMBREOBJETIVOSMUSCULARES}}</ion-card-title>
+          <ion-card-subtitle><h1>{{this.variable.IDTIPOEJERCICIO!==undefined ? 'FITNESS':'MUSCULO'}}</h1></ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="flex-container">
+            <div class="flex-item">
+              <h1>{{dataEjercicio && dataEjercicio.length}}</h1>
+              <p>Ejercicios</p>
+            </div>
+            <div class="flex-item" (click)="nivelChange()">
+              <div class="notification-circle" ></div>
+              <h1 >{{ valueNivel === -1 ? '--' : valueNivel === 0 ? 'FAC' : valueNivel === 1 ? 'MED' : valueNivel === 2 ? 'DIF':'' }}</h1>
+              <p>Nivel</p>
+            </div>
+          </div>
+        </ion-card-content>
+      </div>
+    </ion-card>
+  </div>
+
+  <div class="container-body">
+    <div class="container" *ngFor="let item of dataEjercicio; let i=index">
+      <div class="image-section" (click)="toggleBookmark(item.IDEJERCICIO)">
+        <div class="icon-wrapper"  *ngIf="!bookmarkState[item.IDEJERCICIO]; else otherbookmark">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="28" height="28" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
+         </svg>
+        </div>
+        <ng-template #otherbookmark>
+          <div class="icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="28" height="28" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
+           </svg>
+          </div>
+        </ng-template>
+        <img alt="imagen{{item.ALMACENAMIENTOMULTIMEDIA}}" src="{{ ip_address }}/multimedia/{{getVideoName(item.ALMACENAMIENTOMULTIMEDIA)}}.jpg" />
+        <div class="img-overlay"></div>
+      </div>
+      <div class="text-section">
+        <h2>{{item.REPETICIONESEJERCICIO}} <span>x</span></h2>
+      </div>
+      <div class="multiline-text-section">
+        <p class="p1section">{{item.NOMBREEJERCICIO}}</p>
+        <p class="p2section">{{item.TIEMPOMULTIMEDIA}}</p>
+      </div>
+      <div class="icon-section">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M9 6l6 6l-6 6"></path>
+        </svg>
+      </div>
+    </div>
+    <div *ngIf="dataEjercicio && dataEjercicio.length===0" class="container-nodata">
+      <img alt="imagen not found" src="{{ ip_address }}/media/errorpage/notfounddata.png" />
+    </div>
+  </div>
+  <app-footer-designer-users></app-footer-designer-users>
+</ion-content>

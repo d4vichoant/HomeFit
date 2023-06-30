@@ -170,6 +170,22 @@ const routes: Routes = [
     path: 'listar-ejercicios',
     loadChildren: () => import('./contenido/managerUsers/listar-ejercicios/listar-ejercicios.module').then( m => m.ListarEjerciciosPageModule)
   },
+  {
+    path: 'listar-parametros',
+    loadChildren: () => import('./contenido/managerUsers/listar-parametros/listar-parametros.module').then( m => m.ListarParametrosPageModule)
+  },
+  {
+    path: 'listar-sesiones',
+    loadChildren: () => import('./contenido/managerUsers/listar-sesiones/listar-sesiones.module').then( m => m.ListarSesionesPageModule)
+  },
+  {
+    path: 'rutinas-diarias',
+    loadChildren: () => import('./contenido/managerUsers/rutinas-diarias/rutinas-diarias.module').then( m => m.RutinasDiariasPageModule)
+  },
+  {
+    path: 'programarrutinas',
+    loadChildren: () => import('./contenido/managerUsers/programarrutinas/programarrutinas.module').then( m => m.ProgramarrutinasPageModule)
+  },
 
 
 
