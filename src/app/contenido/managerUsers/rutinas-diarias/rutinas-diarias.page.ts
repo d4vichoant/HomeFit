@@ -118,6 +118,33 @@ export class RutinasDiariasPage implements OnInit {
       document.documentElement.style.setProperty('--activate-foot40',' transparent');
       document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
     }
+    cargarImagenesBefores(){
+      const rutinas = this.dataEjercicio;
+      const imageUrls = [];
+      if (Array.isArray(rutinas)) {
+        for (let i = 0; i < rutinas.length; i++) {
+          const nameImagen = this.getVideoName(rutinas[i].ALMACENAMIENTOMULTIMEDIA);
+          const imageUrl = this.ip_address+'/multimedia/'+nameImagen+'.jpg';
+          imageUrls.push(imageUrl);
+        }
+      }
+      const imageUrl = this.ip_address+'/media/rutinas/portadasrutinas/'+this.variable.IMAGENRUTINA;
+      imageUrls.push(imageUrl);
+      let imagesLoaded = 0;
+      console.log(imageUrls);
+      const totalImages = imageUrls.length;
+      const handleImageLoad = () => {
+        imagesLoaded++;
+        if (imagesLoaded === totalImages) {
+            this.loading = false;
+        }
+      };
+      imageUrls.forEach((imageUrl) => {
+        const image = new Image();
+        image.onload = handleImageLoad;
+        image.src = imageUrl;
+      });
+    }
     go_page(name: string) {
       this.navController.navigateForward('/' + name, {
         queryParams: {
@@ -253,6 +280,7 @@ export class RutinasDiariasPage implements OnInit {
           this.dataBookMark.forEach(bookmark => {
             this.bookmarkState[bookmark.IDEJERCICIO] = true;
           });
+          this.cargarImagenesBefores();
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");

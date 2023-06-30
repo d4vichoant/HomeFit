@@ -124,15 +124,12 @@ export class ListarSesionesPage implements OnInit {
     }
 
     const imageUrl = this.ip_address+'/media/objetivospersonales/'+this.variable.IMAGEOBJETIVOSPERSONALES;
-    imageUrls.push(imageUrl);
     let imagesLoaded = 0;
     const totalImages = imageUrls.length;
     const handleImageLoad = () => {
       imagesLoaded++;
       if (imagesLoaded === totalImages) {
-        setTimeout(() => {
           this.loading = false;
-        }, 1000);
       }
     };
     imageUrls.forEach((imageUrl) => {
