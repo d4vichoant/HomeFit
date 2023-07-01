@@ -55,6 +55,20 @@ ion-content {
         font-size: 1.7rem;
         color:  #ffffffee;
         text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
+        span{
+          font-family: Raleway-ExtraBold;
+          font-size: .9rem;
+          color:  #d4bcffee;
+          text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
+          display: inline-block;
+          width: 50%;
+          p{
+            font-family: Raleway-ExtraBold;
+            font-size: .9rem;
+            color:  #ffffff;
+            display: inline;
+          }
+        }
       }
       ion-card-subtitle{
         padding: 0% 0% 0% 0%!important;
@@ -131,7 +145,7 @@ ion-content {
   }
   .container-body{
     height: 55vh;
-    padding-bottom: 8%;
+    padding-bottom: 20%;
     overflow-x: hidden;
     overflow-y: auto;
   }
@@ -206,6 +220,12 @@ ion-content {
       margin: 0;
       font-family: Raleway-Light;
       font-size: .9rem;
+      color:  #6b6a6bb2;
+    }
+    .p3section{
+      margin: 0;
+      font-family: Raleway-BoldItalic;
+      font-size: .7rem;
       color:  #6b6a6bb2;
     }
   }

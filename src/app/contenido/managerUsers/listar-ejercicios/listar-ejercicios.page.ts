@@ -28,6 +28,16 @@ export class ListarEjerciciosPage implements OnInit {
   public dataOMusculares!: any[];
 
   currentDate!: string;
+
+  LikeTEjercicioState: { [key: number]: boolean } = {};
+  dataLikeTEjercicio!:any[];
+
+  LikeOPersonalState: { [key: number]: boolean } = {};
+  dataLikeOPersonal!:any[];
+
+  LikeOMuscularState: { [key: number]: boolean } = {};
+  dataLikeOMuscular!:any[];
+
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
@@ -48,6 +58,9 @@ export class ListarEjerciciosPage implements OnInit {
     this.chanceColorFooter();
     this.StatusBar();
     this.obtenerOPersonales();
+    this.obtenerLikeTEjercicio();
+    this.obtenerLikeOMuscular();
+    this.obtenerLikeOPersonal();
     this.obtenerTEjercicios();
     this.loading=false;
   }
@@ -69,6 +82,9 @@ export class ListarEjerciciosPage implements OnInit {
               this.StatusBar();
               this.obtenerOPersonales();
               this.obtenerOMuscular();
+              this.obtenerLikeTEjercicio();
+              this.obtenerLikeOMuscular();
+              this.obtenerLikeOPersonal();
               this.obtenerTEjercicios();
               //this.loading=false;
             },
@@ -142,6 +158,33 @@ export class ListarEjerciciosPage implements OnInit {
       image.src = imageUrl;
     });
   }
+  toggleBookmarkTEjercicio(index: number): void {
+    if (this.LikeTEjercicioState[index]) {
+      this.LikeTEjercicioState[index] = false;
+      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
+    } else {
+      this.LikeTEjercicioState[index] = true;
+      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
+    }
+  }
+  toggleBookmarkOPersonal(index: number): void {
+    if (this.LikeOPersonalState[index]) {
+      this.LikeOPersonalState[index] = false;
+      this.updateLikeTEjercicio(index,this.LikeOPersonalState[index],'likeobjetivopersonal');
+    } else {
+      this.LikeOPersonalState[index] = true;
+      this.updateLikeTEjercicio(index,this.LikeOPersonalState[index],'likeobjetivopersonal');
+    }
+  }
+  toggleBookmarkOMuscular(index: number): void {
+    if (this.LikeOMuscularState[index]) {
+      this.LikeOMuscularState[index] = false;
+      this.updateLikeTEjercicio(index,this.LikeOMuscularState[index],'likeobjetivomusculares');
+    } else {
+      this.LikeOMuscularState[index] = true;
+      this.updateLikeTEjercicio(index,this.LikeOMuscularState[index],'likeobjetivomusculares');
+    }
+  }
 
   go_page_create(name: string, data: any) {
     if(name!== 'listar-sesiones'){
@@ -161,6 +204,7 @@ export class ListarEjerciciosPage implements OnInit {
   swiperSlideChanged(e: any){
     //console.log(e);
   }
+
   swiperReady() {
     // After the slides have loaded, start the autoplay
     this.slides.startAutoplay();
@@ -232,6 +276,58 @@ export class ListarEjerciciosPage implements OnInit {
     this.apiService.getObjetivosMuscularesActivate().subscribe(
       (response) => {
         this.dataOMusculares=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerLikeTEjercicio(){
+    this.apiService.allBookmark('liketejercicio').subscribe(
+      (response) => {
+        this.dataLikeTEjercicio=response;
+        this.dataLikeTEjercicio= this.dataLikeTEjercicio.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
+        this.dataLikeTEjercicio.forEach(liketejercicio => {
+          this.LikeTEjercicioState[liketejercicio.IDTIPOEJERCICIO] = true;
+        });
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerLikeOPersonal(){
+    this.apiService.allBookmark('likeobjetivopersonal').subscribe(
+      (response) => {
+        this.dataLikeOPersonal=response;
+        this.dataLikeOPersonal= this.dataLikeOPersonal.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
+        this.dataLikeOPersonal.forEach(liketejercicio => {
+          this.LikeOPersonalState[liketejercicio.IDOBJETIVOSPERSONALES] = true;
+        });
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerLikeOMuscular(){
+    this.apiService.allBookmark('likeobjetivomusculares').subscribe(
+      (response) => {
+        this.dataLikeOMuscular=response;
+        this.dataLikeOMuscular= this.dataLikeOMuscular.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
+        this.dataLikeOMuscular.forEach(liketejercicio => {
+          this.LikeOMuscularState[liketejercicio.IDOBJETIVOSMUSCULARES] = true;
+        });
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  updateLikeTEjercicio(idEjercicio:number,status:boolean,type:string){
+    this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status,type).subscribe(
+      (response) => {
+        this.presentCustomToast(response.message,"success");
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

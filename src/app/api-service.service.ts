@@ -22,6 +22,9 @@ export class ApiServiceService {
   connsultPerfilCompleto(nickname:string): Observable<any>{
     return this.http.post(this.apiUrl+"/"+nickname,"");
   }
+  connsultPerfilUsuarioCompleto(nickname:string): Observable<any>{
+    return this.http.post(this.apiUrl+"/usuarioFind/"+nickname,"");
+  }
   consultLogin(data:any): Observable<any>{
     return this.http.post(this.apiUrl+"/login",data);
   }
@@ -242,15 +245,17 @@ export class ApiServiceService {
   getSesionesActivate():Observable<any>{
     return this.http.get(IP_ADDRESS+/programacion/+/sesionesActivate/);
   }
-  allBookmarkpersona():Observable<any>{
-    return this.http.get(this.apiUrl+/bookmarkpersona/);
+  allBookmark(type: string): Observable<any> {
+    const apiUrlWithType = this.apiUrl + '/' + type + '/';
+    return this.http.get(apiUrlWithType);
   }
-  updateBookmarkpersona(idEjercicio:number, idPersona:number,status:boolean):Observable<any>{
-    const data={
-      IDEJERCICIO:idEjercicio,
-      IDPERSONA:idPersona,
-      STATUSBOOKMARK:status
-    }
-    return this.http.post(this.apiUrl+/bookmarkpersona/,data);
+  updateBookmarkpersona(idEjercicio: number, idPersona: number, status: boolean, type: string): Observable<any> {
+    const data = {
+      IDEJERCICIO: idEjercicio,
+      IDPERSONA: idPersona,
+      STATUSBOOKMARK: status
+    };
+    const apiUrlWithType = this.apiUrl + '/' + type + '/';
+    return this.http.post(apiUrlWithType, data);
   }
 }

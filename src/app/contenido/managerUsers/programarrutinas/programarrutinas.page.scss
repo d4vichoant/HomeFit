@@ -3,46 +3,383 @@ ion-content {
   height: 100vh;
   overflow: hidden;
 }
-.wrapper {
-  display: flex;
-  justify-content: center;
-  height: 100vh;
-  z-index: 3;
-}
-.container-desplazar {
-  position: relative;
-}
-.square {
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(8px);
-  border-radius: 50px;
-}
 
-.circle {
-  position: absolute;
-  left: 50%;
+//css de Spinner de cargando ...
+.loading-overlay {
+  position: fixed;
   top: 0;
-  background-color: rgba(43, 223, 73, 0.5);
-  border-radius: 50%;
-  cursor: move;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px);
-}
-.text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: Raleway-ExtraBold;
-  font-size: 2rem;
-  color:  #ffffffe7;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(255, 255, 255); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
 }
 
-.circle svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ffffffb2;
-}
+.header {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.212);
+  border-radius: 0px 0px 15px 15px;
+  ion-card {
+    padding: 0;
+    margin: 0;
+    height: 40vh;
+    width: 100%;
+  }
+  .card-back {
+    color: #ffffffb2;
+    position: absolute;
+    margin: 5% 0% 0% 5%;
+    top: 0;
+    left: 0;
+  }
+  .card-like{
+    color: #ffffffb2;
+    position: absolute;
+    margin: 5% 5% 0% 0%;
+    top: 0;
+    right: 0;
+  }
+  .body-ionic{
+    position: absolute;
+    margin: 0% 5% 5% 1%;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    ion-card-header{
+      padding: 0% 0% 0% 3%!important;
+      margin: 0!important;
+      ion-card-title{
+        font-family: Raleway-ExtraBold;
+        font-size: 1.7rem;
+        color:  #ffffffee;
+        text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
+        span{
+          font-family: Raleway-ExtraBold;
+          font-size: .9rem;
+          color:  #d4bcffee;
+          text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
+          display: inline-block;
+          width: 50%;
+          p{
+            font-family: Raleway-ExtraBold;
+            font-size: .9rem;
+            color:  #ffffff;
+            display: inline;
+          }
+        }
+      }
+      ion-card-subtitle{
+        padding: 0% 0% 0% 0%!important;
+        margin: 0!important;
+        h1{
+          padding: 0% 0% 0% 2%!important;
+          margin: 0!important;
+          border-radius: 5px 0px 0px 5px;
+          padding-left: 10px;
+          background: linear-gradient(90deg,rgb(255, 255, 255), #ffffff00 )!important;
+          font-family: Raleway-Bold;
+          font-size: 1.2rem;
+          color:  #823ffdab;
+        }
+
+      }
+    }
+  }
+  }
+  .flex-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .flex-item {
+    flex: 1;
+    padding: 10px;
+    position: relative;
+    h1{
+      font-family: Raleway-Bold;
+      font-size: 1.5rem;
+      color:  #ffffffb2;
+    }
+    p{
+      font-family: Raleway-Bold;
+      font-size: .9rem;
+      color:  #ffffffb2;
+    }
+
+  }
+
+  /* Pseudo-elemento para la línea vertical */
+  .flex-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 15%; /* Ajusta el valor de top según desees */
+    bottom:15%; /* Ajusta el valor de bottom según desees */
+    right: 0;
+    width: 2px;
+    background-color: #ffffffb2;
+  }
+  .container-body{
+    justify-content: center;
+    align-content: center;
+    padding: 3% 3% 0% 3%;
+    height: 55vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .container-rutina {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    position: relative;
+    margin-bottom: 3%;
+  }
+  .container-rutina-uniq{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    position: relative;
+    margin-bottom: 3%;
+    background: #ffffffee;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.212);
+    border-radius: 15px;
+  }
+
+
+  .image-section-rutina {
+    flex: 0 0 auto;
+    width: 100px; /* Ajusta el ancho del cuadrado según desees */
+    height: 100px; /* Ajusta la altura del cuadrado según desees */
+    margin-right: 10px; /* Ajusta el margen según desees */
+    overflow: hidden; /* Oculta cualquier contenido que exceda las dimensiones del cuadrado */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .image-section-rutina img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen para llenar el cuadro sin deformarla */
+    padding: 5%;
+    border-radius: 20%;
+  }
+  .multiline-text-section-rutina {
+    flex: 2;
+    .p1section{
+      margin: 0;
+      font-family: Raleway-Bold;
+      font-size: 1rem;
+      color:  #6b6a6bb2;
+    }
+    .p2section{
+      margin: 0;
+      font-family: Raleway-Light;
+      font-size: .9rem;
+      color:  #6b6a6bb2;
+    }
+    .p3section{
+      margin: 0;
+      font-family: Raleway-BoldItalic;
+      font-size: .7rem;
+      color:  #6b6a6bb2;
+    }
+  }
+  .multiline-text-section-rutina p {
+    margin: 0;
+  }
+
+  .image-section-rutina::before {
+    content: "";
+    margin: 0 auto;
+    position: absolute;
+    width: 94%;
+    height: 94%;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.192), rgba(255, 255, 255, 0.034));
+    border-radius: 20%;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 0% 0%;
+    position: relative;
+    border-left: 2px solid #6b6a6b48;
+    margin-left: 10px;
+  }
+  .container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -10px; /* Posiciona el círculo a la izquierda del borde */
+    width: 20px; /* Ajusta el tamaño del círculo según tus necesidades */
+    height: 20px;
+    border-radius: 50%;
+    background-color: #9159f9;
+    z-index: 3;
+  }
+
+  .container-body-ejercicios{
+    width: 100%;
+  }
+  .round-section {
+    width: 100%;
+    flex: none;
+    h1{
+      font-family: Raleway-Bold;
+      font-size: 1.2rem;
+      color:  #6b6a6b77;
+    }
+  }
+
+  .container-nodata{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0% 5%;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    img{
+      padding: 10%;
+      margin: 0 auto;
+      width: 60%;
+      height: auto;
+    }
+  }
+
+
+  .image-section {
+    flex: 0 0 auto;
+    width: 100px; /* Ajusta el ancho del cuadrado según desees */
+    height: 100px; /* Ajusta la altura del cuadrado según desees */
+    margin-right: 10px; /* Ajusta el margen según desees */
+    overflow: hidden; /* Oculta cualquier contenido que exceda las dimensiones del cuadrado */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  .image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen para llenar el cuadro sin deformarla */
+    padding: 5%;
+    border-radius: 20%;
+  }
+  .text-section {
+    flex: 1;
+    margin-right: 10px; /* Ajusta el margen según desees */
+    text-align: center;
+    h2{
+      font-family: Raleway-Bold;
+      font-size: 1.2rem;
+      color:  #6b6a6bb2;
+      span{
+        font-family: Raleway-Bold;
+        font-size: .8rem;
+        color:  #6b6a6bb2;
+      }
+    }
+  }
+  .text-section-rutina {
+    flex: 0;
+    margin-right: 10px; /* Ajusta el margen según desees */
+    align-content: center;
+  }
+  .icon-section {
+    flex:0;
+    color: #6b6a6bb2;
+  }
+  .icon-section-rutina{
+    flex:0;
+    z-index: 3;
+    color: #8f57f4;
+  }
+  .multiline-text-section {
+    flex: 2;
+    .p1section{
+      margin: 0;
+      font-family: Raleway-Bold;
+      font-size: 1rem;
+      color:  #6b6a6bb2;
+    }
+    .p2section{
+      margin: 0;
+      font-family: Raleway-Light;
+      font-size: .9rem;
+      color:  #6b6a6bb2;
+    }
+    .p3section{
+      margin: 0;
+      font-family: Raleway-BoldItalic;
+      font-size: .7rem;
+      color:  #6b6a6bb2;
+    }
+  }
+  .multiline-text-section p {
+    margin: 0;
+  }
+
+  .icon-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    padding: 8px;
+    color: rgb(255, 255, 255);
+  }
+
+
+  .image-section::before {
+    content: "";
+    margin: 0 auto;
+    position: absolute;
+    width: 94%;
+    height: 94%;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.192), rgba(255, 255, 255, 0.034));
+    border-radius: 20%;
+  }
+
+  .ion-tab-rutina{
+    padding: 5% 5% 0px 0px;
+  }
+  .rutina-container {
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 50px;
+    border-radius: 10%;
+    background-color: #dcd6fe;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .RutinasNumero {
+    font-family: Raleway-Bold;
+    font-size: 1.5rem;
+    color:  #ffffff;
+  }
+
+  .Rutina {
+    font-family: Raleway-Light;
+    font-size: 1rem;
+    color:  #ffffff;
+    text-transform: uppercase;
+  }

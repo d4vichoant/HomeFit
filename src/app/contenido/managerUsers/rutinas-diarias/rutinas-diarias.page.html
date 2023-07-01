@@ -11,30 +11,32 @@
       url('{{ ip_address }}/media/rutinas/portadasrutinas/{{variable.IMAGENRUTINA}}');
       background-repeat: no-repeat;
       background-size: cover;">
-      <div class="card-back" (click)="go_page('listar-sesiones')">
+      <div class="card-back" (click)="previusPageMain?go_page('main'):go_page('listar-sesiones')">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
           <path d="M9 14l-4 -4l4 -4"></path>
           <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
        </svg>
       </div>
-      <div class="card-like" (click)="isFilled=!isFilled">
-        <div *ngIf="isFilled===false;else othericonlike">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <div class="card-like">
+        <div class="icon-wrapper" (click)="toggleBookmarkRutinas(variable.IDRUTINA); $event.stopPropagation()" *ngIf="!bookmarkRutinasState[variable.IDRUTINA]; else otherbookmarkrutinas">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
          </svg>
         </div>
-        <ng-template #othericonlike>
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor"></path>
-         </svg>
+        <ng-template #otherbookmarkrutinas>
+          <div class="icon-wrapper" (click)="toggleBookmarkRutinas(variable.IDRUTINA); $event.stopPropagation()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor"></path>
+           </svg>
+          </div>
         </ng-template>
       </div>
       <div class="body-ionic">
         <ion-card-header>
-          <ion-card-title>{{variable && variable.DESCRIPCIONOBJETIVOSPERSONALES}}</ion-card-title>
+          <ion-card-title><span *ngIf="variable && variable.IDROLUSUARIO!==99">Creado por <p> @{{variable && variable.NICKNAMEPERSONA}}</p></span><br>{{variable && variable.DESCRIPCIONOBJETIVOSPERSONALES}}</ion-card-title>
           <ion-card-subtitle><h1>RUTINAS</h1></ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
@@ -47,17 +49,21 @@
               <h1>{{variable && variable.DURACIONRUTINA}}</h1>
               <p>Duración</p>
             </div>
+            <div class="flex-item">
+              <h1>{{ CALORIASEJERCICIOTOTAL | number:'1.2-2'}}</h1>
+              <p>Calorias</p>
+            </div>
           </div>
         </ion-card-content>
       </div>
     </ion-card>
   </div>
   <div class="container-tex">
-    <h1 class="right-aligned">Rutinas {{this.encontrarNumerosRepetidos(this.variable.IDEJERCICIOS)[0].count}} </h1>
+    <h1 class="right-aligned">Rutinas {{encontrarNumerosRepetidos(variable.IDEJERCICIOS)[0].count}} </h1>
   </div>
   <div class="container-body">
     <div class="container" *ngFor="let item of variable.IDEJERCICIOS; ">
-      <div   class="round-section" *ngIf="this.encontrarNumerosRepetidos(this.variable.IDEJERCICIOS)[0].number===item">
+      <div   class="round-section" *ngIf="encontrarNumerosRepetidos(variable.IDEJERCICIOS)[0].number===item">
         <h1>Siguiente Repetición</h1>
       </div><br>
       <div class="image-section" (click)="toggleBookmark(findEjercicioRutina(item)?.IDEJERCICIO)">
@@ -84,6 +90,7 @@
       <div class="multiline-text-section">
         <p class="p1section">{{findEjercicioRutina(item)?.NOMBREEJERCICIO}}</p>
         <p class="p2section">{{findEjercicioRutina(item)?.TIEMPOMULTIMEDIA}}</p>
+        <p class="p3section">cal. {{findEjercicioRutina(item)?.CALORIASEJERCICIO}} aprox.</p>
       </div>
       <div class="icon-section">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -105,15 +112,15 @@
            [style.bottom.px]="circleRadius"
            [style.width.px]="circleRadius * 2"
            [style.height.px]="circleRadius * 2"
-           (touchmove)="onTouchMove($event)">
-           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-aperture" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+           (touchmove)="onTouchMove($event)"
+           (touchend)="onTouchEnd()">
+           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-google-home" width="30" height="30" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-            <path d="M3.6 15h10.55"></path>
-            <path d="M6.551 4.938l3.26 10.034"></path>
-            <path d="M17.032 4.636l-8.535 6.201"></path>
-            <path d="M20.559 14.51l-8.535 -6.201"></path>
-            <path d="M12.257 20.916l3.261 -10.034"></path>
+            <path d="M19.072 21h-14.144a1.928 1.928 0 0 1 -1.928 -1.928v-6.857c0 -.512 .203 -1 .566 -1.365l7.07 -7.063a1.928 1.928 0 0 1 2.727 0l7.071 7.063c.363 .362 .566 .853 .566 1.365v6.857a1.928 1.928 0 0 1 -1.928 1.928z"></path>
+            <path d="M7 13v4h10v-4l-5 -5"></path>
+            <path d="M14.8 5.2l-11.8 11.8"></path>
+            <path d="M7 17v4"></path>
+            <path d="M17 17v4"></path>
          </svg>
       </div>
     </div>

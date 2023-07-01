@@ -19,13 +19,22 @@ export class ListarSesionesPage implements OnInit {
   public loading = true;
 
   variable!:any;
+  previusPageMain:boolean=false;
 
   public dataRutinas!: any[];
 
   public dataSesiones!:any[];
 
-  isFilled = false;
   showImage=false;
+
+  LikeOPersonalState: { [key: number]: boolean } = {};
+  dataLikeOPersonal!:any[];
+
+  bookmarkRutinasState: { [key: number]: boolean } = {};
+  dataBookMarkRutinas!:any[];
+
+  bookmarkSesionesState: { [key: number]: boolean } = {};
+  dataBookMarkSesiones!:any[];
 
   constructor(private navController: NavController,
     private route: ActivatedRoute,
@@ -36,8 +45,8 @@ export class ListarSesionesPage implements OnInit {
 
   ngOnInit() {
     this.recuperarDatos();
-    this.validateSesion();
-   // this.test();
+     this.validateSesion();
+   //this.test();
 
   }
   ionViewDidEnter() {
@@ -48,6 +57,9 @@ export class ListarSesionesPage implements OnInit {
   test(){
     this.chanceColorFooter();
     this.StatusBar();
+    this.obtenerbookmarksesiones();
+    this.obtenerbookmarkrutinas();
+    this.obtenerLikeOPersonal();
     this.obtenerRutinas();
     this.obtenerSesiones();
     this.loading=false;
@@ -55,6 +67,7 @@ export class ListarSesionesPage implements OnInit {
   recuperarDatos(){
     this.route.queryParams.subscribe(params => {
       this.variable = params['variableSesiones'] as any;
+      this.previusPageMain = params['previusPageMain'] as boolean|| false;
     });
   }
   StatusBar(){
@@ -72,6 +85,9 @@ export class ListarSesionesPage implements OnInit {
             (response) => {
               this.chanceColorFooter();
               this.StatusBar();
+              this.obtenerbookmarksesiones();
+              this.obtenerbookmarkrutinas();
+              this.obtenerLikeOPersonal();
               this.obtenerRutinas();
               this.obtenerSesiones();
             },
@@ -139,6 +155,33 @@ export class ListarSesionesPage implements OnInit {
     });
   }
 
+  toggleBookmarkOPersonal(index: number): void {
+    if (this.LikeOPersonalState[index]) {
+      this.LikeOPersonalState[index] = false;
+      this.updateLikeTEjercicio(index,this.LikeOPersonalState[index],'likeobjetivopersonal');
+    } else {
+      this.LikeOPersonalState[index] = true;
+      this.updateLikeTEjercicio(index,this.LikeOPersonalState[index],'likeobjetivopersonal');
+    }
+  }
+  toggleBookmarkRutinas(index: number): void {
+    if (this.bookmarkRutinasState[index]) {
+      this.bookmarkRutinasState[index] = false;
+      this.updateLikeTEjercicio(index,this.bookmarkRutinasState[index],'bookmarkrutinas');
+    } else {
+      this.bookmarkRutinasState[index] = true;
+      this.updateLikeTEjercicio(index,this.bookmarkRutinasState[index],'bookmarkrutinas');
+    }
+  }
+  toggleBookmarkOSesiones(index: number): void {
+    if (this.bookmarkSesionesState[index]) {
+      this.bookmarkSesionesState[index] = false;
+      this.updateLikeTEjercicio(index,this.bookmarkSesionesState[index],'bookmarksesiones');
+    } else {
+      this.bookmarkSesionesState[index] = true;
+      this.updateLikeTEjercicio(index,this.bookmarkSesionesState[index],'bookmarksesiones');
+    }
+  }
   go_page(name: string){
     this.navController.navigateForward('/' + name, {
       queryParams: {
@@ -254,6 +297,58 @@ export class ListarSesionesPage implements OnInit {
           IDRUTINAS: objeto.IDRUTINAS.split(",").map(Number)
         }));
         this.cargarImagenesBefores();
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerLikeOPersonal(){
+    this.apiService.allBookmark('likeobjetivopersonal').subscribe(
+      (response) => {
+        this.dataLikeOPersonal=response;
+        this.dataLikeOPersonal= this.dataLikeOPersonal.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
+        this.dataLikeOPersonal.forEach(liketejercicio => {
+          this.LikeOPersonalState[liketejercicio.IDOBJETIVOSPERSONALES] = true;
+        });
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerbookmarkrutinas(){
+    this.apiService.allBookmark('bookmarkrutinas').subscribe(
+      (response) => {
+        this.dataBookMarkRutinas=response;
+        this.dataBookMarkRutinas= this.dataBookMarkRutinas.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
+        this.dataBookMarkRutinas.forEach(liketejercicio => {
+          this.bookmarkRutinasState[liketejercicio.IDRUTINA] = true;
+        });
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerbookmarksesiones(){
+    this.apiService.allBookmark('bookmarksesiones').subscribe(
+      (response) => {
+        this.dataBookMarkSesiones=response;
+        this.dataBookMarkSesiones= this.dataBookMarkSesiones.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
+        this.dataBookMarkSesiones.forEach(liketejercicio => {
+          this.bookmarkSesionesState[liketejercicio.IDSESION] = true;
+        });
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  updateLikeTEjercicio(idEjercicio:number,status:boolean,type:string){
+    this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status,type).subscribe(
+      (response) => {
+        this.presentCustomToast(response.message,"success");
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

@@ -18,13 +18,18 @@ export class ListarParametrosPage implements OnInit {
 
   public ip_address = IP_ADDRESS;
 
-  isFilled = false;
   bookmarkState: { [key: number]: boolean } = {};
   variable!:any;
-
+  previusPageMain:boolean=false;
   public dataEjercicio!: any[];
   public dataEjercicioOrig!: any[];
   valueNivel:number=-1;
+
+  LikeOMuscularState: { [key: number]: boolean } = {};
+  dataLikeOMuscular!:any[];
+
+  LikeTEjercicioState: { [key: number]: boolean } = {};
+  dataLikeTEjercicio!:any[];
 
   dataBookMark!:any[];
 
@@ -52,6 +57,8 @@ export class ListarParametrosPage implements OnInit {
   test(){
     this.chanceColorFooter();
     this.StatusBar();
+    this.obtenerLikeTEjercicio();
+    this.obtenerLikeOMuscular();
     this.obtenerBookMarkUser();
     this.obtenerEjercicios();
     this.loading=false;
@@ -59,6 +66,7 @@ export class ListarParametrosPage implements OnInit {
   recuperarDatos(){
     this.route.queryParams.subscribe(params => {
       this.variable = params['variableParametro'] as any;
+      this.previusPageMain = params['previusPageMain'] as boolean|| false;
     });
   }
   StatusBar(){
@@ -76,6 +84,8 @@ export class ListarParametrosPage implements OnInit {
             (response) => {
               this.chanceColorFooter();
               this.StatusBar();
+              this.obtenerLikeTEjercicio();
+              this.obtenerLikeOMuscular();
               this.obtenerBookMarkUser();
               this.obtenerEjercicios();
             },
@@ -135,6 +145,24 @@ export class ListarParametrosPage implements OnInit {
       image.onload = handleImageLoad;
       image.src = imageUrl;
     });
+  }
+  toggleBookmarkTEjercicio(index: number): void {
+    if (this.LikeTEjercicioState[index]) {
+      this.LikeTEjercicioState[index] = false;
+      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
+    } else {
+      this.LikeTEjercicioState[index] = true;
+      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
+    }
+  }
+  toggleBookmarkOMuscular(index: number): void {
+    if (this.LikeOMuscularState[index]) {
+      this.LikeOMuscularState[index] = false;
+      this.updateLikeTEjercicio(index,this.LikeOMuscularState[index],'likeobjetivomusculares');
+    } else {
+      this.LikeOMuscularState[index] = true;
+      this.updateLikeTEjercicio(index,this.LikeOMuscularState[index],'likeobjetivomusculares');
+    }
   }
 
   go_page(name: string){
@@ -222,7 +250,7 @@ export class ListarParametrosPage implements OnInit {
     );
   }
   obtenerBookMarkUser(){
-    this.apiService.allBookmarkpersona().subscribe(
+    this.apiService.allBookmark('bookmarkpersona').subscribe(
       (response) => {
         this.dataBookMark=response;
         this.dataBookMark= this.dataBookMark.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
@@ -236,9 +264,47 @@ export class ListarParametrosPage implements OnInit {
     );
   }
   updateBookMarkUser(idEjercicio:number,status:boolean){
-    this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status).subscribe(
+    this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status,'bookmarkpersona').subscribe(
       (response) => {
         this.presentCustomToast(response.message,"success");
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  updateLikeTEjercicio(idEjercicio:number,status:boolean,type:string){
+    this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status,type).subscribe(
+      (response) => {
+        this.presentCustomToast(response.message,"success");
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerLikeOMuscular(){
+    this.apiService.allBookmark('likeobjetivomusculares').subscribe(
+      (response) => {
+        this.dataLikeOMuscular=response;
+        this.dataLikeOMuscular= this.dataLikeOMuscular.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
+        this.dataLikeOMuscular.forEach(liketejercicio => {
+          this.LikeOMuscularState[liketejercicio.IDOBJETIVOSMUSCULARES] = true;
+        });
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerLikeTEjercicio(){
+    this.apiService.allBookmark('liketejercicio').subscribe(
+      (response) => {
+        this.dataLikeTEjercicio=response;
+        this.dataLikeTEjercicio= this.dataLikeTEjercicio.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
+        this.dataLikeTEjercicio.forEach(liketejercicio => {
+          this.LikeTEjercicioState[liketejercicio.IDTIPOEJERCICIO] = true;
+        });
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

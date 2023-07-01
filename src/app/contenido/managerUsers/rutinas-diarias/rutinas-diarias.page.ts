@@ -21,13 +21,18 @@ export class RutinasDiariasPage implements OnInit {
   public dataEjercicio!: any[];
 
   contador: number = 0;
+  CALORIASEJERCICIOTOTAL:number=0;
+  VALIDATORCALORIASEJERCICIOTOTAL:boolean=false;
 
   variable!:any;
+  previusPageMain:boolean=false;
   private variableSesion!:any;
-  isFilled = false;
 
   bookmarkState: { [key: number]: boolean } = {};
   dataBookMark!:any[];
+
+  bookmarkRutinasState: { [key: number]: boolean } = {};
+  dataBookMarkRutinas!:any[];
 
   squareWidth: number = 300; // Ancho del cuadrado
   circleRadius: number = 25; // Radio del círculo
@@ -62,6 +67,7 @@ export class RutinasDiariasPage implements OnInit {
       this.chanceColorFooter();
       this.StatusBar();
       this.obtenerEjercicios();
+      this.obtenerbookmarkrutinas();
       this.obtenerBookMarkUser();
       this.loading=false;
     }
@@ -69,7 +75,18 @@ export class RutinasDiariasPage implements OnInit {
       this.route.queryParams.subscribe(params => {
         this.variable = params['variableRutinaDiaria'] as any;
         this.variableSesion = params['variableSesiones'] as any;
+        this.previusPageMain = params['previusPageMain'] as boolean|| false;
       });
+      this.variable.DURACIONRUTINA =this.formatDuracionRutina(this.variable.DURACIONRUTINA);
+    }
+    sumarCaloriasEjercicio(){
+      if(!this.VALIDATORCALORIASEJERCICIOTOTAL){
+        for (let i = 0; i < this.variable.IDEJERCICIOS.length; i++) {
+          const ejercicio = this.findEjercicioRutina(this.variable.IDEJERCICIOS[i]);
+          this.CALORIASEJERCICIOTOTAL += parseFloat(ejercicio.CALORIASEJERCICIO);
+        }
+        this.VALIDATORCALORIASEJERCICIOTOTAL=true;
+      }
     }
     StatusBar(){
       StatusBar.hide();
@@ -87,6 +104,7 @@ export class RutinasDiariasPage implements OnInit {
                 this.chanceColorFooter();
                 this.StatusBar();
                 this.obtenerEjercicios();
+                this.obtenerbookmarkrutinas();
                 this.obtenerBookMarkUser();
                 this.loading=false;
               },
@@ -104,7 +122,6 @@ export class RutinasDiariasPage implements OnInit {
     }
     private handleError() {
       this.loading = false;
-      console.log("ASDasd");
       this.navController.navigateForward('/error-page-users-trainers');
       this.storage.remove('sesion');
     }
@@ -131,7 +148,6 @@ export class RutinasDiariasPage implements OnInit {
       const imageUrl = this.ip_address+'/media/rutinas/portadasrutinas/'+this.variable.IMAGENRUTINA;
       imageUrls.push(imageUrl);
       let imagesLoaded = 0;
-      console.log(imageUrls);
       const totalImages = imageUrls.length;
       const handleImageLoad = () => {
         imagesLoaded++;
@@ -146,6 +162,8 @@ export class RutinasDiariasPage implements OnInit {
       });
     }
     go_page(name: string) {
+      this.CALORIASEJERCICIOTOTAL=0;
+      this.VALIDATORCALORIASEJERCICIOTOTAL=false;
       this.navController.navigateForward('/' + name, {
         queryParams: {
           variableSesiones: this.variableSesion
@@ -157,7 +175,25 @@ export class RutinasDiariasPage implements OnInit {
       const newPositionX = touch.clientX - this.circleRadius; // Restar el radio para ajustar la posición
       this.updateCirclePosition(newPositionX, this.circleY);
     }
+    toggleBookmarkRutinas(index: number): void {
+      if (this.bookmarkRutinasState[index]) {
+        this.bookmarkRutinasState[index] = false;
+        this.updateLikeTEjercicio(index,this.bookmarkRutinasState[index],'bookmarkrutinas');
+      } else {
+        this.bookmarkRutinasState[index] = true;
+        this.updateLikeTEjercicio(index,this.bookmarkRutinasState[index],'bookmarkrutinas');
+      }
+    }
 
+    formatDuracionRutina(duracion: string): string {
+      const partes = duracion.split(':');
+      if (partes.length === 3 && partes[0] === '00') {
+        // Solo muestra minutos y segundos
+        return `${parseInt(partes[1], 10)}:${partes[2]}`;
+      }
+      // Mantén el formato original
+      return duracion;
+    }
     private updateCirclePosition(x: number, y: number) {
       // Restringir el movimiento dentro del cuadrado
       if (x < this.circleRadius) {
@@ -169,7 +205,19 @@ export class RutinasDiariasPage implements OnInit {
       }
       this.circleY = y;
       if(this.circleX===this.squareWidth-this.circleRadius){
-        this.go_page('programarrutinas');
+        setTimeout(() => {
+          this.presentCustomToast("Yendo otra pagina","success");
+        }, 150);
+      }
+    }
+
+    onTouchEnd() {
+      const squareCenter = this.squareWidth / 2;
+
+      if (this.circleX < squareCenter) {
+        this.updateCirclePosition(0, this.circleY);
+      } else {
+        this.updateCirclePosition(this.squareWidth - this.circleRadius, this.circleY);
       }
     }
 
@@ -187,7 +235,7 @@ export class RutinasDiariasPage implements OnInit {
         const elemento = this.dataEjercicio.find(objeto => objeto.IDEJERCICIO === IDEJERCICIORUTINA);
         return elemento;
       }
-      return null; // O devuelve un valor predeterminado en caso de que 'this.dataEjercicio' sea 'undefined'
+      return null;
     }
     toggleBookmark(index: number): void {
       if (this.bookmarkState[index]) {
@@ -231,6 +279,17 @@ export class RutinasDiariasPage implements OnInit {
       return numerosRepetidos;
     }
 
+    obtenerDuracionEnMinutos(tiempo:string):number {
+      const tiempoPartes = tiempo.split(":");
+      const horas = parseInt(tiempoPartes[0]);
+      const minutos = parseInt(tiempoPartes[1]);
+      const segundos = parseInt(tiempoPartes[2]);
+
+      const duracionMinutos = horas * 60 + minutos + segundos / 60;
+
+      return parseFloat(duracionMinutos.toFixed(4));
+    }
+
 
     async presentCustomToast(message: string, color: string) {
       const toast = await this.toastController.create({
@@ -252,7 +311,7 @@ export class RutinasDiariasPage implements OnInit {
       }
 
     obtenerGetPerfilCompleto(nickname:string){
-      this.apiService.connsultPerfilCompleto(nickname).subscribe(
+      this.apiService.connsultPerfilUsuarioCompleto(nickname).subscribe(
         (response) => {
           this.userSesionPerfil=response;
         },
@@ -265,6 +324,9 @@ export class RutinasDiariasPage implements OnInit {
       this.apiService.getEjercicioActivate().subscribe(
         (response) => {
           this.dataEjercicio=response;
+          this.dataEjercicio.forEach((ejercicio) => {
+          ejercicio.CALORIASEJERCICIO= (this.obtenerDuracionEnMinutos(ejercicio.TIEMPOMULTIMEDIA)/60*ejercicio.METEJERCICIO*Number(this.userSesionPerfil[0].PESOUSUARIO)).toFixed(2);
+          });
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");
@@ -273,13 +335,14 @@ export class RutinasDiariasPage implements OnInit {
     }
 
     obtenerBookMarkUser(){
-      this.apiService.allBookmarkpersona().subscribe(
+      this.apiService.allBookmark('bookmarkpersona').subscribe(
         (response) => {
           this.dataBookMark=response;
           this.dataBookMark= this.dataBookMark.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
           this.dataBookMark.forEach(bookmark => {
             this.bookmarkState[bookmark.IDEJERCICIO] = true;
           });
+          this.sumarCaloriasEjercicio();
           this.cargarImagenesBefores();
         },
         (error) => {
@@ -287,8 +350,32 @@ export class RutinasDiariasPage implements OnInit {
         }
       );
     }
+    obtenerbookmarkrutinas(){
+      this.apiService.allBookmark('bookmarkrutinas').subscribe(
+        (response) => {
+          this.dataBookMarkRutinas=response;
+          this.dataBookMarkRutinas= this.dataBookMarkRutinas.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
+          this.dataBookMarkRutinas.forEach(liketejercicio => {
+            this.bookmarkRutinasState[liketejercicio.IDRUTINA] = true;
+          });
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
     updateBookMarkUser(idEjercicio:number,status:boolean){
-      this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status).subscribe(
+      this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status,'bookmarkpersona').subscribe(
+        (response) => {
+          this.presentCustomToast(response.message,"success");
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
+    updateLikeTEjercicio(idEjercicio:number,status:boolean,type:string){
+      this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status,type).subscribe(
         (response) => {
           this.presentCustomToast(response.message,"success");
         },

@@ -1,26 +1,127 @@
 <ion-content [fullscreen]="true">
-  <div class="wrapper">
-    <div class="container-desplazar">
-      <div class="square"
-           [style.width.px]="squareWidth"
-           [style.height.px]="circleRadius * 2">
-           <span class="text">Empezar</span>
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
+    </div>
+  </div>
+  <app-footer-designer-users></app-footer-designer-users>
+  <div class="header">
+    <ion-card *ngIf="variable && variable.IMAGESESION"
+      style="background-image: linear-gradient(0deg, #00000098, #ffffff1a),
+      url('{{ ip_address }}/media/sesiones/portadassesiones/{{variable.IMAGESESION}}');
+      background-repeat: no-repeat;
+      background-size: cover; border-radius: 0px 0px 15px 15px;">
+      <div class="card-back" (click)="previusPageMain?go_page('main'):go_page('listar-sesiones')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M9 14l-4 -4l4 -4"></path>
+          <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
+       </svg>
       </div>
-      <div class="circle"
-           [style.left.px]="circleX - circleRadius"
-           [style.bottom.px]="circleRadius"
-           [style.width.px]="circleRadius * 2"
-           [style.height.px]="circleRadius * 2"
-           (touchmove)="onTouchMove($event)">
-           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-aperture" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <div class="card-like" >
+        <div class="icon-wrapper" (click)="toggleBookmarkOSesiones(variable.IDSESION); $event.stopPropagation()" *ngIf="!bookmarkSesionesState[variable.IDSESION]; else otherbookmarksesiones">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-            <path d="M3.6 15h10.55"></path>
-            <path d="M6.551 4.938l3.26 10.034"></path>
-            <path d="M17.032 4.636l-8.535 6.201"></path>
-            <path d="M20.559 14.51l-8.535 -6.201"></path>
-            <path d="M12.257 20.916l3.261 -10.034"></path>
+            <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
          </svg>
+        </div>
+        <ng-template #otherbookmarksesiones>
+          <div class="icon-wrapper" (click)="toggleBookmarkOSesiones(variable.IDSESION); $event.stopPropagation()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor"></path>
+           </svg>
+          </div>
+        </ng-template>
+      </div>
+      <div class="body-ionic">
+        <ion-card-header>
+          <ion-card-title><span *ngIf="variable && variable.IDROLUSUARIO!==99">Creado por <p> @{{variable && variable.NICKNAMEPERSONA}}</p></span><br>
+            {{variable && variable.NOMBRESESION}}</ion-card-title>
+          <ion-card-subtitle><h1>SESIONES</h1></ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="flex-container">
+            <div class="flex-item">
+              <h1>{{variable && variable.IDRUTINAS.length}}</h1>
+              <p>Días</p>
+            </div>
+            <div class="flex-item">
+              <h1>{{DuracionTotal}}&nbsp;mn.</h1>
+              <p>Duración</p>
+            </div>
+          </div>
+        </ion-card-content>
+      </div>
+    </ion-card>
+  </div>
+  <div class="container-body">
+    <div class="container-rutina" *ngFor="let data of dataRutinas; let i = index">
+      <div class="container-rutina-uniq">
+        <div class="image-section-rutina">
+          <img *ngIf="data.IMAGENRUTINA"  src="{{ ip_address }}/media/rutinas/portadasrutinas/{{data.IMAGENRUTINA}}" />
+          <div class="img-overlay"></div>
+        </div>
+        <div class="text-section-rutina">
+          <div class="ion-tab-rutina">
+            <div class="rutina-container">
+                <div class="RutinasNumero" >{{encontrarNumerosRepetidos(data.IDEJERCICIOS)[0].count}}</div>
+                <div class="Rutina" >Rut.</div>
+            </div>
+          </div>
+        </div>
+        <div class="multiline-text-section-rutina">
+          <p class="p1section">{{data.NOMBRERUTINA}}</p>
+          <p class="p2section">{{data.NOMBRETIPOEJERCICIO}}</p>
+          <p class="p3section">{{data && data.IDEJERCICIOS.length}}&nbsp;Ej.&nbsp;|&nbsp;{{formatDuracionRutina(data.DURACIONRUTINA)}}&nbsp;mn.|&nbsp;{{data.CALORIARUTINA}}&nbsp;cal.</p>
+        </div>
+        <div class="icon-section-rutina" (click)="toggleVisibilidadContenedor(i)">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-down-lines-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M9 8l-.117 .007a1 1 0 0 0 -.883 .993v1.999l-2.586 .001a2 2 0 0 0 -1.414 3.414l6.586 6.586a2 2 0 0 0 2.828 0l6.586 -6.586a2 2 0 0 0 .434 -2.18l-.068 -.145a2 2 0 0 0 -1.78 -1.089l-2.586 -.001v-1.999a1 1 0 0 0 -1 -1h-6z" stroke-width="0" fill="currentColor"></path>
+            <path d="M15 2a1 1 0 0 1 .117 1.993l-.117 .007h-6a1 1 0 0 1 -.117 -1.993l.117 -.007h6z" stroke-width="0" fill="currentColor"></path>
+            <path d="M15 5a1 1 0 0 1 .117 1.993l-.117 .007h-6a1 1 0 0 1 -.117 -1.993l.117 -.007h6z" stroke-width="0" fill="currentColor"></path>
+         </svg>
+        </div>
+      </div>
+      <div class="container-body-ejercicios" *ngIf="visibilidadContenedores[i]">
+        <div class="container" *ngFor="let item of data.IDEJERCICIOS; " >
+          <div   class="round-section" *ngIf="encontrarNumerosRepetidos(data.IDEJERCICIOS)[0].number===item">
+            <h1>Siguiente Repetición</h1>
+          </div><br>
+          <div class="image-section" (click)="toggleBookmark(findEjercicioRutina(item)?.IDEJERCICIO)">
+            <div class="icon-wrapper"  *ngIf="!bookmarkState[findEjercicioRutina(item)?.IDEJERCICIO]; else otherbookmark">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="28" height="28" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
+             </svg>
+            </div>
+            <ng-template #otherbookmark>
+              <div class="icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="28" height="28" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
+               </svg>
+              </div>
+            </ng-template>
+            <img *ngIf="findEjercicioRutina(item)?.ALMACENAMIENTOMULTIMEDIA"  src="{{ ip_address }}/multimedia/{{item && getVideoName(findEjercicioRutina(item)?.ALMACENAMIENTOMULTIMEDIA)}}.jpg" />
+            <div class="img-overlay"></div>
+          </div>
+          <div class="text-section">
+            <h2>{{findEjercicioRutina(item)?.REPETICIONESEJERCICIO}} <span>x</span></h2>
+          </div>
+          <div class="multiline-text-section">
+            <p class="p1section">{{findEjercicioRutina(item)?.NOMBREEJERCICIO}}</p>
+            <p class="p2section">{{formatDuracionRutina(findEjercicioRutina(item)?.TIEMPOMULTIMEDIA)}}&nbsp;mn</p>
+            <p class="p3section">cal. {{findEjercicioRutina(item)?.CALORIASEJERCICIO}} aprox.</p>
+          </div>
+          <div class="icon-section">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M9 6l6 6l-6 6"></path>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>

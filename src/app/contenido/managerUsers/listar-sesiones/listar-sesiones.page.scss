@@ -177,8 +177,8 @@ ion-content {
       border-radius: 0px;
     }
     50% {
-      width: 400px;
-      height: 400px;
+      width: 150px;
+      height: 150px;
       top: 20;
       left: 0;
       right: 0;
@@ -195,16 +195,13 @@ ion-content {
     }
   }
 
-
-
   .box.expanded {
-    animation: expandAnimation .2s forwards;
+    animation: expandAnimation 10s forwards;
   }
 
   .box.collapsed {
-    animation: collapseAnimation .2s  forwards;
+    animation: collapseAnimation 10s  forwards;
   }
-
 
   .background-image {
     width: 100%;
@@ -250,4 +247,30 @@ ion-content {
 
 .non-touchable {
   pointer-events: none;
+}
+
+.container-nodata{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0% 5%;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  img{
+    padding: 10%;
+    margin: 0 auto;
+    width: 60%;
+    height: auto;
+  }
+}
+
+
+.icon-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  padding: 8px;
+  color: rgb(255, 255, 255);
 }

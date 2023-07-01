@@ -21,13 +21,27 @@
   <div class="container-body">
     <div class="container-swiper">
       <swiper-container #slides class="onb-container onb-container-1"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
-        <swiper-slide class="onb-slide" *ngFor="let item of dataTEjercicio" (click)="selectSwiper(item,'listar-parametros')">
+        <swiper-slide class="onb-slide" *ngFor="let item of dataTEjercicio" (click)="selectSwiper(item,'listar-parametros')" >
           <div class="slide-content">
-            <h2><span>FITNESS</span><br/>
+            <h2 ><span>FITNESS</span><br/>
             {{item.NOMBRETIPOEJERCICIO}}</h2>
-            <p>{{item.DESCRIPCIONTIPOEJERCICIO}}</p>
+            <p >{{item.DESCRIPCIONTIPOEJERCICIO}}</p>
             <img [src]="ip_address + '/media/tipoEjercicio/' + item.IMAGETIPOEJERCICIO" />
             <div class="filter-overlay"></div>
+            <div class="icon-wrapper" (click)="toggleBookmarkTEjercicio(item.IDTIPOEJERCICIO); $event.stopPropagation()" *ngIf="!LikeTEjercicioState[item.IDTIPOEJERCICIO]; else otherLikeTEjercicio">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+             </svg>
+            </div>
+            <ng-template #otherLikeTEjercicio >
+              <div class="icon-wrapper" (click)="toggleBookmarkTEjercicio(item.IDTIPOEJERCICIO); $event.stopPropagation()" >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor"></path>
+               </svg>
+              </div>
+            </ng-template>
           </div>
         </swiper-slide>
       </swiper-container>
@@ -42,6 +56,20 @@
             <p>{{item.OBSERVACIONOBJETIVOSPERSONALES}}</p>
             <img [src]="ip_address + '/media/objetivospersonales/' + item.IMAGEOBJETIVOSPERSONALES" />
             <div class="filter-overlay"></div>
+            <div class="icon-wrapper" (click)="toggleBookmarkOPersonal(item.IDOBJETIVOSPERSONALES); $event.stopPropagation()" *ngIf="!LikeOPersonalState[item.IDOBJETIVOSPERSONALES]; else otherLikeOPersonal">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+             </svg>
+            </div>
+            <ng-template #otherLikeOPersonal >
+              <div class="icon-wrapper" (click)="toggleBookmarkOPersonal(item.IDOBJETIVOSPERSONALES); $event.stopPropagation()" >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor"></path>
+               </svg>
+              </div>
+            </ng-template>
           </div>
         </swiper-slide>
       </swiper-container>
@@ -56,6 +84,20 @@
             <p>{{item.DESCRIPCIONOBJETIVOSMUSCULARES}}</p>
             <img [src]="ip_address + '/media/objetivomuscular/' +item.IMAGENOBJETIVOSMUSCULARES" />
             <div class="filter-overlay"></div>
+            <div class="icon-wrapper" (click)="toggleBookmarkOMuscular(item.IDOBJETIVOSMUSCULARES); $event.stopPropagation()" *ngIf="!LikeOMuscularState[item.IDOBJETIVOSMUSCULARES]; else otherLikeOMuscular">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+             </svg>
+            </div>
+            <ng-template #otherLikeOMuscular >
+              <div class="icon-wrapper" (click)="toggleBookmarkOMuscular(item.IDOBJETIVOSMUSCULARES); $event.stopPropagation()" >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor"></path>
+               </svg>
+              </div>
+            </ng-template>
           </div>
         </swiper-slide>
       </swiper-container>
