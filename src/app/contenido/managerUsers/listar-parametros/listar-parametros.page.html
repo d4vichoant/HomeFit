@@ -7,7 +7,7 @@
   <!-- <app-toolbar-designer></app-toolbar-designer> -->
   <div class="header">
     <ion-card [style]="'background-image: linear-gradient(0deg, #f1f3f8, rgba(0, 0, 0, 0.034)), url(\'' + ip_address + '/media/' + (variable.IDTIPOEJERCICIO!==undefined ? 'tipoEjercicio' : 'objetivomuscular') + '/' +  (variable.IDTIPOEJERCICIO!==undefined ? variable.IMAGETIPOEJERCICIO : variable.IMAGENOBJETIVOSMUSCULARES) + '\');background-size: cover;'">
-      <div class="card-back" (click)="previusPageMain?go_page('main'):go_page('listar-ejercicios')">
+      <div class="card-back" (click)="previusPageMain ? go_page('main') : (previusPagelistarGuardados ? go_page('listar-guardados') : go_page('listar-ejercicios'))">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
           <path d="M9 14l-4 -4l4 -4"></path>
@@ -53,8 +53,8 @@
   </div>
 
   <div class="container-body">
-    <div class="container" *ngFor="let item of dataEjercicio; let i=index">
-      <div class="image-section" (click)="toggleBookmark(item.IDEJERCICIO)">
+    <div class="container" *ngFor="let item of dataEjercicio; let i=index" (click)="goEjercicioUniq(item,'ejercicio-uniq'); $event.stopPropagation();">
+      <div class="image-section" (click)="toggleBookmark(item.IDEJERCICIO); $event.stopPropagation();">
         <div class="icon-wrapper"  *ngIf="!bookmarkState[item.IDEJERCICIO]; else otherbookmark">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="28" height="28" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -77,7 +77,8 @@
       </div>
       <div class="multiline-text-section">
         <p class="p1section">{{item.NOMBREEJERCICIO}}</p>
-        <p class="p2section">{{item.TIEMPOMULTIMEDIA}}</p>
+        <p class="p2section">{{formatDuracionRutina(item.TIEMPOMULTIMEDIA)}}&nbsp;min.</p>
+        <p class="p3section">cal. {{item.CALORIASEJERCICIO}} aprox.</p>
       </div>
       <div class="icon-section">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

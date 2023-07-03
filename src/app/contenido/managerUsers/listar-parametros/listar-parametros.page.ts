@@ -19,8 +19,10 @@ export class ListarParametrosPage implements OnInit {
   public ip_address = IP_ADDRESS;
 
   bookmarkState: { [key: number]: boolean } = {};
+  dataBookMark!:any[];
   variable!:any;
   previusPageMain:boolean=false;
+  previusPagelistarGuardados:boolean=false;
   public dataEjercicio!: any[];
   public dataEjercicioOrig!: any[];
   valueNivel:number=-1;
@@ -30,8 +32,6 @@ export class ListarParametrosPage implements OnInit {
 
   LikeTEjercicioState: { [key: number]: boolean } = {};
   dataLikeTEjercicio!:any[];
-
-  dataBookMark!:any[];
 
   constructor(private navController: NavController,
   private route: ActivatedRoute,
@@ -67,6 +67,18 @@ export class ListarParametrosPage implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.variable = params['variableParametro'] as any;
       this.previusPageMain = params['previusPageMain'] as boolean|| false;
+      this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as boolean|| false;
+    });
+  }
+  goEjercicioUniq(item:any,name:string){
+    this.dataBookMark=[];
+    this.navController.navigateForward('/' + name, {
+      queryParams: {
+        variableParametro: this.variable,
+        previusPageMain:this.previusPageMain,
+        previusPagelistarGuardados:this.previusPagelistarGuardados,
+        variableEjercicio:item,
+      }
     });
   }
   StatusBar(){
@@ -166,6 +178,7 @@ export class ListarParametrosPage implements OnInit {
   }
 
   go_page(name: string){
+    this.dataBookMark=[];
     this.navController.navigateForward('/' + name, {
       queryParams: {
         variableParametro: ""
@@ -199,6 +212,26 @@ export class ListarParametrosPage implements OnInit {
       this.updateBookMarkUser(index,this.bookmarkState[index]);
     }
   }
+  obtenerDuracionEnMinutos(tiempo:string):number {
+    const tiempoPartes = tiempo.split(":");
+    const horas = parseInt(tiempoPartes[0]);
+    const minutos = parseInt(tiempoPartes[1]);
+    const segundos = parseInt(tiempoPartes[2]);
+
+    const duracionMinutos = horas * 60 + minutos + segundos / 60;
+
+    return parseFloat(duracionMinutos.toFixed(4));
+  }
+  formatDuracionRutina(duracion: string): string {
+    const partes = duracion.split(':');
+    if (partes.length === 3 && partes[0] === '00') {
+      // Solo muestra minutos y segundos
+      return `${parseInt(partes[1], 10)}:${partes[2]}`;
+    }
+    // Mantén el formato original
+    return duracion;
+  }
+
   async presentCustomToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
@@ -219,7 +252,7 @@ export class ListarParametrosPage implements OnInit {
     }
 
   obtenerGetPerfilCompleto(nickname:string){
-    this.apiService.connsultPerfilCompleto(nickname).subscribe(
+    this.apiService.connsultPerfilUsuarioCompleto(nickname).subscribe(
       (response) => {
         this.userSesionPerfil=response;
       },
@@ -237,6 +270,9 @@ export class ListarParametrosPage implements OnInit {
         }else if (this.variable.IDOBJETIVOSMUSCULARES && this.variable.IDOBJETIVOSMUSCULARES!==null || this.variable.IDOBJETIVOSMUSCULARES!==undefined){
           this.dataEjercicio = this.dataEjercicio.filter(element => element.IDOBJETIVOMUSCULAR === this.variable.IDOBJETIVOSMUSCULARES );
         }
+        this.dataEjercicio.forEach((ejercicio) => {
+          ejercicio.CALORIASEJERCICIO= (this.obtenerDuracionEnMinutos(ejercicio.TIEMPOMULTIMEDIA)/60*ejercicio.METEJERCICIO*Number(this.userSesionPerfil[0].PESOUSUARIO)).toFixed(2);
+          });
         const rawData = this.dataEjercicio;
         this.dataEjercicioOrig = rawData.map(item => ({ ...item }));
         if (this.dataEjercicio && this.dataEjercicio.length>0)

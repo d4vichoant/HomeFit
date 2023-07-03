@@ -26,7 +26,8 @@ export class RutinasDiariasPage implements OnInit {
 
   variable!:any;
   previusPageMain:boolean=false;
-  private variableSesion!:any;
+  previusPagelistarGuardados:boolean=false;
+  public variableSesion!:any;
 
   bookmarkState: { [key: number]: boolean } = {};
   dataBookMark!:any[];
@@ -76,8 +77,22 @@ export class RutinasDiariasPage implements OnInit {
         this.variable = params['variableRutinaDiaria'] as any;
         this.variableSesion = params['variableSesiones'] as any;
         this.previusPageMain = params['previusPageMain'] as boolean|| false;
+        this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as boolean|| false;
       });
       this.variable.DURACIONRUTINA =this.formatDuracionRutina(this.variable.DURACIONRUTINA);
+    }
+    goEjercicioUniq(itemName:any,name:string){
+      const elementoEncontrado = this.dataEjercicio.find(item => item.IDEJERCICIO === itemName);
+      this.dataBookMark=[];
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableEjercicio:elementoEncontrado,
+          variableRutinaDiaria:this.variable,
+          variableSesiones:this.variableSesion,
+          previusPageMain :this.previusPageMain,
+          previusPagelistarGuardados:this.previusPagelistarGuardados,
+        }
+      });
     }
     sumarCaloriasEjercicio(){
       if(!this.VALIDATORCALORIASEJERCICIOTOTAL){
@@ -166,7 +181,9 @@ export class RutinasDiariasPage implements OnInit {
       this.VALIDATORCALORIASEJERCICIOTOTAL=false;
       this.navController.navigateForward('/' + name, {
         queryParams: {
-          variableSesiones: this.variableSesion
+          variableSesiones: this.variableSesion,
+          previusPageMain : this.previusPageMain,
+          previusPagelistarGuardados : this.previusPagelistarGuardados,
         }
       });
     }
@@ -320,6 +337,7 @@ export class RutinasDiariasPage implements OnInit {
         }
       );
     }
+
     obtenerEjercicios(){
       this.apiService.getEjercicioActivate().subscribe(
         (response) => {

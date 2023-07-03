@@ -186,6 +186,14 @@ const routes: Routes = [
     path: 'programarrutinas',
     loadChildren: () => import('./contenido/managerUsers/programarrutinas/programarrutinas.module').then( m => m.ProgramarrutinasPageModule)
   },
+  {
+    path: 'listar-guardados',
+    loadChildren: () => import('./contenido/managerUsers/listar-guardados/listar-guardados.module').then( m => m.ListarGuardadosPageModule)
+  },
+  {
+    path: 'ejercicio-uniq',
+    loadChildren: () => import('./contenido/managerEjercicio/ejercicio-uniq/ejercicio-uniq.module').then( m => m.EjercicioUniqPageModule)
+  },
 
 
 

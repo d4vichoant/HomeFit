@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import SwiperCore, {Pagination, Swiper} from 'swiper';
 import {StatusBar} from "@capacitor/status-bar";
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
 
 import { NavController } from '@ionic/angular';
 
@@ -47,10 +48,32 @@ export class HomePage implements OnInit {
 
   constructor(
     private router : Router,
-    private navController: NavController
+    private navController: NavController,
+    private platform: Platform
   ) {}
   ngOnInit(){
+    if (this.platform.is('android')) {
+      // Habilita la rotación en la página actual
+      window.addEventListener('orientationchange', this.handleOrientationChange);
+    }
    }
+
+   private handleOrientationChange = () => {
+    const orientation = window.screen.orientation.type;
+
+    // Verifica si la orientación actual es horizontal
+    if (orientation === 'landscape-primary' || orientation === 'landscape-secondary') {
+      // Bloquear la orientación en horizontal
+      this.lockScreenOrientation('portrait');
+    }
+  };
+
+  private lockScreenOrientation(orientation: 'portrait' | 'landscape' | 'portrait-primary' | 'portrait-secondary' | 'landscape-primary' | 'landscape-secondary') {
+    // Bloquear la orientación de la pantalla
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock(orientation);
+    }
+  }
 
  @ViewChild('swiper')
  swiperRef:ElementRef | undefined;

@@ -16,11 +16,25 @@ ion-content {
   justify-content: center;
   z-index: 2;
 }
+.container-text {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .subtitle{
   font-family: Raleway-Bold;
   font-size: 1.5rem;
   color:  #6829c793;
   padding-left: 8%;
+}
+
+.right-text {
+  margin-left: auto;
+  padding-right: 8%;
+  font-family: Raleway-Bold;
+  font-size: .8rem;
+  color:  #78757c93;
+
 }
 
 .container {

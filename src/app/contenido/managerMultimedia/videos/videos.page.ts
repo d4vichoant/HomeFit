@@ -392,8 +392,8 @@ async buttonfilterhabilitate(filter: any,index:number) {
               return 0; // No cambiar el orden entre a y b
             }
           });
-          //console.log(this.dataEjercicio);
         }
+        //console.log(this.dataEjercicio);
         setTimeout(() => {
           this.cargarImagenesBefores();
         }, 1000);

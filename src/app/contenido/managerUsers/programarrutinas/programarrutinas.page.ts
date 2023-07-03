@@ -25,7 +25,8 @@ export class ProgramarrutinasPage implements OnInit {
 
   variable!:any;
   previusPageMain:boolean=false;
-  private variableSesion!:any;
+  previusPagelistarGuardados:boolean=false;
+  public variableSesion!:any;
 
   visibilidadContenedores: { [key: number]: boolean } = {};
 
@@ -72,9 +73,23 @@ export class ProgramarrutinasPage implements OnInit {
   }
   recuperarDatos(){
     this.route.queryParams.subscribe(params => {
-      this.variable = params['variableRutinaDiaria'] as any;
+      this.variable = params['variableprogramarrutinas'] as any;
       this.variableSesion = params['variableSesiones'] as any;
       this.previusPageMain = params['previusPageMain'] as boolean|| false;
+      this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as boolean|| false;
+    });
+  }
+  goEjercicioUniq(itemName:any,name:string){
+    const elementoEncontrado = this.dataEjercicio.find(item => item.IDEJERCICIO === itemName);
+    this.dataBookMark=[];
+    this.navController.navigateForward('/' + name, {
+      queryParams: {
+        variableEjercicio:elementoEncontrado,
+        variableprogramarrutinas: this.variable,
+        variableSesiones:this.variableSesion,
+        previusPageMain:this.previusPageMain,
+        previusPagelistarGuardados:this.previusPagelistarGuardados,
+      }
     });
   }
   StatusBar(){
@@ -140,7 +155,9 @@ export class ProgramarrutinasPage implements OnInit {
     this.DuracionTotal="";
     this.navController.navigateForward('/' + name, {
       queryParams: {
-        variableSesiones: this.variableSesion
+        variableSesiones: this.variableSesion,
+        previusPageMain : this.previusPageMain,
+        previusPagelistarGuardados : this.previusPagelistarGuardados,
       }
     });
   }

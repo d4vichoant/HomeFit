@@ -1,22 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiServiceService } from '../api-service.service';
-import { StatusBar } from '@capacitor/status-bar';
+import { IP_ADDRESS } from '../../../constantes';
 import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
-import { IP_ADDRESS } from '../constantes';
+import { ApiServiceService } from '../../../api-service.service';
+import { StatusBar } from '@capacitor/status-bar';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.page.html',
-  styleUrls: ['./main.page.scss'],
+  selector: 'app-listar-guardados',
+  templateUrl: './listar-guardados.page.html',
+  styleUrls: ['./listar-guardados.page.scss'],
 })
-export class MainPage implements OnInit {
+export class ListarGuardadosPage implements OnInit {
   public ip_address = IP_ADDRESS;
+
   public userSesion!:string;
   public userSesionPerfil!:any;
+  public loading = true;
 
   public dataRutinas!: any[];
   public dataSesiones!:any[];
+  public dataOPersoales!: any[];
+  public dataTEjercicio!: any[];
+  public dataOMusculares!: any[];
+  public dataEjercicio!: any[];
 
   bookmarkRutinasState: { [key: number]: boolean } = {};
   dataBookMarkRutinas!:any[];
@@ -36,22 +42,22 @@ export class MainPage implements OnInit {
   bookmarkState: { [key: number]: boolean } = {};
   dataBookMark!:any[];
 
-  public dataOPersoales!: any[];
-  public dataTEjercicio!: any[];
-  public dataOMusculares!: any[];
-  public dataEjercicio!: any[];
+  currentDate!: string;
 
-  public loading = true;
-
-  constructor(private navController: NavController,
+  constructor(
+    private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
-    public toastController: ToastController) { }
+    public toastController: ToastController
+  ) { }
+
   ngOnInit() {
     this.validateSesion();
+    //this.test();
   }
   ionViewDidEnter() {
     this.validateSesion();
+    //this.test();
   }
   StatusBar(){
     StatusBar.hide();
@@ -67,6 +73,8 @@ export class MainPage implements OnInit {
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
               this.chanceColorFooter();
+              this.StatusBar();
+              this.updateCurrentDate();
               this.obtenerbookmarksesiones();
               this.obtenerbookmarkrutinas();
               this.obtenerLikeTEjercicio();
@@ -78,8 +86,7 @@ export class MainPage implements OnInit {
               this.obtenerSesiones();
               this.obtenerOMuscular();
               this.obtenerOPersonales();
-              this.obtenerTEjercicios();
-              this.StatusBar();
+              this.obtenerTEjercicios()
               this.loading=false;
             },
             (error) => {
@@ -96,7 +103,7 @@ export class MainPage implements OnInit {
   }
   private handleError() {
     this.loading = false;
-    this.navController.navigateForward('/error-users');
+    this.navController.navigateForward('/error-page-users-trainers');
     this.storage.remove('sesion');
   }
   private chanceColorFooter(){
@@ -109,7 +116,6 @@ export class MainPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
     document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
   }
-
   toggleBookmarkRutinas(index: number): void {
     if (this.bookmarkRutinasState[index]) {
       this.bookmarkRutinasState[index] = false;
@@ -134,10 +140,10 @@ export class MainPage implements OnInit {
   toggleBookmarkTEjercicio(index: number): void {
     if (this.LikeTEjercicioState[index]) {
       this.LikeTEjercicioState[index] = false;
-      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'bookmarkpersona');
+      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
     } else {
       this.LikeTEjercicioState[index] = true;
-      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'bookmarkpersona');
+      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
     }
     this.dataTEjercicio = this.dataTEjercicio.filter((element) => this.LikeTEjercicioState[element.IDTIPOEJERCICIO]);
   }
@@ -171,59 +177,69 @@ export class MainPage implements OnInit {
     }
     this.dataOMusculares = this.dataOMusculares.filter((element) => this.LikeOMuscularState[element.IDOBJETIVOSMUSCULARES]);
   }
-
-  getVideoName(url: string): string {
-    return url.split('.')[0];
-  }
   selectSwiper(item:any,page:string){
     this.go_page_create(page,item);
   }
-  goEjercicioUniq(itemName:any,name:string){
-    this.navController.navigateForward('/' + name, {
-      queryParams: {
-        variableEjercicio:itemName,
-        previusPageMain:true,
-      }
-    });
-  }
-
   go_page_create(name: string, data: any) {
     if(name!== 'listar-sesiones'){
       this.navController.navigateForward('/' + name, {
         queryParams: {
           variableParametro: data,
-          previusPageMain:true,
+          previusPagelistarGuardados:true,
         }
       });
     }else{
       this.navController.navigateForward('/' + name, {
         queryParams: {
           variableSesiones: data,
-          previusPageMain:true,
+          previusPagelistarGuardados:true,
         }
       });
     }
   }
-
-  go_page_create_rutina(data: any,name: string) {
+  goEjercicioUniq(itemName:any,name:string){
+    this.dataBookMark=[];
     this.navController.navigateForward('/' + name, {
       queryParams: {
-        variableRutinaDiaria: data,
-        previusPageMain:true,
+        variableEjercicio:itemName,
+        previusPagelistarGuardados:true,
       }
     });
   }
-  go_page(name: string){
-    this.navController.navigateForward('/'+name);
-  }
-  formatDuracionRutina(duracion: string): string {
-    const partes = duracion.split(':');
-    if (partes.length === 3 && partes[0] === '00') {
-      // Solo muestra minutos y segundos
-      return `${parseInt(partes[1], 10)}:${partes[2]}`;
+
+  go_page_create_rutina(data: any,name: string) {
+    if(name==='rutinas-diarias'){
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableRutinaDiaria: data,
+          previusPagelistarGuardados:true,
+        }
+      });
+    }else if (name==='programarrutinas'){
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableprogramarrutinas: data,
+          previusPagelistarGuardados:true,
+        }
+      });
     }
-    // Mantén el formato original
-    return duracion;
+  }
+  getVideoName(url: string): string {
+    return url.split('.')[0];
+  }
+  obtenerPrimerNombre(nombre:string): string {
+    return nombre.split(' ')[0];
+  }
+  updateCurrentDate() {
+    const currentDate = new Date();
+    const dayOfWeek = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(currentDate);
+    const day = currentDate.getDate();
+    const month = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(currentDate);
+    this.currentDate = `${dayOfWeek}, ${day} de ${month}`;
+  }
+  go_page(name: string){
+    //this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
+    this.navController.navigateForward('/'+name);
   }
 
   async presentCustomToast(message: string, color: string) {
@@ -329,7 +345,6 @@ export class MainPage implements OnInit {
       }
     );
   }
-
   obtenerBookMarkUser(){
     this.apiService.allBookmark('bookmarkpersona').subscribe(
       (response) => {
@@ -344,7 +359,6 @@ export class MainPage implements OnInit {
       }
     );
   }
-
   obtenerbookmarkrutinas(){
     this.apiService.allBookmark('bookmarkrutinas').subscribe(
       (response) => {
@@ -426,4 +440,3 @@ export class MainPage implements OnInit {
     );
   }
 }
-

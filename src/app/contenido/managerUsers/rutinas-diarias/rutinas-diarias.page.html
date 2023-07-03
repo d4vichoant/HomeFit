@@ -11,7 +11,7 @@
       url('{{ ip_address }}/media/rutinas/portadasrutinas/{{variable.IMAGENRUTINA}}');
       background-repeat: no-repeat;
       background-size: cover;">
-      <div class="card-back" (click)="previusPageMain?go_page('main'):go_page('listar-sesiones')">
+      <div class="card-back" (click)="previusPageMain ? go_page('main') : (variableSesion ? go_page('listar-sesiones') : go_page('listar-guardados'))">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
           <path d="M9 14l-4 -4l4 -4"></path>
@@ -62,11 +62,11 @@
     <h1 class="right-aligned">Rutinas {{encontrarNumerosRepetidos(variable.IDEJERCICIOS)[0].count}} </h1>
   </div>
   <div class="container-body">
-    <div class="container" *ngFor="let item of variable.IDEJERCICIOS; ">
+    <div class="container" *ngFor="let item of variable.IDEJERCICIOS;"  (click)="goEjercicioUniq(item,'ejercicio-uniq'); $event.stopPropagation();">
       <div   class="round-section" *ngIf="encontrarNumerosRepetidos(variable.IDEJERCICIOS)[0].number===item">
         <h1>Siguiente Repetición</h1>
       </div><br>
-      <div class="image-section" (click)="toggleBookmark(findEjercicioRutina(item)?.IDEJERCICIO)">
+      <div class="image-section" (click)="toggleBookmark(findEjercicioRutina(item)?.IDEJERCICIO);$event.stopPropagation();">
         <div class="icon-wrapper"  *ngIf="!bookmarkState[findEjercicioRutina(item)?.IDEJERCICIO]; else otherbookmark">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="28" height="28" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -89,7 +89,7 @@
       </div>
       <div class="multiline-text-section">
         <p class="p1section">{{findEjercicioRutina(item)?.NOMBREEJERCICIO}}</p>
-        <p class="p2section">{{findEjercicioRutina(item)?.TIEMPOMULTIMEDIA}}</p>
+        <p class="p2section">{{findEjercicioRutina(item)?.TIEMPOMULTIMEDIA}}&nbsp;min.</p>
         <p class="p3section">cal. {{findEjercicioRutina(item)?.CALORIASEJERCICIO}} aprox.</p>
       </div>
       <div class="icon-section">

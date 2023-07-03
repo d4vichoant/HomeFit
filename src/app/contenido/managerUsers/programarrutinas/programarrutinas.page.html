@@ -11,7 +11,7 @@
       url('{{ ip_address }}/media/sesiones/portadassesiones/{{variable.IMAGESESION}}');
       background-repeat: no-repeat;
       background-size: cover; border-radius: 0px 0px 15px 15px;">
-      <div class="card-back" (click)="previusPageMain?go_page('main'):go_page('listar-sesiones')">
+      <div class="card-back" (click)="previusPageMain ? go_page('main') : (variableSesion ? go_page('listar-sesiones') : go_page('listar-guardados'))">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
           <path d="M9 14l-4 -4l4 -4"></path>
@@ -85,11 +85,11 @@
         </div>
       </div>
       <div class="container-body-ejercicios" *ngIf="visibilidadContenedores[i]">
-        <div class="container" *ngFor="let item of data.IDEJERCICIOS; " >
+        <div class="container" *ngFor="let item of data.IDEJERCICIOS; " (click)="goEjercicioUniq(item,'ejercicio-uniq')">
           <div   class="round-section" *ngIf="encontrarNumerosRepetidos(data.IDEJERCICIOS)[0].number===item">
             <h1>Siguiente Repetición</h1>
           </div><br>
-          <div class="image-section" (click)="toggleBookmark(findEjercicioRutina(item)?.IDEJERCICIO)">
+          <div class="image-section" (click)="toggleBookmark(findEjercicioRutina(item)?.IDEJERCICIO); $event.stopPropagation()">
             <div class="icon-wrapper"  *ngIf="!bookmarkState[findEjercicioRutina(item)?.IDEJERCICIO]; else otherbookmark">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="28" height="28" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

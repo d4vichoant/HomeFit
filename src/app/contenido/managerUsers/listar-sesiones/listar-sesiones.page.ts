@@ -20,6 +20,7 @@ export class ListarSesionesPage implements OnInit {
 
   variable!:any;
   previusPageMain:boolean=false;
+  previusPagelistarGuardados:boolean=false;
 
   public dataRutinas!: any[];
 
@@ -68,6 +69,7 @@ export class ListarSesionesPage implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.variable = params['variableSesiones'] as any;
       this.previusPageMain = params['previusPageMain'] as boolean|| false;
+      this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as boolean|| false;
     });
   }
   StatusBar(){
@@ -185,18 +187,34 @@ export class ListarSesionesPage implements OnInit {
   go_page(name: string){
     this.navController.navigateForward('/' + name, {
       queryParams: {
-        variableSesiones: ""
+        variableSesiones: "",
+        previusPageMain : this.previusPageMain,
+        previusPagelistarGuardados : this.previusPagelistarGuardados,
       }
     });
   }
   go_page_create(name: string, data: any) {
     this.showImage=false;
-    this.navController.navigateForward('/' + name, {
-      queryParams: {
-        variableRutinaDiaria: data,
-        variableSesiones:this.variable
-      }
-    });
+    if(name==="rutinas-diarias"){
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableRutinaDiaria: data,
+          variableSesiones:this.variable,
+          previusPageMain : this.previusPageMain,
+          previusPagelistarGuardados : this.previusPagelistarGuardados,
+        }
+      });
+    }else{
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableprogramarrutinas: data,
+          variableSesiones:this.variable,
+          previusPageMain : this.previusPageMain,
+          previusPagelistarGuardados : this.previusPagelistarGuardados,
+        }
+      });
+    }
+
   }
   expandBox(event: any,item:any,name:string) {
     const box = event.target;
