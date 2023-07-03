@@ -1,0 +1,199 @@
+ion-content {
+    --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .toolbar-header{
+    z-index: -1;
+    margin-top: 2%;
+    background: transparent;
+    padding: 0% 3% 0% 3%;
+    --background: transparent;
+
+  }
+  .onboard-top{
+    padding-top: 0%;
+    padding-bottom: 1%;
+    margin-top:0%;
+    ion-toolbar{
+      --background:transparent;
+      p{
+        font-family: Raleway-Light;
+        font-size: 1rem;
+        color:  #6b6a6b;
+      }
+    }
+  }
+
+  //css de Spinner de cargando ...
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(255, 255, 255); /* Fondo semitransparente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .container-body{
+    padding: 2% 3% 5% 3%;
+    height: 68vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+
+  .card-title-container {
+    text-align: center;
+  }
+
+  .card-title {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .card-subtitle {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+
+
+
+  .header-up{
+    padding: 0% 6% 0% 6%;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    .up-date{
+      margin: 0px;
+      padding: 0px;
+      ion-icon{
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #8c7efc;
+        margin-right: 10px;
+        width: 19px;
+        height: 19px;
+      }
+    }
+    .header-name{
+      margin: 0px;
+      padding: 0px;
+      h1{
+        font-family: Raleway-ExtraBold;
+        font-size: 1.5rem;
+        color: #535253;
+      }
+
+    }
+  }
+
+  .container-body{
+    padding: 0% 3% 3% 3%;
+    overflow-y: auto;
+    // height: 30vh;
+    ion-card{
+      background: linear-gradient(15deg,rgb(132, 61, 224), #8455e04b )!important;
+      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+      overflow: visible;
+      margin: 16px 0 24px;
+      position: relative;
+      padding-top: 20px;
+      border-radius: 5%;
+      .avatar-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .avatar {
+        width: 150px; /* Ajusta el tamaño deseado del avatar */
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .avatar img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      ion-card-header{
+        ion-card-title{
+          font-family: Raleway-Bold;
+          font-size: 1.3rem;
+          color: #ffffff;
+        }
+        ion-card-subtitle{
+          font-family: Raleway-Medium;
+          font-size: 1.3rem;
+          color: #ffffff;
+        }
+      }
+      ion-card-content{
+        h1{
+          overflow-x: auto;
+          white-space: nowrap;
+          margin: 7px 0px 2px 0px;
+          font-family: Raleway-Bold;
+          font-size: 1.2rem;
+          color:  #f1f1f1;
+        }
+      }
+    }
+  }
+
+
+  .card-list {
+    margin-top: 20px;
+  }
+
+  ion-item-divider {
+    font-weight: bold;
+    background-color: #f2f2f2;
+    padding: 10px;
+  }
+
+  .card-list ion-item-group{
+    margin-bottom: 10px;
+    span {
+      text-align: justify;
+    }
+  }
+
+  ion-item {
+    font-family: Raleway-Light;
+    padding: 8px;
+  }
+
+  ion-label {
+    font-family: Raleway-Light;
+    font-size: 20px;
+    color: #000000;
+  }
+
+  .ion-text-end{
+    .ion-button{
+      padding: 2% 3% 2% 3%;
+      background: linear-gradient(90deg, #e4d5d580, #664dda);
+      box-shadow: none;
+      border-radius: 10px;
+      font-family: Raleway-Bold;
+      font-size: .9rem;
+      color: #f4f3ff;
+    }
+  }
+
+

@@ -54,7 +54,6 @@ export class ListarEjerciciosPage implements OnInit {
 
   test(){
     this.obtenerOMuscular();
-    this.updateCurrentDate();
     this.chanceColorFooter();
     this.StatusBar();
     this.obtenerOPersonales();
@@ -77,7 +76,6 @@ export class ListarEjerciciosPage implements OnInit {
           this.obtenerGetPerfilCompleto(this.userSesion);
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
-              this.updateCurrentDate();
               this.chanceColorFooter();
               this.StatusBar();
               this.obtenerOPersonales();
@@ -211,16 +209,6 @@ export class ListarEjerciciosPage implements OnInit {
   }
   selectSwiper(item:any,page:string){
     this.go_page_create(page,item);
-  }
-  obtenerPrimerNombre(nombre:string): string {
-    return nombre.split(' ')[0];
-  }
-  updateCurrentDate() {
-    const currentDate = new Date();
-    const dayOfWeek = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(currentDate);
-    const day = currentDate.getDate();
-    const month = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(currentDate);
-    this.currentDate = `${dayOfWeek}, ${day} de ${month}`;
   }
 
   async presentCustomToast(message: string, color: string) {

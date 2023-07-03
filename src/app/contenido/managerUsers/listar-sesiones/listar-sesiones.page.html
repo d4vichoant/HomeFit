@@ -99,7 +99,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="dataRutinas && dataRutinas.length===0 || dataSesiones && dataSesiones.length===0 " class="container-nodata">
+    <div *ngIf="dataRutinas && dataRutinas.length===0 && dataSesiones && dataSesiones.length===0 " class="container-nodata">
       <img alt="imagen not found" src="{{ ip_address }}/media/errorpage/notfounddata.png" />
     </div>
   </div>

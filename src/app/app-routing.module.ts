@@ -194,6 +194,10 @@ const routes: Routes = [
     path: 'ejercicio-uniq',
     loadChildren: () => import('./contenido/managerEjercicio/ejercicio-uniq/ejercicio-uniq.module').then( m => m.EjercicioUniqPageModule)
   },
+  {
+    path: 'data-entrenador',
+    loadChildren: () => import('./contenido/managerUsers/data-entrenador/data-entrenador.module').then( m => m.DataEntrenadorPageModule)
+  },
 
 
 

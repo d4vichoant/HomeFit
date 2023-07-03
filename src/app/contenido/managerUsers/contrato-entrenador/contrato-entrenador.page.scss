@@ -3,3 +3,151 @@ ion-content {
   height: 100vh;
   overflow: hidden;
 }
+
+//css de Spinner de cargando ...
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(255, 255, 255); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.container-body{
+  padding: 2% 3% 5% 3%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.card-item{
+  border-radius: 15px;
+  ion-card-header{
+    ion-card-title {
+      font-family: Raleway-Bold;
+      font-size: 1.5rem;
+      color:  #ffffff;
+    }
+    ion-card-subtitle{
+      font-family: Raleway-Light;
+      font-size: 1rem;
+      color:  #ffffff;
+    }
+  }
+}
+
+.header-up{
+  padding: 0% 6% 3% 6%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  .up-date{
+    margin: 0px;
+    padding: 0px;
+    ion-icon{
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #8c7efc;
+      margin-right: 10px;
+      width: 19px;
+      height: 19px;
+    }
+  }
+  .header-name{
+    margin: 0px;
+    padding: 0px;
+    h1{
+      font-family: Raleway-ExtraBold;
+      font-size: 2rem;
+      color: #535253;
+    }
+
+  }
+}
+
+.container-body{
+  height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 10%;
+  div{
+  justify-content: center;
+  display: flex;
+  align-content: center;
+  padding: 0% 3% 0% 3% ;
+  // height: 30vh;
+  .card-item{
+    margin-bottom: 3%;
+    //background: linear-gradient(15deg,rgb(164, 149, 255), #d0bbf84b )!important;
+    border-radius: 15px;
+    width: 100%; /* Ajusta el ancho del card según tus necesidades */
+    height: 160px; /* Ajusta la altura del card según tus necesidades */
+    ion-card-header{
+      ion-card-title{
+        font-family: Raleway-Bold;
+        font-size: 1.2rem;
+        color: #ffffff;
+      }
+    }
+    ion-card-content{
+      font-family: Raleway-Light;
+      font-size: .8rem;
+      color: #ffffff;
+
+    }
+
+  }
+  }
+}
+.img-overlay {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+}
+.mat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(54, 92, 205);
+  margin: 100px auto;
+  width: 250px;
+  height: 100px;
+  position: relative;
+}
+
+.circulo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 40%;
+  background: rgb(138, 138, 138);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-top: -40px;
+}
+
+
+
+.item-container {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  text-align: start;
+  h2{
+    font-family: Raleway-Bold;
+    font-size: 1rem;
+    color: #ffffff;
+  }
+}
+
+.item-container svg {
+  margin-right: 5px;
+}
+

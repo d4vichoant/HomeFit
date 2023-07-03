@@ -6,7 +6,29 @@
   </div>
   <app-toolbar-designer></app-toolbar-designer>
   <app-footer-designer-users></app-footer-designer-users>
-  <div><h2 class="subtitle" >Te Recomendamos</h2></div>
+  <div class="header-up">
+    <div class="up-date">
+      <ion-icon name="sunny-outline"></ion-icon>
+      <span class="date">{{ currentDate }}</span>
+    </div>
+    <div class="header-name">
+      <h1>Hola,
+        <ng-container *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0].NOMBREPERSONA">
+          {{ obtenerPrimerNombre(userSesionPerfil[0].NOMBREPERSONA) }}
+        </ng-container>
+      </h1>
+    </div>
+  </div>
+  <div><h2 class="subtitle" >Recomendación</h2></div>
+  <div class="container"  *ngIf="dataRecomendacion && dataRecomendacion.length > 0">
+    <div class="box-recomendacion"   (click)="go_page_create_rutina(item,'rutinas-diarias')"  *ngFor="let item of dataRecomendacion"  style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/rutinas/portadasrutinas/{{item.IMAGENRUTINA}}');background-repeat: no-repeat;background-size: cover;" >
+      <div class="text "  >
+        <span   class="span1 ">{{item.NOMBRERUTINA}}</span>
+        <span  class="span2"  style="display: flex; align-items: center;">
+          RUTINA</span>
+      </div>
+    </div>
+  </div>
   <div><h2 class="subtitle" >Retorna donde te quedaste</h2></div>
   <div class="container-text">
     <h2 class="subtitle">Guardados</h2>

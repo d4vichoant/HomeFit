@@ -1,45 +1,52 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ApiServiceService } from '../../../api-service.service';
 import { StatusBar } from '@capacitor/status-bar';
 import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../../../constantes';
-import { DatePipe } from '@angular/common';
-
 
 @Component({
-  selector: 'app-contrato-entrenador',
-  templateUrl: './contrato-entrenador.page.html',
-  styleUrls: ['./contrato-entrenador.page.scss'],
-  providers: [DatePipe],
+  selector: 'app-data-entrenador',
+  templateUrl: './data-entrenador.page.html',
+  styleUrls: ['./data-entrenador.page.scss'],
 })
-export class ContratoEntrenadorPage implements OnInit {
+export class DataEntrenadorPage implements OnInit {
+
   public ip_address = IP_ADDRESS;
   public userSesion!:string;
   public userSesionPerfil!:any;
   public loading = true;
-  public dataEntrenadores!: any[];
-  public imgEntrenadores!: any[];
+  variable: any; // Ajustar el tipo a un solo entrenador en lugar de any[]
+
+  //public data!: any[];
 
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
-    private datePipe: DatePipe,
-    public toastController: ToastController) { }
-  ngOnInit() {
-    this.validateSesion();
-    //this.test();
+    public toastController: ToastController,
+    private route: ActivatedRoute,
+  ) { }
 
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.variable = params['variableEntrenador'];
+    });
+    this.validateSesion();
   }
+
   ionViewDidEnter() {
     this.validateSesion();
     //this.test();
   }
+
+  contratar(){
+
+  }
   test(){
     this.chanceColorFooter();
     this.StatusBar();
-    this.obtenerEntrenadores();
-    this.obtenerimgEntrenadores();
+    //this.obtenerEntrenadores();
     this.loading = false;
   }
   StatusBar(){
@@ -47,6 +54,7 @@ export class ContratoEntrenadorPage implements OnInit {
     StatusBar.setOverlaysWebView({ overlay: true });
     StatusBar.setBackgroundColor({ color: '#ffffff' });
   }
+
   validateSesion(){
     try{
       this.storage.get('sesion').then((sesion) => {
@@ -57,8 +65,6 @@ export class ContratoEntrenadorPage implements OnInit {
             (response) => {
               this.chanceColorFooter();
               this.StatusBar();
-              this.obtenerEntrenadores();
-              this.obtenerimgEntrenadores();
               this.loading = false;
             },
             (error) => {
@@ -73,11 +79,13 @@ export class ContratoEntrenadorPage implements OnInit {
       this.handleError();
     }
   }
+
   private handleError() {
     this.loading = false;
     this.navController.navigateForward('/error-page-users-trainers');
     this.storage.remove('sesion');
   }
+
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
     document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
@@ -118,55 +126,8 @@ export class ContratoEntrenadorPage implements OnInit {
       }
     );
   }
-
-  go_page_create(name: string, data: any) {
-    this.navController.navigateForward('/' + name, {
-      queryParams: {
-        variableEntrenador: data
-      }
-    });
+  go_page(name: string){
+    this.navController.navigateForward('/'+name);
   }
-
-  obtenerEntrenadores(){
-    this.apiService.allTrainer().subscribe(
-      (response) => {
-        this.dataEntrenadores=response;
-      },
-      (error) => {
-        this.presentCustomToast(error.error.error,"danger");
-      }
-    );
-  }
-
-  calcularEdad(fechaNacimiento: string): number {
-    const fechaActual = new Date();
-    const fechaNac = new Date(fechaNacimiento);
-    let edad = fechaActual.getFullYear() - fechaNac.getFullYear();
-
-    const mesActual = fechaActual.getMonth() + 1;
-    const mesNac = fechaNac.getMonth() + 1;
-
-    if (mesNac > mesActual || (mesNac === mesActual && fechaNac.getDate() > fechaActual.getDate())) {
-      edad--;
-    }
-
-    return edad;
-  }
-
-  obtenerPrimerNombre(nombreCompleto: string): string {
-    const nombres = nombreCompleto.split(" ");
-    return nombres[0];
-  }
-
-  obtenerimgEntrenadores(){
-    this.apiService.allTrainerBasic().subscribe(
-      (response) => {
-        this.imgEntrenadores=response;
-      },
-      (error) => {
-        this.presentCustomToast(error.error.error,"danger");
-      }
-    );
-  }
-
 }
+

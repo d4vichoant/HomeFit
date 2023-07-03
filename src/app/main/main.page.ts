@@ -16,6 +16,7 @@ export class MainPage implements OnInit {
   public userSesionPerfil!:any;
 
   public dataRutinas!: any[];
+  public dataRutinasTotal!:any[];
   public dataSesiones!:any[];
 
   bookmarkRutinasState: { [key: number]: boolean } = {};
@@ -36,12 +37,17 @@ export class MainPage implements OnInit {
   bookmarkState: { [key: number]: boolean } = {};
   dataBookMark!:any[];
 
+  public dataRecomendacion!:any[];
   public dataOPersoales!: any[];
   public dataTEjercicio!: any[];
   public dataOMusculares!: any[];
   public dataEjercicio!: any[];
 
+  public allobjetivospersonalesusuario!: any[];
+
   public loading = true;
+
+  currentDate!: string;
 
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
@@ -66,6 +72,7 @@ export class MainPage implements OnInit {
           this.obtenerGetPerfilCompleto(this.userSesion);
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
+              this.updateCurrentDate();
               this.chanceColorFooter();
               this.obtenerbookmarksesiones();
               this.obtenerbookmarkrutinas();
@@ -79,6 +86,7 @@ export class MainPage implements OnInit {
               this.obtenerOMuscular();
               this.obtenerOPersonales();
               this.obtenerTEjercicios();
+              this.obtenerObjetivosPersonales();
               this.StatusBar();
               this.loading=false;
             },
@@ -206,12 +214,21 @@ export class MainPage implements OnInit {
   }
 
   go_page_create_rutina(data: any,name: string) {
-    this.navController.navigateForward('/' + name, {
-      queryParams: {
-        variableRutinaDiaria: data,
-        previusPageMain:true,
-      }
-    });
+    if(name==='rutinas-diarias'){
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableRutinaDiaria: data,
+          previusPageMain:true,
+        }
+      });
+    }else if (name==='programarrutinas'){
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableprogramarrutinas: data,
+          previusPageMain:true,
+        }
+      });
+    }
   }
   go_page(name: string){
     this.navController.navigateForward('/'+name);
@@ -224,6 +241,13 @@ export class MainPage implements OnInit {
     }
     // Mantén el formato original
     return duracion;
+  }
+  findEjercicioRutina(IDEJERCICIORUTINA: number): any {
+    if (this.dataEjercicio) {
+      const elemento = this.dataEjercicio.find(objeto => objeto.IDEJERCICIO === IDEJERCICIORUTINA);
+      return elemento;
+    }
+    return null;
   }
 
   async presentCustomToast(message: string, color: string) {
@@ -246,7 +270,7 @@ export class MainPage implements OnInit {
     }
 
   obtenerGetPerfilCompleto(nickname:string){
-    this.apiService.connsultPerfilCompleto(nickname).subscribe(
+    this.apiService.connsultPerfilUsuarioCompleto(nickname).subscribe(
       (response) => {
         this.userSesionPerfil=response;
       },
@@ -292,7 +316,12 @@ export class MainPage implements OnInit {
     this.apiService.getRutinasActivate().subscribe(
       (response) => {
         this.dataRutinas=response;
+        this.dataRutinasTotal=response;
         this.dataRutinas = this.dataRutinas.map(objeto => ({
+          ...objeto,
+          IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
+        }));
+        this.dataRutinasTotal = this.dataRutinasTotal.map(objeto => ({
           ...objeto,
           IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
         }));
@@ -318,6 +347,34 @@ export class MainPage implements OnInit {
       }
     );
   }
+  obtenerPrimerNombre(nombre:string): string {
+    return nombre.split(' ')[0];
+  }
+  updateCurrentDate() {
+    const currentDate = new Date();
+    const dayOfWeek = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(currentDate);
+    const day = currentDate.getDate();
+    const month = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(currentDate);
+    this.currentDate = `${dayOfWeek}, ${day} de ${month}`;
+  }
+  obtenerObjetivosPersonales(){
+    this.apiService.allobjetivospersonalesusuario(this.userSesionPerfil[0].IDUSUARIO).subscribe(
+      (response) => {
+        this.allobjetivospersonalesusuario=response;
+        if(this.allobjetivospersonalesusuario){
+          const idObjetivosPersonalesMasGrande = this.allobjetivospersonalesusuario[0].IDOBJETIVOSPERSONALES
+          .split(',')
+          .map((numero: string) => parseInt(numero));
+          const resultado = this.dataRutinasTotal.filter(objeto => idObjetivosPersonalesMasGrande.includes(objeto.IDOBJETIVOSPERSONALESRUTINA));
+          this.dataRecomendacion = resultado;
+        }
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+
   obtenerEjercicios(){
     this.apiService.getEjercicioActivate().subscribe(
       (response) => {

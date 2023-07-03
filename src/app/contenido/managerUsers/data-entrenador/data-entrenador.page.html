@@ -1,0 +1,75 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">
+      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
+    </div>
+  </div>
+  <app-toolbar-designer></app-toolbar-designer>
+  <ion-toolbar class="toolbar-header">
+    <div class="onboard-top" >
+      <ion-toolbar >
+        <ion-buttons slot="start">
+          <ion-button style="color: #9259f9;"   (click)="go_page('contrato-entrenador')">
+           <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+         </ion-button>
+         <p (click)="go_page('contrato-entrenador')">Regresar</p>
+       </ion-buttons>
+      </ion-toolbar>
+    </div>
+  </ion-toolbar>
+  <div class="header-up">
+    <div class="header-name">
+      <h1>Entrenador</h1>
+    </div>
+  </div>
+  <div class="container-body">
+    <ion-card color="light">
+        <div class="avatar-container">
+          <ion-avatar class="avatar">
+            <img mat-card-image [src]="ip_address + '/media/perfile/' + variable.IMAGEPERSONA"/>
+          </ion-avatar>
+        </div>
+      <ion-card-content class="ion-text-center">
+        <h1 class="card-title">{{variable.NOMBREPERSONA}}</h1>
+        <h1 class="card-subtitle">{{variable.APELLDOPERSONA}}</h1>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-list class="card-list">
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>Descripción</ion-label>
+        </ion-item-divider>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                {{variable.DESCRIPCIONENTRENADOR}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-item-group>
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label> Especialidades</ion-label>
+        </ion-item-divider>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                {{variable.tituloESPECIALIDADENTRENADOR}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-item-group>
+    </ion-list>
+    <ion-row (click)="contratar()">
+      <ion-col class="ion-text-end">
+        <p class="ion-button"  >Contratar</p>
+      </ion-col>
+    </ion-row>
+  </div>
+  <app-footer-designer-users></app-footer-designer-users>
+</ion-content>

@@ -46,6 +46,9 @@ export class ApiServiceService {
   allObjetivosPersonales():Observable<any>{
     return this.http.get(this.apiUrl+/objetivospersonales/);
   }
+  allobjetivospersonalesusuario(idUsuario:number):Observable<any>{
+    return this.http.get(this.apiUrl+/objetivospersonalesusuario/+idUsuario);
+  }
   allEquipoRequerido():Observable<any>{
     return this.http.get(IP_ADDRESS+/multimedia/+/equiporequerido/);
   }

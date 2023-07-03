@@ -223,19 +223,33 @@ export class RutinasDiariasPage implements OnInit {
       this.circleY = y;
       if(this.circleX===this.squareWidth-this.circleRadius){
         setTimeout(() => {
-          this.presentCustomToast("Yendo otra pagina","success");
+          this.dataBookMark=[];
+          const elementoEncontrado = this.dataEjercicio.find(item => item.IDEJERCICIO === this.variable.IDEJERCICIOS[0]);
+          this.navController.navigateForward('/ejercicio-uniq' , {
+            queryParams: {
+              variableEjercicio:elementoEncontrado,
+              variableEjercicios:this.variable.IDEJERCICIOS,
+              variableEjerciciositem:0,
+              variableRutinaDiaria:this.variable,
+              variableSesiones:this.variableSesion,
+              previusPageMain :this.previusPageMain,
+              previusPagelistarGuardados:this.previusPagelistarGuardados,
+            }
+          });
         }, 150);
       }
     }
 
     onTouchEnd() {
       const squareCenter = this.squareWidth / 2;
-
       if (this.circleX < squareCenter) {
         this.updateCirclePosition(0, this.circleY);
       } else {
         this.updateCirclePosition(this.squareWidth - this.circleRadius, this.circleY);
       }
+      setTimeout(()=>{
+        this.updateCirclePosition(0, this.circleY);
+      },400);
     }
 
     incrementarContador(): void {

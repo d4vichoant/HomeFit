@@ -20,7 +20,7 @@ ion-content {
 .container-body{
   padding: 0% 6% 8% 6%;
   //background-color: #5660f5;
-  height: 75vh;
+  height: 84vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -122,40 +122,6 @@ ion-content {
   height: 100%;
   border-radius: 15px;
   background: linear-gradient(0deg, rgb(0, 0, 0), rgba(0, 0, 0, 0.055)); /* Cambia el color y la opacidad según tus necesidades */
-}
-
-.header-up{
-  padding: 0% 6% 0% 6%;
-  display: block;
-  justify-content: center;
-  align-items: center;
-  .up-date{
-    margin: 0px;
-    padding: 0px;
-    ion-icon{
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: #8c7efc;
-      margin-right: 10px;
-      width: 19px;
-      height: 19px;
-    }
-    span{
-      font-family: Raleway-bold;
-      font-size: 1rem;
-      color: #8c7efc;
-    }
-  }
-  .header-name{
-    margin: 0px;
-    padding: 0px;
-    h1{
-      font-family: Raleway-ExtraBold;
-      font-size: 2rem;
-      color: #535253;
-    }
-  }
 }
 
 .text1{

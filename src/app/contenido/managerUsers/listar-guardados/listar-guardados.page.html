@@ -6,19 +6,6 @@
   </div>
   <app-toolbar-designer></app-toolbar-designer>
   <app-footer-designer-users></app-footer-designer-users>
-  <div class="header-up">
-    <div class="up-date">
-      <ion-icon name="sunny-outline"></ion-icon>
-      <span class="date">{{ currentDate }}</span>
-    </div>
-    <div class="header-name">
-      <h1>Hola,
-        <ng-container *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0].NOMBREPERSONA">
-          {{ obtenerPrimerNombre(userSesionPerfil[0].NOMBREPERSONA) }}
-        </ng-container>
-      </h1>
-    </div>
-  </div>
   <div class="container-body">
     <div class="container-text" (click)="go_page('main')">
         <span>
@@ -27,11 +14,11 @@
           <path d="M9 14l-4 -4l4 -4"></path>
           <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
        </svg></span>
-       <h2 class="subtitle"><span> Guardados</span></h2>
+       <h2 class="subtitle2">Guardados</h2>
     </div>
     <div class="container"  >
       <div class="item-container" *ngIf="dataEjercicio && dataEjercicio.length > 0" >
-        <div><h2 class="subtitle" >Ejercicios</h2></div>
+        <div><h2 class="subtitle"><span>Ejercicios</span></h2></div>
         <div class="box" *ngFor="let item of dataEjercicio " (click)="goEjercicioUniq(item,'ejercicio-uniq')" style="background-image: linear-gradient(45deg,  #0000003f,#ded5ff73), url('{{ ip_address }}/multimedia/{{getVideoName(item.ALMACENAMIENTOMULTIMEDIA)}}.jpg');background-repeat: no-repeat;background-size: cover;" >
           <div class="icon-wrapper" (click)="toggleBookmarkEjercicio(item.IDEJERCICIO); $event.stopPropagation()" *ngIf="!bookmarkState[item.IDEJERCICIO]; else otherbookmarkEjercicio">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -49,13 +36,11 @@
           </ng-template>
           <div class="text " >
             <span class="span1 ">{{item.NOMBREEJERCICIO}}</span>
-            <span class="span2 "  style="display: flex; align-items: center;">
-              EJERCICIO</span>
           </div>
         </div>
       </div>
       <div class="item-container" *ngIf="dataRutinas && dataRutinas.length > 0">
-        <div><h2 class="subtitle" >Rutinas</h2></div>
+        <div><h2 class="subtitle" ><span>Rutinas</span></h2></div>
         <div class="box" (click)="go_page_create_rutina(item,'rutinas-diarias')" *ngFor="let item of dataRutinas" style="background-image: linear-gradient(0deg,  #0000003f,#ded5ff73), url('{{ ip_address }}/media/rutinas/portadasrutinas/{{item.IMAGENRUTINA}}');background-repeat: no-repeat;background-size: cover;" >
           <div class="icon-wrapper" (click)="toggleBookmarkRutinas(item.IDRUTINA); $event.stopPropagation()" *ngIf="!bookmarkRutinasState[item.IDRUTINA]; else otherbookmarkrutinas">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -73,13 +58,11 @@
           </ng-template>
           <div class="text " >
             <span class="span1 ">{{item.NOMBRERUTINA}}</span>
-            <span class="span2 "  style="display: flex; align-items: center;">
-              RUTINA</span>
           </div>
         </div>
       </div>
       <div class="item-container" *ngIf="dataSesiones && dataSesiones.length > 0">
-        <div><h2 class="subtitle" >Programación de Rutinas</h2></div>
+        <div><h2 class="subtitle"><span>Programación de Rutinas</span></h2></div>
         <div class="box" (click)="go_page_create_rutina(item,'programarrutinas')" *ngFor="let item of dataSesiones" style="background-image: linear-gradient(0deg, #0000003f, #ded5ff73), url('{{ ip_address }}/media/sesiones/portadassesiones/{{item.IMAGESESION}}');background-repeat: no-repeat;background-size: cover;">
           <div class="icon-wrapper" (click)="toggleBookmarkOSesiones(item.IDSESION); $event.stopPropagation()" *ngIf="!bookmarkSesionesState[item.IDSESION]; else otherbookmarksesiones">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -97,13 +80,11 @@
           </ng-template>
           <div class="text "  >
             <span   class="span1 ">{{item.NOMBRESESION}}</span>
-            <span  class="span2"  style="display: flex; align-items: center;">
-            PROG. RUTINAS</span>
           </div>
         </div>
       </div>
       <div class="item-container" *ngIf="dataTEjercicio && dataTEjercicio.length > 0">
-        <div><h2 class="subtitle" >Según el Tipo de Ejercicio</h2></div>
+        <div><h2 class="subtitle"><span>Según el Tipo de Ejercicio</span></h2></div>
         <div class="box"   (click)="selectSwiper(item,'listar-parametros')"   *ngFor="let item of dataTEjercicio "   style="background-image: linear-gradient(0deg,  #0000003f,#ded5ff73), url('{{ ip_address }}/media/tipoEjercicio/{{item.IMAGETIPOEJERCICIO}}');background-repeat: no-repeat;background-size: cover;">
           <div class="icon-wrapper" (click)="toggleBookmarkTEjercicio(item.IDTIPOEJERCICIO); $event.stopPropagation()" *ngIf="!LikeTEjercicioState[item.IDTIPOEJERCICIO]; else otherLikeTEjercicio">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -121,13 +102,11 @@
           </ng-template>
           <div class="text "  >
             <span   class="span1 ">{{item.NOMBRETIPOEJERCICIO}}</span>
-            <span  class="span2"  style="display: flex; align-items: center;">
-              FITNESS</span>
           </div>
         </div>
       </div>
       <div class="item-container" *ngIf="dataOPersoales && dataOPersoales.length > 0">
-        <div><h2 class="subtitle" >Según tú Objetivo</h2></div>
+        <div><h2 class="subtitle"><span>Según tú Objetivo</span></h2></div>
         <div class="box" (click)="selectSwiper(item,'listar-sesiones')"  *ngFor="let item of dataOPersoales "   style="background-image: linear-gradient(0deg,  #0000003f,#ded5ff73), url('{{ ip_address }}/media/objetivospersonales/{{item.IMAGEOBJETIVOSPERSONALES}}');background-repeat: no-repeat;background-size: cover;">
           <div class="icon-wrapper" (click)="toggleBookmarkOPersonal(item.IDOBJETIVOSPERSONALES); $event.stopPropagation()" *ngIf="!LikeOPersonalState[item.IDOBJETIVOSPERSONALES]; else otherLikeOPersonal">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -145,13 +124,11 @@
           </ng-template>
           <div class="text "  >
             <span   class="span1 ">{{item.DESCRIPCIONOBJETIVOSPERSONALES}}</span>
-            <span  class="span2"  style="display: flex; align-items: center;">
-              OBJETIVO</span>
           </div>
         </div>
       </div>
       <div class="item-container" *ngIf="dataOMusculares && dataOMusculares.length > 0">
-        <div><h2 class="subtitle" >Según tú Musculo</h2></div>
+        <div><h2 class="subtitle"><span>Según tú Musculo</span></h2></div>
         <div class="box"  (click)="selectSwiper(item,'listar-parametros')" *ngFor="let item of dataOMusculares "   style="background-image: linear-gradient(0deg,  #0000003f,#ded5ff73), url('{{ ip_address }}/media/objetivomuscular/{{item.IMAGENOBJETIVOSMUSCULARES}}');background-repeat: no-repeat;background-size: cover;">
           <div class="icon-wrapper" (click)="toggleBookmarkOMuscular(item.IDOBJETIVOSMUSCULARES); $event.stopPropagation()" *ngIf="!LikeOMuscularState[item.IDOBJETIVOSMUSCULARES]; else otherLikeOMuscular">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -169,8 +146,6 @@
           </ng-template>
           <div class="text "  >
             <span   class="span1 ">{{item.NOMBREOBJETIVOSMUSCULARES}}</span>
-            <span  class="span2"  style="display: flex; align-items: center;">
-              MUSCULO</span>
           </div>
         </div>
       </div>

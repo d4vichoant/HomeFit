@@ -6,7 +6,7 @@
   </div>
   <div  class="video-container">
     <video #videoPlayer loop   (loadedmetadata)="autoplayVideo($event)">
-      <source src="{{ip_address}}/multimedia/{{variable.ALMACENAMIENTOMULTIMEDIA}}" type="video/mp4">
+      <source src="{{ip_address}}/multimedia/{{variable?.ALMACENAMIENTOMULTIMEDIA}}" type="video/mp4">
     </video>
     <div class="image-overlay"></div>
     <div class="top-left-button" (click)="handleButtonClick()">
@@ -18,8 +18,8 @@
       </svg>
     </div>
     <div class="top-right-button">
-      <div  (click)="toggleBookmark(variable.IDEJERCICIO); $event.stopPropagation();">
-        <div class="icon-wrapper"  *ngIf="!bookmarkState[variable.IDEJERCICIO]; else otherbookmark">
+      <div  (click)="toggleBookmark(variable?.IDEJERCICIO); $event.stopPropagation();">
+        <div class="icon-wrapper"  *ngIf="!bookmarkState[variable?.IDEJERCICIO]; else otherbookmark">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
@@ -68,10 +68,10 @@
       </ng-template>
     </div>
     <div class="bottom-left-button">
-      <h1>{{variable.NOMBREEJERCICIO}}</h1>
+      <h1>{{variable?.NOMBREEJERCICIO}}</h1>
     </div>
   </div>
-  <div class="container-body">
+  <div class="container-body" [style]="variableEjercicios?'height: 38vh;':'height: 42vh;'">
     <div class="item-container">
       <div class="item-icon align-top" >
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alarm-filled" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -82,7 +82,7 @@
        </svg>
       </div>
       <div class="item-text">
-        <h2>{{formatDuracionRutina(variable.TIEMPOMULTIMEDIA)}}&nbsp;minutos, {{variable.tituloniveldificultadejercicio}}</h2></div>
+        <h2>{{variable?.TIEMPOMULTIMEDIA}}&nbsp;minutos, {{variable?.tituloniveldificultadejercicio}}</h2></div>
     </div>
     <div class="item-container">
       <div class="item-icon align-top">
@@ -94,7 +94,7 @@
        </svg>
       </div>
       <div class="item-text" >
-        <h2>{{variable.NOMBREOBJETIVOSMUSCULARES}}</h2>
+        <h2>{{variable?.NOMBREOBJETIVOSMUSCULARES}}</h2>
       </div>
     </div>
     <div class="item-container">
@@ -106,7 +106,7 @@
        </svg>
       </div>
       <div class="item-text">
-        <h2>{{variable.TITULOS_EQUIPOS_REQUERIDOS?variable.TITULOS_EQUIPOS_REQUERIDOS:'Ninguno'}}</h2>
+        <h2>{{variable &&variable.TITULOS_EQUIPOS_REQUERIDOS?variable.TITULOS_EQUIPOS_REQUERIDOS:'Ninguno'}}</h2>
       </div>
     </div>
     <div class="item-container">
@@ -129,10 +129,25 @@
       </div>
     </div>
     <div class="item-text-description">
-      {{variable.DESCRIPCIONEJERCICIO}}
+      {{variable?.DESCRIPCIONEJERCICIO}}
     </div>
   </div>
   <div class="container-button">
     <ion-button  expand="block" fill="clear">Comenzar Entrenamiento</ion-button>
+  </div>
+  <div class="button-container" *ngIf="variableEjercicios">
+    <ion-button (click)="previusEjercicio()" *ngIf="variableEjerciciositem!==0" class="half-width-button" fill="clear">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left-pipe" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M7 6v12"></path>
+        <path d="M18 6l-6 6l6 6"></path>
+     </svg>&nbsp; Atras</ion-button>
+    <ion-button (click)="nextEjercicio()" class="half-width-button" fill="clear">&nbsp;Siguiente
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right-pipe" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M6 6l6 6l-6 6"></path>
+        <path d="M17 5v13"></path>
+     </svg>
+    </ion-button>
   </div>
 </ion-content>

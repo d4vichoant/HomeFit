@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef , OnInit } from '@angular/core';
 import { IP_ADDRESS } from '../../../constantes';
 import { StatusBar } from '@capacitor/status-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { ApiServiceService } from '../../../api-service.service';
@@ -21,12 +21,16 @@ export class EjercicioUniqPage implements OnInit {
   bookmarkState: { [key: number]: boolean } = {};
   dataBookMark!:any[];
 
+  public dataEjercicio!: any[];
+
   public ip_address = IP_ADDRESS;
   statussound :boolean=true;
   statuslikeup :boolean=true;
   public isPlaying = true;
   statuslikedown :boolean=true;
   variable!:any;
+  variableEjercicios!:any[];
+  variableEjerciciositem!:number;
   variableRutinaDiaria!:any;
   variableprogramarrutinas!:any;
   variableParamentro!:any;
@@ -38,7 +42,8 @@ export class EjercicioUniqPage implements OnInit {
     private apiService: ApiServiceService,
     private storage: Storage,
     private navController: NavController,
-    public toastController: ToastController) { }
+    public toastController: ToastController,
+    private router: Router) { }
 
   ngOnInit() {
     try {
@@ -68,6 +73,7 @@ export class EjercicioUniqPage implements OnInit {
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
               this.StatusBar();
+              this.obtenerEjercicios();
               this.obtenerBookMarkUser();
               this.loading=false;
             },
@@ -91,16 +97,19 @@ export class EjercicioUniqPage implements OnInit {
 
   recuperarDatos(){
     this.route.queryParams.subscribe(params => {
-      this.variable = params['variableEjercicio'] as any;
+      this.variable = params['variableEjercicio'] as any || null;
       this.variableParamentro = params['variableParametro'] as any || null;
       this.variableRutinaDiaria = params['variableRutinaDiaria'] as any || null;
       this.variableprogramarrutinas = params['variableprogramarrutinas'] as any || null;
       this.variableSesiones = params['variableSesiones'] as any || null;
       this.previusPageMain = params['previusPageMain'] as any || null;
       this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as any || null;
+      this.variableEjercicios = params['variableEjercicios'] as any ||null;
+      this.variableEjerciciositem = params['variableEjerciciositem'] as number;
     });
   }
   handleButtonClick(): void {
+    this.variable = '';
     if (this.variableRutinaDiaria) {
       this.go_page('rutinas-diarias');
     } else if (this.variableprogramarrutinas) {
@@ -112,6 +121,42 @@ export class EjercicioUniqPage implements OnInit {
     }else{
       this.go_page('listar-guardados');
     }
+  }
+  nextEjercicio() {
+    this.variableEjerciciositem ++;
+    const elementoEncontrado = this.dataEjercicio.find(item => item.IDEJERCICIO === this.variableEjercicios[this.variableEjerciciositem]);
+    this.router.navigate(['.'], {
+      relativeTo: this.route,
+      queryParams: {
+        variableEjercicio: elementoEncontrado,
+        variableParamentro: this.variableParamentro,
+        variableEjercicios: this.variableEjercicios,
+        variableEjerciciositem: this.variableEjerciciositem,
+        variableRutinaDiaria: this.variableRutinaDiaria,
+        variableprogramarrutinas: this.variableprogramarrutinas,
+        variableSesiones: this.variableSesiones,
+        previusPageMain: this.previusPageMain,
+        previusPagelistarGuardados: this.previusPagelistarGuardados,
+      },
+    });
+  }
+  previusEjercicio() {
+    this.variableEjerciciositem --;
+    const elementoEncontrado = this.dataEjercicio.find(item => item.IDEJERCICIO === this.variableEjercicios[this.variableEjerciciositem]);
+    this.router.navigate(['.'], {
+      relativeTo: this.route,
+      queryParams: {
+        variableEjercicio: elementoEncontrado,
+        variableParamentro: this.variableParamentro,
+        variableEjercicios: this.variableEjercicios,
+        variableEjerciciositem: this.variableEjerciciositem,
+        variableRutinaDiaria: this.variableRutinaDiaria,
+        variableprogramarrutinas: this.variableprogramarrutinas,
+        variableSesiones: this.variableSesiones,
+        previusPageMain: this.previusPageMain,
+        previusPagelistarGuardados: this.previusPagelistarGuardados,
+      },
+    });
   }
   go_page(name: string){
     if(this.variableRutinaDiaria){
@@ -176,6 +221,16 @@ export class EjercicioUniqPage implements OnInit {
       });
     }
   }
+  obtenerDuracionEnMinutos(tiempo:string):number {
+    const tiempoPartes = tiempo.split(":");
+    const horas = parseInt(tiempoPartes[0]);
+    const minutos = parseInt(tiempoPartes[1]);
+    const segundos = parseInt(tiempoPartes[2]);
+
+    const duracionMinutos = horas * 60 + minutos + segundos / 60;
+
+    return parseFloat(duracionMinutos.toFixed(4));
+  }
   autoplayVideo(event: Event) {
     const video: HTMLVideoElement = this.videoPlayer.nativeElement;
     video.muted = true;
@@ -233,6 +288,19 @@ export class EjercicioUniqPage implements OnInit {
     this.apiService.connsultPerfilUsuarioCompleto(nickname).subscribe(
       (response) => {
         this.userSesionPerfil=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerEjercicios(){
+    this.apiService.getEjercicioActivate().subscribe(
+      (response) => {
+        this.dataEjercicio=response;
+        this.dataEjercicio.forEach((ejercicio) => {
+        ejercicio.CALORIASEJERCICIO= (this.obtenerDuracionEnMinutos(ejercicio.TIEMPOMULTIMEDIA)/60*ejercicio.METEJERCICIO*Number(this.userSesionPerfil[0].PESOUSUARIO)).toFixed(2);
+        });
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

@@ -5,19 +5,6 @@
     </div>
   </div>
   <app-toolbar-designer></app-toolbar-designer>
-  <div class="header-up">
-    <div class="up-date">
-      <ion-icon name="sunny-outline"></ion-icon>
-      <span class="date">{{ currentDate }}</span>
-    </div>
-    <div class="header-name">
-      <h1>Hola,
-        <ng-container *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0].NOMBREPERSONA">
-          {{ obtenerPrimerNombre(userSesionPerfil[0].NOMBREPERSONA) }}
-        </ng-container>
-      </h1>
-    </div>
-  </div>
   <div class="container-body">
     <div class="container-swiper">
       <swiper-container #slides class="onb-container onb-container-1"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">

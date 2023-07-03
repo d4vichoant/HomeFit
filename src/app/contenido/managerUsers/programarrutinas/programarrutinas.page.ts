@@ -34,6 +34,7 @@ export class ProgramarrutinasPage implements OnInit {
   dataBookMark!:any[];
 
   DuracionTotal!:string;
+  VALIDATORDURACIONTOTAL:boolean=false;
 
   bookmarkSesionesState: { [key: number]: boolean } = {};
   dataBookMarkSesiones!:any[];
@@ -153,6 +154,7 @@ export class ProgramarrutinasPage implements OnInit {
 
   go_page(name: string) {
     this.DuracionTotal="";
+    this.VALIDATORDURACIONTOTAL=false;
     this.navController.navigateForward('/' + name, {
       queryParams: {
         variableSesiones: this.variableSesion,
@@ -310,8 +312,9 @@ export class ProgramarrutinasPage implements OnInit {
         if(this.variable){
           this.dataRutinas = this.variable.IDRUTINAS.map((IDRUTINAS: number) => this.dataRutinas.find(rutina => rutina.IDRUTINA === IDRUTINAS));
         }
+        let duracionTotal!: string;
         this.dataRutinas.forEach(element => {
-          this.DuracionTotal = this.sumarTiempos(this.DuracionTotal,element.DURACIONRUTINA);
+          duracionTotal= this.sumarTiempos(duracionTotal,element.DURACIONRUTINA);
           element.IDEJERCICIOS.forEach((elementejercicio:number)=> {
             if(!element.CALORIARUTINA){
               element.CALORIARUTINA=0;
@@ -322,7 +325,11 @@ export class ProgramarrutinasPage implements OnInit {
             element.CALORIARUTINA=numeroConDecimales;
           });
         });
-        this.DuracionTotal=this.formatDuracionRutina(this.DuracionTotal);
+        if(!this.VALIDATORDURACIONTOTAL){
+          this.VALIDATORDURACIONTOTAL=true;
+          this.DuracionTotal=duracionTotal;
+          this.DuracionTotal=this.formatDuracionRutina(this.DuracionTotal);
+          }
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
