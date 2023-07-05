@@ -61,6 +61,9 @@ export class ApiServiceService {
   allEspecialidadentrenador():Observable<any>{
     return this.http.get(this.apiUrl+/especialidadentrenador/);
   }
+  getcomentariosentrenador(idEntrenador:number):Observable<any>{
+    return this.http.get(this.apiUrl+/getcomentariosentrenador/+idEntrenador);
+  }
   uploadFile(file: File,nickname: string): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file,nickname);
@@ -75,6 +78,9 @@ export class ApiServiceService {
   }
   allTrainerBasic(): Observable<any> {
     return this.http.get(IP_ADDRESS+/manager/+/entrenadorBasic/);
+  }
+  allTrainerBasicEjercicioRutina(): Observable<any> {
+    return this.http.get(IP_ADDRESS+/manager/+/entrenadorBasicEjercicioRutina/);
   }
   allEntrenantes(): Observable<any> {
     return this.http.get(IP_ADDRESS+/manager/+/entrenante/ );
@@ -261,4 +267,13 @@ export class ApiServiceService {
     const apiUrlWithType = this.apiUrl + '/' + type + '/';
     return this.http.post(apiUrlWithType, data);
   }
+  ContratoEntrenador(idUSUARIO: number, idENTRENADOR: number): Observable<any>{
+    console.log(idUSUARIO,idENTRENADOR);
+    const data={
+      idUSUARIO:idUSUARIO,
+      idENTRENADOR:idENTRENADOR
+    }
+    console.log(data);
+    return this.http.post(IP_ADDRESS+/programacion/+/Contrato/,data );
+  }
 }

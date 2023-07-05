@@ -25,15 +25,15 @@ export class ContratoEntrenadorPage implements OnInit {
     private apiService: ApiServiceService,
     private storage: Storage,
     private datePipe: DatePipe,
-    public toastController: ToastController) { }
+    public toastController: ToastController) {
+    }
   ngOnInit() {
-    this.validateSesion();
-    //this.test();
-
+    //this.validateSesion();
+    this.test();
   }
   ionViewDidEnter() {
-    this.validateSesion();
-    //this.test();
+    //this.validateSesion();
+    this.test();
   }
   test(){
     this.chanceColorFooter();
@@ -73,6 +73,11 @@ export class ContratoEntrenadorPage implements OnInit {
       this.handleError();
     }
   }
+
+  hideDiv() {
+    var div = document.querySelector('.fullscreen-bg');
+    div?.classList.add('hide');
+  }
   private handleError() {
     this.loading = false;
     this.navController.navigateForward('/error-page-users-trainers');
@@ -109,7 +114,7 @@ export class ContratoEntrenadorPage implements OnInit {
     }
 
   obtenerGetPerfilCompleto(nickname:string){
-    this.apiService.connsultPerfilCompleto(nickname).subscribe(
+    this.apiService.connsultPerfilUsuarioCompleto(nickname).subscribe(
       (response) => {
         this.userSesionPerfil=response;
       },
@@ -128,7 +133,7 @@ export class ContratoEntrenadorPage implements OnInit {
   }
 
   obtenerEntrenadores(){
-    this.apiService.allTrainer().subscribe(
+    this.apiService.allTrainerBasicEjercicioRutina().subscribe(
       (response) => {
         this.dataEntrenadores=response;
       },

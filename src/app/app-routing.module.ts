@@ -166,7 +166,8 @@ const routes: Routes = [
   {
     path: 'contrato-entrenador',
     loadChildren: () => import('./contenido/managerUsers/contrato-entrenador/contrato-entrenador.module').then( m => m.ContratoEntrenadorPageModule)
-  },  {
+  },
+  {
     path: 'listar-ejercicios',
     loadChildren: () => import('./contenido/managerUsers/listar-ejercicios/listar-ejercicios.module').then( m => m.ListarEjerciciosPageModule)
   },
@@ -198,9 +199,6 @@ const routes: Routes = [
     path: 'data-entrenador',
     loadChildren: () => import('./contenido/managerUsers/data-entrenador/data-entrenador.module').then( m => m.DataEntrenadorPageModule)
   },
-
-
-
 ];
 
 @NgModule({

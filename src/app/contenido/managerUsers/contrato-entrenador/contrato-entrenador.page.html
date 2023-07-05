@@ -4,70 +4,124 @@
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-  <app-toolbar-designer></app-toolbar-designer>
-  <div class="header-up">
-    <div class="header-name">
-      <h1>Entrenadores</h1>
+  <div class="fullscreen-bg" style="background-image:linear-gradient(0deg,  #0000006b,#9159f9a4), url('{{ip_address}}/media/perfile/background.png')">
+    <div class="title-app">
+      <h2>HomeFit<span>GO</span></h2>
+    </div>
+    <div class="container-fullscreen-bg">
+      <div class="item-header">
+        <p>Zona de GYM</p>
+      </div>
+      <div class="item-body">
+        <h1>
+          Cuida tu salud con nuestros planes de ejercicio.
+        </h1>
+        <p>
+          Hemos estado creando e implementando proyectos durante muchos años en todo el mundo, tenemos cientos de clientes satisfechos.
+        </p>
+        <ion-button fill="clear">
+          Leer Más
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-right" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M5 12l14 0"></path>
+            <path d="M15 16l4 -4"></path>
+            <path d="M15 8l4 4"></path>
+          </svg>
+        </ion-button>
+      </div>
+    </div>
+    <div class="button-botton"  (click)="hideDiv()" >
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-caret-down" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M6 10l6 6l6 -6h-12"></path>
+     </svg>
+    </div>
+  </div>
+  <div class="portada-bg" style="background-image: linear-gradient(0deg, #330e67, #330e676c, #330e6721), url('{{ip_address}}/media/perfile/portada.png')">
+    <div class="header">
+      <app-toolbar-designer-white></app-toolbar-designer-white>
+    </div>
+    <div class="text-overlay-up">
+      <p>Entrenadores</p>
     </div>
   </div>
   <div class="container-body">
-    <div *ngFor="let item of dataEntrenadores">
-      <ion-card (click)="go_page_create('data-entrenador',item)"class="card-item"  style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/objetive-muscular-bk-2.png');background-repeat: no-repeat;background-size: cover;">
-        <ion-row>
-          <ion-col size="12" class="ion-no-padding">
-            <ion-card-header>
-              <ion-card-title>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}&nbsp;{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</ion-card-title>
-            </ion-card-header>
-          </ion-col>
-          <ion-col size="5" class="ion-no-padding">
-            <mat-card-avatar>
-              <img mat-card-image [src]="ip_address + '/media/perfile/' + item.IMAGEPERSONA" class="circulo">
-            </mat-card-avatar>
-          </ion-col>
-          <!-- <div class="img-overlay">
-            <ion-col size="4" class="ion-no-padding">
-              <ion-img class="img" [src]="ip_address + '/media/perfile/' + item.IMAGEPERSONA"></ion-img>
-            </ion-col>
-          </div> -->
-          <ion-col size="6" >
-            <ion-card-content class="ion-no-padding">
-              <div class="item-container">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-event" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-                  <path d="M16 3l0 4"></path>
-                  <path d="M8 3l0 4"></path>
-                  <path d="M4 11l16 0"></path>
-                  <path d="M8 15h2v2h-2z"></path>
-              </svg>
-                <h2>Edad:</h2>
-                <span class="age">&nbsp;&nbsp;&nbsp;{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }} años</span>
-              </div>
-      <!--        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-gift" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M3 8m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z"></path>
-                <path d="M12 8l0 13"></path>
-                <path d="M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7"></path>
-                <path d="M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5"></path>
-            </svg>
-              <h2>Fecha de Nacimiento:</h2>
-              <span class="age">&nbsp;&nbsp;&nbsp;{{ item.FECHANACIMIENTOPERSONA | date: 'yyyy-MM-dd' }}</span> -->
-              <div class="item-container">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
-                  <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
-                  <path d="M12 12l0 .01"></path>
-                  <path d="M3 13a20 20 0 0 0 18 0"></path>
-                </svg>
-                <h2>Experiencia:</h2>
-                <span class="age">&nbsp;&nbsp;&nbsp;{{ item.EXPERIENCIAENTRENADOR }} años</span>
-              </div>
-            </ion-card-content>
-          </ion-col>
-        </ion-row>
-      </ion-card>
+    <div class="container" *ngFor="let item of dataEntrenadores" (click)="go_page_create('data-entrenador',item)">
+      <div class="text-overlay">
+        <p>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}<span style="color: #b373d3; font-family: Raleway-ExtraBold;">{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</span></p>
+      </div>
+      <div class="container-box-container">
+        <div class="box-container">
+          <div class="square-box square1"></div>
+          <div class="square-box square2"></div>
+          <div class="square-box square3"></div>
+          <div class="square-box square4"></div>
+        </div>
+      </div>
+      <div class="container-text-body">
+        <div class="text-body">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-event" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
+            <path d="M16 3l0 4"></path>
+            <path d="M8 3l0 4"></path>
+            <path d="M4 11l16 0"></path>
+            <path d="M8 15h2v2h-2z"></path>
+        </svg>
+          <h2>Edad:
+          <span>{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }}&nbsp;años5</span></h2>
+        </div>
+        <div class="text-body">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+            <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
+            <path d="M12 12l0 .01"></path>
+            <path d="M3 13a20 20 0 0 0 18 0"></path>
+          </svg>
+          <h2>Experiencia:
+          <span>{{ item.EXPERIENCIAENTRENADOR }}&nbsp;años</span></h2>
+        </div>
+        <div class="text-body" *ngIf="item.NUMERO_EJERCICIOS>0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-stretching" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M16 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+            <path d="M5 20l5 -.5l1 -2"></path>
+            <path d="M18 20v-5h-5.5l2.5 -6.5l-5.5 1l1.5 2"></path>
+          </svg>
+          <h2>Ejercicios:
+          <span>{{item.NUMERO_EJERCICIOS}}</span></h2>
+        </div>
+        <div class="text-body" *ngIf="item.NUMERO_RUTINAS>0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-weight" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M12 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+            <path d="M6.835 9h10.33a1 1 0 0 1 .984 .821l1.637 9a1 1 0 0 1 -.984 1.179h-13.604a1 1 0 0 1 -.984 -1.179l1.637 -9a1 1 0 0 1 .984 -.821z"></path>
+         </svg>
+          <h2>Rutinas:
+            <span>{{item.NUMERO_RUTINAS}}</span></h2>
+        </div>
+        <div class="text-body" *ngIf="item.NUMERO_SESIONES_PROGRAMADAS>0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-barbell" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M2 12h1"></path>
+            <path d="M6 8h-2a1 1 0 0 0 -1 1v6a1 1 0 0 0 1 1h2"></path>
+            <path d="M6 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z"></path>
+            <path d="M9 12h6"></path>
+            <path d="M15 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z"></path>
+            <path d="M18 8h2a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-2"></path>
+            <path d="M22 12h-1"></path>
+         </svg>
+          <h2>Programas:
+            <span>{{item.NUMERO_SESIONES_PROGRAMADAS}}</span></h2>
+        </div>
+      </div>
+      <div class="overlay-square">
+        <img [src]="ip_address + '/media/perfile/'+item.IMAGEPERSONA" alt="Imagen cuadrado superior">
+      </div>
+      <div class="square">
+      </div>
     </div>
   </div>
-  <app-footer-designer-users></app-footer-designer-users>
+ <app-footer-designer-users></app-footer-designer-users>
 </ion-content>

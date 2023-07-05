@@ -4,72 +4,280 @@
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-  <app-toolbar-designer></app-toolbar-designer>
-  <ion-toolbar class="toolbar-header">
-    <div class="onboard-top" >
-      <ion-toolbar >
-        <ion-buttons slot="start">
-          <ion-button style="color: #9259f9;"   (click)="go_page('contrato-entrenador')">
-           <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
-         </ion-button>
-         <p (click)="go_page('contrato-entrenador')">Regresar</p>
-       </ion-buttons>
-      </ion-toolbar>
+  <div (click)="go_page('contrato-entrenador')" class="return-button">
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M9 14l-4 -4l4 -4"></path>
+      <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
+   </svg>
+  </div>
+  <div class="container-header">
+    <div class="ion-card">
+      <div class="circle-container">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+        <div class="circle circle-4"></div>
+      </div>
     </div>
-  </ion-toolbar>
-  <div class="header-up">
-    <div class="header-name">
-      <h1>Entrenador</h1>
+    <div class="container-descripcion">
+      <div class="container-img">
+        <img [src]="ip_address + '/media/perfile/'+variable.IMAGEPERSONA" alt="photo_user">
+      </div>
+      <div class="container-content">
+        <div class="container-text">
+          <p>{{obtenerPrimerNombre(variable?.NOMBREPERSONA)}}&nbsp;{{obtenerPrimerNombre(variable?.APELLDOPERSONA)}}</p>
+          <h1><span>@</span>{{variable?.NICKNAMEPERSONA}}</h1>
+        </div>
+        <div class="button-container">
+          <ion-button fill="clear">
+            <div class="svg-container">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-stackshare" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M19 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                <path d="M19 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                <path d="M5 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                <path d="M7 12h3l3.5 6h3.5"></path>
+                <path d="M17 6h-3.5l-3.5 6"></path>
+              </svg>
+            </div>
+          </ion-button>
+          <ion-button fill="clear">
+            <div class="svg-container">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-filled" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M22 7.535v9.465a3 3 0 0 1 -2.824 2.995l-.176 .005h-14a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-9.465l9.445 6.297l.116 .066a1 1 0 0 0 .878 0l.116 -.066l9.445 -6.297z" stroke-width="0" fill="currentColor"></path>
+                <path d="M19 4c1.08 0 2.027 .57 2.555 1.427l-9.555 6.37l-9.555 -6.37a2.999 2.999 0 0 1 2.354 -1.42l.201 -.007h14z" stroke-width="0" fill="currentColor"></path>
+              </svg>
+            </div>
+          </ion-button>
+          <ion-button fill="clear">
+            <div class="svg-container">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor"></path>
+             </svg>
+          </div>
+          </ion-button>
+        </div>
+      </div>
     </div>
   </div>
   <div class="container-body">
-    <ion-card color="light">
-        <div class="avatar-container">
-          <ion-avatar class="avatar">
-            <img mat-card-image [src]="ip_address + '/media/perfile/' + variable.IMAGEPERSONA"/>
-          </ion-avatar>
+    <div class="container-down-descripcion">
+      <div class="container-detalles">
+        <div class="text">
+          <span class="number">{{variable?.NUMERO_EJERCICIOS}}</span>
+          <span class="exercise">Ejercicio</span>
         </div>
-      <ion-card-content class="ion-text-center">
-        <h1 class="card-title">{{variable.NOMBREPERSONA}}</h1>
-        <h1 class="card-subtitle">{{variable.APELLDOPERSONA}}</h1>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-list class="card-list">
-      <ion-item-group>
-        <ion-item-divider>
-          <ion-label>Descripción</ion-label>
-        </ion-item-divider>
-        <ion-card-content>
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                {{variable.DESCRIPCIONENTRENADOR}}
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card-content>
-      </ion-item-group>
-      <ion-item-group>
-        <ion-item-divider>
-          <ion-label> Especialidades</ion-label>
-        </ion-item-divider>
-        <ion-card-content>
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                {{variable.tituloESPECIALIDADENTRENADOR}}
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card-content>
-      </ion-item-group>
-    </ion-list>
-    <ion-row (click)="contratar()">
-      <ion-col class="ion-text-end">
-        <p class="ion-button"  >Contratar</p>
-      </ion-col>
-    </ion-row>
-  </div>
+        <div class="text">
+          <span class="number">{{variable?.NUMERO_RUTINAS}}</span>
+          <span class="exercise">Rutinas</span>
+        </div>
+        <div class="text">
+          <span class="number">{{variable?.NUMERO_SESIONES_PROGRAMADAS}}</span>
+          <span class="exercise">Sesiones</span>
+        </div>
+      </div>
+      <div class="container-down-descripcion-text">
+        <h1>Acerca de</h1>
+        <p [style]="contarpalabras(variable.DESCRIPCIONENTRENADOR)>30?'height: 150px;':'height:auto;'">{{variable?.DESCRIPCIONENTRENADOR}}
+        </p>
+      </div>
+      <div class="container-text-doble">
+        <h1 class="text-subtitle text-certificado"  [style.background-color]="statuscarpeta && variable && variable.tituloESPECIALIDADENTRENADOR.length>0  ? '#ded5ff' : 'transparent'" [style.font-family]="statuscarpeta && variable && variable.tituloESPECIALIDADENTRENADOR.length>0 ? 'Raleway-Bold!important' : 'Raleway-Light!important'" (click)="statuscarpeta=!statuscarpeta"  >Certificados</h1>
+        <h2 class="text-subtitle text-especialidad"  [style.background-color]="!statuscarpeta && variable && variable.CERTIFICACIONESENTRENADOR ? '#c6b4fe' : 'transparent'" [style.font-family]="!statuscarpeta && variable && variable.CERTIFICACIONESENTRENADOR ? 'Raleway-Bold!important' : 'Raleway-Light!important'" (click)="statuscarpeta=!statuscarpeta" [style.color]="variable && variable.CERTIFICACIONESENTRENADOR ?'#7a6c6c!important':'#ffffff!important'" >Especialidad</h2>
+      </div>
+      <div class="container-certificados" *ngIf="statuscarpeta && variable && variable.tituloESPECIALIDADENTRENADOR.length>0"  [style.background-color]="statuscarpeta ? '#ded5ff' : 'transparent'" [style.border-radius]="statuscarpeta ? '0px 10px 10px 10px' : '10px 0px 10px 10px'" >
+        <div class="item" *ngFor="let data of variable.tituloESPECIALIDADENTRENADOR">
+          <div class="icon" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-certificate" width="32" height="32" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M15 15m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+              <path d="M13 17.5v4.5l2 -1.5l2 1.5v-4.5"></path>
+              <path d="M10 19h-5a2 2 0 0 1 -2 -2v-10c0 -1.1 .9 -2 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -1 1.73"></path>
+              <path d="M6 9l12 0"></path>
+              <path d="M6 12l3 0"></path>
+              <path d="M6 15l2 0"></path>
+           </svg>
+          </div>
+          <div class="text-certificados">
+            {{data}}
+          </div>
+        </div>
+      </div>
+      <div class="container-certificados" *ngIf="!statuscarpeta && variable && variable.CERTIFICACIONESENTRENADOR" [style.background-color]="!statuscarpeta ? '#c6b4fe' : 'transparent'" [style.border-radius]="statuscarpeta ? '0px 10px 10px 10px' : '10px 0px 10px 10px'">
+        <div class="item" *ngFor="let data of variable.CERTIFICACIONESENTRENADOR">
+          <div class="icon" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bulb-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M4 11a1 1 0 0 1 .117 1.993l-.117 .007h-1a1 1 0 0 1 -.117 -1.993l.117 -.007h1z" stroke-width="0" fill="currentColor"></path>
+              <path d="M12 2a1 1 0 0 1 .993 .883l.007 .117v1a1 1 0 0 1 -1.993 .117l-.007 -.117v-1a1 1 0 0 1 1 -1z" stroke-width="0" fill="currentColor"></path>
+              <path d="M21 11a1 1 0 0 1 .117 1.993l-.117 .007h-1a1 1 0 0 1 -.117 -1.993l.117 -.007h1z" stroke-width="0" fill="currentColor"></path>
+              <path d="M4.893 4.893a1 1 0 0 1 1.32 -.083l.094 .083l.7 .7a1 1 0 0 1 -1.32 1.497l-.094 -.083l-.7 -.7a1 1 0 0 1 0 -1.414z" stroke-width="0" fill="currentColor"></path>
+              <path d="M17.693 4.893a1 1 0 0 1 1.497 1.32l-.083 .094l-.7 .7a1 1 0 0 1 -1.497 -1.32l.083 -.094l.7 -.7z" stroke-width="0" fill="currentColor"></path>
+              <path d="M14 18a1 1 0 0 1 1 1a3 3 0 0 1 -6 0a1 1 0 0 1 .883 -.993l.117 -.007h4z" stroke-width="0" fill="currentColor"></path>
+              <path d="M12 6a6 6 0 0 1 3.6 10.8a1 1 0 0 1 -.471 .192l-.129 .008h-6a1 1 0 0 1 -.6 -.2a6 6 0 0 1 3.6 -10.8z" stroke-width="0" fill="currentColor"></path>
+           </svg>
+          </div>
+          <div class="text-certificados">
+            {{data.nombre}}
+          </div>
+        </div>
+      </div>
+      <h1 class="text-title" *ngIf="dataRutinas && dataRutinas.length>0 || dataSesiones && dataSesiones.length>0">Rutinas de Iniciación</h1>
+      <div class="container-rutinas" *ngIf="dataRutinas && dataRutinas.length>0 || dataSesiones && dataSesiones.length>0">
+        <ion-card *ngFor="let item of dataRutinas.slice(0, 3);let i=index;">
+          <div class="card-image-wrapper" >
+            <div [style]="i<2?'filter: blur(0px)':'filter: blur(5px)'">
+              <img alt="Silhouette of mountains" [src]="ip_address+'/media/rutinas/portadasrutinas/'+item.IMAGENRUTINA" style="border-radius: 15px;">
+            </div>
+            <div class="text-overlay" [style.background-color]="i < 2?'#fdb50c9d':'#3811e79d'">
+              <p>{{i < 2 ? 'GRATIS' : 'PREMIUM'}}</p>
+            </div>
+          </div>
+          <ion-card-header>
+            <ion-card-title>{{item.NOMBRERUTINA}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            {{item.DESCRIPCIONRUTINA}}
+          </ion-card-content>
+        </ion-card>
+        <ion-card *ngFor="let item of dataSesiones.slice(0, 3)">
+          <div class="card-image-wrapper" >
+            <div style="filter: blur(5px);">
+              <img alt="Silhouette of mountains"  [src]="ip_address+'/media/sesiones/portadassesiones/'+item.IMAGESESION" style="border-radius: 15px;">
+            </div>
+            <div class="text-overlay" style=" background-color: #3811e79d;">
+              <p >Premium</p>
+            </div>
+          </div>
+          <ion-card-header>
+            <ion-card-title>{{item.NOMBRESESION}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            {{item.IDRUTINAS.length}} Rutinas
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+      <div class="container-suscripcion">
+        <h1 class="text-subtitle">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-target" width="15" height="15" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+            <path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"></path>
+            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+          </svg>
+          Suscripción
+        </h1>
+        <img [src]="ip_address+'/media/images/suscripcion.png'" alt="title-rutinas">
+        <div class="container-comentarios">
+          <h1 class="text-subtitle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10"></path>
+              <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2"></path>
+          </svg>
+            Comentarios
+          </h1>
+          <div class="container-input">
+            <ion-textarea [autoGrow]="true" placeholder="Escribir un Comentario" class="custom"></ion-textarea >
+            <ion-icon name="send" style="color: #8a37f7;"></ion-icon>
+          </div>
+          <div class="container-comentarios-all">
+            <div class="container-list" *ngFor="let item of datacomentariosentrenadorparcial">
+              <div class="container-comentario-img">
+                <img [src]="ip_address+'/media/perfile/'+item.IMAGEPERSONA" alt="">
+              </div>
+              <div class="container-comentario-body">
+                <div class="container-icon-text">
+                  <div class="container-icons">
+                    <div *ngIf="item && item.PUNTUACIONCOMENTARIOENTRENADOR<=0; else otherstarone;">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="20" height="20" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                      </svg>
+                    </div>
+                    <ng-template #otherstarone>
+                      <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="20" height="20" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </ng-template>
+                    <div *ngIf="item && item.PUNTUACIONCOMENTARIOENTRENADOR<=1; else otherstartwo;">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="20" height="20" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                      </svg>
+                    </div>
+                    <ng-template #otherstartwo>
+                      <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="20" height="20" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </ng-template>
+                    <div *ngIf="item && item.PUNTUACIONCOMENTARIOENTRENADOR<=2; else otherstarthree;">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="20" height="20" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                      </svg>
+                    </div>
+                    <ng-template #otherstarthree>
+                      <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="20" height="20" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </ng-template>
+                    <div *ngIf="item && item.PUNTUACIONCOMENTARIOENTRENADOR<=3; else otherstarfour;">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="20" height="20" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                      </svg>
+                    </div>
+                    <ng-template #otherstarfour>
+                      <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="20" height="20" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </ng-template>
+                    <div *ngIf="item && item.PUNTUACIONCOMENTARIOENTRENADOR<=4; else otherstarfive;">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="20" height="20" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                      </svg>
+                    </div>
+                    <ng-template #otherstarfive>
+                      <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="20" height="20" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </ng-template>
+                  </div>
+                  <div class="container-text-icon">
+                    <h1>Hace 25 &nbsp;mn</h1>
+                  </div>
+                </div>
+                <div class="comentario-desciption">{{truncateText(item.OPINIONCOMENTARIOENTRENADOR)}}<span (click)="item.remainingText = getRemainingText(item.OPINIONCOMENTARIOENTRENADOR)" [style]="item.remainingText ? 'color: #7a6c6c;font-family: Raleway-Medium;':'font-family: Raleway-Bold;color: #8a37f7;'">
+                  {{ item.remainingText ? item.remainingText : 'Más' }}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   <app-footer-designer-users></app-footer-designer-users>
+  <ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
+    <ion-infinite-scroll-content loadingSpinner="circles"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
