@@ -11,7 +11,7 @@ export class ApiServiceService {
 
   constructor(private http: HttpClient) { }
   allPeople(): Observable<any> {
-    return this.http.get(IP_ADDRESS+/profiles/);
+    return this.http.get(IP_ADDRESS+'/profiles/');
   }
   saveProfile(data: any): Observable<any> {
     return this.http.post(this.apiUrl+"/guardarDatos", data);
@@ -29,40 +29,49 @@ export class ApiServiceService {
     return this.http.post(this.apiUrl+"/login",data);
   }
   checkNickname(nickname: string):Observable<any>{
-    return this.http.get(this.apiUrl+/check-nickname/+nickname);
+    return this.http.get(this.apiUrl+'/check-nickname/'+nickname);
   }
   checkMail(mail: string):Observable<any>{
-    return this.http.get(this.apiUrl+/check-mail/+mail);
+    return this.http.get(this.apiUrl+'/check-mail/'+mail);
   }
   allfrecuenciaejercicio():Observable<any>{
-    return this.http.get(this.apiUrl+/frecuenciaejercicio/);
+    return this.http.get(this.apiUrl+'/frecuenciaejercicio/');
   }
   allprofesion():Observable<any>{
-    return this.http.get(this.apiUrl+/profesion/);
+    return this.http.get(this.apiUrl+'/profesion/');
   }
   allObtenerRolUsers():Observable<any>{
-    return this.http.get(this.apiUrl+/rolUsers/);
+    return this.http.get(this.apiUrl+'/rolUsers/');
   }
   allObjetivosPersonales():Observable<any>{
-    return this.http.get(this.apiUrl+/objetivospersonales/);
+    return this.http.get(this.apiUrl+'/objetivospersonales/');
   }
   allobjetivospersonalesusuario(idUsuario:number):Observable<any>{
-    return this.http.get(this.apiUrl+/objetivospersonalesusuario/+idUsuario);
+    return this.http.get(this.apiUrl+'/objetivospersonalesusuario/'+idUsuario);
   }
   allEquipoRequerido():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/equiporequerido/);
+    return this.http.get(IP_ADDRESS+'/multimedia/equiporequerido/');
   }
   allEquipoRequeridoActivate():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/equiporequeridoActivate/);
+    return this.http.get(IP_ADDRESS+'/multimedia/equiporequeridoActivate/');
   }
   allMet():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/met/);
+    return this.http.get(IP_ADDRESS+'/multimedia/met/');
   }
   allEspecialidadentrenador():Observable<any>{
-    return this.http.get(this.apiUrl+/especialidadentrenador/);
+    return this.http.get(this.apiUrl+'/especialidadentrenador/');
   }
   getcomentariosentrenador(idEntrenador:number):Observable<any>{
-    return this.http.get(this.apiUrl+/getcomentariosentrenador/+idEntrenador);
+    return this.http.get(this.apiUrl+'/getcomentariosentrenador/'+idEntrenador);
+  }
+  insertarcomentarioentrenador(IDUSUARIO:number,IDENTRENADOR:number,PUNTUACIONCOMENTARIOENTRENADOR:number,OPINIONCOMENTARIOENTRENADOR:string):Observable<any>{
+    const data={
+      IDUSUARIO:IDUSUARIO,
+      IDENTRENADOR:IDENTRENADOR,
+      PUNTUACIONCOMENTARIOENTRENADOR:PUNTUACIONCOMENTARIOENTRENADOR,
+      OPINIONCOMENTARIOENTRENADOR:OPINIONCOMENTARIOENTRENADOR
+    }
+    return this.http.post(this.apiUrl+'/insertarcomentarioentrenador/',data);
   }
   uploadFile(file: File,nickname: string): Observable<any> {
     const formData: FormData = new FormData();
@@ -74,19 +83,19 @@ export class ApiServiceService {
     return this.http.get(IP_ADDRESS+'/protectedtoken', { headers });
   }
   allTrainer(): Observable<any> {
-    return this.http.get(IP_ADDRESS+/manager/);
+    return this.http.get(IP_ADDRESS+'/manager/');
   }
   allTrainerBasic(): Observable<any> {
-    return this.http.get(IP_ADDRESS+/manager/+/entrenadorBasic/);
+    return this.http.get(IP_ADDRESS+'/manager/entrenadorBasic/');
   }
   allTrainerBasicEjercicioRutina(): Observable<any> {
-    return this.http.get(IP_ADDRESS+/manager/+/entrenadorBasicEjercicioRutina/);
+    return this.http.get(IP_ADDRESS+'/manager/entrenadorBasicEjercicioRutina/');
   }
   allEntrenantes(): Observable<any> {
-    return this.http.get(IP_ADDRESS+/manager/+/entrenante/ );
+    return this.http.get(IP_ADDRESS+'/manager/entrenante/ ');
   }
   allGender(): Observable<any> {
-    return this.http.get(this.apiUrl+/genero/);
+    return this.http.get(this.apiUrl+'/genero/');
   }
   UpdatePersona(data:any): Observable<any>{
     return this.http.post(this.apiUrl+"/updatePersona",data);
@@ -98,75 +107,75 @@ export class ApiServiceService {
     return this.http.post(this.apiUrl+"/updateEntrenador",data);
   }
   UpdateEntrenadorActivacion(data:any): Observable<any>{
-    return this.http.post(IP_ADDRESS+/manager/+/activacion/+data.IDENTRENADOR,data );
+    return this.http.post(IP_ADDRESS+'/manager/activacion/'+data.IDENTRENADOR,data );
   }
   UpdatePersonaEstado(data:any): Observable<any>{
-    return this.http.post(IP_ADDRESS+/manager/+/estado/+data.IDPERSONA,data );
+    return this.http.post(IP_ADDRESS+'/manager/estado/'+data.IDPERSONA,data );
   }
   PerfileUniq(nickname:string): Observable<any>{
-    return this.http.post(IP_ADDRESS+/profiles/+nickname,{})};
+    return this.http.post(IP_ADDRESS+'/profiles/'+nickname,{})};
   UpdateProfileBasic(data:any):Observable<any>{
-    return this.http.post(IP_ADDRESS+/manager/+/perfile/+data.IDPERSONA,data );
+    return this.http.post(IP_ADDRESS+'/manager/perfile/'+data.IDPERSONA,data );
   }
   getPasswordHash(nickname:string):Observable<any>{
-    return this.http.get(this.apiUrl+/passwordHash/+nickname);
+    return this.http.get(this.apiUrl+'/passwordHash/'+nickname);
   }
   getMultimedia():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/);
+    return this.http.get(IP_ADDRESS+'/multimedia/');
   }
   getMultimediaActivate():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/multimediaActivate/);
+    return this.http.get(IP_ADDRESS+'/multimedia/multimediaActivate/');
   }
   getTipoEjercicio():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/tipoejercicio/);
+    return this.http.get(IP_ADDRESS+'/multimedia/tipoejercicio/');
   }
   getTipoEjercicioActivate():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/tipoejercicioActivate/);
+    return this.http.get(IP_ADDRESS+'/multimedia/tipoejercicioActivate/');
   }
   getObjetivosMusculares():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/objetivosmusculares/);
+    return this.http.get(IP_ADDRESS+'/multimedia/objetivosmusculares/');
   }
   getObjetivosMuscularesActivate():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/objetivosmuscularesActivate/);
+    return this.http.get(IP_ADDRESS+'/multimedia/objetivosmuscularesActivate/');
   }
   getEjercicio():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/ejercicio/);
+    return this.http.get(IP_ADDRESS+'/multimedia/ejercicio/');
   }
   getEjercicioActivate():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/ejercicioActivate/);
+    return this.http.get(IP_ADDRESS+'/multimedia/ejercicioActivate/');
   }
   getPreEjercicio():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/preejercicio/);
+    return this.http.get(IP_ADDRESS+'/multimedia/preejercicio/');
   }
   getNivelDificultaDejercicio():Observable<any>{
-    return this.http.get(IP_ADDRESS+/multimedia/+/niveldificultadejercicio/);
+    return this.http.get(IP_ADDRESS+'/multimedia/niveldificultadejercicio/');
   }
   UpdateEjercicioEstado(data:any): Observable<any>{
-    return this.http.post(IP_ADDRESS+/multimedia/+/estado/+data.IDEJERCICIO,data );
+    return this.http.post(IP_ADDRESS+'/multimedia/estado/'+data.IDEJERCICIO,data );
   }
   UpdatePassword(data:any): Observable<any>{
-    return this.http.post(IP_ADDRESS+/manager/+/updatepassword/,data );
+    return this.http.post(IP_ADDRESS+'/manager/updatepassword/',data );
   }
   UpdataStatus(data:any,nombre:string): Observable<any>{
-    return this.http.post(IP_ADDRESS+/multimedia/+/chanceActivacion/+nombre,data );
+    return this.http.post(IP_ADDRESS+'/multimedia/chanceActivacion/'+nombre,data );
   }
   UpdataData(data:any,nombre:string): Observable<any>{
-    return this.http.post(IP_ADDRESS+/multimedia/+/UpdateData/+nombre,data );
+    return this.http.post(IP_ADDRESS+'/multimedia/UpdateData/'+nombre,data );
   }
   CreteData(data:any,nombre:string): Observable<any>{
-    return this.http.post(IP_ADDRESS+/multimedia/+/CreateData/+nombre,data );
+    return this.http.post(IP_ADDRESS+'/multimedia/CreateData/'+nombre,data );
   }
   UpdataDataMultimedia(data:any,nombre:string): Observable<any>{
-    return this.http.post(IP_ADDRESS+/multimedia/+/UpdateDataMultimedia/+nombre,data );
+    return this.http.post(IP_ADDRESS+'/multimedia/UpdateDataMultimedia/'+nombre,data );
   }
   CreteDataMultimedia(data:any,nombre:string): Observable<any>{
-    return this.http.post(IP_ADDRESS+/multimedia/+/CreateDataMultimedia/+nombre,data );
+    return this.http.post(IP_ADDRESS+'/multimedia/CreateDataMultimedia/'+nombre,data );
   }
   UpdataDataERequerido(data:any,nombre:string): Observable<any>{
-    return this.http.post(IP_ADDRESS+/multimedia/+/UpdateDataERequerido/+nombre,data );
+    return this.http.post(IP_ADDRESS+'/multimedia/UpdateDataERequerido/'+nombre,data );
   }
   CreateDataERequerido(data:any,nombre:string): Observable<any>{
-    return this.http.post(IP_ADDRESS+/multimedia/+/CreateDataERequerido/+nombre,data );
+    return this.http.post(IP_ADDRESS+'/multimedia/CreateDataERequerido/'+nombre,data );
   }
   uploadFileMp3(file: File,filename :string): Observable<any> {
     const formData: FormData = new FormData();
@@ -206,53 +215,53 @@ export class ApiServiceService {
     return this.http.post(this.apiUrl+"/uploadImagenPerfileText/",data );
   }
   CreteDatEjercicio(data:any): Observable<any>{
-    return this.http.post(IP_ADDRESS+/multimedia/+/CreateDataEjercicio/,data );
+    return this.http.post(IP_ADDRESS+'/multimedia/CreateDataEjercicio/',data );
   }
   UpdateEjercicio(data:any): Observable<any>{
-    return this.http.post(IP_ADDRESS+/multimedia/+/UpdateDataEjercicio/,data );
+    return this.http.post(IP_ADDRESS+'/multimedia/UpdateDataEjercicio/',data );
   }
   ObtenerComentarioPorEjercicio(idEjercicio:number){
-    return this.http.get(IP_ADDRESS+/multimedia/+/obtenerComentariosporEjercicio/+idEjercicio);
+    return this.http.get(IP_ADDRESS+'/multimedia/obtenerComentariosporEjercicio/'+idEjercicio);
   }
   CreteDataRutinas(data:any): Observable<any>{
-    return this.http.post(IP_ADDRESS+/programacion/+/CreateDataRutina/,data );
+    return this.http.post(IP_ADDRESS+'/programacion/CreateDataRutina/',data );
   }
   UpdateDataRutinas(data:any): Observable<any>{
-    return this.http.post(IP_ADDRESS+/programacion/+/UpdateDataRutina/,data );
+    return this.http.post(IP_ADDRESS+'/programacion/UpdateDataRutina/',data );
   }
   CreteDataSesion(data:any): Observable<any>{
-    return this.http.post(IP_ADDRESS+/programacion/+/CreateDataSesion/,data );
+    return this.http.post(IP_ADDRESS+'/programacion/CreateDataSesion/',data );
   }
   UpdateDataSesion(data:any): Observable<any>{
-    return this.http.post(IP_ADDRESS+/programacion/+/UpdateDataSesion/  ,data );
+    return this.http.post(IP_ADDRESS+'/programacion/UpdateDataSesion/',data );
   }
   getRutinas():Observable<any>{
-    return this.http.get(IP_ADDRESS+/programacion/+/rutinas/);
+    return this.http.get(IP_ADDRESS+'/programacion/rutinas/');
   }
   getRutinasActivate():Observable<any>{
-    return this.http.get(IP_ADDRESS+/programacion/+/rutinasActivate/);
+    return this.http.get(IP_ADDRESS+'/programacion/rutinasActivate/');
   }
   getRutinasActivatebyObjetive(idObjetive:Number):Observable<any>{
-    return this.http.get(IP_ADDRESS+/programacion/+/rutinasActivatebyObjetive/+idObjetive);
+    return this.http.get(IP_ADDRESS+'/programacion/rutinasActivatebyObjetive/'+idObjetive);
   }
   imagenEntrenadorRutina():Observable<any>{
-    return this.http.get(IP_ADDRESS+/programacion/+/imagePorEntrenadorRutina/);
+    return this.http.get(IP_ADDRESS+'/programacion/imagePorEntrenadorRutina/');
   }
   imagenEntrenadorSesion():Observable<any>{
-    return this.http.get(IP_ADDRESS+/programacion/+/imagePorEntrenadorSesion/);
+    return this.http.get(IP_ADDRESS+'/programacion/imagePorEntrenadorSesion/');
   }
   copyPortadasRutinas(oldnameFile:string,newnameFile:string):Observable<any>{
     const data={
       oldnameFile:oldnameFile,
       newnameFile:newnameFile
     }
-    return this.http.post(IP_ADDRESS+/multimedia/+/copyFiles-portadassesiones/,data );
+    return this.http.post(IP_ADDRESS+'/multimedia/copyFiles-portadassesiones/',data );
   }
   getSesiones():Observable<any>{
-    return this.http.get(IP_ADDRESS+/programacion/+/sesiones/);
+    return this.http.get(IP_ADDRESS+'/programacion/sesiones/');
   }
   getSesionesActivate():Observable<any>{
-    return this.http.get(IP_ADDRESS+/programacion/+/sesionesActivate/);
+    return this.http.get(IP_ADDRESS+'/programacion/sesionesActivate/');
   }
   allBookmark(type: string): Observable<any> {
     const apiUrlWithType = this.apiUrl + '/' + type + '/';
@@ -267,13 +276,15 @@ export class ApiServiceService {
     const apiUrlWithType = this.apiUrl + '/' + type + '/';
     return this.http.post(apiUrlWithType, data);
   }
-  ContratoEntrenador(idUSUARIO: number, idENTRENADOR: number): Observable<any>{
-    console.log(idUSUARIO,idENTRENADOR);
+  ContratoEntrenador(idUSUARIO: number, idENTRENADOR: number,MESESCONTRATACION:number): Observable<any>{
     const data={
       idUSUARIO:idUSUARIO,
-      idENTRENADOR:idENTRENADOR
+      idENTRENADOR:idENTRENADOR,
+      MESESCONTRATACION:MESESCONTRATACION,
     }
-    console.log(data);
-    return this.http.post(IP_ADDRESS+/programacion/+/Contrato/,data );
+    return this.http.post(IP_ADDRESS+'/programacion/Contrato/',data );
   }
+obtenerContratoUsuario(idUsuario:number,idEntrenador:number):Observable<any>{
+  return this.http.get(IP_ADDRESS+'/programacion/obtenerContratoUsuario/'+idUsuario+'/'+idEntrenador);
+}
 }

@@ -30,34 +30,10 @@
           <h1><span>@</span>{{variable?.NICKNAMEPERSONA}}</h1>
         </div>
         <div class="button-container">
-          <ion-button fill="clear">
-            <div class="svg-container">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-stackshare" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M19 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                <path d="M19 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                <path d="M5 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                <path d="M7 12h3l3.5 6h3.5"></path>
-                <path d="M17 6h-3.5l-3.5 6"></path>
-              </svg>
-            </div>
-          </ion-button>
-          <ion-button fill="clear">
-            <div class="svg-container">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-filled" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M22 7.535v9.465a3 3 0 0 1 -2.824 2.995l-.176 .005h-14a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-9.465l9.445 6.297l.116 .066a1 1 0 0 0 .878 0l.116 -.066l9.445 -6.297z" stroke-width="0" fill="currentColor"></path>
-                <path d="M19 4c1.08 0 2.027 .57 2.555 1.427l-9.555 6.37l-9.555 -6.37a2.999 2.999 0 0 1 2.354 -1.42l.201 -.007h14z" stroke-width="0" fill="currentColor"></path>
-              </svg>
-            </div>
-          </ion-button>
-          <ion-button fill="clear">
-            <div class="svg-container">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor"></path>
-             </svg>
-          </div>
+          <ion-button fill="clear" (click)="suscripcionStatus?'':animateFromBottom()"
+          [style.background-color]="suscripcionStatus?'transparent':'#8437f0a1'"
+          [style.color]="suscripcionStatus?'#8337f0':'#ffffff'">
+            {{suscripcionStatus?'SUSCRITO':'SUSCRIBIRSE'}}
           </ion-button>
         </div>
       </div>
@@ -127,9 +103,9 @@
       </div>
       <h1 class="text-title" *ngIf="dataRutinas && dataRutinas.length>0 || dataSesiones && dataSesiones.length>0">Rutinas de Iniciación</h1>
       <div class="container-rutinas" *ngIf="dataRutinas && dataRutinas.length>0 || dataSesiones && dataSesiones.length>0">
-        <ion-card *ngFor="let item of dataRutinas.slice(0, 3);let i=index;">
+        <ion-card *ngFor="let item of (!suscripcionStatus?dataRutinas:dataRutinas.slice(0, 3));let i=index;">
           <div class="card-image-wrapper" >
-            <div [style]="i<2?'filter: blur(0px)':'filter: blur(5px)'">
+            <div [style]="(i<2 && !suscripcionStatus) || (suscripcionStatus)? 'filter: blur(0px)':'filter: blur(5px)'">
               <img alt="Silhouette of mountains" [src]="ip_address+'/media/rutinas/portadasrutinas/'+item.IMAGENRUTINA" style="border-radius: 15px;">
             </div>
             <div class="text-overlay" [style.background-color]="i < 2?'#fdb50c9d':'#3811e79d'">
@@ -143,9 +119,9 @@
             {{item.DESCRIPCIONRUTINA}}
           </ion-card-content>
         </ion-card>
-        <ion-card *ngFor="let item of dataSesiones.slice(0, 3)">
+        <ion-card *ngFor="let item of  (!suscripcionStatus &&  dataSesiones ? dataSesiones.slice(0, 3) : dataSesiones)">
           <div class="card-image-wrapper" >
-            <div style="filter: blur(5px);">
+            <div [style]="!suscripcionStatus?'filter: blur(5px)':'filter: blur(0px)'">
               <img alt="Silhouette of mountains"  [src]="ip_address+'/media/sesiones/portadassesiones/'+item.IMAGESESION" style="border-radius: 15px;">
             </div>
             <div class="text-overlay" style=" background-color: #3811e79d;">
@@ -162,7 +138,7 @@
       </div>
     </div>
       <div class="container-suscripcion">
-        <h1 class="text-subtitle">
+        <h1 class="text-subtitle" *ngIf="!suscripcionStatus">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-target" width="15" height="15" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
@@ -171,7 +147,7 @@
           </svg>
           Suscripción
         </h1>
-        <img [src]="ip_address+'/media/images/suscripcion.png'" alt="title-rutinas">
+        <img (click)="animateFromBottom()" *ngIf="!suscripcionStatus" [src]="ip_address+'/media/images/suscripcion.png'" alt="title-rutinas">
         <div class="container-comentarios">
           <h1 class="text-subtitle">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -182,11 +158,11 @@
             Comentarios
           </h1>
           <div class="container-input">
-            <ion-textarea [autoGrow]="true" placeholder="Escribir un Comentario" class="custom"></ion-textarea >
-            <ion-icon name="send" style="color: #8a37f7;"></ion-icon>
+            <ion-textarea [autoGrow]="true" [(ngModel)]="OPINIONCOMENTARIOENTRENADOR" placeholder="Escribir un Comentario" class="custom"></ion-textarea >
+            <ion-icon (click)="confirmarinsertarcomentarioentrenador()" name="send" style="color: #8a37f7;"></ion-icon>
           </div>
           <div class="container-comentarios-all">
-            <div class="container-list" *ngFor="let item of datacomentariosentrenadorparcial">
+            <div class="container-list" *ngFor="let item of datacomentariosentrenador">
               <div class="container-comentario-img">
                 <img [src]="ip_address+'/media/perfile/'+item.IMAGEPERSONA" alt="">
               </div>
@@ -265,19 +241,130 @@
                     </ng-template>
                   </div>
                   <div class="container-text-icon">
-                    <h1>Hace 25 &nbsp;mn</h1>
+                    <h1>Hace {{calcularTiempoPasado(item.FECHACREACIONCOMENTARIOENTRENADOR)}}</h1>
                   </div>
                 </div>
-                <div class="comentario-desciption">{{truncateText(item.OPINIONCOMENTARIOENTRENADOR)}}<span (click)="item.remainingText = getRemainingText(item.OPINIONCOMENTARIOENTRENADOR)" [style]="item.remainingText ? 'color: #7a6c6c;font-family: Raleway-Medium;':'font-family: Raleway-Bold;color: #8a37f7;'">
-                  {{ item.remainingText ? item.remainingText : 'Más' }}</span></div>
+                <div *ngIf="item && contarpalabras(item.OPINIONCOMENTARIOENTRENADOR)>1">
+                  <div  class="comentario-desciption">{{truncateText(item.OPINIONCOMENTARIOENTRENADOR)}}<span (click)="item.remainingText = getRemainingText(item.OPINIONCOMENTARIOENTRENADOR)" [style]="item.remainingText ? 'color: #7a6c6c;font-family: Raleway-Medium;':'font-family: Raleway-Bold;color: #8a37f7;'">
+                    {{ item.remainingText  ? item.remainingText : (contarpalabras(item.OPINIONCOMENTARIOENTRENADOR)>10 ?'Más':'')}}</span></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="modal-overlay" *ngIf="showmodalstars"  (click)="clearcomentarioentrenador();" >
+      <div class="modal-overlay-item">
+        <div class="modal-content">
+          <div class="container-starts-evaluate">
+            <div (click)="changeStart(3);$event.stopPropagation();" [ngClass]="{'heartbeat': evaluateComment === 3}">
+              <ng-container *ngIf="evaluateComment<=2; else otherstartevaluateone" >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="35" height="35" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+              </svg>
+              </ng-container>
+              <ng-template #otherstartevaluateone>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="35" height="35" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor"></path>
+              </svg>
+              </ng-template>
+            </div>
+            <div (click)="changeStart(4) ;$event.stopPropagation();" [ngClass]="{'heartbeat': evaluateComment === 4}">
+              <ng-container *ngIf="evaluateComment<=3; else otherstartevaluatetwo">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="35" height="35" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+              </svg>
+              </ng-container>
+              <ng-template #otherstartevaluatetwo>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="35" height="35" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor"></path>
+              </svg>
+              </ng-template>
+            </div>
+            <div (click)="changeStart(5);$event.stopPropagation();" [ngClass]="{'heartbeat': evaluateComment === 5}">
+              <ng-container *ngIf="evaluateComment<=4; else otherstartevaluatethree" >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="35" height="35" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+              </svg>
+              </ng-container>
+              <ng-template #otherstartevaluatethree>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="35" height="35" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor"></path>
+              </svg>
+              </ng-template>
+            </div>
+            <div (click)="changeStart(6);$event.stopPropagation();" [ngClass]="{'heartbeat': evaluateComment === 6}">
+              <ng-container *ngIf="evaluateComment<=5; else otherstartevaluatefour">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="35" height="35" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+              </svg>
+              </ng-container>
+              <ng-template #otherstartevaluatefour>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="35" height="35" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor"></path>
+              </svg>
+              </ng-template>
+            </div>
+            <div (click)="changeStart(7);$event.stopPropagation();" [ngClass]="{'heartbeat': evaluateComment === 7}">
+              <ng-container *ngIf="evaluateComment<=6; else otherstartevaluatefive">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star" width="35" height="35" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+              </svg>
+              </ng-container>
+              <ng-template #otherstartevaluatefive>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-star-filled" width="35" height="35" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" stroke-width="0" fill="currentColor"></path>
+              </svg>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="container-button-evaluate" *ngIf="validatebuttonEvaluate" >
+          <div class="item-container-button-evaluate">
+            <ion-button fill="clear" (click)="insertarcomentarioentrenador();$event.stopPropagation();">Enviar</ion-button>
+            <ion-button fill="clear" (click)="clearcomentarioentrenador();$event.stopPropagation();">Cancelar</ion-button>
+          </div>
+          </div>
+      </div>
+    </div>
+    <div class="capa hidden" id="element2" (click)="animateFromTop()"></div>
+    <div id="element" class="bottom-fixed  hidden">
+      <div class="horizontal-line" (click)="animateFromTop()"></div>
+      <div class="container-suscripcion-down">
+        <div class="scrollable-row-suscripcion-down">
+          <div class="item-suscripcion-down" (click)="changeSuscripcion(i,item);$event.stopPropagation(); " *ngFor="let item of suscripciones;let i=index"
+          [style.background]="selectSuscripcion === i ? '#8337f0' : item.colorbackground">
+            <div class="item-suscripcion-down-img">`
+              <img [src]="item.imagen" alt="Imagen">
+            </div>
+            <div class="texto-suscripcion-down">
+              <p class="text1" [style.color]="selectSuscripcion === i ? '#d2baff' : '#362f2f' " >{{item.titulo}}</p>
+              <p class="text2" [style.color]="selectSuscripcion === i ? '#ffffff' : '#9259f9' ">{{item.subtitulo}}</p>
+              <p class="text1" [style.color]="selectSuscripcion === i ? '#ffffff' : '#9259f9' ">{{item.precio}}</p>
+              <p class="text3" [style.color]="selectSuscripcion === i ? '#ffffff' : '#1d1818' ">{{item.detalles}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-bottons-fixed">
+        <ion-button fill="clear"
+        (click)="pagarTotal?contratacionEntrenador():contratacionNoDisponible()"
+        [style.background]="pagarTotal?'#8337f0':'transparent'"
+        [style.color]="pagarTotal?'#ffffff':'#8337f0'"
+        [style.box-shadow]="pagarTotal?'-2px 2px 5px rgba(0, 0, 0, 0.082);':'none'"
+        >{{pagarTotal?'Pagar '+pagarTotal:'Seleccione un Plan'}}</ion-button>
+      </div>
+    </div>
   <app-footer-designer-users></app-footer-designer-users>
-  <ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
-    <ion-infinite-scroll-content loadingSpinner="circles"></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
 </ion-content>

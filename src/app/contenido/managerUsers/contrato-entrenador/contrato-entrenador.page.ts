@@ -28,18 +28,17 @@ export class ContratoEntrenadorPage implements OnInit {
     public toastController: ToastController) {
     }
   ngOnInit() {
-    //this.validateSesion();
-    this.test();
+    this.validateSesion();
+    //this.test();
   }
   ionViewDidEnter() {
-    //this.validateSesion();
-    this.test();
+    this.validateSesion();
+    //this.test();
   }
   test(){
     this.chanceColorFooter();
     this.StatusBar();
     this.obtenerEntrenadores();
-    this.obtenerimgEntrenadores();
     this.loading = false;
   }
   StatusBar(){
@@ -58,7 +57,6 @@ export class ContratoEntrenadorPage implements OnInit {
               this.chanceColorFooter();
               this.StatusBar();
               this.obtenerEntrenadores();
-              this.obtenerimgEntrenadores();
               this.loading = false;
             },
             (error) => {
@@ -92,6 +90,36 @@ export class ContratoEntrenadorPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot31',' #9259f9');
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
     document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
+  }
+  cargarImagenesBefores(){
+    const entrenadores = this.dataEntrenadores;
+    const imageUrls = [];
+    if (Array.isArray(entrenadores)) {
+      for (let i = 0; i < entrenadores.length; i++) {
+        const nameImagen = entrenadores[i].IMAGEPERSONA;
+        const imageUrl = this.ip_address+'/media/perfile/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+    const imageUrl = this.ip_address+'/media/perfile/background.png';
+    imageUrls.push(imageUrl);
+    const imageUrl1 = this.ip_address+'/media/perfile/portada.png';
+    imageUrls.push(imageUrl1);
+    let imagesLoaded = 0;
+    const totalImages = imageUrls.length;
+    const handleImageLoad = () => {
+      imagesLoaded++;
+      if (imagesLoaded === totalImages) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 1000);
+      }
+    };
+    imageUrls.forEach((imageUrl) => {
+      const image = new Image();
+      image.onload = handleImageLoad;
+      image.src = imageUrl;
+    });
   }
 
   async presentCustomToast(message: string, color: string) {
@@ -136,6 +164,7 @@ export class ContratoEntrenadorPage implements OnInit {
     this.apiService.allTrainerBasicEjercicioRutina().subscribe(
       (response) => {
         this.dataEntrenadores=response;
+        this.cargarImagenesBefores();
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -161,17 +190,6 @@ export class ContratoEntrenadorPage implements OnInit {
   obtenerPrimerNombre(nombreCompleto: string): string {
     const nombres = nombreCompleto.split(" ");
     return nombres[0];
-  }
-
-  obtenerimgEntrenadores(){
-    this.apiService.allTrainerBasic().subscribe(
-      (response) => {
-        this.imgEntrenadores=response;
-      },
-      (error) => {
-        this.presentCustomToast(error.error.error,"danger");
-      }
-    );
   }
 
 }

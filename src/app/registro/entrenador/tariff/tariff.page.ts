@@ -88,7 +88,6 @@ export class TariffPage implements OnInit {
     }
   }
   actualizarNumero() {
-
       this.numeroIngresado = parseFloat(this.numeroIngresado).toFixed(2)+"";
       this.suscripciones[0].precio = '$ ' + this.numeroIngresado + ' USD';
       this.suscripciones[1].precio = '$ ' + (parseFloat(this.numeroIngresado)*3 - (parseFloat(this.numeroIngresado)*3) * (17 / 100)).toFixed(2) + ' USD';

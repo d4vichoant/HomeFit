@@ -6,7 +6,7 @@
   </div>
   <app-toolbar-designer></app-toolbar-designer>
   <app-footer-designer-users></app-footer-designer-users>
-  <div class="header-up">
+<!--   <div class="header-up">
     <div class="up-date">
       <ion-icon name="sunny-outline"></ion-icon>
       <span class="date">{{ currentDate }}</span>
@@ -18,156 +18,183 @@
         </ng-container>
       </h1>
     </div>
-  </div>
-  <div><h2 class="subtitle" >Recomendación</h2></div>
-  <div class="container"  *ngIf="dataRecomendacion && dataRecomendacion.length > 0">
-    <div class="box-recomendacion"   (click)="go_page_create_rutina(item,'rutinas-diarias')"  *ngFor="let item of dataRecomendacion"  style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/rutinas/portadasrutinas/{{item.IMAGENRUTINA}}');background-repeat: no-repeat;background-size: cover;" >
-      <div class="text "  >
-        <span   class="span1 ">{{item.NOMBRERUTINA}}</span>
-        <span  class="span2"  style="display: flex; align-items: center;">
-          RUTINA</span>
-      </div>
+  </div> -->
+  <div class="container-body">
+    <div class="container-swiper">
+      <swiper-container #slides class="onb-container onb-container-1"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
+        <swiper-slide class="onb-slide" *ngFor="let item of dataTEjercicioAll" (click)="selectSwiper(item,'listar-parametros')" >
+          <div class="slide-content">
+            <h2 ><span>FITNESS</span><br/>
+            {{item.NOMBRETIPOEJERCICIO}}</h2>
+            <p >{{item.DESCRIPCIONTIPOEJERCICIO}}</p>
+            <img [src]="ip_address + '/media/tipoEjercicio/' + item.IMAGETIPOEJERCICIO" />
+            <div class="filter-overlay"></div>
+          </div>
+        </swiper-slide>
+      </swiper-container>
     </div>
-  </div>
-  <div><h2 class="subtitle" >Retorna donde te quedaste</h2></div>
-  <div class="container-text">
-    <h2 class="subtitle">Guardados</h2>
-    <div class="right-text" (click)="go_page('listar-guardados')">
-      <span>VER TODOS</span>
-    </div>
-  </div>
-  <div class="container"  *ngIf="dataRutinas && dataRutinas.length > 0 || dataSesiones && dataSesiones.length > 0 || dataOPersoales && dataOPersoales.length > 0 || dataTEjercicio && dataTEjercicio.length > 0  || dataOMusculares && dataOMusculares.length > 0 || dataEjercicio && dataEjercicio.length > 0 ">
-    <div class="box"  (click)="goEjercicioUniq(item,'ejercicio-uniq')" *ngFor="let item of  (dataEjercicio.slice(0, 3) || [])"  style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/multimedia/{{getVideoName(item.ALMACENAMIENTOMULTIMEDIA)}}.jpg');background-repeat: no-repeat;background-size: cover;" >
-      <div class="icon-wrapper" (click)="toggleBookmarkEjercicio(item.IDEJERCICIO); $event.stopPropagation()" *ngIf="!bookmarkState[item.IDEJERCICIO]; else otherbookmarkEjercicio">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-       </svg>
+    <!-- <div><h2 class="subtitle" >Recomendación</h2></div> -->
+    <div class="container" style="margin-top: 2%;" >
+      <div class="box-recomendacion" style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/recomendacion.jpg');background-repeat: no-repeat;background-size: cover;" >
       </div>
-      <ng-template #otherbookmarkEjercicio>
-        <div class="icon-wrapper" (click)="toggleBookmarkEjercicio(item.IDEJERCICIO); $event.stopPropagation()">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
-         </svg>
+      <div class="box-recomendacion"   (click)="go_page_create_rutina(item,'rutinas-diarias')"  *ngFor="let item of dataRecomendacion"  style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/rutinas/portadasrutinas/{{item.IMAGENRUTINA}}');background-repeat: no-repeat;background-size: cover;" >
+        <div class="text "  >
+          <span   class="span1 ">{{item.NOMBRERUTINA}}</span>
+          <span  class="span2"  style="display: flex; align-items: center;">
+            RUTINA</span>
         </div>
-      </ng-template>
-      <div class="text " >
-        <span class="span1 ">{{item.NOMBREEJERCICIO}}</span>
-        <span class="span2 "  style="display: flex; align-items: center;">
-          EJERCICIO</span>
       </div>
     </div>
-    <div class="box" (click)="go_page_create_rutina(item,'rutinas-diarias')" *ngFor="let item of  (dataRutinas?.slice(0, 3) || [])" style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/rutinas/portadasrutinas/{{item.IMAGENRUTINA}}');background-repeat: no-repeat;background-size: cover;" >
-      <div class="icon-wrapper" (click)="toggleBookmarkRutinas(item.IDRUTINA); $event.stopPropagation()" *ngIf="!bookmarkRutinasState[item.IDRUTINA]; else otherbookmarkrutinas">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-       </svg>
+    <!-- <div><h2 class="subtitle" >Retorna donde te quedaste</h2></div> -->
+    <div class="container-procesosquedados">
+      <div class="box" (click)="go_page('listar-ejercicios')"  style="width: 330px!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/retomar.jpg');background-repeat: no-repeat;background-size: cover;" >
       </div>
-      <ng-template #otherbookmarkrutinas>
-        <div class="icon-wrapper" (click)="toggleBookmarkRutinas(item.IDRUTINA); $event.stopPropagation()">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    </div>
+    <div class="container-text">
+      <h2 class="subtitle">Guardados</h2>
+      <div class="right-text" (click)="go_page('listar-guardados')">
+        <span>VER TODOS</span>
+      </div>
+    </div>
+    <div class="container" style="margin-top: 0%;" *ngIf="dataRutinas && dataRutinas.length > 0 || dataSesiones && dataSesiones.length > 0 || dataOPersoales && dataOPersoales.length > 0 || dataTEjercicio && dataTEjercicio.length > 0  || dataOMusculares && dataOMusculares.length > 0 || dataEjercicio && dataEjercicio.length > 0 ">
+      <div class="box"  style="width: 300px!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/guardado.jpg');background-repeat: no-repeat;background-size: cover;" >
+      </div>
+      <div class="box"  (click)="goEjercicioUniq(item,'ejercicio-uniq')" *ngFor="let item of  (dataEjercicio.slice(0, 3) || [])"  style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/multimedia/{{getVideoName(item.ALMACENAMIENTOMULTIMEDIA)}}.jpg');background-repeat: no-repeat;background-size: cover;" >
+        <div class="icon-wrapper" (click)="toggleBookmarkEjercicio(item.IDEJERCICIO); $event.stopPropagation()" *ngIf="!bookmarkState[item.IDEJERCICIO]; else otherbookmarkEjercicio">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
-         </svg>
+            <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
+        </svg>
         </div>
-      </ng-template>
-      <div class="text " >
-        <span class="span1 ">{{item.NOMBRERUTINA}}</span>
-        <span class="span2 "  style="display: flex; align-items: center;">
-          RUTINA</span>
+        <ng-template #otherbookmarkEjercicio>
+          <div class="icon-wrapper" (click)="toggleBookmarkEjercicio(item.IDEJERCICIO); $event.stopPropagation()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
+          </svg>
+          </div>
+        </ng-template>
+        <div class="text " >
+          <span class="span1 ">{{item.NOMBREEJERCICIO}}</span>
+          <span class="span2 "  style="display: flex; align-items: center;">
+            EJERCICIO</span>
+        </div>
       </div>
-    </div>
-    <div class="box" (click)="go_page_create_rutina(item,'programarrutinas')" *ngFor="let item of (dataSesiones?.slice(0, 3) || [])" style="background-image: linear-gradient(0deg, #0000009f, #f1f3f842), url('{{ ip_address }}/media/sesiones/portadassesiones/{{item.IMAGESESION}}');background-repeat: no-repeat;background-size: cover;">
-      <div class="icon-wrapper" (click)="toggleBookmarkOSesiones(item.IDSESION); $event.stopPropagation()" *ngIf="!bookmarkSesionesState[item.IDSESION]; else otherbookmarksesiones">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-       </svg>
-      </div>
-      <ng-template #otherbookmarksesiones>
-        <div class="icon-wrapper" (click)="toggleBookmarkOSesiones(item.IDSESION); $event.stopPropagation()">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <div class="box" (click)="go_page_create_rutina(item,'rutinas-diarias')" *ngFor="let item of  (dataRutinas?.slice(0, 3) || [])" style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/rutinas/portadasrutinas/{{item.IMAGENRUTINA}}');background-repeat: no-repeat;background-size: cover;" >
+        <div class="icon-wrapper" (click)="toggleBookmarkRutinas(item.IDRUTINA); $event.stopPropagation()" *ngIf="!bookmarkRutinasState[item.IDRUTINA]; else otherbookmarkrutinas">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
-         </svg>
+            <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
+        </svg>
         </div>
-      </ng-template>
-      <div class="text "  >
-        <span   class="span1 ">{{item.NOMBRESESION}}</span>
-        <span  class="span2"  style="display: flex; align-items: center;">
-         PROG. RUTINAS</span>
+        <ng-template #otherbookmarkrutinas>
+          <div class="icon-wrapper" (click)="toggleBookmarkRutinas(item.IDRUTINA); $event.stopPropagation()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
+          </svg>
+          </div>
+        </ng-template>
+        <div class="text " >
+          <span class="span1 ">{{item.NOMBRERUTINA}}</span>
+          <span class="span2 "  style="display: flex; align-items: center;">
+            RUTINA</span>
+        </div>
       </div>
-    </div>
-    <div class="box"   (click)="selectSwiper(item,'listar-parametros')"   *ngFor="let item of (dataTEjercicio?.slice(0, 3) || [])"   style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/tipoEjercicio/{{item.IMAGETIPOEJERCICIO}}');background-repeat: no-repeat;background-size: cover;">
-      <div class="icon-wrapper" (click)="toggleBookmarkTEjercicio(item.IDTIPOEJERCICIO); $event.stopPropagation()" *ngIf="!LikeTEjercicioState[item.IDTIPOEJERCICIO]; else otherLikeTEjercicio">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-       </svg>
-      </div>
-      <ng-template #otherLikeTEjercicio >
-        <div class="icon-wrapper" (click)="toggleBookmarkTEjercicio(item.IDTIPOEJERCICIO); $event.stopPropagation()" >
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <div class="box" (click)="go_page_create_rutina(item,'programarrutinas')" *ngFor="let item of (dataSesiones?.slice(0, 3) || [])" style="background-image: linear-gradient(0deg, #0000009f, #f1f3f842), url('{{ ip_address }}/media/sesiones/portadassesiones/{{item.IMAGESESION}}');background-repeat: no-repeat;background-size: cover;">
+        <div class="icon-wrapper" (click)="toggleBookmarkOSesiones(item.IDSESION); $event.stopPropagation()" *ngIf="!bookmarkSesionesState[item.IDSESION]; else otherbookmarksesiones">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
-         </svg>
+            <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
+        </svg>
         </div>
-      </ng-template>
-      <div class="text "  >
-        <span   class="span1 ">{{item.NOMBRETIPOEJERCICIO}}</span>
-        <span  class="span2"  style="display: flex; align-items: center;">
-          FITNESS</span>
+        <ng-template #otherbookmarksesiones>
+          <div class="icon-wrapper" (click)="toggleBookmarkOSesiones(item.IDSESION); $event.stopPropagation()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
+          </svg>
+          </div>
+        </ng-template>
+        <div class="text "  >
+          <span   class="span1 ">{{item.NOMBRESESION}}</span>
+          <span  class="span2"  style="display: flex; align-items: center;">
+          PROG. RUTINAS</span>
+        </div>
       </div>
-    </div>
-    <div class="box" (click)="selectSwiper(item,'listar-sesiones')"  *ngFor="let item of (dataOPersoales?.slice(0, 3) || [])"   style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/objetivospersonales/{{item.IMAGEOBJETIVOSPERSONALES}}');background-repeat: no-repeat;background-size: cover;">
-      <div class="icon-wrapper" (click)="toggleBookmarkOPersonal(item.IDOBJETIVOSPERSONALES); $event.stopPropagation()" *ngIf="!LikeOPersonalState[item.IDOBJETIVOSPERSONALES]; else otherLikeOPersonal">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-       </svg>
-      </div>
-      <ng-template #otherLikeOPersonal >
-        <div class="icon-wrapper" (click)="toggleBookmarkOPersonal(item.IDOBJETIVOSPERSONALES); $event.stopPropagation()" >
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <div class="box"   (click)="selectSwiper(item,'listar-parametros')"   *ngFor="let item of (dataTEjercicio?.slice(0, 3) || [])"   style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/tipoEjercicio/{{item.IMAGETIPOEJERCICIO}}');background-repeat: no-repeat;background-size: cover;">
+        <div class="icon-wrapper" (click)="toggleBookmarkTEjercicio(item.IDTIPOEJERCICIO); $event.stopPropagation()" *ngIf="!LikeTEjercicioState[item.IDTIPOEJERCICIO]; else otherLikeTEjercicio">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
-         </svg>
+            <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
+        </svg>
         </div>
-      </ng-template>
-      <div class="text "  >
-        <span   class="span1 ">{{item.DESCRIPCIONOBJETIVOSPERSONALES}}</span>
-        <span  class="span2"  style="display: flex; align-items: center;">
-          OBJETIVO</span>
+        <ng-template #otherLikeTEjercicio >
+          <div class="icon-wrapper" (click)="toggleBookmarkTEjercicio(item.IDTIPOEJERCICIO); $event.stopPropagation()" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
+          </svg>
+          </div>
+        </ng-template>
+        <div class="text "  >
+          <span   class="span1 ">{{item.NOMBRETIPOEJERCICIO}}</span>
+          <span  class="span2"  style="display: flex; align-items: center;">
+            FITNESS</span>
+        </div>
       </div>
-    </div>
-    <div class="box"  (click)="selectSwiper(item,'listar-parametros')" *ngFor="let item of (dataOMusculares?.slice(0, 3) || [])"   style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/objetivomuscular/{{item.IMAGENOBJETIVOSMUSCULARES}}');background-repeat: no-repeat;background-size: cover;">
-      <div class="icon-wrapper" (click)="toggleBookmarkOMuscular(item.IDOBJETIVOSMUSCULARES); $event.stopPropagation()" *ngIf="!LikeOMuscularState[item.IDOBJETIVOSMUSCULARES]; else otherLikeOMuscular">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
-       </svg>
-      </div>
-      <ng-template #otherLikeOMuscular >
-        <div class="icon-wrapper" (click)="toggleBookmarkOMuscular(item.IDOBJETIVOSMUSCULARES); $event.stopPropagation()" >
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <div class="box" (click)="selectSwiper(item,'listar-sesiones')"  *ngFor="let item of (dataOPersoales?.slice(0, 3) || [])"   style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/objetivospersonales/{{item.IMAGEOBJETIVOSPERSONALES}}');background-repeat: no-repeat;background-size: cover;">
+        <div class="icon-wrapper" (click)="toggleBookmarkOPersonal(item.IDOBJETIVOSPERSONALES); $event.stopPropagation()" *ngIf="!LikeOPersonalState[item.IDOBJETIVOSPERSONALES]; else otherLikeOPersonal">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
-         </svg>
+            <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
+        </svg>
         </div>
-      </ng-template>
-      <div class="text "  >
-        <span   class="span1 ">{{item.NOMBREOBJETIVOSMUSCULARES}}</span>
-        <span  class="span2"  style="display: flex; align-items: center;">
-          MUSCULO</span>
+        <ng-template #otherLikeOPersonal >
+          <div class="icon-wrapper" (click)="toggleBookmarkOPersonal(item.IDOBJETIVOSPERSONALES); $event.stopPropagation()" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
+          </svg>
+          </div>
+        </ng-template>
+        <div class="text "  >
+          <span   class="span1 ">{{item.DESCRIPCIONOBJETIVOSPERSONALES}}</span>
+          <span  class="span2"  style="display: flex; align-items: center;">
+            OBJETIVO</span>
+        </div>
+      </div>
+      <div class="box"  (click)="selectSwiper(item,'listar-parametros')" *ngFor="let item of (dataOMusculares?.slice(0, 3) || [])"   style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/objetivomuscular/{{item.IMAGENOBJETIVOSMUSCULARES}}');background-repeat: no-repeat;background-size: cover;">
+        <div class="icon-wrapper" (click)="toggleBookmarkOMuscular(item.IDOBJETIVOSMUSCULARES); $event.stopPropagation()" *ngIf="!LikeOMuscularState[item.IDOBJETIVOSMUSCULARES]; else otherLikeOMuscular">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
+        </svg>
+        </div>
+        <ng-template #otherLikeOMuscular >
+          <div class="icon-wrapper" (click)="toggleBookmarkOMuscular(item.IDOBJETIVOSMUSCULARES); $event.stopPropagation()" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
+          </svg>
+          </div>
+        </ng-template>
+        <div class="text "  >
+          <span   class="span1 ">{{item.NOMBREOBJETIVOSMUSCULARES}}</span>
+          <span  class="span2"  style="display: flex; align-items: center;">
+            MUSCULO</span>
+        </div>
+      </div>
+      <div class="box" (click)="go_page('listar-guardados')" *ngIf="(dataRutinas && dataRutinas.length > 3) || (dataSesiones && dataSesiones.length > 3 )|| (dataTEjercicio && dataTEjercicio.length > 3 )|| (dataOPersoales && dataOPersoales.length > 3) || (dataOMusculares && dataOMusculares.length > 3)" style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/guardado-blureable.jpg'); background-repeat: no-repeat; background-size: cover;">
+        <div class="text "  >
+          <span   class="span1 ">VER</span>
+          <span  class="span2"  style="display: flex; align-items: center;">
+            MÁS</span>
+        </div>
       </div>
     </div>
-    <div class="box" (click)="go_page('listar-guardados')" *ngIf="(dataRutinas && dataRutinas.length > 3) || (dataSesiones && dataSesiones.length > 3 )|| (dataTEjercicio && dataTEjercicio.length > 3 )|| (dataOPersoales && dataOPersoales.length > 3) || (dataOMusculares && dataOMusculares.length > 3)" style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/guardado-blureable.jpg'); background-repeat: no-repeat; background-size: cover;">
-      <div class="text "  >
-        <span   class="span1 ">VER</span>
-        <span  class="span2"  style="display: flex; align-items: center;">
-          MÁS</span>
+    <div class="container-entrenadores">
+      <div class="box" (click)="go_page('contrato-entrenador')"  style="width: 100%!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/entrenadores.jpg');background-repeat: no-repeat;background-size: cover;" >
       </div>
     </div>
   </div>

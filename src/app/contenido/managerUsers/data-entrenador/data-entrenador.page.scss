@@ -321,9 +321,9 @@ ion-content {
   padding: 2%;
   height: auto;
   border-radius: 15px;
-  background-color: transparent;
+  //background-color: transparent;
   border: #8437f0a1 solid 1px;
-  color: #8337f0;
+  //color: #8337f0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -501,6 +501,7 @@ ion-content {
   background: #f2f2f2;
   padding: 2% 0% 0% 0%;
   width: 100%;
+  border-radius: 10px 10px 0px 0px;
 }
 .container-suscripcion img{
   height: auto;
@@ -526,6 +527,7 @@ ion-textarea {
   color: #7a6c6c;
   font-family: Raleway-Bold;
   font-size: 1.1rem;
+  z-index: 1;
 }
 ion-icon {
   color: #8a37f7;
@@ -612,3 +614,204 @@ ion-textarea.custom {
     font-size: 1rem;
   }
 }
+
+.modal-overlay {
+  position: fixed;
+  width: 100%;
+  height: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #9159f97e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  backdrop-filter: blur(5px);
+}
+.modal-overlay-item{
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.modal-content {
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.671);
+  border-radius: 4px;
+  width: 70%;
+  padding: 0% 15% 0% 15%;
+  overflow: auto;
+  height: 13vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+
+.container-starts-evaluate {
+  margin: 0 auto;
+  display: flex;
+  flex: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.container-starts-evaluate div {
+  margin: 0 auto;
+}
+.container-starts-evaluate div svg {
+  color: #895cf0;
+  width: auto;
+  height: auto;
+  display: inline-block;
+}
+.container-button-evaluate{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.item-container-button-evaluate{
+  display: block;
+  margin: 0 auto;
+  ion-button{
+    text-align: center;
+    width: 100%;
+    height: 6vh;
+    border-radius: 30px;
+    font-family: Raleway-Bold;
+    font-size: 1.5rem;
+    box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.082);
+  }
+}
+.item-container-button-evaluate ion-button:first-child {
+  background-color: #e3d3fd;
+  color: #9259f9;
+  margin: 3% 0% 3% 0%;
+}
+.item-container-button-evaluate ion-button:nth-child(2){
+  background-color: #ffffff;
+  color: #9259f9;
+}
+
+
+.heartbeat {
+  animation-name: heartbeat;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
+
+@keyframes heartbeat {
+  0% {transform: rotate(0deg) scale(1,1);;}
+  10% {transform: rotate(7deg) scale(2,2);}
+  20% {transform: rotate(-7deg) scale(2,2);}
+  30% {transform: rotate(7deg) scale(2,2);}
+  40% {transform: rotate(-7deg) scale(2,2);}
+  50% {transform: rotate(7deg) scale(2,2);}
+  60% {transform: rotate(-7deg) scale(2,2);}
+  70% {transform: rotate(7deg) scale(2,2);}
+  80% {transform: rotate(-7deg) scale(2,2);}
+  90% {transform: rotate(7deg) scale(2,2);}
+  100% {transform: rotate(0deg) scale(1,1);}
+}
+.capa {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0);
+  z-index: 14; /* Asegura que la capa esté por encima de otros elementos */
+}
+
+.bottom-fixed {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 40vh;
+  background-color: rgb(255, 255, 255);
+  border-radius: 15px 15px 0px 0px;
+  z-index: 15;
+  box-shadow: 0px -5px 5px rgba(0, 0, 0, 0.2);
+  padding: 0% 3%;
+}
+.container-bottons-fixed{
+  ion-button{
+    width: 100%;
+    height: 6vh;
+    border-radius: 30px;
+    font-family: Raleway-Bold;
+    font-size: 1rem;
+  }
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.container-suscripcion-down {
+  overflow-x: auto;
+  padding: 6% 5%;
+}
+.scrollable-row-suscripcion-down {
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 0% 3%;
+}
+.item-suscripcion-down {
+  flex: 0 0 auto;
+  width: 40% ;
+  margin-right: 3%;
+  border-radius: 10px;
+  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.082);
+  padding-bottom: 10%;
+}
+.item-suscripcion-down-img{
+  width: 50%;
+  margin:8% 25% 2% 25%;
+  height: auto;
+  background: transparent;
+}
+.item-suscripcion-down-img img{
+  width: 100%;
+  height: auto;
+}
+.texto-suscripcion-down{
+  text-align: center;
+  .text2{
+    margin: 0;
+    padding: 0;
+    font-family: Raleway-ExtraBold;
+    font-size: 1.3rem;
+  }
+  .text1{
+    margin: 0;
+    padding: 0;
+    font-family: Raleway-Medium;
+    font-size: .9rem;
+  }
+  .text3{
+    margin: 0;
+    padding: 0;
+    font-family: Raleway-Light;
+    font-size: 1rem;
+  }
+}
+
+.horizontal-line {
+  width: 40%;
+  height: 3px;
+  background-color: rgba(100, 88, 88, 0.596);
+  margin: 2% auto 0; /* Para centrarlo horizontalmente */
+}
+

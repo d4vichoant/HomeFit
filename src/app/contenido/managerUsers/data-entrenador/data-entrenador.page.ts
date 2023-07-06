@@ -7,7 +7,7 @@ import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../../../constantes';
 import { AlertController } from '@ionic/angular';
 import { IonInfiniteScroll } from '@ionic/angular';
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-data-entrenador',
@@ -31,7 +31,17 @@ export class DataEntrenadorPage implements OnInit {
   public dataSesiones!:any[];
   public datacomentariosentrenador!:any[];
   datacomentariosentrenadorparcial!:any[];
+  OPINIONCOMENTARIOENTRENADOR!:string;
+  showmodalstars:boolean=false;
+  evaluateComment:number=0;
+  validatebuttonEvaluate:boolean=false;
+  showovelaysusciption:boolean=false;
 
+  public suscripciones!:any[];
+  selectSuscripcion:number=-1;
+  suscripcionStatus:boolean=false;
+
+  pagarTotal!:string;
 
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
@@ -45,16 +55,16 @@ export class DataEntrenadorPage implements OnInit {
     if(!this.validatorCargarDatos){
       this.recuperarDatos();
     }
-    //this.validateSesion();
-    this.test();
+    this.validateSesion();
+    //this.test();
 
   }
   ionViewDidEnter() {
     if(!this.validatorCargarDatos){
       this.recuperarDatos();
     }
-    //this.validateSesion();
-    this.test();
+    this.validateSesion();
+    //this.test();
   }
   recuperarDatos(){
     this.validatorCargarDatos=true;
@@ -81,6 +91,9 @@ export class DataEntrenadorPage implements OnInit {
     this.obtenercomentariosentrenador();
     this.obtenerRutinas();
     this.obtenerSesiones();
+    this.llenarSuscripcion();
+    this.actualizarNumero();
+    this.obtenerContratoUsuario();
     //this.obtenerEntrenadores();
     this.loading = false;
   }
@@ -103,6 +116,9 @@ export class DataEntrenadorPage implements OnInit {
               this.obtenercomentariosentrenador();
               this.obtenerRutinas();
               this.obtenerSesiones();
+              this.llenarSuscripcion();
+              this.actualizarNumero();
+              this.obtenerContratoUsuario();
               this.loading = false;
             },
             (error) => {
@@ -138,6 +154,11 @@ export class DataEntrenadorPage implements OnInit {
   go_page(name: string){
     this.validatorCargarDatos=false;
     this.variable=null;
+    this.statuscarpeta=true;
+    this.OPINIONCOMENTARIOENTRENADOR='';
+    this.evaluateComment=0;
+    this.pagarTotal='';
+    this.selectSuscripcion=-1;
     this.navController.navigateForward('/'+name);
   }
   obtenerPrimerNombre(nombre: string): string {
@@ -150,17 +171,134 @@ export class DataEntrenadorPage implements OnInit {
     return ''; // Valor predeterminado en caso de que el nombre no sea válido
   }
 
-  loadMoreData(event: any) {
- /*    const lastItem = this.data[this.data.length - 1];
-    const lastItemId = lastItem.id; // Obtén el ID del último elemento
-    for (let i = 1; i <= 3; i++) {
-      const newItem = { id: lastItemId + i, nombre: 'Elemento ' + (lastItemId + i) };
-      this.data.push(newItem);
-    } */
-    this.infiniteScroll?.complete();
+  cargarImagenesBefores(){
+    const rutinas = this.dataRutinas;
+    const imageUrls = [];
+    if (Array.isArray(rutinas)) {
+      for (let i = 0; i < rutinas.length; i++) {
+        const nameImagen = rutinas[i].IMAGENRUTINA;
+        const imageUrl = this.ip_address+'/media/rutinas/portadasrutinas/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+    const sesion = this.dataSesiones;
+    if (Array.isArray(sesion)) {
+      for (let i = 0; i < sesion.length; i++) {
+        const nameImagen = sesion[i].IMAGESESION;
+        const imageUrl = this.ip_address+'/media/sesiones/portadassesiones/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+    const imgRutinas = this.datacomentariosentrenadorparcial;
+    if (Array.isArray(sesion)) {
+      for (let i = 0; i < sesion.length; i++) {
+        const nameImagen = sesion[i].IMAGEPERSONA;
+        const imageUrl = this.ip_address+'/media/perfile/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+
+    const imageUrl = this.ip_address+'/media/perfile/'+this.variable.IMAGEPERSONA;
+    imageUrls.push(imageUrl);
+    const imageUrl1 = this.ip_address+'/media/images/suscripcion.png';
+    imageUrls.push(imageUrl1);
+    let imagesLoaded = 0;
+    const totalImages = imageUrls.length;
+    const handleImageLoad = () => {
+      imagesLoaded++;
+      if (imagesLoaded === totalImages) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 1000);
+      }
+    };
+    imageUrls.forEach((imageUrl) => {
+      const image = new Image();
+      image.onload = handleImageLoad;
+      image.src = imageUrl;
+    });
   }
 
+  calcularTiempoPasado(fecha: string): string {
+    const fechaActual = moment();
+    const fechaDada = moment(fecha);
+    const diferencia = fechaActual.diff(fechaDada, 'minutes');
 
+    if (diferencia < 60) {
+      return `${diferencia} min`;
+    } else if (diferencia < 1440) {
+      const horas = Math.floor(diferencia / 60);
+      return `${horas} horas`;
+    } else {
+      const dias = Math.floor(diferencia / 1440);
+      return `${dias} días`;
+    }
+  }
+
+  llenarSuscripcion(){
+      this.suscripciones = [
+      {
+        titulo: 'Suscripción',
+        subtitulo: 'Básica',
+        precio: '',
+        imagen: this.ip_address+'/media/tariff/icon1.png',
+        detalles: '1 mes',
+        colorbackground:'#f6f3ff',
+      },
+      {
+        titulo: 'Suscripción',
+        subtitulo: 'Premium',
+        precio: '',
+        imagen: this.ip_address+'/media/tariff/icon2.png',
+        detalles: '3 meses',
+        colorbackground:'#f1edfe',
+      },
+      {
+        titulo: 'Suscripción',
+        subtitulo: 'Pro',
+        precio: '',
+        imagen: this.ip_address+'/media/tariff/icon3.png',
+        detalles: '6 meses',
+        colorbackground:'#f1edfe',
+      },
+      {
+        titulo: 'Suscripción',
+        subtitulo: 'Golden',
+        precio: '',
+        imagen: this.ip_address+'/media/tariff/icon4.png',
+        detalles: '12 meses',
+        colorbackground:'#f6f3ff',
+      },
+    ];
+  }
+
+  animateFromBottom() {
+    const element = document.getElementById('element');
+    element?.classList.remove('hidden');
+    element?.classList.add('visible');
+    const element2 = document.getElementById('element2');
+    element2?.classList.remove('hidden');
+    element2?.classList.add('visible');
+  }
+  animateFromTop() {
+    const element = document.getElementById('element');
+    element?.classList.remove('visible');
+    element?.classList.add('hidden');
+    const element2 = document.getElementById('element2');
+    element2?.classList.remove('visible');
+    element2?.classList.add('hidden');
+  }
+
+  changeStart(number:number){
+    this.evaluateComment=number;
+    if(!this.validatebuttonEvaluate){
+      this.validatebuttonEvaluate=true;
+    }
+  }
+  changeSuscripcion(item:number,data:any){
+    this.selectSuscripcion=item;
+    this.pagarTotal=data.precio;
+  }
   truncateText(text: string): string {
     const wordArray = text.trim().split(' ');
     const truncatedArray = wordArray.slice(0, 10);
@@ -177,10 +315,42 @@ export class DataEntrenadorPage implements OnInit {
     const palabras = texto.trim().split(' ');
     return palabras.length;
   }
+  confirmarinsertarcomentarioentrenador(){
+    this.showmodalstars=true;
+  }
+  clearcomentarioentrenador(){
+    this.showmodalstars=false;
+    this.evaluateComment=0;
+    this.validatebuttonEvaluate=false;
+  }
+  actualizarNumero() {
+    this.variable.TARIFASENTRENADOR = parseFloat(this.variable.TARIFASENTRENADOR).toFixed(2)+"";
+    this.suscripciones[0].precio = '$ ' + this.variable.TARIFASENTRENADOR + ' USD';
+    this.suscripciones[1].precio = '$ ' + (parseFloat(this.variable.TARIFASENTRENADOR)*3 - (parseFloat(this.variable.TARIFASENTRENADOR)*3) * (17 / 100)).toFixed(2) + ' USD';
+    this.suscripciones[2].precio = '$ ' + (parseFloat(this.variable.TARIFASENTRENADOR)*6 - (parseFloat(this.variable.TARIFASENTRENADOR)*6) * (25 / 100)).toFixed(2) + ' USD';
+    this.suscripciones[3].precio = '$ ' + (parseFloat(this.variable.TARIFASENTRENADOR)*12 - (parseFloat(this.variable.TARIFASENTRENADOR)*12) * (33 / 100)).toFixed(2) + ' USD';
+  }
+  significadoselectSuscripcion(selectSuscripcion:number):number{
+    switch (selectSuscripcion) {
+      case 0:
+        return 1;
+      case 1:
+        return 3;
+      case 2:
+        return 6;
+      case 3:
+        return 12;
+      default:
+        return -1;
+    }
+  }
+  contratacionNoDisponible(){
+    this.presentCustomToast('Selecciona un Plan','danger');
+  }
   async presentCustomToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2400,
+      duration: 3400,
       position: 'top',
       cssClass: `toast-custom-${color}`,
       buttons: [
@@ -196,30 +366,6 @@ export class DataEntrenadorPage implements OnInit {
       toast.present();
     }
 
-  async confirmarcontratoEntrenador(variableEntrenador:any) {
-    const alert = await this.alertController.create({
-      header: 'Confirmar Contratación',
-      message: '¿Estás seguro de contratar al entrenador seleccionado?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            this.presentCustomToast('Contratación cancelada',"danger");
-          }
-        }, {
-          text: 'Aceptar',
-          handler: () => {
-            this.presentCustomToast('Contratación Exitosa',"success");
-            this.contratacionEntrenador();
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
 
   obtenerGetPerfilCompleto(nickname:string){
     this.apiService.connsultPerfilUsuarioCompleto(nickname).subscribe(
@@ -233,10 +379,13 @@ export class DataEntrenadorPage implements OnInit {
   }
 
   contratacionEntrenador(){
-    this.apiService.ContratoEntrenador(this.userSesionPerfil[0].IDUSUARIO,this.variable.IDENTRENADOR).subscribe(
-
+    this.apiService.ContratoEntrenador(this.userSesionPerfil[0].IDUSUARIO,this.variable.IDENTRENADOR,this.significadoselectSuscripcion(this.selectSuscripcion)).subscribe(
       (response) => {
         this.presentCustomToast(response.message,"success");
+        this.pagarTotal='';
+        this.selectSuscripcion=-1;
+        this.animateFromTop();
+        this.obtenerContratoUsuario();
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -277,8 +426,41 @@ export class DataEntrenadorPage implements OnInit {
     this.apiService.getcomentariosentrenador(this.variable.IDENTRENADOR).subscribe(
       (response) => {
         this.datacomentariosentrenador=response;
-        this.datacomentariosentrenadorparcial=this.datacomentariosentrenador.slice(0,3);
-        console.log(this.datacomentariosentrenador);
+        this.datacomentariosentrenadorparcial=this.datacomentariosentrenador;
+        this.datacomentariosentrenadorparcial = Object.values(this.datacomentariosentrenadorparcial.reduce((uniqueData: any, currentItem: any) => {
+          if (!uniqueData[currentItem.IDUSUARIO]) {
+            uniqueData[currentItem.IDUSUARIO] = currentItem;
+          }
+          return uniqueData;
+        }, {}));
+      },
+      (error) => {
+        this.presentCustomToast(error.error,"danger");
+      }
+    );
+  }
+  obtenerContratoUsuario(){
+    this.apiService.obtenerContratoUsuario(this.userSesionPerfil[0].IDUSUARIO,this.variable.IDENTRENADOR).subscribe(
+      (response) => {
+        this.suscripcionStatus=response.active;
+        this.cargarImagenesBefores();
+      },
+      (error) => {
+        this.presentCustomToast(error.error,"danger");
+      }
+    );
+  }
+  insertarcomentarioentrenador(){
+    if(this.OPINIONCOMENTARIOENTRENADOR===undefined|| this.OPINIONCOMENTARIOENTRENADOR===null){
+      this.OPINIONCOMENTARIOENTRENADOR='';
+    }
+    this.apiService.insertarcomentarioentrenador(this.userSesionPerfil[0].IDUSUARIO,this.variable.IDENTRENADOR,this.evaluateComment-2,this.OPINIONCOMENTARIOENTRENADOR).subscribe(
+      (response) => {
+        this.presentCustomToast(response.message,"success");
+        this.OPINIONCOMENTARIOENTRENADOR='';
+        this.evaluateComment=0;
+        this.showmodalstars=false;
+        this.obtenercomentariosentrenador();
       },
       (error) => {
         this.presentCustomToast(error.error,"danger");

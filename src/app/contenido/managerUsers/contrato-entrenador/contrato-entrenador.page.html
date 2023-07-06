@@ -37,7 +37,7 @@
      </svg>
     </div>
   </div>
-  <div class="portada-bg" style="background-image: linear-gradient(0deg, #330e67, #330e676c, #330e6721), url('{{ip_address}}/media/perfile/portada.png')">
+  <div class="portada-bg" style="background-image: linear-gradient(0deg, #ffffff00, #00000046, #330e6721), url('{{ip_address}}/media/perfile/portada.png')">
     <div class="header">
       <app-toolbar-designer-white></app-toolbar-designer-white>
     </div>
@@ -48,7 +48,8 @@
   <div class="container-body">
     <div class="container" *ngFor="let item of dataEntrenadores" (click)="go_page_create('data-entrenador',item)">
       <div class="text-overlay">
-        <p>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}<span style="color: #b373d3; font-family: Raleway-ExtraBold;">{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</span></p>
+        <p>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}<br>
+          <span>{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</span></p>
       </div>
       <div class="container-box-container">
         <div class="box-container">
@@ -58,62 +59,20 @@
           <div class="square-box square4"></div>
         </div>
       </div>
-      <div class="container-text-body">
-        <div class="text-body">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-event" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-            <path d="M16 3l0 4"></path>
-            <path d="M8 3l0 4"></path>
-            <path d="M4 11l16 0"></path>
-            <path d="M8 15h2v2h-2z"></path>
-        </svg>
-          <h2>Edad:
-          <span>{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }}&nbsp;años5</span></h2>
-        </div>
-        <div class="text-body">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
-            <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
-            <path d="M12 12l0 .01"></path>
-            <path d="M3 13a20 20 0 0 0 18 0"></path>
-          </svg>
-          <h2>Experiencia:
-          <span>{{ item.EXPERIENCIAENTRENADOR }}&nbsp;años</span></h2>
-        </div>
-        <div class="text-body" *ngIf="item.NUMERO_EJERCICIOS>0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-stretching" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M16 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-            <path d="M5 20l5 -.5l1 -2"></path>
-            <path d="M18 20v-5h-5.5l2.5 -6.5l-5.5 1l1.5 2"></path>
-          </svg>
-          <h2>Ejercicios:
-          <span>{{item.NUMERO_EJERCICIOS}}</span></h2>
-        </div>
-        <div class="text-body" *ngIf="item.NUMERO_RUTINAS>0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-weight" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M12 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-            <path d="M6.835 9h10.33a1 1 0 0 1 .984 .821l1.637 9a1 1 0 0 1 -.984 1.179h-13.604a1 1 0 0 1 -.984 -1.179l1.637 -9a1 1 0 0 1 .984 -.821z"></path>
-         </svg>
-          <h2>Rutinas:
-            <span>{{item.NUMERO_RUTINAS}}</span></h2>
-        </div>
-        <div class="text-body" *ngIf="item.NUMERO_SESIONES_PROGRAMADAS>0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-barbell" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M2 12h1"></path>
-            <path d="M6 8h-2a1 1 0 0 0 -1 1v6a1 1 0 0 0 1 1h2"></path>
-            <path d="M6 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z"></path>
-            <path d="M9 12h6"></path>
-            <path d="M15 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z"></path>
-            <path d="M18 8h2a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-2"></path>
-            <path d="M22 12h-1"></path>
-         </svg>
-          <h2>Programas:
-            <span>{{item.NUMERO_SESIONES_PROGRAMADAS}}</span></h2>
+      <div class="container-detalles">
+        <div class="flex-container">
+          <div class="flex-item" *ngIf="item.FECHANACIMIENTOPERSONA">
+            <h1>{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }}&nbsp;años</h1>
+            <p>Edad</p>
+          </div>
+          <div class="flex-item" *ngIf="item.EXPERIENCIAENTRENADOR">
+            <h1>{{ item.EXPERIENCIAENTRENADOR }}&nbsp;años</h1>
+            <p>Experiencia</p>
+          </div>
+          <div class="flex-item" *ngIf="item.NUMERO_SESIONES_PROGRAMADAS || item.NUMERO_RUTINAS || item.NUMERO_EJERCICIOS">
+            <h1>{{item.NUMERO_SESIONES_PROGRAMADAS + item.NUMERO_RUTINAS + item.NUMERO_EJERCICIOS}}</h1>
+            <p>Total de Prog.</p>
+          </div>
         </div>
       </div>
       <div class="overlay-square">

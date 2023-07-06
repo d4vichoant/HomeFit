@@ -40,6 +40,7 @@ export class MainPage implements OnInit {
   public dataRecomendacion!:any[];
   public dataOPersoales!: any[];
   public dataTEjercicio!: any[];
+  public dataTEjercicioAll!: any[];
   public dataOMusculares!: any[];
   public dataEjercicio!: any[];
 
@@ -283,6 +284,7 @@ export class MainPage implements OnInit {
     this.apiService.getTipoEjercicioActivate().subscribe(
       (response) => {
         this.dataTEjercicio=response;
+        this.dataTEjercicioAll=response;
         this.dataTEjercicio = this.dataTEjercicio.filter((element) => this.LikeTEjercicioState[element.IDTIPOEJERCICIO]);
       },
       (error) => {

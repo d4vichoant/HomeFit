@@ -1,5 +1,5 @@
 ion-content {
-  --background: linear-gradient(0deg, #330e67, #330e67);
+  --background: linear-gradient(0deg, #ac7efc, #ac7efc94,#ffffff, #ffffff, #ffffff,#ffffff);
   height: 100vh;
   overflow: hidden;
   //filter: blur(5px);
@@ -20,11 +20,13 @@ ion-content {
 }
 
 .container-body{
-  height: 65vh;
-  padding: 0% 0% 9% 0%;
+  height: 62vh;
+  padding: 0% 0% 0% 0%;
   overflow-x: hidden;
   overflow-y: auto;
-
+  background: linear-gradient(0deg, #c9b1f336, #ffffff);
+  border-radius: 0px 25px 25px 25px;
+  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.466);
 }
 
 .card-item{
@@ -130,6 +132,7 @@ ion-content {
   background-repeat: no-repeat;
   z-index: 2;
   padding-top: 9%;
+  border-radius: 0px 0px 0px 30px;
   .header{
     background: linear-gradient(90deg, #b066d2b4, #7c64d2a6);
     border-radius: 50px;
@@ -147,10 +150,63 @@ ion-content {
 
 .container-box-container{
   position: absolute;
-  top: 35%;
-  left: 3%;
+  top: 0%;
+  right: 3%;
   padding: 10px;
+  transform: rotate(90deg);
 }
+
+.container-detalles{
+  position: absolute;
+  bottom:  0%;
+  right: 0%;
+  left: 0%;
+  z-index: 99;
+  margin: 0% 5%;
+}
+.flex-container {
+  display: flex;
+  width: 100%;
+  height: 60px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color: #ffffff69;
+  border-radius: 15px;
+  margin-bottom: 5%;
+}
+
+.flex-item {
+  flex: 1;
+  position: relative;
+  h1{
+    margin: 0;
+    padding: 0;
+    font-family: Raleway-Bold;
+    font-size: 1rem;
+    color:  #ffffff;
+  }
+  p{
+    margin: 0;
+    padding: 5% 0% 0% 0%;
+    font-family: Raleway-Light;
+    font-size: .8rem;
+    color:  #5921a8;
+  }
+
+}
+
+/* Pseudo-elemento para la línea vertical */
+.flex-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 15%; /* Ajusta el valor de top según desees */
+  bottom:15%; /* Ajusta el valor de bottom según desees */
+  right: 0;
+  width: 2px;
+  background-color: #ac8be9;
+}
+
 
 .text-overlay-up p {
   margin: 0;
@@ -262,8 +318,11 @@ ion-content {
 .container {
   position: relative;
   width: 84%;
-  height: 242px;
+  height: 185px;
   margin: 7% 8%;
+  background-color: #9355f7c5;
+  border-radius: 0px 15px 10px 15px;
+  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.2);
 }
 .square {
   position: absolute;
@@ -302,85 +361,65 @@ ion-content {
   top: 3%;
   left:  15%;
   color: #ffffffd5;
-  font-family: Raleway-ExtraBold;
   font-size: 1.8rem;
   z-index: 5;
   p{
     margin: 0;
-    font-family: Raleway-ExtraBold;
-    padding: 0;
-    text-shadow: 0 0 5px #000000;
-  }
-
-}
-.container-text-body{
-  position: absolute;
-  bottom: 2%;
-  right: 3%;
-}
-
-.text-body{
-  color: #ffffffd5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 5%;
-  h2{
-    margin: 0 auto;
     font-family: Raleway-Bold;
-    font-size: 1rem;
-    z-index: 5;
+    padding: 0;
+    text-shadow: none;
+    font-size: 2rem;
     span{
-      font-family: Raleway-Light;
-      font-size: 1rem;
-      z-index: 5;
+      color: #e0d9eb;
+      font-family: Raleway-ExtraBold;
+      text-shadow: none;
+      font-size: 2.5rem;
+      text-shadow: -2px 2px 5px rgba(20, 1, 1, 0.26);
     }
   }
-}
-
-.text-body svg,
-.text-body h2 {
-  margin: 0 auto;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.text-body svg{
-  margin-right: 10px;
 
 }
+
 .box-container {
-  width: 45px;
-  height: 45px;
+  width: 100px;
+  height: 100px;
   display: flex;
   flex-wrap: wrap;
 }
 
 .square-box {
   box-sizing: border-box;
-  border: 1px solid #000000;
+  border: 1px solid #9255f7;
 }
 
 .square1 {
   width: 50%;
   height: 50%;
-  background-color: #c9b8fa;
+  border-radius: 10px;
+  margin: 1%;
+  background-color: #ffffff79;
 }
 
 .square2 {
   width: 50%;
   height: 25%;
-  background-color: #ad8ff6;
+  border-radius: 10px;
+  margin: 3%;
+  background-color: #ffffffb7;
 }
 
 .square3 {
   width: 25%;
   height: 50%;
-  background-color: #752fd2;
+  border-radius: 10px;
+  margin: 1%;
+  background-color: #ffffffb7;
 }
 
 .square4 {
   width: 25%;
   height: 25%;
-  background-color: #eeeafd;
+  border-radius: 10px;
+  margin: 3%;
+  background-color: #ffffff9a;
 }
