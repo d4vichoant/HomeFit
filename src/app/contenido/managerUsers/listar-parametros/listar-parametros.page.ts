@@ -159,6 +159,7 @@ export class ListarParametrosPage implements OnInit {
     });
   }
   toggleBookmarkTEjercicio(index: number): void {
+    this.loading=true;
     if (this.LikeTEjercicioState[index]) {
       this.LikeTEjercicioState[index] = false;
       this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
@@ -166,8 +167,12 @@ export class ListarParametrosPage implements OnInit {
       this.LikeTEjercicioState[index] = true;
       this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   toggleBookmarkOMuscular(index: number): void {
+    this.loading=true;
     if (this.LikeOMuscularState[index]) {
       this.LikeOMuscularState[index] = false;
       this.updateLikeTEjercicio(index,this.LikeOMuscularState[index],'likeobjetivomusculares');
@@ -175,6 +180,9 @@ export class ListarParametrosPage implements OnInit {
       this.LikeOMuscularState[index] = true;
       this.updateLikeTEjercicio(index,this.LikeOMuscularState[index],'likeobjetivomusculares');
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
 
   go_page(name: string){
@@ -204,6 +212,7 @@ export class ListarParametrosPage implements OnInit {
     }
   }
   toggleBookmark(index: number): void {
+    this.loading=true;
     if (this.bookmarkState[index]) {
       this.bookmarkState[index] = false;
       this.updateBookMarkUser(index,this.bookmarkState[index]);
@@ -211,6 +220,9 @@ export class ListarParametrosPage implements OnInit {
       this.bookmarkState[index] = true;
       this.updateBookMarkUser(index,this.bookmarkState[index]);
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   obtenerDuracionEnMinutos(tiempo:string):number {
     const tiempoPartes = tiempo.split(":");

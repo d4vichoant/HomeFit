@@ -20,6 +20,21 @@
     </div>
   </div> -->
   <div class="container-body">
+    <!-- <div><h2 class="subtitle" >Recomendación</h2></div> -->
+    <div class="container" style="margin-top: 2%;" >
+      <div class="box-recomendacion" style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/recomendacion.jpg');background-repeat: no-repeat;background-size: cover;" >
+        <div class="text-demo-left">
+          <p>RECO<span>MENDA</span>CIÓN</p>
+        </div>
+      </div>
+      <div class="box-recomendacion"   (click)="go_page_create_rutina(item,'rutinas-diarias')"  *ngFor="let item of dataRecomendacion"  style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/rutinas/portadasrutinas/{{item.IMAGENRUTINA}}');background-repeat: no-repeat;background-size: cover;" >
+        <div class="text "  >
+          <span   class="span1 ">{{item.NOMBRERUTINA}}</span>
+          <span  class="span2"  style="display: flex; align-items: center;">
+            RUTINA</span>
+        </div>
+      </div>
+    </div>
     <div class="container-swiper">
       <swiper-container #slides class="onb-container onb-container-1"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
         <swiper-slide class="onb-slide" *ngFor="let item of dataTEjercicioAll" (click)="selectSwiper(item,'listar-parametros')" >
@@ -33,21 +48,26 @@
         </swiper-slide>
       </swiper-container>
     </div>
-    <!-- <div><h2 class="subtitle" >Recomendación</h2></div> -->
-    <div class="container" style="margin-top: 2%;" >
-      <div class="box-recomendacion" style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/recomendacion.jpg');background-repeat: no-repeat;background-size: cover;" >
-      </div>
-      <div class="box-recomendacion"   (click)="go_page_create_rutina(item,'rutinas-diarias')"  *ngFor="let item of dataRecomendacion"  style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/rutinas/portadasrutinas/{{item.IMAGENRUTINA}}');background-repeat: no-repeat;background-size: cover;" >
-        <div class="text "  >
-          <span   class="span1 ">{{item.NOMBRERUTINA}}</span>
-          <span  class="span2"  style="display: flex; align-items: center;">
-            RUTINA</span>
+    <!-- <div><h2 class="subtitle" >Retorna donde te quedaste</h2></div> -->
+    <div class="container-procesosquedados">
+      <div class="box" (click)="go_page('listar-ejercicios')"  style="width: 330px!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/retomar.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;" >
+        <div class="text-demo" >
+          <span class="span2-demo"  style="display: flex; align-items: center;">
+            MÁS LEJOS</span>
+        </div>
+        <div class="text-demo-2" >
+          <span class="span2-demo-2"  style="display: flex; align-items: center;">
+            LLEVA TUS&nbsp;<span class="spanh1-2">LIMITES</span></span>
         </div>
       </div>
     </div>
-    <!-- <div><h2 class="subtitle" >Retorna donde te quedaste</h2></div> -->
-    <div class="container-procesosquedados">
-      <div class="box" (click)="go_page('listar-ejercicios')"  style="width: 330px!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/retomar.jpg');background-repeat: no-repeat;background-size: cover;" >
+    <div class="container-entrenadores">
+      <div class="box-container-entrenadores" (click)="go_page('contrato-entrenador')"  style="width: 100%!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/entrenadores.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;" >
+        <div class="text-container-entrenadores">
+          <p>ENTRE</p>
+          <p>NADORES</p>
+          <h1>Conocer más</h1>
+        </div>
       </div>
     </div>
     <div class="container-text">
@@ -57,7 +77,11 @@
       </div>
     </div>
     <div class="container" style="margin-top: 0%;" *ngIf="dataRutinas && dataRutinas.length > 0 || dataSesiones && dataSesiones.length > 0 || dataOPersoales && dataOPersoales.length > 0 || dataTEjercicio && dataTEjercicio.length > 0  || dataOMusculares && dataOMusculares.length > 0 || dataEjercicio && dataEjercicio.length > 0 ">
-      <div class="box"  style="width: 300px!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/guardado.jpg');background-repeat: no-repeat;background-size: cover;" >
+      <div class="box"   (click)="go_page('listar-guardados')" style="width: 300px!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/guardado.jpg');background-repeat: no-repeat;background-size: cover;" >
+        <div class="text-demo" >
+          <span class="span2-demo"  style="display: flex; align-items: center;">
+            GUAR<span class="spanh1">DA</span>DOS</span>
+        </div>
       </div>
       <div class="box"  (click)="goEjercicioUniq(item,'ejercicio-uniq')" *ngFor="let item of  (dataEjercicio.slice(0, 3) || [])"  style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/multimedia/{{getVideoName(item.ALMACENAMIENTOMULTIMEDIA)}}.jpg');background-repeat: no-repeat;background-size: cover;" >
         <div class="icon-wrapper" (click)="toggleBookmarkEjercicio(item.IDEJERCICIO); $event.stopPropagation()" *ngIf="!bookmarkState[item.IDEJERCICIO]; else otherbookmarkEjercicio">
@@ -75,7 +99,7 @@
           </div>
         </ng-template>
         <div class="text " >
-          <span class="span1 ">{{item.NOMBREEJERCICIO}}</span>
+          <span class="span1 ">{{recortarPalabras(item.NOMBREEJERCICIO,4)}}</span>
           <span class="span2 "  style="display: flex; align-items: center;">
             EJERCICIO</span>
         </div>
@@ -96,7 +120,7 @@
           </div>
         </ng-template>
         <div class="text " >
-          <span class="span1 ">{{item.NOMBRERUTINA}}</span>
+          <span class="span1 ">{{recortarPalabras(item.NOMBRERUTINA,4)}}</span>
           <span class="span2 "  style="display: flex; align-items: center;">
             RUTINA</span>
         </div>
@@ -117,7 +141,7 @@
           </div>
         </ng-template>
         <div class="text "  >
-          <span   class="span1 ">{{item.NOMBRESESION}}</span>
+          <span   class="span1 ">{{recortarPalabras(item.NOMBRESESION,4)}}</span>
           <span  class="span2"  style="display: flex; align-items: center;">
           PROG. RUTINAS</span>
         </div>
@@ -138,7 +162,7 @@
           </div>
         </ng-template>
         <div class="text "  >
-          <span   class="span1 ">{{item.NOMBRETIPOEJERCICIO}}</span>
+          <span   class="span1 ">{{recortarPalabras(item.NOMBRETIPOEJERCICIO,4)}}</span>
           <span  class="span2"  style="display: flex; align-items: center;">
             FITNESS</span>
         </div>
@@ -159,7 +183,7 @@
           </div>
         </ng-template>
         <div class="text "  >
-          <span   class="span1 ">{{item.DESCRIPCIONOBJETIVOSPERSONALES}}</span>
+          <span   class="span1 ">{{recortarPalabras(item.DESCRIPCIONOBJETIVOSPERSONALES,4)}}</span>
           <span  class="span2"  style="display: flex; align-items: center;">
             OBJETIVO</span>
         </div>
@@ -180,7 +204,7 @@
           </div>
         </ng-template>
         <div class="text "  >
-          <span   class="span1 ">{{item.NOMBREOBJETIVOSMUSCULARES}}</span>
+          <span   class="span1 ">{{recortarPalabras(item.NOMBREOBJETIVOSMUSCULARES,4)}}</span>
           <span  class="span2"  style="display: flex; align-items: center;">
             MUSCULO</span>
         </div>
@@ -191,10 +215,6 @@
           <span  class="span2"  style="display: flex; align-items: center;">
             MÁS</span>
         </div>
-      </div>
-    </div>
-    <div class="container-entrenadores">
-      <div class="box" (click)="go_page('contrato-entrenador')"  style="width: 100%!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/entrenadores.jpg');background-repeat: no-repeat;background-size: cover;" >
       </div>
     </div>
   </div>

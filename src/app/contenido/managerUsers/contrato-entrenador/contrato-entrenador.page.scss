@@ -24,9 +24,20 @@ ion-content {
   padding: 0% 0% 0% 0%;
   overflow-x: hidden;
   overflow-y: auto;
-  background: linear-gradient(0deg, #c9b1f336, #ffffff);
-  border-radius: 0px 25px 25px 25px;
-  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.466);
+  //background: linear-gradient(0deg, #c9b1f336, #ffffff);
+  background: #ffffff;
+  border-radius: 0px 0px 25px 25px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.466);
+}
+.container-body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 62vh;
+  border-radius: 0px 0px 25px 25px;
+  background: linear-gradient(0deg, #ffffff, #ffffffc7, #ffffffa4, #ffffff);/* Color y opacidad de la capa */
 }
 
 .card-item{
@@ -132,7 +143,7 @@ ion-content {
   background-repeat: no-repeat;
   z-index: 2;
   padding-top: 9%;
-  border-radius: 0px 0px 0px 30px;
+  //border-radius: 0px 0px 0px 30px;
   .header{
     background: linear-gradient(90deg, #b066d2b4, #7c64d2a6);
     border-radius: 50px;
@@ -142,16 +153,23 @@ ion-content {
 }
 .text-overlay-up {
   position: absolute;
-  bottom: 3%;
+  bottom: 6%;
   left: 3%;
   padding: 10px;
-  color: #ffffff;
+  color: #b066d2b4;
 }
 
 .container-box-container{
   position: absolute;
   top: 0%;
   right: 3%;
+  padding: 10px;
+  transform: rotate(90deg);
+}
+.container-box-container2{
+  position: absolute;
+  bottom: 0%;
+  left: 3%;
   padding: 10px;
   transform: rotate(90deg);
 }
@@ -210,9 +228,9 @@ ion-content {
 
 .text-overlay-up p {
   margin: 0;
-  font-family: Raleway-Bold;
-  font-size: 1.7rem;
-  color: #ffffff;
+  font-family: Raleway-ExtraBold;
+  font-size: 3.5rem;
+  color: #bd5de9;
 }
 
 .fullscreen-bg {
@@ -321,7 +339,7 @@ ion-content {
   height: 185px;
   margin: 7% 8%;
   background-color: #9355f7c5;
-  border-radius: 0px 15px 10px 15px;
+  border-radius: 25% 15px 10px 15px;
   box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.2);
 }
 .square {
@@ -341,7 +359,8 @@ ion-content {
 }
 
 .overlay-square img {
-  border-radius: 20px 5px 5px 5px;  /* Valor del radio del borde */
+  border-radius: 50%;  /* Valor del radio del borde */
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .overlay-square::before {
@@ -352,25 +371,26 @@ ion-content {
   width: 100%;
   height: 100%;
   margin-bottom: -15px;
-  border-radius: 20px 0px 0px 0px;
+  border-radius:50%;
   background: linear-gradient(0deg, #c8b8fa00, #6227b057);/* Color y opacidad de la capa */
 }
 
 .text-overlay {
   position: absolute;
   top: 3%;
-  left:  15%;
-  color: #ffffffd5;
+  right:   5%;
+  color: #ffffff;
   font-size: 1.8rem;
   z-index: 5;
   p{
+    text-align: end;
     margin: 0;
     font-family: Raleway-Bold;
     padding: 0;
     text-shadow: none;
     font-size: 2rem;
     span{
-      color: #e0d9eb;
+      color: #f8f7fa;
       font-family: Raleway-ExtraBold;
       text-shadow: none;
       font-size: 2.5rem;
@@ -389,7 +409,7 @@ ion-content {
 
 .square-box {
   box-sizing: border-box;
-  border: 1px solid #9255f7;
+  //border: 1px solid #9255f7;
 }
 
 .square1 {
@@ -397,7 +417,7 @@ ion-content {
   height: 50%;
   border-radius: 10px;
   margin: 1%;
-  background-color: #ffffff79;
+  background-color: #ffffff18;
 }
 
 .square2 {
@@ -405,7 +425,7 @@ ion-content {
   height: 25%;
   border-radius: 10px;
   margin: 3%;
-  background-color: #ffffffb7;
+  background-color: #ffffff2f;
 }
 
 .square3 {
@@ -413,7 +433,7 @@ ion-content {
   height: 50%;
   border-radius: 10px;
   margin: 1%;
-  background-color: #ffffffb7;
+  background-color: #ffffff25;
 }
 
 .square4 {
@@ -421,5 +441,5 @@ ion-content {
   height: 25%;
   border-radius: 10px;
   margin: 3%;
-  background-color: #ffffff9a;
+  background-color: #ffffff2d;
 }

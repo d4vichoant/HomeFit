@@ -38,7 +38,7 @@
       <swiper-container #slides class="onb-container onb-container-2"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
         <swiper-slide class="onb-slide" *ngFor="let item of dataOPersoales" (click)="selectSwiper(item,'listar-sesiones')">
           <div class="slide-content">
-            <h2><span>OBJETIVO</span><br/>
+            <h2 style="padding: 2% 9% 0% 5%!important; margin: 0!important;font-size: 2rem!important;"><span>OBJETIVO</span><br/>
             {{item.DESCRIPCIONOBJETIVOSPERSONALES}}</h2>
             <p>{{item.OBSERVACIONOBJETIVOSPERSONALES}}</p>
             <img [src]="ip_address + '/media/objetivospersonales/' + item.IMAGEOBJETIVOSPERSONALES" />
@@ -64,9 +64,9 @@
     <h2 class="text1">Según la sección del cuerpo</h2>
     <div class="container-swiper">
       <swiper-container #slides class="onb-container onb-container-3"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
-        <swiper-slide class="onb-slide" *ngFor="let item of dataOMusculares" (click)="selectSwiper(item,'listar-parametros')">
+        <swiper-slide class="onb-slide" *ngFor="let item of dataOMusculares" (click)="selectSwiper(item,'listar-parametros'); $event.stopPropagation()">
           <div class="slide-content">
-            <h2><span>MUSCULO</span><br/>
+            <h2 style="padding: 0% 9% 0% 5%!important;">
             {{item.NOMBREOBJETIVOSMUSCULARES}}</h2>
             <p>{{item.DESCRIPCIONOBJETIVOSMUSCULARES}}</p>
             <img [src]="ip_address + '/media/objetivomuscular/' +item.IMAGENOBJETIVOSMUSCULARES" />

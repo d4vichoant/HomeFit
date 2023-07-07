@@ -158,6 +158,7 @@ export class ListarSesionesPage implements OnInit {
   }
 
   toggleBookmarkOPersonal(index: number): void {
+    this.loading=true;
     if (this.LikeOPersonalState[index]) {
       this.LikeOPersonalState[index] = false;
       this.updateLikeTEjercicio(index,this.LikeOPersonalState[index],'likeobjetivopersonal');
@@ -165,8 +166,12 @@ export class ListarSesionesPage implements OnInit {
       this.LikeOPersonalState[index] = true;
       this.updateLikeTEjercicio(index,this.LikeOPersonalState[index],'likeobjetivopersonal');
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   toggleBookmarkRutinas(index: number): void {
+    this.loading=true;
     if (this.bookmarkRutinasState[index]) {
       this.bookmarkRutinasState[index] = false;
       this.updateLikeTEjercicio(index,this.bookmarkRutinasState[index],'bookmarkrutinas');
@@ -174,8 +179,12 @@ export class ListarSesionesPage implements OnInit {
       this.bookmarkRutinasState[index] = true;
       this.updateLikeTEjercicio(index,this.bookmarkRutinasState[index],'bookmarkrutinas');
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   toggleBookmarkOSesiones(index: number): void {
+    this.loading=true;
     if (this.bookmarkSesionesState[index]) {
       this.bookmarkSesionesState[index] = false;
       this.updateLikeTEjercicio(index,this.bookmarkSesionesState[index],'bookmarksesiones');
@@ -183,6 +192,9 @@ export class ListarSesionesPage implements OnInit {
       this.bookmarkSesionesState[index] = true;
       this.updateLikeTEjercicio(index,this.bookmarkSesionesState[index],'bookmarksesiones');
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   go_page(name: string){
     this.navController.navigateForward('/' + name, {

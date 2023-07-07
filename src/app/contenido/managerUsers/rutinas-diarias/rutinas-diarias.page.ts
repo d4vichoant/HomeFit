@@ -193,6 +193,7 @@ export class RutinasDiariasPage implements OnInit {
       this.updateCirclePosition(newPositionX, this.circleY);
     }
     toggleBookmarkRutinas(index: number): void {
+      this.loading=true;
       if (this.bookmarkRutinasState[index]) {
         this.bookmarkRutinasState[index] = false;
         this.updateLikeTEjercicio(index,this.bookmarkRutinasState[index],'bookmarkrutinas');
@@ -200,6 +201,9 @@ export class RutinasDiariasPage implements OnInit {
         this.bookmarkRutinasState[index] = true;
         this.updateLikeTEjercicio(index,this.bookmarkRutinasState[index],'bookmarkrutinas');
       }
+      setTimeout(() => {
+        this.loading=false;
+      }, 500);
     }
 
     formatDuracionRutina(duracion: string): string {
@@ -269,6 +273,7 @@ export class RutinasDiariasPage implements OnInit {
       return null;
     }
     toggleBookmark(index: number): void {
+      this.loading=true;
       if (this.bookmarkState[index]) {
         this.bookmarkState[index] = false;
         this.updateBookMarkUser(index,this.bookmarkState[index]);
@@ -276,6 +281,9 @@ export class RutinasDiariasPage implements OnInit {
         this.bookmarkState[index] = true;
         this.updateBookMarkUser(index,this.bookmarkState[index]);
       }
+      setTimeout(() => {
+        this.loading=false;
+      }, 500);
     }
     encontrarNumerosRepetidos(array: number[]): { number: number, count: number }[] {
       const conteoRepeticiones: { [num: number]: number } = {};

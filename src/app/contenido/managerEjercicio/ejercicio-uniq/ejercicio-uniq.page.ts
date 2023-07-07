@@ -239,6 +239,7 @@ export class EjercicioUniqPage implements OnInit {
     }
   }
   toggleBookmark(index: number): void {
+    this.loading=true;
     if (this.bookmarkState[index]) {
       this.bookmarkState[index] = false;
       this.updateBookMarkUser(index,this.bookmarkState[index]);
@@ -246,6 +247,9 @@ export class EjercicioUniqPage implements OnInit {
       this.bookmarkState[index] = true;
       this.updateBookMarkUser(index,this.bookmarkState[index]);
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   formatDuracionRutina(duracion: string): string {
     const partes = duracion.split(':');

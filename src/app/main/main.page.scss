@@ -60,15 +60,26 @@ ion-content {
   width: 100%;
   padding: 3% 5%;
 }
+.box-container-entrenadores{
+  display: inline-block;
+  width: 130px;
+  height: auto;
+  margin-right: 10px;
+  padding-bottom: 3%;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
+}
 
 .container {
   width: 100%;
   padding-bottom: 2%;
   overflow-x: scroll;
   white-space: nowrap;
-  padding-left: 3%;
+  padding-left: 5%;
   background: #f0e8ff;
   padding-top: 3%;
+  border-radius: 10px;
   //box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.048);
 }
 
@@ -101,6 +112,78 @@ ion-content {
   text-align: left;
   overflow: hidden;
 }
+.text-demo {
+  position: absolute;
+  bottom: 0;
+  right:  0;
+  padding-right: 2%;
+  color: #fff;
+  text-align: right;
+  overflow: hidden;
+  .span2-demo{
+      max-height: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: LLGR;
+      font-size: 3.1rem;
+      color:  #9159f9c2;
+      word-break: break-all;
+      .spanh1{
+        font-size: 3.1rem;
+        font-family: LLGR;
+        color:  #ffffffc2;
+        word-break: break-all;
+      }
+  }
+}
+.text-demo-2 {
+  position: absolute;
+  top: 0;
+  left:  0;
+  padding-left: 2%;
+  color: #fff;
+  text-align: right;
+  overflow: hidden;
+  .span2-demo-2{
+      max-height: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: LLGR;
+      font-size: 2.5rem;
+      color:  #9159f9c2;
+      word-break: break-all;
+      .spanh1-2{
+        font-size: 2.5rem;
+        font-family: LLGR;
+        color:  #ffffffc2;
+        word-break: break-all;
+      }
+  }
+}
+.text-demo-left {
+  position: absolute;
+  bottom:  0;
+  left:  0;
+  padding-left: 4%;
+  color: #fff;
+  text-align: left;
+  display: block;
+  p{
+    padding: 0!important;
+    margin: 0!important;
+    font-family: LLGR;
+    font-size: 2.1rem;
+    color:  #ffffff9c;
+    word-break: break-all;
+    span{
+      color:  #9159f99c;
+      font-family: LLGR;
+      font-size: 2.1rem;
+      word-break: break-all;
+    }
+  }
+}
+
 
 .text span {
   display: block;
@@ -113,11 +196,13 @@ ion-content {
   font-family: Raleway-Bold;
   font-size: 1.2rem;
   color:  #ffffffaf;
+  word-break: break-all;
 }
 .span2{
   font-family: Raleway-Bold;
   font-size: 1rem;
   color:  #838284e7;
+  word-break: break-all;
 }
 
 
@@ -191,13 +276,13 @@ ion-content {
   width: 100%;
   z-index: 1;
   padding: 5% 5% 0% 5%;
-  font-family: Raleway-Bold;
-  font-size: 1.5rem;
+  font-family: LLGR;
+  font-size: 2.1rem;
   color:  #ffffff;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.247);
   span{
-    font-family: Raleway-Bold;
-    font-size: 1rem;
+    font-family: LLGR;
+    font-size: 1.8rem;
     color:  #5660f5;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.274);
   }
@@ -261,4 +346,31 @@ ion-content {
   height: 100%;
   border-radius: 15px;
   background: linear-gradient(0deg, rgb(0, 0, 0), rgba(0, 0, 0, 0.055)); /* Cambia el color y la opacidad según tus necesidades */
+}
+
+.text-container-entrenadores{
+  display: block;
+  padding: 3% 0% 0% 3%;
+  margin: 0;
+  p{
+    padding: 0;
+    margin: 0;
+    font-size: 2.5rem;
+    font-family: LLGR;
+    color:  #ffffffc2;
+  }
+  h1{
+    text-align: center;
+    background-color: #ffffff9f;
+    backdrop-filter: blur(5px);
+    border-radius: 50px;
+    width: 50%;
+    margin: 0% 3% 0% 47%;
+    padding: 2% 0% 2% 0%;
+    //border: solid 2px #fff;
+    color: #9259f9;
+    font-family: Raleway-Medium;
+    font-size: 1.2rem;
+    box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.048);
+  }
 }

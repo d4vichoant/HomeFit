@@ -157,6 +157,7 @@ export class ListarEjerciciosPage implements OnInit {
     });
   }
   toggleBookmarkTEjercicio(index: number): void {
+    this.loading=true;
     if (this.LikeTEjercicioState[index]) {
       this.LikeTEjercicioState[index] = false;
       this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
@@ -164,8 +165,12 @@ export class ListarEjerciciosPage implements OnInit {
       this.LikeTEjercicioState[index] = true;
       this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   toggleBookmarkOPersonal(index: number): void {
+    this.loading=true;
     if (this.LikeOPersonalState[index]) {
       this.LikeOPersonalState[index] = false;
       this.updateLikeTEjercicio(index,this.LikeOPersonalState[index],'likeobjetivopersonal');
@@ -173,8 +178,12 @@ export class ListarEjerciciosPage implements OnInit {
       this.LikeOPersonalState[index] = true;
       this.updateLikeTEjercicio(index,this.LikeOPersonalState[index],'likeobjetivopersonal');
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   toggleBookmarkOMuscular(index: number): void {
+    this.loading=true;
     if (this.LikeOMuscularState[index]) {
       this.LikeOMuscularState[index] = false;
       this.updateLikeTEjercicio(index,this.LikeOMuscularState[index],'likeobjetivomusculares');
@@ -182,6 +191,9 @@ export class ListarEjerciciosPage implements OnInit {
       this.LikeOMuscularState[index] = true;
       this.updateLikeTEjercicio(index,this.LikeOMuscularState[index],'likeobjetivomusculares');
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
 
   go_page_create(name: string, data: any) {

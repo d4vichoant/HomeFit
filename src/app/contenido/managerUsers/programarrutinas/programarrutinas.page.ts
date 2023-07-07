@@ -143,6 +143,7 @@ export class ProgramarrutinasPage implements OnInit {
   }
 
   toggleBookmarkOSesiones(index: number): void {
+    this.loading=true;
     if (this.bookmarkSesionesState[index]) {
       this.bookmarkSesionesState[index] = false;
       this.updateLikeTEjercicio(index,this.bookmarkSesionesState[index],'bookmarksesiones');
@@ -150,6 +151,9 @@ export class ProgramarrutinasPage implements OnInit {
       this.bookmarkSesionesState[index] = true;
       this.updateLikeTEjercicio(index,this.bookmarkSesionesState[index],'bookmarksesiones');
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
 
   go_page(name: string) {
@@ -207,6 +211,7 @@ export class ProgramarrutinasPage implements OnInit {
   }
 
   toggleBookmark(index: number): void {
+    this.loading=true;
     if (this.bookmarkState[index]) {
       this.bookmarkState[index] = false;
       this.updateBookMarkUser(index,this.bookmarkState[index]);
@@ -214,6 +219,9 @@ export class ProgramarrutinasPage implements OnInit {
       this.bookmarkState[index] = true;
       this.updateBookMarkUser(index,this.bookmarkState[index]);
     }
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
 
   findEjercicioRutina(IDEJERCICIORUTINA: number): any {

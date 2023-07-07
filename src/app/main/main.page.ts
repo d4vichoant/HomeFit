@@ -119,7 +119,116 @@ export class MainPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
   }
 
+  cargarImagenesBefores(){
+    const dataTEjercicioAll = this.dataTEjercicioAll;
+    const imageUrls = [];
+    if (Array.isArray(dataTEjercicioAll)) {
+      for (let i = 0; i < dataTEjercicioAll.length; i++) {
+        const nameImagen = dataTEjercicioAll[i].IMAGETIPOEJERCICIO;
+        const imageUrl = this.ip_address+'/media/tipoEjercicio/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+    const imageUrl1 = this.ip_address+'/media/images/recomendacion.jpg';
+    imageUrls.push(imageUrl1);
+
+    const datarecomendacion = this.dataRecomendacion;
+    if (Array.isArray(datarecomendacion)) {
+      for (let i = 0; i < datarecomendacion.length; i++) {
+        const nameImagen = datarecomendacion[i].IMAGENRUTINA;
+        const imageUrl = this.ip_address+'/media/rutinas/portadasrutinas/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+    const imageUrl2 = this.ip_address+'/media/images/retomar.jpg';
+    imageUrls.push(imageUrl2);
+    const imageUrl3 = this.ip_address+'/media/images/entrenadores.jpg';
+    imageUrls.push(imageUrl3);
+    const imageUrl4 = this.ip_address+'/media/images/guardado.jpg';
+    imageUrls.push(imageUrl4);
+
+    const dataEjercicio = this.dataEjercicio;
+    if (Array.isArray(dataEjercicio)) {
+      for (let i = 0; i < dataEjercicio.length; i++) {
+        const nameImagen = this.getVideoName(dataEjercicio[i].ALMACENAMIENTOMULTIMEDIA)+'.jpg';
+        const imageUrl = this.ip_address+'/multimedia/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+
+    const dataRutinas = this.dataRutinas;
+    if (Array.isArray(dataRutinas)) {
+      for (let i = 0; i < dataRutinas.length; i++) {
+        const nameImagen = dataRutinas[i].IMAGENRUTINA;
+        const imageUrl = this.ip_address+'/media/rutinas/portadasrutinas/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+
+    const dataSesiones = this.dataSesiones;
+    if (Array.isArray(dataSesiones)) {
+      for (let i = 0; i < dataSesiones.length; i++) {
+        const nameImagen = dataSesiones[i].IMAGESESION;
+        const imageUrl = this.ip_address+'/media/sesiones/portadassesiones/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+    const dataTEjercicio = this.dataTEjercicio;
+    if (Array.isArray(dataTEjercicio)) {
+      for (let i = 0; i < dataTEjercicio.length; i++) {
+        const nameImagen = dataTEjercicio[i].IMAGETIPOEJERCICIO;
+        const imageUrl = this.ip_address+'/media/tipoEjercicio/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+    const dataOPersoales = this.dataOPersoales;
+    if (Array.isArray(dataOPersoales)) {
+      for (let i = 0; i < dataOPersoales.length; i++) {
+        const nameImagen = dataOPersoales[i].IMAGEOBJETIVOSPERSONALES;
+        const imageUrl = this.ip_address+'/media/objetivospersonales/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+    const dataOMusculares = this.dataOMusculares;
+    if (Array.isArray(dataOMusculares)) {
+      for (let i = 0; i < dataOMusculares.length; i++) {
+        const nameImagen = dataOMusculares[i].IMAGENOBJETIVOSMUSCULARES;
+        const imageUrl = this.ip_address+'/media/objetivomuscular/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+
+    const imageUrl5 = this.ip_address+'/media/images/guardado-blureable.jpg';
+    imageUrls.push(imageUrl5);
+    let imagesLoaded = 0;
+    const totalImages = imageUrls.length;
+    const handleImageLoad = () => {
+      imagesLoaded++;
+      if (imagesLoaded === totalImages) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 2000);
+      }
+    };
+    imageUrls.forEach((imageUrl) => {
+      const image = new Image();
+      image.onload = handleImageLoad;
+      image.src = imageUrl;
+    });
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
+  }
+
+  recortarPalabras(texto: string, numeroPalabras: number): string {
+    const palabras = texto.split(' ');
+    const palabrasRecortadas = palabras.slice(0, numeroPalabras);
+    const resultado = palabrasRecortadas.join(' ');
+    return resultado;
+  }
+
   toggleBookmarkRutinas(index: number): void {
+    this.loading=true;
     if (this.bookmarkRutinasState[index]) {
       this.bookmarkRutinasState[index] = false;
       this.updateLikeTEjercicio(index,this.bookmarkRutinasState[index],'bookmarkrutinas');
@@ -128,9 +237,13 @@ export class MainPage implements OnInit {
       this.updateLikeTEjercicio(index,this.bookmarkRutinasState[index],'bookmarkrutinas');
     }
     this.dataRutinas = this.dataRutinas.filter((element) => this.bookmarkRutinasState[element.IDRUTINA]);
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
 
   toggleBookmarkOSesiones(index: number): void {
+    this.loading=true;
     if (this.bookmarkSesionesState[index]) {
       this.bookmarkSesionesState[index] = false;
       this.updateLikeTEjercicio(index,this.bookmarkSesionesState[index],'bookmarksesiones');
@@ -139,28 +252,40 @@ export class MainPage implements OnInit {
       this.updateLikeTEjercicio(index,this.bookmarkSesionesState[index],'bookmarksesiones');
     }
     this.dataSesiones = this.dataSesiones.filter((element) => this.bookmarkSesionesState[element.IDSESION]);
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   toggleBookmarkTEjercicio(index: number): void {
+    this.loading=true;
     if (this.LikeTEjercicioState[index]) {
       this.LikeTEjercicioState[index] = false;
-      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'bookmarkpersona');
+      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
     } else {
       this.LikeTEjercicioState[index] = true;
-      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'bookmarkpersona');
+      this.updateLikeTEjercicio(index,this.LikeTEjercicioState[index],'liketejercicio');
     }
     this.dataTEjercicio = this.dataTEjercicio.filter((element) => this.LikeTEjercicioState[element.IDTIPOEJERCICIO]);
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   toggleBookmarkEjercicio(index: number): void {
+    this.loading=true;
     if (this.bookmarkState[index]) {
       this.bookmarkState[index] = false;
-      this.updateLikeTEjercicio(index,this.bookmarkState[index],'liketejercicio');
+      this.updateBookMarkUser(index,this.bookmarkState[index]);
     } else {
       this.bookmarkState[index] = true;
-      this.updateLikeTEjercicio(index,this.bookmarkState[index],'liketejercicio');
+      this.updateBookMarkUser(index,this.bookmarkState[index]);
     }
     this.dataEjercicio = this.dataEjercicio.filter((element) => this.bookmarkState[element.IDEJERCICIO]);
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   toggleBookmarkOPersonal(index: number): void {
+    this.loading=true;
     if (this.LikeOPersonalState[index]) {
       this.LikeOPersonalState[index] = false;
       this.updateLikeTEjercicio(index,this.LikeOPersonalState[index],'likeobjetivopersonal');
@@ -169,8 +294,12 @@ export class MainPage implements OnInit {
       this.updateLikeTEjercicio(index,this.LikeOPersonalState[index],'likeobjetivopersonal');
     }
     this.dataOPersoales = this.dataOPersoales.filter((element) => this.LikeOPersonalState[element.IDOBJETIVOSPERSONALES]);
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
   toggleBookmarkOMuscular(index: number): void {
+    this.loading=true;
     if (this.LikeOMuscularState[index]) {
       this.LikeOMuscularState[index] = false;
       this.updateLikeTEjercicio(index,this.LikeOMuscularState[index],'likeobjetivomusculares');
@@ -179,6 +308,9 @@ export class MainPage implements OnInit {
       this.updateLikeTEjercicio(index,this.LikeOMuscularState[index],'likeobjetivomusculares');
     }
     this.dataOMusculares = this.dataOMusculares.filter((element) => this.LikeOMuscularState[element.IDOBJETIVOSMUSCULARES]);
+    setTimeout(() => {
+      this.loading=false;
+    }, 500);
   }
 
   getVideoName(url: string): string {
@@ -285,7 +417,11 @@ export class MainPage implements OnInit {
       (response) => {
         this.dataTEjercicio=response;
         this.dataTEjercicioAll=response;
-        this.dataTEjercicio = this.dataTEjercicio.filter((element) => this.LikeTEjercicioState[element.IDTIPOEJERCICIO]);
+        this.dataTEjercicio = this.dataLikeTEjercicio.map(bookmark => {
+          const matchingRutina = this.dataTEjercicio.find(rutina => rutina.IDTIPOEJERCICIO  === bookmark.IDTIPOEJERCICIO);
+          return matchingRutina;
+        });
+        //this.dataTEjercicio = this.dataTEjercicio.filter((element) => this.LikeTEjercicioState[element.IDTIPOEJERCICIO]);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -296,7 +432,11 @@ export class MainPage implements OnInit {
     this.apiService.allObjetivosPersonales().subscribe(
       (response) => {
         this.dataOPersoales=response;
-        this.dataOPersoales = this.dataOPersoales.filter((element) => this.LikeOPersonalState[element.IDOBJETIVOSPERSONALES]);
+        this.dataOPersoales = this.dataLikeOPersonal.map(bookmark => {
+          const matchingRutina = this.dataOPersoales.find(rutina => rutina.IDOBJETIVOSPERSONALES === bookmark.IDOBJETIVOSPERSONALES);
+          return matchingRutina;
+        });
+        //this.dataOPersoales = this.dataOPersoales.filter((element) => this.LikeOPersonalState[element.IDOBJETIVOSPERSONALES]);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -307,7 +447,11 @@ export class MainPage implements OnInit {
     this.apiService.getObjetivosMuscularesActivate().subscribe(
       (response) => {
         this.dataOMusculares=response;
-        this.dataOMusculares = this.dataOMusculares.filter((element) => this.LikeOMuscularState[element.IDOBJETIVOSMUSCULARES]);
+        this.dataOMusculares = this.dataLikeOMuscular.map(bookmark => {
+          const matchingRutina = this.dataOMusculares.find(rutina => rutina.IDOBJETIVOSMUSCULARES === bookmark.IDOBJETIVOSMUSCULARES);
+          return matchingRutina;
+        });
+        //this.dataOMusculares = this.dataOMusculares.filter((element) => this.LikeOMuscularState[element.IDOBJETIVOSMUSCULARES]);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -327,7 +471,11 @@ export class MainPage implements OnInit {
           ...objeto,
           IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
         }));
-        this.dataRutinas = this.dataRutinas.filter((element) => this.bookmarkRutinasState[element.IDRUTINA]);
+        this.dataRutinas = this.dataBookMarkRutinas.map(bookmark => {
+          const matchingRutina = this.dataRutinas.find(rutina => rutina.IDRUTINA === bookmark.IDRUTINA);
+          return matchingRutina;
+        });
+        //this.dataRutinas = this.dataRutinas.filter((element) => this.bookmarkRutinasState[element.IDRUTINA]);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -342,7 +490,11 @@ export class MainPage implements OnInit {
           ...objeto,
           IDRUTINAS: objeto.IDRUTINAS.split(",").map(Number)
         }));
-        this.dataSesiones = this.dataSesiones.filter((element) => this.bookmarkSesionesState[element.IDSESION]);
+        this.dataSesiones = this.dataBookMarkSesiones.map(bookmark => {
+          const matchingRutina = this.dataSesiones.find(rutina => rutina.IDSESION === bookmark.IDSESION);
+          return matchingRutina;
+        });
+        //this.dataSesiones = this.dataSesiones.filter((element) => this.bookmarkSesionesState[element.IDSESION]);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -369,6 +521,7 @@ export class MainPage implements OnInit {
           .map((numero: string) => parseInt(numero));
           const resultado = this.dataRutinasTotal.filter(objeto => idObjetivosPersonalesMasGrande.includes(objeto.IDOBJETIVOSPERSONALESRUTINA));
           this.dataRecomendacion = resultado;
+          this.cargarImagenesBefores();
         }
       },
       (error) => {
@@ -381,7 +534,11 @@ export class MainPage implements OnInit {
     this.apiService.getEjercicioActivate().subscribe(
       (response) => {
         this.dataEjercicio=response;
-        this.dataEjercicio = this.dataEjercicio.filter((element) => this.bookmarkState[element.IDEJERCICIO]);
+        this.dataEjercicio = this.dataBookMark.map(bookmark => {
+          const matchingRutina = this.dataEjercicio.find(rutina => rutina.IDEJERCICIO === bookmark.IDEJERCICIO);
+          return matchingRutina;
+        });
+        //this.dataEjercicio = this.dataEjercicio.filter((element) => this.bookmarkState[element.IDEJERCICIO]);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -476,6 +633,16 @@ export class MainPage implements OnInit {
   }
   updateLikeTEjercicio(idEjercicio:number,status:boolean,type:string){
     this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status,type).subscribe(
+      (response) => {
+        this.presentCustomToast(response.message,"success");
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  updateBookMarkUser(idEjercicio:number,status:boolean){
+    this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status,'bookmarkpersona').subscribe(
       (response) => {
         this.presentCustomToast(response.message,"success");
       },
