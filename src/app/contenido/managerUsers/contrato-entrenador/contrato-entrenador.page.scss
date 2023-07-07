@@ -153,10 +153,15 @@ ion-content {
 }
 .text-overlay-up {
   position: absolute;
-  bottom: 6%;
+  bottom: 0%;
   left: 3%;
   padding: 10px;
-  color: #b066d2b4;
+}
+.text-overlay-up-cover{
+  position: absolute;
+  bottom: 3%;
+  left: 3%;
+  padding: 10px;
 }
 
 .container-box-container{
@@ -219,7 +224,7 @@ ion-content {
   content: '';
   position: absolute;
   top: 15%; /* Ajusta el valor de top según desees */
-  bottom:15%; /* Ajusta el valor de bottom según desees */
+  bottom:150%; /* Ajusta el valor de bottom según desees */
   right: 0;
   width: 2px;
   background-color: #ac8be9;
@@ -230,7 +235,15 @@ ion-content {
   margin: 0;
   font-family: Raleway-ExtraBold;
   font-size: 3.5rem;
-  color: #bd5de9;
+  color: #ffffff;
+}
+
+
+.text-overlay-up-cover p {
+  margin: 0;
+  font-family: Raleway-ExtraBold;
+  font-size: 2.5rem;
+  color: #ac8be9;
 }
 
 .fullscreen-bg {

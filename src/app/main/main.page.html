@@ -21,6 +21,18 @@
   </div> -->
   <div class="container-body">
     <!-- <div><h2 class="subtitle" >Recomendación</h2></div> -->
+    <div class="container-procesosquedados">
+      <div class="box" (click)="go_page('listar-ejercicios')"  style="width: 330px!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/retomar.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;" >
+        <div class="text-demo" >
+          <span class="span2-demo"  style="display: flex; align-items: center;">
+            MÁS LEJOS</span>
+        </div>
+        <div class="text-demo-2" >
+          <span class="span2-demo-2"  style="display: flex; align-items: center;">
+            LLEVA TUS&nbsp;<span class="spanh1-2">LIMITES</span></span>
+        </div>
+      </div>
+    </div>
     <div class="container" style="margin-top: 2%;" >
       <div class="box-recomendacion" style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/recomendacion.jpg');background-repeat: no-repeat;background-size: cover;" >
         <div class="text-demo-left">
@@ -49,20 +61,8 @@
       </swiper-container>
     </div>
     <!-- <div><h2 class="subtitle" >Retorna donde te quedaste</h2></div> -->
-    <div class="container-procesosquedados">
-      <div class="box" (click)="go_page('listar-ejercicios')"  style="width: 330px!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/retomar.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;" >
-        <div class="text-demo" >
-          <span class="span2-demo"  style="display: flex; align-items: center;">
-            MÁS LEJOS</span>
-        </div>
-        <div class="text-demo-2" >
-          <span class="span2-demo-2"  style="display: flex; align-items: center;">
-            LLEVA TUS&nbsp;<span class="spanh1-2">LIMITES</span></span>
-        </div>
-      </div>
-    </div>
     <div class="container-entrenadores">
-      <div class="box-container-entrenadores" (click)="go_page('contrato-entrenador')"  style="width: 100%!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/entrenadores.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;" >
+      <div class="box-container-entrenadores" (click)="go_page('contrato-entrenador')"  style="width: 100%!important; background-image: linear-gradient(0deg,  #000000af,#f1f3f80e), url('{{ ip_address }}/media/images/entrenadores.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;" >
         <div class="text-container-entrenadores">
           <p>ENTRE</p>
           <p>NADORES</p>

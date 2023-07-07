@@ -21,20 +21,26 @@ export class ContratoEntrenadorPage implements OnInit {
   public dataEntrenadores!: any[];
   public imgEntrenadores!: any[];
 
+  validatehiddenDiv!:boolean;
+
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
     private datePipe: DatePipe,
     public toastController: ToastController) {
+      this.validatehiddenDiv=false;
     }
   ngOnInit() {
     this.validateSesion();
     //this.test();
+
+
   }
   ionViewDidEnter() {
     this.validateSesion();
     //this.test();
   }
+
   test(){
     this.chanceColorFooter();
     this.StatusBar();
@@ -75,6 +81,7 @@ export class ContratoEntrenadorPage implements OnInit {
   hideDiv() {
     var div = document.querySelector('.fullscreen-bg');
     div?.classList.add('hide');
+    this.validatehiddenDiv=false;
   }
   private handleError() {
     this.loading = false;

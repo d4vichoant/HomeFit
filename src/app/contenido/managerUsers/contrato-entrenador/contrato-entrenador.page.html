@@ -4,7 +4,7 @@
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-  <div class="fullscreen-bg" style="background-image:linear-gradient(0deg,  #0000006b,#9159f9a4), url('{{ip_address}}/media/perfile/background.png')">
+  <div class="fullscreen-bg" *ngIf="!validatehiddenDiv" style="background-image:linear-gradient(0deg,  #0000006b,#9159f9a4), url('{{ip_address}}/media/perfile/background.png')">
     <div class="title-app">
       <h2>HomeFit<span>GO</span></h2>
     </div>
@@ -19,7 +19,7 @@
         <p>
           Hemos estado creando e implementando proyectos durante muchos años en todo el mundo, tenemos cientos de clientes satisfechos.
         </p>
-        <ion-button fill="clear">
+        <ion-button (click)="hideDiv()" fill="clear">
           Leer Más
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-right" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -42,6 +42,9 @@
       <app-toolbar-designer-white></app-toolbar-designer-white>
     </div>
     <div class="text-overlay-up">
+      <p>Entrenadores</p>
+    </div>
+    <div class="text-overlay-up-cover">
       <p>Entrenadores</p>
     </div>
   </div>
