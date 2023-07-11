@@ -24,12 +24,6 @@ public class MainActivity extends BridgeActivity {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
       );
     }
-    int currentOrientation = getResources().getConfiguration().orientation;
-    if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-    } else {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-    }
     super.onCreate(savedInstanceState);
   }
 
