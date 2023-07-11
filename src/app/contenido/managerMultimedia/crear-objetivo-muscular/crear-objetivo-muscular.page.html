@@ -1,10 +1,12 @@
+<ion-header *ngIf="showheader">
+  <app-toolbar-designer></app-toolbar-designer>
+</ion-header>
 <ion-content [fullscreen]="true">
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-  <app-toolbar-designer></app-toolbar-designer>
   <ion-toolbar class="toolbar-header">
     <div class="onboard-top" >
       <ion-toolbar >
@@ -27,9 +29,9 @@
       <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
     </div>
     <div class="filter" >
-      <div class="filter-text-icon">
+     <!--  <div class="filter-text-icon">
         <img  class="icono-filter" src="{{ ip_address }}/media/images/filter.png" alt="Imagen Subtítulo">
-      </div>
+      </div> -->
       <div class="filter-text" *ngFor="let fil of filter; let i = index" [ngStyle]="{ 'background-color': fil.iconstatus ? '#7525dc' : '#ded5ff ' }" (click)="buttonfilterhabilitate(fil,i)">
         <p [ngStyle]="{ 'color': fil.iconstatus ? '#ffffff' : '#621eb9' }">{{fil.name}}</p>
         <!-- <ng-container *ngIf="fil.iconstatus">
@@ -54,16 +56,23 @@
                     <img class="icono-item-top"  (click)="savecopy(option)" style="margin-left: 5px;" src="{{ ip_address }}/media/images/copy.png"  alt="Icono 1">
                   </button>
                 </div>
-              <div class="item-body-right-top">
-                <button >
-                  <img class="icono-item-top"  (click)="showSelectEdit(option,'edit')" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"  alt="Icono 1">
-                </button>
-                <button>
-                  <img  class="icono-item-top" (click)="showSelect(option,'objetivosmusculares')" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
-                </button>
-              </div>
-            </ion-col>
-          </ion-row>
+                <div class="item-body-right-top">
+                  <button >
+                    <img class="icono-item-top"  (click)="showSelectEdit(option,'edit')" style="margin-right: 5px;" src="{{ ip_address }}/media/images/edit.png"  alt="Icono 1">
+                  </button>
+                  <button>
+                    <img  class="icono-item-top" (click)="showSelect(option,'objetivosmusculares')" src="{{ ip_address }}/media/images/reject_white.png" alt="Icono 2">
+                  </button>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <div class="item-imagen-up" (click)="showSelectEdit(option,'edit')" >
+                  <img [src]="ip_address+'/media/objetivomuscular/'+option.IMAGENOBJETIVOSMUSCULARES" alt="">
+                </div>
+              </ion-col>
+            </ion-row>
           </ion-grid>
           <ion-card-header>
             <ion-card-title>
@@ -127,6 +136,26 @@
 
    <div class="overlay-container-select"  *ngIf="mostrarSelectEdit" >
     <div class="up-title">
+      <div class="title-select"  (click)="uploadImage()">
+        <p>Portada</p>
+        <div class="image-up-modif">
+          <ng-container *ngIf="selectedImageUrl; else noImage">
+            <img [src]="selectedImageUrl"  alt="">
+          </ng-container>
+          <ng-template #noImage>
+            <img [src]="ip_address+'/media/objetivomuscular/'+dataOMuscylarUniq.IMAGENOBJETIVOSMUSCULARES" alt="">
+          </ng-template>
+          <div class="icon-overlay">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-upload" width="40" height="40" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path>
+              <path d="M7 9l5 -5l5 5"></path>
+              <path d="M12 4l0 12"></path>
+           </svg>
+           <input type="file" style="display: none;" id="fileInput" class="file-input" accept=".jpg, .png" (change)="handleFileInput($event)" #fileInputRef>
+          </div>
+        </div>
+      </div>
       <div class="title-select">
         <p>Nombre Obj. Muscular</p>
         <ion-input type="text"  [(ngModel)]="dataOMuscylarUniq && dataOMuscylarUniq.NOMBREOBJETIVOSMUSCULARES" ></ion-input>
@@ -155,6 +184,26 @@
     <!-- Crear uno nuevo  -->
     <div class="overlay-container-select"  *ngIf="mostrarSelectCreate" >
       <div class="up-title">
+        <div class="title-select"  (click)="uploadImage()" >
+          <p>Portada</p>
+          <div class="image-up-modif"  >
+            <ng-container *ngIf="selectedImageUrl; else noImage">
+              <img [src]="selectedImageUrl"  alt="">
+            </ng-container>
+            <ng-template #noImage>
+              <img src="https://ionicframework.com/docs/img/demos/card-media.png" alt="">
+            </ng-template>
+            <div class="icon-overlay">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-upload" width="40" height="40" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path>
+                <path d="M7 9l5 -5l5 5"></path>
+                <path d="M12 4l0 12"></path>
+             </svg>
+             <input type="file" style="display: none;" id="fileInput" class="file-input" accept=".jpg, .png" (change)="handleFileInput($event)" #fileInputRef>
+            </div>
+          </div>
+        </div>
         <div class="title-select">
           <p>Nombre Tip. Ejercicio</p>
           <ion-textarea type="text"  [(ngModel)]="dataOMuscylarUniq && dataOMuscylarUniq.NOMBREOBJETIVOSMUSCULARES" ></ion-textarea>
@@ -177,9 +226,11 @@
         </div>
         <div class="buttons-tab1">
           <ion-button (click)="cancelprocessCreate()"  class="ion-buttons-1" fill="clear">Cancelar</ion-button>
-          <ion-button (click)="confirmcreatesDates(dataOMuscylarUniq,'objetivosmusculares')"  class="ion-buttons-2" fill="clear">Actualizar</ion-button>
+          <ion-button (click)="confirmcreatesDates(dataOMuscylarUniq,'objetivosmusculares')"  class="ion-buttons-2" fill="clear">Crear</ion-button>
         </div>
       </div>
     </div>
-    <app-footer-designer></app-footer-designer>
 </ion-content>
+<ion-footer *ngIf="showheader">
+  <app-footer-designer></app-footer-designer>
+</ion-footer>

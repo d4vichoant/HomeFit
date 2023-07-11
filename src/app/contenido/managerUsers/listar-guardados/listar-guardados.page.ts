@@ -17,6 +17,8 @@ export class ListarGuardadosPage implements OnInit {
   public userSesionPerfil!:any;
   public loading = true;
 
+  dataEntrenadorUsuarios!:any[];
+
   public dataRutinas!: any[];
   public dataSesiones!:any[];
   public dataOPersoales!: any[];
@@ -75,6 +77,7 @@ export class ListarGuardadosPage implements OnInit {
               this.chanceColorFooter();
               this.StatusBar();
               this.updateCurrentDate();
+              this.obtenerContratoEntrenadoresUsuario();
               this.obtenerbookmarksesiones();
               this.obtenerbookmarkrutinas();
               this.obtenerLikeTEjercicio();
@@ -171,7 +174,7 @@ export class ListarGuardadosPage implements OnInit {
 
     let imagesLoaded = 0;
     const totalImages = imageUrls.length;
-    console.log(imageUrls);
+    //console.log(imageUrls);
     const handleImageLoad = () => {
       imagesLoaded++;
       if (imagesLoaded === totalImages) {
@@ -189,6 +192,10 @@ export class ListarGuardadosPage implements OnInit {
       this.loading=false;
     }, 500);
   }
+  MessagePremium(){
+    this.presentCustomToast('Ejercicio Premium, Suscribase para acceder a ellos','warning');
+  }
+
   toggleBookmarkRutinas(index: number): void {
     this.loading=true;
     if (this.bookmarkRutinasState[index]) {
@@ -359,9 +366,19 @@ export class ListarGuardadosPage implements OnInit {
     }
 
   obtenerGetPerfilCompleto(nickname:string){
-    this.apiService.connsultPerfilCompleto(nickname).subscribe(
+    this.apiService.connsultPerfilUsuarioCompleto(nickname).subscribe(
       (response) => {
         this.userSesionPerfil=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerContratoEntrenadoresUsuario(){
+    this.apiService.obtenerContratoEntrenadoresUsuario(this.userSesionPerfil && this.userSesionPerfil[0].IDUSUARIO).subscribe(
+      (response) => {
+        this.dataEntrenadorUsuarios=response;
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -376,7 +393,9 @@ export class ListarGuardadosPage implements OnInit {
           const matchingRutina = this.dataTEjercicio.find(rutina => rutina.IDTIPOEJERCICIO  === bookmark.IDTIPOEJERCICIO);
           return matchingRutina;
         });
+
         this.cargarImagenesBefores();
+
         //this.dataTEjercicio = this.dataTEjercicio.filter((element) => this.LikeTEjercicioState[element.IDTIPOEJERCICIO]);
       },
       (error) => {
@@ -392,6 +411,7 @@ export class ListarGuardadosPage implements OnInit {
           const matchingRutina = this.dataOPersoales.find(rutina => rutina.IDOBJETIVOSPERSONALES === bookmark.IDOBJETIVOSPERSONALES);
           return matchingRutina;
         });
+
         //this.dataOPersoales = this.dataOPersoales.filter((element) => this.LikeOPersonalState[element.IDOBJETIVOSPERSONALES]);
       },
       (error) => {
@@ -407,6 +427,7 @@ export class ListarGuardadosPage implements OnInit {
           const matchingRutina = this.dataOMusculares.find(rutina => rutina.IDOBJETIVOSMUSCULARES === bookmark.IDOBJETIVOSMUSCULARES);
           return matchingRutina;
         });
+
         //this.dataOMusculares = this.dataOMusculares.filter((element) => this.LikeOMuscularState[element.IDOBJETIVOSMUSCULARES]);
       },
       (error) => {
@@ -426,6 +447,25 @@ export class ListarGuardadosPage implements OnInit {
           const matchingRutina = this.dataRutinas.find(rutina => rutina.IDRUTINA === bookmark.IDRUTINA);
           return matchingRutina;
         });
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          this.dataRutinas = this.dataRutinas.filter(elemento =>{
+            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+              elemento.PREMIER = 'Suscripto';
+              return true;
+            }else if(elemento.IDROLUSUARIO===99){
+              elemento.PREMIER = 'Gratis';
+              return true;
+            }else{
+              elemento.PREMIER = 'Premium';
+              return true;
+            }
+            }
+          );
+        } else {
+          this.presentCustomToast('Error en Mostrar Rutinas','danger');
+          this.obtenerRutinas();
+          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
+        }
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -445,6 +485,26 @@ export class ListarGuardadosPage implements OnInit {
           return matchingRutina;
         });
 
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          this.dataSesiones = this.dataSesiones.filter(elemento =>{
+            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+              elemento.PREMIER = 'Suscripto';
+              return true;
+            }else if(elemento.IDROLUSUARIO===99){
+              elemento.PREMIER = 'Gratis';
+              return true;
+            }else{
+              elemento.PREMIER = 'Premium';
+              return true;
+            }
+            }
+          );
+        } else {
+          this.presentCustomToast('Error en Mostrar Sesiones','danger');
+          this.obtenerRutinas();
+          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
+        }
+
         //this.dataSesiones = this.dataSesiones.filter((element) => this.bookmarkSesionesState[element.IDSESION]);
       },
       (error) => {
@@ -460,6 +520,25 @@ export class ListarGuardadosPage implements OnInit {
           const matchingRutina = this.dataEjercicio.find(rutina => rutina.IDEJERCICIO === bookmark.IDEJERCICIO);
           return matchingRutina;
         });
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
+            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+              elemento.PREMIER = 'Suscripto';
+              return true;
+            }else if(elemento.IDROLUSUARIO===99){
+              elemento.PREMIER = 'Gratis';
+              return true;
+            }else{
+              elemento.PREMIER = 'Premium';
+              return true;
+            }
+          }
+          );
+        } else {
+          this.presentCustomToast('Error en Mostrar Ejercicios','danger');
+          this.obtenerEjercicios();
+          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
+        }
       },
       (error) => {
         this.presentCustomToast(error.error.error, "danger");

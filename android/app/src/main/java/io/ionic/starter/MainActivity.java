@@ -13,8 +13,8 @@ public class MainActivity extends BridgeActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-      getWindow().setDecorFitsSystemWindows(true);
-      getWindow().setStatusBarColor(Color.TRANSPARENT);
+      getWindow().setDecorFitsSystemWindows(false);
+      //getWindow().setStatusBarColor(Color.TRANSPARENT);
       getWindow().setNavigationBarColor(Color.TRANSPARENT);
       //getWindow().setNavigationBarColor(Color.TRANSPARENT);
     }
@@ -24,7 +24,12 @@ public class MainActivity extends BridgeActivity {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
       );
     }
-     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    int currentOrientation = getResources().getConfiguration().orientation;
+    if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+    } else {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+    }
     super.onCreate(savedInstanceState);
   }
 

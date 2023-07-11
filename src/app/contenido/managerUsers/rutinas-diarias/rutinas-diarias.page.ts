@@ -40,6 +40,8 @@ export class RutinasDiariasPage implements OnInit {
   circleX: number = this.circleRadius; // Inicialmente en el centro del cuadrado
   circleY: number = this.squareWidth / 2; // Inicialmente en el centro del cuadrado
 
+  dataEntrenadorUsuarios!:any[];
+
   constructor(private navController: NavController,
     private route: ActivatedRoute,
     private apiService: ApiServiceService,
@@ -67,7 +69,7 @@ export class RutinasDiariasPage implements OnInit {
     test(){
       this.chanceColorFooter();
       this.StatusBar();
-      this.obtenerEjercicios();
+      this.obtenerContratoEntrenadoresUsuario();
       this.obtenerbookmarkrutinas();
       this.obtenerBookMarkUser();
       this.loading=false;
@@ -94,15 +96,18 @@ export class RutinasDiariasPage implements OnInit {
         }
       });
     }
-    sumarCaloriasEjercicio(){
-      if(!this.VALIDATORCALORIASEJERCICIOTOTAL){
+    sumarCaloriasEjercicio() {
+      if (!this.VALIDATORCALORIASEJERCICIOTOTAL) {
         for (let i = 0; i < this.variable.IDEJERCICIOS.length; i++) {
           const ejercicio = this.findEjercicioRutina(this.variable.IDEJERCICIOS[i]);
-          this.CALORIASEJERCICIOTOTAL += parseFloat(ejercicio.CALORIASEJERCICIO);
+          if (ejercicio !== null) {
+            this.CALORIASEJERCICIOTOTAL += parseFloat(ejercicio.CALORIASEJERCICIO);
+          }
         }
-        this.VALIDATORCALORIASEJERCICIOTOTAL=true;
+        this.VALIDATORCALORIASEJERCICIOTOTAL = true;
       }
     }
+
     StatusBar(){
       StatusBar.hide();
       StatusBar.setOverlaysWebView({ overlay: true });
@@ -118,9 +123,8 @@ export class RutinasDiariasPage implements OnInit {
               (response) => {
                 this.chanceColorFooter();
                 this.StatusBar();
-                this.obtenerEjercicios();
-                this.obtenerbookmarkrutinas();
-                this.obtenerBookMarkUser();
+                this.obtenerContratoEntrenadoresUsuario();
+                //this.obtenerEjercicios();
                 this.loading=false;
               },
               (error) => {
@@ -367,12 +371,44 @@ export class RutinasDiariasPage implements OnInit {
           this.dataEjercicio.forEach((ejercicio) => {
           ejercicio.CALORIASEJERCICIO= (this.obtenerDuracionEnMinutos(ejercicio.TIEMPOMULTIMEDIA)/60*ejercicio.METEJERCICIO*Number(this.userSesionPerfil[0].PESOUSUARIO)).toFixed(2);
           });
+          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+            this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
+              if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+                elemento.PREMIER = 'Suscripto';
+                return true;
+              }else if(elemento.IDROLUSUARIO===99){
+                elemento.PREMIER = 'Gratis';
+                return true;
+              }else{
+                elemento.PREMIER = 'Premium';
+                return true;
+              }
+            }
+            );
+          } else {
+            this.presentCustomToast('Error en Mostrar Ejercicios','danger');
+            this.obtenerEjercicios();
+          }
+          this.obtenerbookmarkrutinas();
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");
         }
       );
     }
+
+    obtenerContratoEntrenadoresUsuario(){
+      this.apiService.obtenerContratoEntrenadoresUsuario(this.userSesionPerfil && this.userSesionPerfil[0].IDUSUARIO).subscribe(
+        (response) => {
+          this.dataEntrenadorUsuarios=response;
+          this.obtenerEjercicios();
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
+        }
+      );
+    }
+
 
     obtenerBookMarkUser(){
       this.apiService.allBookmark('bookmarkpersona').subscribe(
@@ -398,6 +434,7 @@ export class RutinasDiariasPage implements OnInit {
           this.dataBookMarkRutinas.forEach(liketejercicio => {
             this.bookmarkRutinasState[liketejercicio.IDRUTINA] = true;
           });
+          this.obtenerBookMarkUser();
         },
         (error) => {
           this.presentCustomToast(error.error.error,"danger");

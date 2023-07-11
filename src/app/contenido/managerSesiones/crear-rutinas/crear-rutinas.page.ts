@@ -68,7 +68,7 @@ export class CrearRutinasPage implements OnInit {
   public searchTerm:string="";
   private previousSearchTerm: string = '';
   public mostrarSelect:boolean=false;
-
+  showheader:boolean=true;
   constructor(private storage: Storage,
     private route: ActivatedRoute,
     private apiService: ApiServiceService,
@@ -105,6 +105,9 @@ export class CrearRutinasPage implements OnInit {
 
   completarDatos(){
     //console.log(this.variable);
+    if(!this.dataEjercicioporRutina){
+      this.dataEjercicioporRutina=[];
+    }
     this.tituloRutina = this.variable.NOMBRERUTINA;
     this.descripcionRutina=this.variable.DESCRIPCIONRUTINA;
     this.visibilidaRutina = this.variable.STATUSRUTINA+"";
@@ -240,10 +243,10 @@ export class CrearRutinasPage implements OnInit {
       }
 
       // Validar el tamaño del archivo
-      if (file.size > 1024 * 1024) {
+      if (file.size > 1024 * 1024*2) {
         // El archivo seleccionado supera el tamaño máximo de 1MB
         // Realiza alguna acción o muestra un mensaje de error
-        this.presentCustomToast("Imagen no puede ser mayor de 1MB", "danger");
+        this.presentCustomToast("Imagen no puede ser mayor de 2MB", "danger");
         return;
       }
 
@@ -330,6 +333,7 @@ export class CrearRutinasPage implements OnInit {
       }
     }
     showSelected(nameData:string){
+      this.showheader=false;
       this.searchTerm="";
       if(nameData==="dataTEjercicio"){
         this.mostrarSelecTEjercicio=!this.mostrarSelecTEjercicio;
@@ -362,6 +366,7 @@ export class CrearRutinasPage implements OnInit {
       }, 50);
     }
     selectItem(title: any,nameData:string) {
+      this.showheader=true;
       if(this.selectData){
         this.selectData=[]
       }
@@ -559,7 +564,15 @@ export class CrearRutinasPage implements OnInit {
     pad(valor: number | string): string {
       return valor.toString().padStart(2, '0'); // Agrega ceros a la izquierda si el valor es menor que 10
     }
+    toggleVariables(){
+      this.mostrarTrainerBasic=false;
+      this.showheader=true;
+      this.mostrarSelecOPersonal=false;
+      this.mostrarSelecTEjercicio=false;
+    }
+
     cancelarmostrarSelecEjercicio(){
+      this.showheader=true;
       this.mostrarSelecEjercicio=!this.mostrarSelecEjercicio;
       if(this.EjercicioporRutinaUniq ){
         this.duracionRutina=this.duracionRutinaOrig;
@@ -581,6 +594,7 @@ export class CrearRutinasPage implements OnInit {
     }
 
     EditItemERequerido(data:any,index:number){
+      this.showheader=false;
       this.duracionRutina = this.restarTiempos(this.duracionRutina,data.TIEMPOMULTIMEDIA);
       this.index=index;
       this.EjercicioporRutinaUniq=data as any;
@@ -717,10 +731,13 @@ export class CrearRutinasPage implements OnInit {
       this.descripcionRutina="",
       this.duracionRutina="",
       this.nameFile="";
+      this.selectedFile= null;
       this.observacionRutina="";
       this.userSesionPerfil=[],
       this.visibilidaRutina="",
       this.dataEjercicioporRutina=[];
+      this.imagePortada='';
+      this.variable=[];
     }
 }
 

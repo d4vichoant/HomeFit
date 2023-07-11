@@ -37,6 +37,8 @@ export class ListarSesionesPage implements OnInit {
   bookmarkSesionesState: { [key: number]: boolean } = {};
   dataBookMarkSesiones!:any[];
 
+  dataEntrenadorUsuarios!:any[];
+
   constructor(private navController: NavController,
     private route: ActivatedRoute,
     private apiService: ApiServiceService,
@@ -61,8 +63,9 @@ export class ListarSesionesPage implements OnInit {
     this.obtenerbookmarksesiones();
     this.obtenerbookmarkrutinas();
     this.obtenerLikeOPersonal();
-    this.obtenerRutinas();
-    this.obtenerSesiones();
+    this.obtenerContratoEntrenadoresUsuario();
+    //this.obtenerRutinas();
+    //this.obtenerSesiones();
     this.loading=false;
   }
   recuperarDatos(){
@@ -90,8 +93,9 @@ export class ListarSesionesPage implements OnInit {
               this.obtenerbookmarksesiones();
               this.obtenerbookmarkrutinas();
               this.obtenerLikeOPersonal();
-              this.obtenerRutinas();
-              this.obtenerSesiones();
+              this.obtenerContratoEntrenadoresUsuario();
+              //this.obtenerRutinas();
+              //this.obtenerSesiones();
             },
             (error) => {
               this.handleError();
@@ -196,7 +200,11 @@ export class ListarSesionesPage implements OnInit {
       this.loading=false;
     }, 500);
   }
+  MessagePremium(){
+    this.presentCustomToast('Ejercicio Premium, Suscribase para acceder a ellos','warning');
+  }
   go_page(name: string){
+    this.dataLikeOPersonal=[];
     this.navController.navigateForward('/' + name, {
       queryParams: {
         variableSesiones: "",
@@ -204,6 +212,28 @@ export class ListarSesionesPage implements OnInit {
         previusPagelistarGuardados : this.previusPagelistarGuardados,
       }
     });
+  }
+
+  go_page_with_dates(namePage:string){
+    if(namePage==="listar-rutinas-diarias"){
+      this.navController.navigateForward('/' + namePage, {
+        queryParams: {
+          variablelistarrutinasdiarias:this.dataRutinas,
+          variableSesiones:this.variable,
+          previusPageMain : this.previusPageMain,
+          previusPagelistarGuardados : this.previusPagelistarGuardados,
+        }
+      });
+    }else{
+      this.navController.navigateForward('/' + namePage, {
+        queryParams: {
+          variablelistarprogramasrutinas:this.dataSesiones,
+          variableSesiones:this.variable,
+          previusPageMain : this.previusPageMain,
+          previusPagelistarGuardados : this.previusPagelistarGuardados,
+        }
+      });
+    }
   }
   go_page_create(name: string, data: any) {
     this.showImage=false;
@@ -226,20 +256,9 @@ export class ListarSesionesPage implements OnInit {
         }
       });
     }
-
   }
   expandBox(event: any,item:any,name:string) {
-    const box = event.target;
-    if (box.classList.contains('expanded')) {
-      box.classList.remove('expanded');
-      box.classList.add('collapsed');
-      this.showImage=false;
-    } else {
-      box.classList.remove('collapsed');
-      box.classList.add('expanded');
-      this.showImage=true;
-      this.go_page_create(name,item);
-    }
+    this.go_page_create(name,item);
   }
   getBackgroundStyle(imageUrl: string, showImage: boolean) {
     let gradientColor2 = showImage ? '#f1f3f8' : '#0000009f'; // Color del primer punto del gradiente
@@ -293,7 +312,7 @@ export class ListarSesionesPage implements OnInit {
       toast.present();
     }
   obtenerGetPerfilCompleto(nickname:string){
-    this.apiService.connsultPerfilCompleto(nickname).subscribe(
+    this.apiService.connsultPerfilUsuarioCompleto(nickname).subscribe(
       (response) => {
         this.userSesionPerfil=response;
       },
@@ -302,6 +321,18 @@ export class ListarSesionesPage implements OnInit {
       }
     );
   }
+  obtenerContratoEntrenadoresUsuario(){
+    this.apiService.obtenerContratoEntrenadoresUsuario(this.userSesionPerfil && this.userSesionPerfil[0].IDUSUARIO).subscribe(
+      (response) => {
+        this.dataEntrenadorUsuarios=response;
+        this.obtenerRutinas();
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+
   obtenerRutinas(){
     this.apiService.getRutinasActivate().subscribe(
       (response) => {
@@ -311,6 +342,37 @@ export class ListarSesionesPage implements OnInit {
           ...objeto,
           IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
         }));
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          this.dataRutinas = this.dataRutinas.filter(elemento =>{
+            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+              elemento.PREMIER = 'Suscripto';
+              return true;
+            }else if(elemento.IDROLUSUARIO===99){
+              elemento.PREMIER = 'Gratis';
+              return true;
+            }else{
+              elemento.PREMIER = 'Premium';
+              return true;
+            }
+          }
+          );
+        } else {
+          this.presentCustomToast('Error en Mostrar Rutinas','danger');
+          this.obtenerRutinas();
+          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
+        }
+        this.dataRutinas.sort((a, b) => {
+          const premierOrder: { [key: string]: number } = {
+            Suscripto: 0,
+            Gratis: 1,
+            Premium: 2,
+          };
+          const premierA = premierOrder[a.PREMIER];
+          const premierB = premierOrder[b.PREMIER];
+          return premierA - premierB;
+        });
+        //console.log(this.dataRutinas);
+        this.obtenerSesiones();
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -326,7 +388,43 @@ export class ListarSesionesPage implements OnInit {
           ...objeto,
           IDRUTINAS: objeto.IDRUTINAS.split(",").map(Number)
         }));
-        this.cargarImagenesBefores();
+
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          this.dataSesiones = this.dataSesiones.filter(elemento =>{
+            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+              elemento.PREMIER = 'Suscripto';
+              return true;
+            }else if(elemento.IDROLUSUARIO===99){
+              elemento.PREMIER = 'Gratis';
+              return true;
+            }else{
+              elemento.PREMIER = 'Premium';
+              return true;
+            }
+          }
+          );
+        } else {
+          this.presentCustomToast('Error en Mostrar Rutinas','danger');
+          this.obtenerSesiones();
+          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
+        }
+
+        this.dataSesiones.sort((a, b) => {
+          const premierOrder: { [key: string]: number } = {
+            Suscripto: 0,
+            Gratis: 1,
+            Premium: 2,
+          };
+          const premierA = premierOrder[a.PREMIER];
+          const premierB = premierOrder[b.PREMIER];
+          return premierA - premierB;
+        });
+        //console.log(this.dataSesiones);
+        if(this.dataRutinas && this.dataSesiones && (this.dataRutinas.length>0 || this.dataSesiones.length>0)){
+          this.cargarImagenesBefores();
+        }else{
+          this.loading=false;
+        }
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

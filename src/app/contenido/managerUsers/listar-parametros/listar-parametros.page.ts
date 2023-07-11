@@ -21,6 +21,7 @@ export class ListarParametrosPage implements OnInit {
   bookmarkState: { [key: number]: boolean } = {};
   dataBookMark!:any[];
   variable!:any;
+  dataEntrenadorUsuarios!:any[];
   previusPageMain:boolean=false;
   previusPagelistarGuardados:boolean=false;
   public dataEjercicio!: any[];
@@ -99,7 +100,8 @@ export class ListarParametrosPage implements OnInit {
               this.obtenerLikeTEjercicio();
               this.obtenerLikeOMuscular();
               this.obtenerBookMarkUser();
-              this.obtenerEjercicios();
+              this.obtenerContratoEntrenadoresUsuario();
+              //this.obtenerEjercicios();
             },
             (error) => {
               this.handleError();
@@ -185,6 +187,9 @@ export class ListarParametrosPage implements OnInit {
     }, 500);
   }
 
+  MessagePremium(){
+    this.presentCustomToast('Ejercicio Premium, Suscribase para acceder a ellos','warning');
+  }
   go_page(name: string){
     this.dataBookMark=[];
     this.navController.navigateForward('/' + name, {
@@ -210,6 +215,16 @@ export class ListarParametrosPage implements OnInit {
       this.dataEjercicio = this.dataEjercicio.filter(element => element.IDNIVELDIFICULTADEJERCICIO === 0);
       this.valueNivel = 0;
     }
+    this.dataEjercicio.sort((a, b) => {
+      const premierOrder: { [key: string]: number } = {
+        Suscripto: 0,
+        Gratis: 1,
+        Premium: 2,
+      };
+      const premierA = premierOrder[a.PREMIER];
+      const premierB = premierOrder[b.PREMIER];
+      return premierA - premierB;
+    });
   }
   toggleBookmark(index: number): void {
     this.loading=true;
@@ -286,6 +301,36 @@ export class ListarParametrosPage implements OnInit {
           ejercicio.CALORIASEJERCICIO= (this.obtenerDuracionEnMinutos(ejercicio.TIEMPOMULTIMEDIA)/60*ejercicio.METEJERCICIO*Number(this.userSesionPerfil[0].PESOUSUARIO)).toFixed(2);
           });
         const rawData = this.dataEjercicio;
+        //this.dataEjercicioOrig = rawData.map(item => ({ ...item }));
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
+            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+              elemento.PREMIER = 'Suscripto';
+              return true;
+            }else if(elemento.IDROLUSUARIO===99){
+              elemento.PREMIER = 'Gratis';
+              return true;
+            }else{
+              elemento.PREMIER = 'Premium';
+              return true;
+            }
+          }
+          );
+        } else {
+          this.presentCustomToast('Error en Mostrar Ejercicios','danger');
+          this.obtenerEjercicios();
+          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
+        }
+        this.dataEjercicio.sort((a, b) => {
+          const premierOrder: { [key: string]: number } = {
+            Suscripto: 0,
+            Gratis: 1,
+            Premium: 2,
+          };
+          const premierA = premierOrder[a.PREMIER];
+          const premierB = premierOrder[b.PREMIER];
+          return premierA - premierB;
+        });
         this.dataEjercicioOrig = rawData.map(item => ({ ...item }));
         if (this.dataEjercicio && this.dataEjercicio.length>0)
         this.cargarImagenesBefores();
@@ -297,6 +342,19 @@ export class ListarParametrosPage implements OnInit {
       }
     );
   }
+  obtenerContratoEntrenadoresUsuario(){
+    this.apiService.obtenerContratoEntrenadoresUsuario(this.userSesionPerfil && this.userSesionPerfil[0].IDUSUARIO).subscribe(
+      (response) => {
+        this.dataEntrenadorUsuarios=response;
+        this.obtenerEjercicios();
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+
+
   obtenerBookMarkUser(){
     this.apiService.allBookmark('bookmarkpersona').subscribe(
       (response) => {

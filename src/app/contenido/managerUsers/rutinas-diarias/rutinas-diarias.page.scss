@@ -1,9 +1,17 @@
 ion-content {
-  --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
+  --background: linear-gradient(0deg, #f0f3f7, #ffffff);
   height: 100vh;
   overflow: hidden;
 }
-
+ion-header{
+  background: transparent;
+  box-shadow: none;
+}
+ion-header::after{
+  //height: 0px;
+  box-shadow: none;
+  background: transparent;
+}
 //css de Spinner de cargando ...
 .loading-overlay {
   position: fixed;
@@ -315,4 +323,32 @@ ion-content {
     left: 50%;
     transform: translate(-50%, -50%);
     color: #ffffffb2;
+  }
+
+  .tipeSuscription{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:5%;
+    margin: 5%;
+    height: 30%;
+    border-radius: 30px;
+    svg{
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+    }
+    h1{
+      margin: 0 auto;
+      font-family: Raleway-BoldItalic;
+      font-size: .7rem;
+      margin-right: 10%;
+    }
   }

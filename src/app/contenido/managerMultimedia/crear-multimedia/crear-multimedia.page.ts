@@ -38,6 +38,7 @@ export class CrearMultimediaPage implements OnInit   {
   public mostrarSelectEdit:boolean=false;
   public mostrarSelectCreate:boolean=false;
 
+  showheader:boolean=true;
   public readonlyvalue: boolean = false;
   dataSelect: any[] = [
     { id: 1, nombre: 'Activo' },
@@ -221,6 +222,7 @@ export class CrearMultimediaPage implements OnInit   {
     }
     showSelect(item:any, nombre:string)
     {
+      this.showheader=false;
       const rawData = this.dataMultimedia;
       this.originData = rawData.map(item => ({ ...item }));
       this.mostrarSelect=!this.mostrarSelect;
@@ -228,6 +230,7 @@ export class CrearMultimediaPage implements OnInit   {
     }
     showSelectEdit(item:any, nombre:string)
     {
+      this.showheader=false;
       if (item){
         const rawData = this.dataMultimedia;
         this.originData = rawData.map(item => ({ ...item }));
@@ -243,18 +246,21 @@ export class CrearMultimediaPage implements OnInit   {
       }
     }
     cancelprocess(){
+      this.showheader=true;
       this.dataMultimediaUniq={};
       this.dataMultimedia=this.originData;
       this.mostrarSelect=!this.mostrarSelect;
       this.presentCustomToast('Proceso Cancelado',"danger");
     }
     cancelprocessEdit(){
+      this.showheader=true;
       this.dataMultimediaUniq={};
       this.dataMultimedia=this.originData;
       this.mostrarSelectEdit=!this.mostrarSelectEdit;
       this.presentCustomToast('Proceso Cancelado',"danger");
     }
     cancelprocessCreate(){
+      this.showheader=true;
       this.dataMultimediaUniq={};
       this.mostrarSelectCreate=!this.mostrarSelectCreate;
       this.presentCustomToast('Proceso Cancelado',"danger");
@@ -372,6 +378,7 @@ export class CrearMultimediaPage implements OnInit   {
         (response) => {
           this.presentCustomToast(response.message,"success");
           this.originData=[];
+          this.showheader=true;
           this.ngOnInit();
         },
         (error) => {
@@ -474,6 +481,7 @@ export class CrearMultimediaPage implements OnInit   {
         this.dataMultimediaUniq = {};
         this.imagenFile = null;
         this.selectedFile = null;
+        this.showheader=true;
         this.ngOnInit();
       } catch (error:any) {
         this.presentCustomToast(error.error.error, "danger");
@@ -587,6 +595,7 @@ export class CrearMultimediaPage implements OnInit   {
         this.presentCustomToast(response.message, "success");
         this.imagenFile = null;
         this.selectedFile = null;
+        this.showheader=true;
         this.ngOnInit();
       } catch (error:any) {
         this.presentCustomToast(error.error.error, "danger");

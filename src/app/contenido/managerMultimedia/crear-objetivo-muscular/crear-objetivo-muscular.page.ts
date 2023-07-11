@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IP_ADDRESS } from '../../../constantes';
 import { ApiServiceService } from '../../../api-service.service';
 import { StatusBar } from '@capacitor/status-bar';
@@ -28,6 +28,16 @@ export class CrearObjetivoMuscularPage implements OnInit {
   public mostrarSelectEdit:boolean=false;
   public mostrarSelectCreate:boolean=false;
 
+  showheader:boolean=true;
+
+  @ViewChild('fileInputRef') fileInputRef!: ElementRef;
+
+  selectedFile: File | null = null;
+  nameFile:string='';
+  selectedImageUrl!:string;
+
+  public selectImage!:string;
+  public imagePortada!:string;
 
   dataSelect: any[] = [
     { id: 1, nombre: 'Activo' },
@@ -55,12 +65,10 @@ export class CrearObjetivoMuscularPage implements OnInit {
 
   ionViewDidEnter(){
      this.validateSesion();
-     this.cargarImagenesBefores();
     //this.test()
   }
   ngOnInit() {
     this.validateSesion();
-    this.cargarImagenesBefores();
     //this.test()
   }
   test(){
@@ -68,21 +76,33 @@ export class CrearObjetivoMuscularPage implements OnInit {
     this.loading=false;
   }
   cargarImagenesBefores(){
+    const muscular = this.dataOMuscular;
+    const imageUrls = [];
+    if (Array.isArray(muscular)) {
+      for (let i = 0; i < muscular.length; i++) {
+        const nameImagen = muscular[i].IMAGENOBJETIVOSMUSCULARES;
+        const imageUrl = this.ip_address+'/media/objetivomuscular/'+nameImagen;
+        imageUrls.push(imageUrl);
+      }
+    }
+    const imageUrl1 = this.ip_address+'/media/images/objetive-muscular-bk-1.png';
+    imageUrls.push(imageUrl1);
+    const imageUrl2 = this.ip_address+'/media/images/objetive-muscular-bk-2.png';
+    imageUrls.push(imageUrl2);
     let imagesLoaded = 0;
-    const image1 = new Image();
-    const image2 = new Image();
-    image1.src = IP_ADDRESS + '/media/images/objetive-muscular-bk-1.png';
-    image2.src = IP_ADDRESS + '/media/images/objetive-muscular-bk-2.png';
-
+    //console.log(imageUrls);
+    const totalImages = imageUrls.length;
     const handleImageLoad = () => {
       imagesLoaded++;
-      if (imagesLoaded === 2) {
+      if (imagesLoaded === totalImages) {
         this.loading = false;
       }
     };
-
-    image1.onload = handleImageLoad;
-    image2.onload = handleImageLoad;
+    imageUrls.forEach((imageUrl) => {
+      const image = new Image();
+      image.onload = handleImageLoad;
+      image.src = imageUrl;
+    });
   }
   StatusBar(){
     StatusBar.hide();
@@ -129,6 +149,7 @@ export class CrearObjetivoMuscularPage implements OnInit {
   }
 
   go_page(name: string){
+    this.selectedImageUrl="";
     this.navController.navigateForward('/'+name);
   }
   goBackToPreviousPage() {
@@ -185,9 +206,57 @@ export class CrearObjetivoMuscularPage implements OnInit {
         return '';
     }
   }
+  sanitizeFileName(fileName:string) {
+    const sanitizedText = fileName
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_.-]/g, "");
+
+    return sanitizedText ;
+  }
+  obtenerExtensionArchivo(nombreArchivo: string): string {
+    const extension = nombreArchivo.substring(nombreArchivo.lastIndexOf('.'));
+    return extension;
+  }
+
+  uploadImage() {
+    this.fileInputRef.nativeElement.click();
+  }
+
+  handleFileInput(event: any) {
+    this.loading=true;
+    const file = event.target.files[0];
+    // Validar el tipo de archivo
+    if (!file.type.includes('image/jpeg') && !file.type.includes('image/png')) {
+      this.presentCustomToast("Imagen solo debe ser .JPG o .PNG", "danger");
+      this.loading=false;
+      return;
+    }
+
+    // Validar el tamaño del archivo
+    if (file.size > 1024 * 1024*2) {
+      // El archivo seleccionado supera el tamaño máximo de 1MB
+      // Realiza alguna acción o muestra un mensaje de error
+      this.presentCustomToast("Imagen no puede ser mayor de 2MB", "danger");
+      this.loading=false;
+      return;
+    }
+
+    this.selectedFile = file;
+    this.nameFile = file.name;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.selectedImageUrl = e.target.result;
+      this.imagePortada="";
+      this.presentCustomToast("Imagen seleccionada correctamente", "success");
+    };
+    reader.readAsDataURL(file);
+    this.loading=false;
+  }
 
   showSelect(item:any, nombre:string)
   {
+    this.showheader=false;
     const rawData = this.dataOMuscular;
     this.originData = rawData.map(item => ({ ...item }));
     this.mostrarSelect=!this.mostrarSelect;
@@ -195,6 +264,7 @@ export class CrearObjetivoMuscularPage implements OnInit {
   }
   showSelectEdit(item:any, nombre:string)
   {
+    this.showheader=false;
     if (item){
       const rawData = this.dataOMuscular;
       this.originData = rawData.map(item => ({ ...item }));
@@ -207,17 +277,24 @@ export class CrearObjetivoMuscularPage implements OnInit {
     }
   }
   cancelprocess(){
+    this.selectedImageUrl="";
+    this.showheader=true;
     this.dataOMuscylarUniq={};
     this.dataOMuscular=this.originData;
     this.mostrarSelect=!this.mostrarSelect;
     this.presentCustomToast('Proceso Cancelado',"danger");
   }
   cancelprocessCreate(){
+    this.selectedImageUrl="";
+    this.showheader=true;
     this.dataOMuscylarUniq={};
     this.mostrarSelectCreate=!this.mostrarSelectCreate;
     this.presentCustomToast('Proceso Cancelado',"danger");
   }
   cancelprocessEdit(){
+    this.selectedImageUrl="";
+    this.showheader=true;
+
     this.dataOMuscylarUniq={};
     this.dataOMuscular=this.originData;
     this.mostrarSelectEdit=!this.mostrarSelectEdit;
@@ -261,6 +338,7 @@ export class CrearObjetivoMuscularPage implements OnInit {
         this.presentCustomToast(response.message,"success");
         this.originData=[];
         this.dataOMuscylarUniq={};
+        this.showheader=true;
         this.ngOnInit();
       },
       (error) => {
@@ -274,7 +352,7 @@ export class CrearObjetivoMuscularPage implements OnInit {
       this.presentCustomToast('Debe escribir alguna razon',"danger");
     }else{
       const alert = await this.alertController.create({
-        header: 'Confirmar Estado',
+        header: 'Confirmar Actualización',
         message: '¿Estás seguro que desea realizar estos cambios en '+nombre+'?',
         buttons: [
           {
@@ -290,8 +368,25 @@ export class CrearObjetivoMuscularPage implements OnInit {
               if(item.STATUSOBJETIVOSMUSCULARES === 1 ){
                 item.OBSERVACIONOBJETIVOSMUSCULARES="N/A";
               }
-              this.UpdateDates(item,nombre);
-              this.mostrarSelectEdit=!this.mostrarSelectEdit;
+              if(this.selectedImageUrl){
+                item.IMAGENOBJETIVOSMUSCULARES=this.sanitizeFileName(item.NOMBREOBJETIVOSMUSCULARES);
+              }
+              if(this.selectedImageUrl){
+                item.IMAGENOBJETIVOSMUSCULARES=this.sanitizeFileName(item.NOMBREOBJETIVOSMUSCULARES+this.obtenerExtensionArchivo(this.nameFile));
+                this.updateFileImage(item.IMAGENOBJETIVOSMUSCULARES)
+                .then((fileName) => {
+                  item.IMAGENOBJETIVOSMUSCULARES="";
+                  item.IMAGENOBJETIVOSMUSCULARES=fileName+this.obtenerExtensionArchivo(this.nameFile);
+                  this.UpdateDates(item,nombre);
+                  this.mostrarSelectEdit=!this.mostrarSelectEdit;
+                })
+                .catch((error) => {
+                  this.presentCustomToast(error,"danger");
+                });
+              }else{
+                this.UpdateDates(item,nombre);
+                this.mostrarSelectEdit=!this.mostrarSelectEdit;
+              }
             }
           }
         ]
@@ -306,6 +401,8 @@ export class CrearObjetivoMuscularPage implements OnInit {
         this.presentCustomToast(response.message,"success");
         this.originData=[];
         this.dataOMuscylarUniq={};
+        this.showheader=true;
+        this.selectedImageUrl="";
         this.ngOnInit();
       },
       (error) => {
@@ -317,31 +414,49 @@ export class CrearObjetivoMuscularPage implements OnInit {
     if((item.OBSERVACIONOBJETIVOSMUSCULARES ==="" ||item.OBSERVACIONOBJETIVOSMUSCULARES ==="N/A" )&& item.STATUSOBJETIVOSMUSCULARES !== 1){
       this.presentCustomToast('Debe escribir alguna razon',"danger");
     }else{
-      const alert = await this.alertController.create({
-        header: 'Confirmar Estado',
-        message: '¿Estás seguro que desea guardar estos datos en '+nombre+'?',
-        buttons: [
-          {
-            text: 'Cancelar',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: () => {
-              this.dataOMuscylarUniq={};
-              this.presentCustomToast('Proceso cancelada',"danger");
-            }
-          }, {
-            text: 'Aceptar',
-            handler: () => {
-              if(item.STATUSOBJETIVOSMUSCULARES === 1 ){
-                item.OBSERVACIONOBJETIVOSMUSCULARES="N/A";
+      if(this.selectedImageUrl){
+        const alert = await this.alertController.create({
+          header: 'Confirmar Estado',
+          message: '¿Estás seguro que desea guardar estos datos en '+nombre+'?',
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                this.dataOMuscylarUniq={};
+                this.presentCustomToast('Proceso cancelada',"danger");
               }
-              this.createsDates(item,nombre);
-              this.mostrarSelectCreate=!this.mostrarSelectCreate;
+            }, {
+              text: 'Aceptar',
+              handler: () => {
+                if(item.STATUSOBJETIVOSMUSCULARES === 1 ){
+                  item.OBSERVACIONOBJETIVOSMUSCULARES="N/A";
+                }
+                if(this.selectedImageUrl){
+                  item.IMAGENOBJETIVOSMUSCULARES=this.sanitizeFileName(item.NOMBREOBJETIVOSMUSCULARES+this.obtenerExtensionArchivo(this.nameFile));
+                  this.updateFileImage(item.IMAGENOBJETIVOSMUSCULARES)
+                  .then((fileName) => {
+                    item.IMAGENOBJETIVOSMUSCULARES=fileName+this.obtenerExtensionArchivo(this.nameFile);
+                    this.createsDates(item,nombre);
+                    this.mostrarSelectCreate=!this.mostrarSelectCreate;
+                  })
+                  .catch((error) => {
+                    this.presentCustomToast(error,"danger");
+                  });
+                }else{
+                  this.createsDates(item,nombre);
+                  this.mostrarSelectCreate=!this.mostrarSelectCreate;
+                }
+              }
             }
-          }
-        ]
-      });
-      await alert.present();
+          ]
+        });
+        await alert.present();
+      }else{
+        this.presentCustomToast("Debe Tener Portada","danger");
+      }
+
     }
   }
   createsDates(item:any, nombre:string)
@@ -349,6 +464,8 @@ export class CrearObjetivoMuscularPage implements OnInit {
     this.apiService.CreteData(item,nombre).subscribe(
       (response) => {
         this.presentCustomToast(response.message,"success");
+        this.showheader=true;
+        this.selectedImageUrl="";
         this.ngOnInit();
       },
       (error) => {
@@ -356,6 +473,27 @@ export class CrearObjetivoMuscularPage implements OnInit {
       }
     );
   }
+  updateFileImage(filename: string): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      if (this.selectedFile) {
+        this.apiService.uploadcaptureImagenOMuscular(this.selectedFile, filename).subscribe(
+          (response) => {
+            this.selectedFile = null;
+            this.presentCustomToast(response.message, "success");
+            resolve(response.fileName); // Resuelve la promesa con el valor de response.fileName
+          },
+          (error) => {
+            this.presentCustomToast(error.error.error, "danger");
+            reject(error); // Rechaza la promesa con el error
+          }
+        );
+      } else {
+        this.presentCustomToast("Portada de Rutina No seleccionada", "danger");
+        reject("Portada de Rutina No seleccionada"); // Rechaza la promesa con un mensaje de error
+      }
+    });
+  }
+
 
   async savecopy(data:any){
     const alert = await this.alertController.create({
@@ -433,6 +571,8 @@ export class CrearObjetivoMuscularPage implements OnInit {
     this.apiService.getObjetivosMusculares().subscribe(
       (response) => {
         this.dataOMuscular=response;
+        this.cargarImagenesBefores();
+
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

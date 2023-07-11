@@ -15,6 +15,8 @@ export class MainPage implements OnInit {
   public userSesion!:string;
   public userSesionPerfil!:any;
 
+  dataEntrenadorUsuarios!:any[];
+
   public dataRutinas!: any[];
   public dataRutinasTotal!:any[];
   public dataSesiones!:any[];
@@ -82,6 +84,7 @@ export class MainPage implements OnInit {
               this.obtenerLikeOMuscular();
               this.obtenerBookMarkUser();
               this.obtenerEjercicios();
+              this.obtenerContratoEntrenadoresUsuario();
               this.obtenerRutinas();
               this.obtenerSesiones();
               this.obtenerOMuscular();
@@ -363,6 +366,9 @@ export class MainPage implements OnInit {
       });
     }
   }
+  MessagePremium(){
+    this.presentCustomToast('Ejercicio Premium, Suscribase para acceder a ellos','warning');
+  }
   go_page(name: string){
     this.navController.navigateForward('/'+name);
   }
@@ -406,6 +412,16 @@ export class MainPage implements OnInit {
     this.apiService.connsultPerfilUsuarioCompleto(nickname).subscribe(
       (response) => {
         this.userSesionPerfil=response;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  obtenerContratoEntrenadoresUsuario(){
+    this.apiService.obtenerContratoEntrenadoresUsuario(this.userSesionPerfil && this.userSesionPerfil[0].IDUSUARIO).subscribe(
+      (response) => {
+        this.dataEntrenadorUsuarios=response;
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -475,6 +491,25 @@ export class MainPage implements OnInit {
           const matchingRutina = this.dataRutinas.find(rutina => rutina.IDRUTINA === bookmark.IDRUTINA);
           return matchingRutina;
         });
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          this.dataRutinasTotal = this.dataRutinasTotal.filter(elemento =>{
+            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+              elemento.PREMIER = 'Suscripto';
+              return true;
+            }else if(elemento.IDROLUSUARIO===99){
+              elemento.PREMIER = 'Gratis';
+              return true;
+            }else{
+              elemento.PREMIER = 'Premium';
+              return true;
+            }
+            }
+          );
+        } else {
+          this.presentCustomToast('Error en Mostrar Rutinas','danger');
+          this.obtenerRutinas();
+          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
+        }
         //this.dataRutinas = this.dataRutinas.filter((element) => this.bookmarkRutinasState[element.IDRUTINA]);
       },
       (error) => {

@@ -1,7 +1,16 @@
 ion-content {
-  --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
+  --background: linear-gradient(0deg, #f0f3f7, #ffffff);
   height: 100vh;
   overflow: hidden;
+}
+ion-header{
+  background: transparent;
+  box-shadow: none;
+}
+ion-header::after{
+  //height: 0px;
+  box-shadow: none;
+  background: transparent;
 }
 
 .toolbar-header{
@@ -54,7 +63,7 @@ ion-content {
 }
 
 .container-body{
-  padding: 0% 3% 5% 3%;
+  padding: 0% 3% 10% 3%;
   ion-card{
     border-radius: 20px;
   }
@@ -62,7 +71,7 @@ ion-content {
 
 .container-videos {
   //padding: 0% 0% 10% 0%;
-  height: 70%;
+  height: 82%;
   width: 100%; /* Ancho igual al ancho de la pantalla */
   position: relative;
   overflow: auto;

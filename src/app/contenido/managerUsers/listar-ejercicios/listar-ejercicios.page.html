@@ -1,10 +1,12 @@
+<ion-header>
+  <app-toolbar-designer></app-toolbar-designer>
+</ion-header>
 <ion-content [fullscreen]="true">
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-  <app-toolbar-designer></app-toolbar-designer>
   <div class="container-body">
     <div class="container-swiper">
       <swiper-container #slides class="onb-container onb-container-1"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
@@ -91,5 +93,7 @@
     </div>
 
   </div>
-  <app-footer-designer-users></app-footer-designer-users>
 </ion-content>
+<ion-footer>
+  <app-footer-designer-users></app-footer-designer-users>
+</ion-footer>

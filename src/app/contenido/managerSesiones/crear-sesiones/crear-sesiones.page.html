@@ -1,10 +1,12 @@
+<ion-header *ngIf="showheader">
+  <app-toolbar-designer></app-toolbar-designer>
+</ion-header>
 <ion-content [fullscreen]="true" >
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-  <app-toolbar-designer></app-toolbar-designer>
   <ion-toolbar class="toolbar-header">
     <div class="onboard-top" >
       <ion-toolbar >
@@ -585,8 +587,8 @@
         <div class="title-select">
           <p>Entrenadores</p>
         </div>
-        <div class="back-select"  (click)="mostrarTrainerBasic = !mostrarTrainerBasic" >
-          <p (click)="mostrarTrainerBasic=!mostrarTrainerBasic" >Cancelar</p>
+        <div class="back-select"  >
+          <p (click)="toggleVariables()"  >Cancelar</p>
         </div>
       </div>
       <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataTrainerBasic')"   (ionInput)="onInputChange($event,'dataTrainerBasic')" (ionClear)="onInputChange($event,'dataTrainerBasic')"  placeholder="Buscar"></ion-searchbar>
@@ -616,7 +618,7 @@
         <div class="title-select">
           <p>Rutinas</p>
         </div>
-        <div class="back-select"  (click)="mostrarRutinasporSesion = !mostrarRutinasporSesion" >
+        <div class="back-select"   >
           <p (click)="cancelarmostrarSelecEjercicio()" >Cancelar</p>
         </div>
       </div>
@@ -778,7 +780,7 @@
           <div class="title-select">
             <p>Usuarios</p>
           </div>
-          <div class="back-select"  (click)="mostrarUsuariosBasic = !mostrarUsuariosBasic" >
+          <div class="back-select"  (click)="toggleVariables()" >
             <p (click)="canceldataUsuariosBasic()" >Cancelar</p>
             <h1 (click)="confirmdataUsuariosBasic()" >OK</h1>
           </div>
@@ -803,10 +805,12 @@
         </ng-template>
       </div>
     </div>
-    <div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
-      <app-footer-designer ></app-footer-designer>
-    </div>
-    <ng-template #otherfooter>
-      <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
-    </ng-template>
 </ion-content>
+<ion-footer *ngIf="showheader">
+  <div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
+    <app-footer-designer ></app-footer-designer>
+  </div>
+  <ng-template #otherfooter>
+    <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
+  </ng-template>
+</ion-footer>

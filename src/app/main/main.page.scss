@@ -3,6 +3,15 @@ ion-content {
   height: 100vh;
   overflow: hidden;
 }
+ion-header{
+  background: transparent;
+  box-shadow: none;
+}
+ion-header::after{
+  //height: 0px;
+  box-shadow: none;
+  background: transparent;
+}
 //css de Spinner de cargando ...
 .loading-overlay {
   position: fixed;
@@ -373,4 +382,93 @@ ion-content {
     font-size: 1.2rem;
     box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.048);
   }
+}
+
+.tipeSuscription{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25%;
+  border-radius: 15px 0px 15px 0px;
+  width: 60%;
+  svg{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+  }
+  h1{
+    margin: 0 auto;
+    font-family: Raleway-BoldItalic;
+    font-size: .7rem;
+    margin-right: 10%;
+  }
+}
+
+.countEjercicios {
+  background-color: #535253;
+  height: 20vh;
+  width: 100%;
+  margin-top: 3%;
+  overflow-y: hidden;
+  overflow-x: auto;
+  display: flex;
+}
+.image-container {
+  flex: 0 0 auto;
+  width: 100%;
+  position: relative;
+  img{
+    width: 100%;
+    height: auto;
+  }
+}
+
+.text-overlay-image {
+  position: absolute;
+  bottom:  5%;
+  right: 3%;
+  text-align: end;
+  //border-radius: 15px;
+  //background-color: rgba(255, 255, 255, 0.692);
+  color: white;
+  font-family: Raleway-Medium;
+  font-size: .9rem;
+  padding: 5%;
+  width: 50%;
+  span{
+    font-family: Raleway-ExtraBold;
+    color: #9259f9;
+  }
+}
+.text-overlay-image-first-child{
+  position: absolute;
+  top:  5%;
+  left: 5%;
+  text-align: start;
+  border-radius: 15px;
+  //background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-family: Raleway-Medium;
+  font-size: .9rem;
+  padding: 10px;
+  width: 50%; /* Ajusta el ancho máximo según tus necesidades */
+  span{
+    font-family: Raleway-ExtraBold;
+    color: #7525dc;
+  }
+}
+
+.filter-overlay-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  //border-radius: 15px;
 }

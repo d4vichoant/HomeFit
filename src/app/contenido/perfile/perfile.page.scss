@@ -1,7 +1,16 @@
 ion-content {
-  --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
+  --background: linear-gradient(0deg, #f0f3f7, #ffffff);
   height: 100vh;
   overflow: auto;
+}
+ion-header{
+  background: transparent;
+  box-shadow: none;
+}
+ion-header::after{
+  //height: 0px;
+  box-shadow: none;
+  background: transparent;
 }
 //css de Spinner de cargando ...
 .loading-overlay {

@@ -161,6 +161,7 @@ export class SesionesPage implements OnInit {
             handler: () => {
               data.ID_RUTINAS_SESION=data.IDRUTINAS.map((elemento:any) => elemento.toString()).join(',');
               data.USUARIOCREACIONSESION=this.userSesionPerfil[0].IDPERSONA;
+              data.IDENTRENADOR=this.userSesionPerfil[0].IDPERSONA;
               this.CreateData(data);
               this.enfocarenRutinasporSesion();
             }

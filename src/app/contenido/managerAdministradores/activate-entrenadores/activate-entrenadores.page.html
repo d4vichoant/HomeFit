@@ -1,17 +1,17 @@
 <ion-content [fullscreen]="true">
+  <app-toolbar-designer></app-toolbar-designer>
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-  <app-toolbar-designer></app-toolbar-designer>
   <div class="browser">
     <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
   </div>
   <div class="filter" >
-    <div class="filter-text-icon">
+   <!--  <div class="filter-text-icon">
       <img  class="icono-filter" src="{{ ip_address }}/media/images/filter.png" alt="Imagen Subtítulo">
-    </div>
+    </div> -->
     <div class="filter-text" *ngFor="let fil of filter" [ngStyle]="{ 'background-color': fil.iconstatus ? '#7525dc' : '#ded5ff ' }" (click)="buttonfilterhabilitate(fil)">
       <p [ngStyle]="{ 'color': fil.iconstatus ? '#ffffff' : '#621eb9' }">{{fil.name}}</p>
       <!-- <ng-container *ngIf="fil.iconstatus">
@@ -19,7 +19,7 @@
       </ng-container> -->
     </div>
   </div>
-  <div class="container-body" *ngIf="filter[0]?.name === 'Entrenador' && filter[0]?.iconstatus && data && data.length >0;else noDataMessage ">
+  <div class="container-body" *ngIf="filter[1]?.name === 'Entrenador' && filter[1]?.iconstatus && data && data.length >0;else noDataMessage ">
     <div class="item-body" [style.background-image]="'url(' + ip_address + '/media/images/objetive-muscular-bk-' + (item.ACTIVACIONENTRENADOR ? '1' : '2') + '.png)'" *ngFor="let item of data">
       <div class="div-item-body">
         <div class="div-text-item-body"  >
@@ -27,7 +27,7 @@
           <div class="sub-title">
             <img  class="icono-item" src="{{ ip_address }}/media/images/portafolio.png" alt="Imagen Subtítulo">
             <h2>Experiencia</h2>
-            <span>{{item.EXPERIENCIAENTRENADOR}}</span>
+            <span>{{getExperienciaString(item.EXPERIENCIAENTRENADOR)}}</span>
           </div>
           <div *ngIf="item.tituloESPECIALIDADENTRENADOR; else alternativeContent">
             <div class="details-item-body">
@@ -105,7 +105,7 @@
       </div>
     </div>
   </div>
-  <div class="container-body" *ngIf="filter[0]?.name === 'Entrenante' && filter[0]?.iconstatus && data && data.length >0;else noDataMessageEntrenante ">
+  <div class="container-body" *ngIf="filter[2]?.name === 'Entrenante' && filter[2]?.iconstatus && data && data.length >0;else noDataMessageEntrenante ">
     <div class="item-body" [style.background-image]="getBackgroundImage(item.IDGENERO)" *ngFor="let item of data" >
       <div class="div-item-body">
         <div class="div-text-item-body">
@@ -141,14 +141,14 @@
     </div>
   </div>
   <ng-template #noDataMessageEntrenante>
-    <div class="no-data-message" *ngIf="data && data.length === 0 && filter[0]?.iconstatus && filter[0]?.name === 'Entrenante'">
+    <div class="no-data-message" *ngIf="data && data.length === 0 && filter[2]?.iconstatus && filter[2]?.name === 'Entrenante'">
       <img src="{{ ip_address }}/media/images/notfound.png" alt="Imagen de datos no encontrados">
       <h1 class="text-no-data-message">Resultado no encontrado</h1>
       <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>
     </div>
   </ng-template>
   <ng-template #noDataMessage>
-    <div class="no-data-message" *ngIf="data && data.length === 0 && filter[0]?.iconstatus && filter[0]?.name === 'Entrenador'">
+    <div class="no-data-message" *ngIf="data && data.length === 0 && filter[1]?.iconstatus && filter[1]?.name === 'Entrenador'">
       <img src="{{ ip_address }}/media/images/notfound.png" alt="Imagen de datos no encontrados">
       <h1 class="text-no-data-message">Resultado no encontrado</h1>
       <h2 class="subtext-no-data-message">Oops! parece que no hay resultado.</h2>
@@ -167,8 +167,8 @@
     <div class="line"></div>
     <div class="tab-buttons">
       <div (click)="showTab(1)" [class.selected]="isTabSelected(1)">Inf. Básica</div>
-      <div (click)="showTab(2)" [class.selected]="isTabSelected(2)" *ngIf="filter[0]?.name === 'Entrenante'">Inf. Avanzada</div>
-      <div (click)="showTab(3)" [class.selected]="isTabSelected(3)" *ngIf="filter[0]?.name === 'Entrenador'">Inf. Avanzada</div>
+      <div (click)="showTab(2)" [class.selected]="isTabSelected(2)" *ngIf="filter[2]?.name === 'Entrenante' && filter[2]?.iconstatus">Inf. Avanzada</div>
+      <div (click)="showTab(3)" [class.selected]="isTabSelected(3)" *ngIf="filter[1]?.name === 'Entrenador' && filter[1]?.iconstatus">Inf. Avanzada</div>
     </div>
 
     <div class="tab-content" *ngIf="currentTab === 1 && overlayVisible">
@@ -243,7 +243,7 @@
       </div>
     </div>
 
-    <div class="tab-content" *ngIf="currentTab === 2 && filter[0]?.name === 'Entrenante'">
+    <div class="tab-content" *ngIf="currentTab === 2 && filter[2]?.iconstatus && filter[2]?.name === 'Entrenante'">
       <ion-list>
         <div *ngIf=" dataUniq.OBJETIVOSPERSONALES && dataUniq.OBJETIVOSPERSONALES.length === 0">
           <ion-label>Agregar Sesión:</ion-label>
@@ -316,7 +316,7 @@
       </div>
     </div>
 
-    <div class="tab-content"  *ngIf="currentTab === 3 && filter[0]?.name === 'Entrenador'">
+    <div class="tab-content"  *ngIf="currentTab === 3  && filter[1]?.iconstatus && filter[1]?.name === 'Entrenador'">
       <ion-list>
         <div *ngIf=" !dataUniq.idespecialidadentrenador || dataUniq.idespecialidadentrenador.length === 0 ">
           <ion-label>Agregar Sesión:</ion-label>
@@ -404,8 +404,6 @@
     </div>
   </div>
 
-  <app-footer-designer></app-footer-designer>
-
 <!-- Agrega el diálogo personalizado oculto por defecto -->
 <div id="custom-dialog" class="custom-dialog">
   <div class="container-preselect">
@@ -457,6 +455,5 @@
     </div>
   </div>
 </div>
-
-
+<app-footer-designer></app-footer-designer>
 </ion-content>

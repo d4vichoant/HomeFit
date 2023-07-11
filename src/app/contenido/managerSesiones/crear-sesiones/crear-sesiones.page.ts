@@ -76,6 +76,7 @@ export class CrearSesionesPage implements OnInit {
   mostrarEjerciciosSelect: boolean[] = [];
   mostrarEjerciciosSelectExt: boolean[] = [];
 
+  showheader:boolean=true;
   // public startdate!:string;
   // public enddate! :string ;
   // dateinitialicedStart=false;
@@ -407,9 +408,23 @@ export class CrearSesionesPage implements OnInit {
       //this.navController.navigateForward('/'+name);
       this.navController.navigateForward('/' + name, {
         queryParams: {
-          variableRutinas: ""
+          variableSesiones: ""
         }
       });
+      if(this.variable){
+        this.dataRutinasporSesion=[];
+        this.visibilidaSesion="";
+        this.duracionSesion="";
+        this.selectedTrainerBasic=null;
+        this.nombreSesion="";
+        this.objetivoSesion="";
+        this.ObjetivoPersonal="";
+        this.FrecuenciaPersonales="";
+        this.profesion="";
+        this.selectedFile= null;
+        this.nameFile='';
+        this.selectedImageUrl='';
+      }
     }
     getColorByValue(value: any): string {
       if (value){
@@ -666,6 +681,7 @@ export class CrearSesionesPage implements OnInit {
     }
 
     cancelarmostrarSelecEjercicio(){
+      this.showheader=true;
       this.mostrarRutinasporSesion=!this.mostrarRutinasporSesion;
       if(this.dataRutinasporSesionUniq ){
         this.duracionSesion=this.duracionSesionOrig;
@@ -674,6 +690,7 @@ export class CrearSesionesPage implements OnInit {
       this.duracionSesionOrig="";
     }
     EditItemERequerido(data:any,index:number){
+      this.showheader=false;
       this.duracionSesion = this.restarTiempos(this.duracionSesion,data.DURACIONRUTINA);
       this.index=index;
       this.dataRutinasporSesionUniq=data as any;
@@ -682,6 +699,7 @@ export class CrearSesionesPage implements OnInit {
       this.selectData = rawData.map(item => ({ ...item }));
     }
     showSelected(nameData:string){
+      this.showheader=false;
       this.searchTerm="";
        if(nameData==="dataTrainerBasic"){
         this.mostrarTrainerBasic=!this.mostrarTrainerBasic;
@@ -757,8 +775,15 @@ export class CrearSesionesPage implements OnInit {
     pad(valor: number | string): string {
       return valor.toString().padStart(2, '0'); // Agrega ceros a la izquierda si el valor es menor que 10
     }
+    toggleVariables(){
+      this.mostrarTrainerBasic =false;
+      this.showheader=true;
+      this.mostrarRutinasporSesion = false;
+      this.mostrarUsuariosBasic = false;
+    }
 
     selectItem(title: any,nameData:string) {
+      this.showheader=true;
       if(this.selectData){
         this.selectData=[]
       }

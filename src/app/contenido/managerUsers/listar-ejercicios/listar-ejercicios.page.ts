@@ -197,6 +197,7 @@ export class ListarEjerciciosPage implements OnInit {
   }
 
   go_page_create(name: string, data: any) {
+    this.dataLikeOPersonal=[];
     if(name!== 'listar-sesiones'){
       this.navController.navigateForward('/' + name, {
         queryParams: {

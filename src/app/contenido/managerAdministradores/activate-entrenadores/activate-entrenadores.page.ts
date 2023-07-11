@@ -199,7 +199,7 @@ export class ActivateEntrenadoresPage implements OnInit {
           fil.iconstatus = (fil === filter);
         }
       }
-      this.ordenarfilter();
+      //this.ordenarfilter();
       if (filter.name === "Entrenador" && filter.iconstatus) {
         this.data = await this.apiService.allTrainer().toPromise();
       } else if (filter.name === "Usuarios" && filter.iconstatus) {
@@ -207,7 +207,7 @@ export class ActivateEntrenadoresPage implements OnInit {
       } else if (filter.name === "Entrenante" && filter.iconstatus) {
         this.data = await this.apiService.allEntrenantes().toPromise();
       }
-      this.ordenarfilter();
+     // this.ordenarfilter();
     } catch (error) {
       this.presentCustomToast(error+"", "danger");
     } finally {
@@ -283,14 +283,28 @@ export class ActivateEntrenadoresPage implements OnInit {
         return '';
     }
   }
+  getExperienciaString(ExpNumber:string):string{
+    switch (ExpNumber) {
+      case '1':
+        return 'Menos de 1 año';
+      case '3':
+        return '1-3 años';
+      case '5':
+        return '3-5 años';
+      case '6':
+        return 'Más de 5 años';
+      default:
+        return '0 años';
+    }
+  }
   public onInputChange(event: any) {
     const currentSearchTerm = event.target.value;
     if (currentSearchTerm.length < this.previousSearchTerm.length) {
       if (this.filter[0].iconstatus && this.filter[0].name==="Usuarios"){
         this.obtenerAllPeople();
-      }else if(this.filter[0].iconstatus && this.filter[0].name==="Entrenador"){
+      }else if(this.filter[1].iconstatus && this.filter[1].name==="Entrenador"){
         this.obtenerAllTrainers();
-      }else if(this.filter[0].iconstatus && this.filter[0].name==="Entrenante"){
+      }else if(this.filter[2].iconstatus && this.filter[2].name==="Entrenante"){
         this.obtenerAllEntrenantes();
       }
     }
@@ -321,7 +335,7 @@ export class ActivateEntrenadoresPage implements OnInit {
         );
         this.data =filteredArray;
       }
-    }else if(this.filter[0].iconstatus && this.filter[0].name==="Entrenador"){
+    }else if(this.filter[1].iconstatus && this.filter[1].name==="Entrenador"){
       const searchTerms = this.searchTerm.toLowerCase().trim().split(' ');
       if (searchTerms.length === 1){
         const filteredArray =  this.data.filter(item =>
@@ -347,7 +361,7 @@ export class ActivateEntrenadoresPage implements OnInit {
         );
         this.data =filteredArray;
       }
-    }else if(this.filter[0].iconstatus && this.filter[0].name==="Entrenante"){
+    }else if(this.filter[2].iconstatus && this.filter[2].name==="Entrenante"){
       const searchTerms = this.searchTerm.toLowerCase().trim().split(' ');
       if (searchTerms.length === 1){
         const filteredArray =  this.data.filter(item =>
@@ -385,7 +399,7 @@ export class ActivateEntrenadoresPage implements OnInit {
     this.dataUniq.age =this.calcularEdad(this.dataUniq.FECHANACIMIENTOPERSONA);
     this.loading=false;
 
-    if (this.filter[0].name==="Entrenador"){
+    if (this.filter[1].name==="Entrenador" && this.filter[1].iconstatus===true){
       if (!this.dataUniq.idespecialidadentrenador) {
         this.dataUniq.idespecialidadentrenador = []; // Inicializar como un array vacío si es null
       }else{
@@ -393,7 +407,7 @@ export class ActivateEntrenadoresPage implements OnInit {
         dataUniq.idespecialidadentrenador = dataUniq.idespecialidadentrenador.map((element: string) => Number(element));
       }
       this.ExperienciaInt = parseInt(dataUniq.EXPERIENCIAENTRENADOR);
-    }else if(this.filter[0].name==="Entrenante"){
+    }else if(this.filter[2].name==="Entrenante" && this.filter[2].iconstatus===true){
       if (!this.dataUniq.OBJETIVOSPERSONALES) {
         this.dataUniq.OBJETIVOSPERSONALES = []; // Inicializar como un array vacío si es null
       }else{
@@ -593,11 +607,13 @@ export class ActivateEntrenadoresPage implements OnInit {
     });
   }
 
+
   actualizarEntrenador(dataEntre: any) {
     this.storage.get('sesion').then((sesionString) => {
       if (sesionString) {
         var profiledat = JSON.parse(sesionString);
         dataEntre.USUARIOMODIFICACIONPERSONA = profiledat.nickname;
+        dataEntre.EXPERIENCIAENTRENADOR = this.ExperienciaInt;
         this.apiService.UpdateEntrenador(dataEntre).subscribe(
           (response) => {
             this.presentCustomToast(response.message, "success");

@@ -24,9 +24,10 @@ ion-content {
   display: block;
 }
 .container-body{
-  height: 68vh;
+  height: 70vh;
   overflow-x: hidden;
   overflow-y: auto;
+  //background: #512eb2;
 }
 .ion-card{
   width: 100%;
@@ -499,7 +500,7 @@ ion-content {
 
 .container-suscripcion{
   background: #f2f2f2;
-  padding: 2% 0% 0% 0%;
+  padding: 2% 0% 2% 0%;
   width: 100%;
   border-radius: 10px 10px 0px 0px;
 }
@@ -548,7 +549,7 @@ ion-textarea.custom {
   --padding-start: 20px;
 }
 .container-comentarios-all{
-  padding-bottom: 5%;
+  //padding-bottom: 5%;
 }
 .container-list{
   width: 90%;
@@ -558,6 +559,10 @@ ion-textarea.custom {
   padding: 5%;
   display: flex;
   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.103);
+}
+.container-list:last-child{
+  //background-color: #ff0000;
+  margin: 0% 5% 1% 5%;
 }
 .container-comentario-img{
   flex: 30%;
@@ -815,3 +820,8 @@ ion-textarea.custom {
   margin: 2% auto 0; /* Para centrarlo horizontalmente */
 }
 
+ion-infinite-scroll{
+  z-index: 99;
+  background-color: #512eb2;
+  color: #000;
+}

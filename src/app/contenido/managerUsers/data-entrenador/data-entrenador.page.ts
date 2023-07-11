@@ -190,9 +190,9 @@ export class DataEntrenadorPage implements OnInit {
       }
     }
     const imgRutinas = this.datacomentariosentrenadorparcial;
-    if (Array.isArray(sesion)) {
-      for (let i = 0; i < sesion.length; i++) {
-        const nameImagen = sesion[i].IMAGEPERSONA;
+    if (Array.isArray(imgRutinas)) {
+      for (let i = 0; i < imgRutinas.length; i++) {
+        const nameImagen = imgRutinas[i].IMAGEPERSONA;
         const imageUrl = this.ip_address+'/media/perfile/'+nameImagen;
         imageUrls.push(imageUrl);
       }

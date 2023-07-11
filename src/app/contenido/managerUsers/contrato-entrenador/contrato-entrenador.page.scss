@@ -1,5 +1,5 @@
 ion-content {
-  --background: linear-gradient(0deg, #ac7efc, #ac7efc94,#ffffff, #ffffff, #ffffff,#ffffff);
+  --background: linear-gradient(0deg, #ac7efc, #ffffff94,#ffffff, #ffffff, #ffffff,#ffffff);
   height: 100vh;
   overflow: hidden;
   //filter: blur(5px);
@@ -24,7 +24,7 @@ ion-content {
   padding: 0% 0% 0% 0%;
   overflow-x: hidden;
   overflow-y: auto;
-  //background: linear-gradient(0deg, #c9b1f336, #ffffff);
+  //background:#5921a8;
   background: #ffffff;
   border-radius: 0px 0px 25px 25px;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.466);
@@ -32,7 +32,7 @@ ion-content {
 .container-body::before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 30vh;
   left: 0;
   width: 100%;
   height: 62vh;
@@ -137,12 +137,12 @@ ion-content {
   top: 0%;
   left: 0;
   width: 100%;
-  height: 30vh;
+  height: 31vh;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: 2;
   padding-top: 9%;
+  margin-bottom: 1%;
   //border-radius: 0px 0px 0px 30px;
   .header{
     background: linear-gradient(90deg, #b066d2b4, #7c64d2a6);

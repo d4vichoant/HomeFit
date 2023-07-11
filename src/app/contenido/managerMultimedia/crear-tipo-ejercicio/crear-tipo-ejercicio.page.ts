@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IP_ADDRESS } from '../../../constantes';
 import { ApiServiceService } from '../../../api-service.service';
 import { StatusBar } from '@capacitor/status-bar';
@@ -27,6 +27,16 @@ export class CrearTipoEjercicioPage implements OnInit {
   public mostrarSelectEdit:boolean=false;
   public mostrarSelectCreate:boolean=false;
 
+  showheader:boolean=true;
+
+  @ViewChild('fileInputRef') fileInputRef!: ElementRef;
+
+  selectedFile: File | null = null;
+  nameFile:string='';
+  selectedImageUrl!:string;
+
+  public selectImage!:string;
+  public imagePortada!:string;
 
   dataSelect: any[] = [
     { id: 1, nombre: 'Activo' },
@@ -130,6 +140,7 @@ export class CrearTipoEjercicioPage implements OnInit {
   }
   go_page(name: string){
     this.navController.navigateForward('/'+name);
+    this.selectedImageUrl="";
   }
   goBackToPreviousPage() {
     // Retrieve the previous page information from state
@@ -192,6 +203,7 @@ export class CrearTipoEjercicioPage implements OnInit {
   }
   showSelectEdit(item:any, nombre:string)
   {
+    this.showheader=false;
     if (item){
       const rawData = this.dataTEjercicio;
       this.originData = rawData.map(item => ({ ...item }));
@@ -204,17 +216,23 @@ export class CrearTipoEjercicioPage implements OnInit {
     }
   }
   cancelprocess(){
+    this.selectedImageUrl="";
+    this.showheader=true;
     this.dataTEjercicioUniq={};
     this.dataTEjercicio=this.originData;
     this.mostrarSelect=!this.mostrarSelect;
     this.presentCustomToast('Proceso Cancelado',"danger");
   }
   cancelprocessCreate(){
+    this.selectedImageUrl="";
+    this.showheader=true;
     this.dataTEjercicioUniq={};
     this.mostrarSelectCreate=!this.mostrarSelectCreate;
     this.presentCustomToast('Proceso Cancelado',"danger");
   }
   cancelprocessEdit(){
+    this.selectedImageUrl="";
+    this.showheader=true;
     this.dataTEjercicio=this.originData;
     this.dataTEjercicioUniq={};
     this.mostrarSelectEdit=!this.mostrarSelectEdit;
@@ -251,6 +269,54 @@ export class CrearTipoEjercicioPage implements OnInit {
     }
   }
 
+  uploadImage() {
+    this.fileInputRef.nativeElement.click();
+  }
+  sanitizeFileName(fileName:string) {
+    const sanitizedText = fileName
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_.-]/g, "");
+
+    return sanitizedText ;
+  }
+  obtenerExtensionArchivo(nombreArchivo: string): string {
+    const extension = nombreArchivo.substring(nombreArchivo.lastIndexOf('.'));
+    return extension;
+  }
+
+  handleFileInput(event: any) {
+    this.loading=true;
+    const file = event.target.files[0];
+    // Validar el tipo de archivo
+    if (!file.type.includes('image/jpeg') && !file.type.includes('image/png')) {
+      this.presentCustomToast("Imagen solo debe ser .JPG o .PNG", "danger");
+      this.loading=false;
+      return;
+    }
+
+    // Validar el tamaño del archivo
+    if (file.size > 1024 * 1024*2) {
+      // El archivo seleccionado supera el tamaño máximo de 1MB
+      // Realiza alguna acción o muestra un mensaje de error
+      this.presentCustomToast("Imagen no puede ser mayor de 2MB", "danger");
+      this.loading=false;
+      return;
+    }
+
+    this.selectedFile = file;
+    this.nameFile = file.name;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.selectedImageUrl = e.target.result;
+      this.imagePortada="";
+      this.presentCustomToast("Imagen seleccionada correctamente", "success");
+    };
+    reader.readAsDataURL(file);
+    this.loading=false;
+  }
+
+
   changeStatus(item:any, nombre:string)
   {
     this.apiService.UpdataStatus(item,nombre).subscribe(
@@ -258,6 +324,7 @@ export class CrearTipoEjercicioPage implements OnInit {
         this.presentCustomToast(response.message,"success");
         this.originData=[];
         this.dataTEjercicioUniq={};
+        this.showheader=true;
         this.ngOnInit();
       },
       (error) => {
@@ -270,7 +337,7 @@ export class CrearTipoEjercicioPage implements OnInit {
       this.presentCustomToast('Debe escribir alguna razon',"danger");
     }else{
       const alert = await this.alertController.create({
-        header: 'Confirmar Estado',
+        header: 'Confirmar Actualización',
         message: '¿Estás seguro que desea realizar estos cambios en '+nombre+'?',
         buttons: [
           {
@@ -286,8 +353,21 @@ export class CrearTipoEjercicioPage implements OnInit {
               if(item.STATUSTIPOEJERCICIO === 1 ){
                 item.OBSERVACIONTIPOEJERCICIO="N/A";
               }
-              this.UpdateDates(item,nombre);
-              this.mostrarSelectEdit=!this.mostrarSelectEdit;
+              if(this.selectedImageUrl){
+                item.IMAGETIPOEJERCICIO=this.sanitizeFileName(item.NOMBRETIPOEJERCICIO+this.obtenerExtensionArchivo(this.nameFile));
+                this.updateFileImage(item.IMAGETIPOEJERCICIO)
+                .then((fileName) => {
+                  item.IMAGETIPOEJERCICIO=fileName+this.obtenerExtensionArchivo(this.nameFile);
+                  this.UpdateDates(item,nombre);
+                  this.mostrarSelectEdit=!this.mostrarSelectEdit;
+                })
+                .catch((error) => {
+                  this.presentCustomToast(error,"danger");
+                });
+              }else{
+                this.UpdateDates(item,nombre);
+                this.mostrarSelectEdit=!this.mostrarSelectEdit;;}
+
             }
           }
         ]
@@ -301,6 +381,7 @@ export class CrearTipoEjercicioPage implements OnInit {
       (response) => {
         this.presentCustomToast(response.message,"success");
         this.originData=[];
+        this.showheader=true;
         this.ngOnInit();
         this.dataTEjercicioUniq={};
       },
@@ -313,31 +394,47 @@ export class CrearTipoEjercicioPage implements OnInit {
     if((item.OBSERVACIONTIPOEJERCICIO ==="" ||item.OBSERVACIONTIPOEJERCICIO ==="N/A" )&& item.STATUSTIPOEJERCICIO !== 1){
       this.presentCustomToast('Debe escribir alguna razon',"danger");
     }else{
-      const alert = await this.alertController.create({
-        header: 'Confirmar Estado',
-        message: '¿Estás seguro que desea guardar estos datos en '+nombre+'?',
-        buttons: [
-          {
-            text: 'Cancelar',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: () => {
-              this.dataTEjercicioUniq={};
-              this.presentCustomToast('Proceso cancelada',"danger");
-            }
-          }, {
-            text: 'Aceptar',
-            handler: () => {
-              if(item.STATUSTIPOEJERCICIO === 1 ){
-                item.OBSERVACIONTIPOEJERCICIO="N/A";
+      if(this.selectedImageUrl){
+        const alert = await this.alertController.create({
+          header: 'Confirmar Creación',
+          message: '¿Estás seguro que desea guardar estos datos en '+nombre+'?',
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                this.dataTEjercicioUniq={};
+                this.presentCustomToast('Proceso cancelada',"danger");
               }
-              this.createsDates(item,nombre);
-              this.mostrarSelectCreate=!this.mostrarSelectCreate;
+            }, {
+              text: 'Aceptar',
+              handler: () => {
+                if(item.STATUSTIPOEJERCICIO === 1 ){
+                  item.OBSERVACIONTIPOEJERCICIO="N/A";
+                }
+                if(this.selectedImageUrl && this.selectedFile){
+                  item.IMAGETIPOEJERCICIO=this.sanitizeFileName(item.NOMBRETIPOEJERCICIO+this.obtenerExtensionArchivo(this.nameFile));
+                  this.updateFileImage(item.IMAGETIPOEJERCICIO)
+                  .then((fileName) => {
+                    item.IMAGETIPOEJERCICIO=fileName+this.obtenerExtensionArchivo(this.nameFile);
+                    this.createsDates(item,nombre);
+                    this.mostrarSelectCreate=!this.mostrarSelectCreate;
+                  })
+                  .catch((error) => {
+                    this.presentCustomToast(error,"danger");
+                  });
+                }else{
+                this.createsDates(item,nombre);
+                this.mostrarSelectCreate=!this.mostrarSelectCreate;}
+              }
             }
-          }
-        ]
-      });
-      await alert.present();
+          ]
+        });
+        await alert.present();
+      }else{
+        this.presentCustomToast("Debe Tener Portada","danger");
+      }
     }
   }
   createsDates(item:any, nombre:string)
@@ -346,12 +443,34 @@ export class CrearTipoEjercicioPage implements OnInit {
       (response) => {
         this.dataTEjercicioUniq={};
         this.presentCustomToast(response.message,"success");
+        this.showheader=true;
         this.ngOnInit();
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
       }
     );
+  }
+  updateFileImage(filename: string): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      if (this.selectedFile) {
+        this.apiService.uploadcaptureImagenTipoEjercicio(this.selectedFile, filename).subscribe(
+          (response) => {
+            this.selectedFile = null;
+            this.selectedImageUrl="";
+            this.presentCustomToast(response.message, "success");
+            resolve(response.fileName); // Resuelve la promesa con el valor de response.fileName
+          },
+          (error) => {
+            this.presentCustomToast(error.error.error, "danger");
+            reject(error); // Rechaza la promesa con el error
+          }
+        );
+      } else {
+        this.presentCustomToast("Portada de Rutina No seleccionada", "danger");
+        reject("Portada de Rutina No seleccionada"); // Rechaza la promesa con un mensaje de error
+      }
+    });
   }
   async savecopy(data:any){
     const alert = await this.alertController.create({

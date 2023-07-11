@@ -1,9 +1,17 @@
 ion-content {
-  --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
+  --background: linear-gradient(0deg, #f0f3f7, #ffffff);
   height: 100vh;
   overflow: hidden;
 }
-
+ion-header{
+  background: transparent;
+  box-shadow: none;
+}
+ion-header::after{
+  //height: 0px;
+  box-shadow: none;
+  background: transparent;
+}
 .toolbar-header{
   z-index: -1;
   margin-top: 2%;
@@ -91,9 +99,9 @@ ion-content {
 }
 
 .container-videos {
-  padding: 1% 6% 3% 6%;
+  padding: 1% 8% 3% 6%;
   margin-top: 3%;
-  height: 56%;
+  height: 60%;
   width: 100%; /* Ancho igual al ancho de la pantalla */
   position: relative;
   overflow: auto;

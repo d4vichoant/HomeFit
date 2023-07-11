@@ -1,10 +1,12 @@
+<ion-header *ngIf="showheader">
+  <app-toolbar-designer></app-toolbar-designer>
+</ion-header>
 <ion-content [fullscreen]="true">
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-  <app-toolbar-designer></app-toolbar-designer>
   <ion-toolbar class="toolbar-header">
     <div class="onboard-top" >
       <ion-toolbar >
@@ -85,7 +87,7 @@
         </div>
         <div (click)="(variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)?uploadImage():''" class="ion-header">
           <ion-icon name="download"></ion-icon>
-          <input type="file" style="display: none;" id="fileInput" class="file-input" accept=".jpg" (change)="handleFileInput($event)" #fileInputRef>
+          <input type="file" style="display: none;" id="fileInput" class="file-input" accept=".jpg, .png" (change)="handleFileInput($event)" #fileInputRef>
         </div>
         <ion-card-header class="custom-card-header">
           <div class="ion-item">
@@ -172,10 +174,10 @@
         </ion-card-title>
       </ion-card-header>
     </ion-card>
-    <ion-card *ngIf=" !dataEjercicioporRutina || dataEjercicioporRutina.length===0 && (variable &&  userSesionPerfil && userSesionPerfil[0].IDPERSONA === variable.IDENTRENADOR) || (!variable) || (userSesionPerfil && userSesionPerfil[0].IDROLUSUARIO===99)"   (click)="showSelected('dataEjercicio')" class="custom-card" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/rutinas/crear_ejerciciorutina.jpg');">
+    <ion-card *ngIf=" dataEjercicioporRutina && dataEjercicioporRutina.length === 0"   (click)="showSelected('dataEjercicio')" class="custom-card" style="background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('{{ip_address}}/media/rutinas/crear_ejerciciorutina.jpg');">
       <ion-card-header>
         <img class="background-image" src="{{ ip_address }}/media/images/plus-invisible.png" alt="plus">
-        <ion-card-title>Agregar Ejercicio</ion-card-title>
+        <ion-card-title>Agregar Ejercicio {{dataEjercicioporRutina.length}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <br>
@@ -261,8 +263,8 @@
           <div class="title-select">
             <p>Tipo Ejercicio </p>
           </div>
-          <div class="back-select"  (click)="mostrarSelecTEjercicio = !mostrarSelecTEjercicio" >
-            <p (click)="mostrarSelecTEjercicio=!mostrarSelecTEjercicio" >Cancelar</p>
+          <div class="back-select"  >
+            <p (click)="toggleVariables() ">Cancelar</p>
           </div>
         </div>
         <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataTEjercicio')"   (ionInput)="onInputChange($event,'dataTEjercicio')" (ionClear)="onInputChange($event,'dataTEjercicio')"  placeholder="Buscar"></ion-searchbar>
@@ -287,8 +289,8 @@
           <div class="title-select">
             <p>Objetivo Personal</p>
           </div>
-          <div class="back-select"  (click)="mostrarSelecOPersonal = !mostrarSelecOPersonal" >
-            <p (click)="mostrarSelecOPersonal=!mostrarSelecOPersonal" >Cancelar</p>
+          <div class="back-select"  >
+            <p (click)="toggleVariables()" >Cancelar</p>
           </div>
         </div>
         <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataOPersonal')"   (ionInput)="onInputChange($event,'dataOPersonal')" (ionClear)="onInputChange($event,'dataOPersonal')"  placeholder="Buscar"></ion-searchbar>
@@ -313,8 +315,8 @@
               <div class="title-select">
                 <p>Entrenadores</p>
               </div>
-              <div class="back-select"  (click)="mostrarTrainerBasic = !mostrarTrainerBasic" >
-                <p (click)="mostrarTrainerBasic=!mostrarTrainerBasic" >Cancelar</p>
+              <div class="back-select"  >
+                <p (click)="toggleVariables()" >Cancelar</p>
               </div>
             </div>
             <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event,'dataTrainerBasic')"   (ionInput)="onInputChange($event,'dataTrainerBasic')" (ionClear)="onInputChange($event,'dataTrainerBasic')"  placeholder="Buscar"></ion-searchbar>
@@ -343,7 +345,7 @@
       <div class="title-select">
         <p>Ejercicio </p>
       </div>
-      <div class="back-select"  (click)="mostrarSelecEjercicio = !mostrarSelecEjercicio" >
+      <div class="back-select"  >
         <p (click)="cancelarmostrarSelecEjercicio()" >Cancelar</p>
       </div>
     </div>
@@ -437,10 +439,12 @@
     </ng-template>
   </div>
 </div>
-<div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
-  <app-footer-designer ></app-footer-designer>
-</div>
-<ng-template #otherfooter>
-  <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
-</ng-template>
 </ion-content>
+<ion-footer *ngIf="showheader">
+  <div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
+    <app-footer-designer ></app-footer-designer>
+  </div>
+  <ng-template #otherfooter>
+    <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
+  </ng-template>
+</ion-footer>

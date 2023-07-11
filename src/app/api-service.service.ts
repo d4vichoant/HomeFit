@@ -197,6 +197,16 @@ export class ApiServiceService {
     formData.append('file', file,filename);
     return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen-sesiones', formData);
   }
+  uploadcaptureImagenTipoEjercicio(file: File,filename :string): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file,filename);
+    return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen-tipoEjercicio', formData);
+  }
+  uploadcaptureImagenOMuscular(file: File,filename :string): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file,filename);
+    return this.http.post(IP_ADDRESS + '/multimedia/subir-imagen-objetivomuscular', formData);
+  }
   uploadcaptureImagenERequerido(file: File,filename :string): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file,filename);
@@ -284,7 +294,19 @@ export class ApiServiceService {
     }
     return this.http.post(IP_ADDRESS+'/programacion/Contrato/',data );
   }
-obtenerContratoUsuario(idUsuario:number,idEntrenador:number):Observable<any>{
-  return this.http.get(IP_ADDRESS+'/programacion/obtenerContratoUsuario/'+idUsuario+'/'+idEntrenador);
-}
+  obtenerContratoUsuario(idUsuario:number,idEntrenador:number):Observable<any>{
+    return this.http.get(IP_ADDRESS+'/programacion/obtenerContratoUsuario/'+idUsuario+'/'+idEntrenador);
+  }
+  obtenerContratoUsuarioPorEntrenador(idEntrenador:number):Observable<any>{
+    return this.http.get(IP_ADDRESS+'/programacion/obtenerContratoUsuarioPorEntrenador/'+idEntrenador);
+  }
+  addespecialidadentrenadorentrenador(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+'/programacion/addespecialidadentrenadorentrenador/',data );
+  }
+  addespecialidadentrenador(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+'/programacion/addespecialidadentrenador/',data );
+  }
+  obtenerContratoEntrenadoresUsuario(idUsuario:number):Observable<any>{
+    return this.http.get(IP_ADDRESS+'/programacion/obtenerContratoEntrenadoresUsuario/'+idUsuario);
+  }
 }

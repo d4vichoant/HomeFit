@@ -1,9 +1,8 @@
 ion-content {
-  --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
+  --background: linear-gradient(0deg, #f0f3f7, #ffffff);
   height: 100vh;
   overflow: hidden;
 }
-
 .toolbar-header{
   z-index: -1;
   margin-top: 2%;
@@ -58,7 +57,7 @@ ion-content {
   justify-content: space-between;
   text-align: center;
   width: 100%;
-  background-color: #f2f3f8;
+  background-color: #ffffff;
   div{
     padding: 3% 0% 3% 0%;
     height: 100%;

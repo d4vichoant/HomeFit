@@ -19,6 +19,7 @@ export class ProgramarrutinasPage implements OnInit {
   public userSesionPerfil!:any;
   public loading = true;
 
+  dataEntrenadorUsuarios!:any[];
 
   public dataRutinas!:any[];
   public dataEjercicio!:any[];
@@ -110,8 +111,9 @@ export class ProgramarrutinasPage implements OnInit {
               this.StatusBar();
               this.obtenerbookmarksesiones();
               this.obtenerBookMarkUser();
-              this.obtenerEjercicios();
-              this.obtenerRutinas();
+              this.obtenerContratoEntrenadoresUsuario();
+              /* this.obtenerEjercicios();
+              this.obtenerRutinas(); */
               this.loading=false;
             },
             (error) => {
@@ -309,6 +311,18 @@ export class ProgramarrutinasPage implements OnInit {
       }
     );
   }
+
+  obtenerContratoEntrenadoresUsuario(){
+    this.apiService.obtenerContratoEntrenadoresUsuario(this.userSesionPerfil && this.userSesionPerfil[0].IDUSUARIO).subscribe(
+      (response) => {
+        this.dataEntrenadorUsuarios=response;
+        this.obtenerEjercicios();
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
   obtenerRutinas(){
     this.apiService.getRutinasActivate().subscribe(
       (response) => {
@@ -338,6 +352,36 @@ export class ProgramarrutinasPage implements OnInit {
           this.DuracionTotal=duracionTotal;
           this.DuracionTotal=this.formatDuracionRutina(this.DuracionTotal);
           }
+          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+            this.dataRutinas = this.dataRutinas.filter(elemento =>{
+              if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+                elemento.PREMIER = 'Suscripto';
+                return true;
+              }else if(elemento.IDROLUSUARIO===99){
+                elemento.PREMIER = 'Gratis';
+                return true;
+              }else{
+                elemento.PREMIER = 'Premium';
+                return true;
+              }
+            }
+            );
+          } else {
+            this.presentCustomToast('Error en Mostrar Rutinas','danger');
+            this.obtenerRutinas();
+            //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
+          }
+
+          this.dataRutinas.sort((a, b) => {
+            const premierOrder: { [key: string]: number } = {
+              Suscripto: 0,
+              Gratis: 1,
+              Premium: 2,
+            };
+            const premierA = premierOrder[a.PREMIER];
+            const premierB = premierOrder[b.PREMIER];
+            return premierA - premierB;
+          });
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -351,6 +395,27 @@ export class ProgramarrutinasPage implements OnInit {
         this.dataEjercicio.forEach((ejercicio) => {
           ejercicio.CALORIASEJERCICIO= (this.obtenerDuracionEnMinutos(ejercicio.TIEMPOMULTIMEDIA)/60*ejercicio.METEJERCICIO*Number(this.userSesionPerfil[0].PESOUSUARIO)).toFixed(2);
           });
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
+            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+              elemento.PREMIER = 'Suscripto';
+              return true;
+            }else if(elemento.IDROLUSUARIO===99){
+              elemento.PREMIER = 'Gratis';
+              return true;
+            }else{
+              elemento.PREMIER = 'Premium';
+              return true;
+            }
+          }
+          );
+        } else {
+          this.presentCustomToast('Error en Mostrar Ejercicios','danger');
+          this.obtenerEjercicios();
+          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
+        }
+        //this.obtenerEjercicios();
+        this.obtenerRutinas();
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

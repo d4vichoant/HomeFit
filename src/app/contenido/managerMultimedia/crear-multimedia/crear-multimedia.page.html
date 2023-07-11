@@ -1,11 +1,13 @@
 
+<ion-header *ngIf="showheader">
+  <app-toolbar-designer></app-toolbar-designer>
+</ion-header>
 <ion-content [fullscreen]="true">
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-  <app-toolbar-designer></app-toolbar-designer>
   <ion-toolbar class="toolbar-header">
     <div class="onboard-top" >
       <ion-toolbar >
@@ -28,9 +30,9 @@
       <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
     </div>
     <div class="filter" >
-      <div class="filter-text-icon">
+    <!--   <div class="filter-text-icon">
         <img  class="icono-filter" src="{{ ip_address }}/media/images/filter.png" alt="Imagen Subtítulo">
-      </div>
+      </div> -->
       <div class="filter-text" *ngFor="let fil of filter; let i = index" [ngStyle]="{ 'background-color': fil.iconstatus ? '#7525dc' : '#ded5ff ' }" (click)="buttonfilterhabilitate(fil,i)">
         <p [ngStyle]="{ 'color': fil.iconstatus ? '#ffffff' : '#621eb9' }">{{fil.name}}</p>
         <!-- <ng-container *ngIf="fil.iconstatus">
@@ -219,10 +221,12 @@
         <p>Presiona afuera para salir</p>
       </div>
     </div>
-    <div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
-      <app-footer-designer ></app-footer-designer>
-    </div>
-    <ng-template #otherfooter>
-      <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
-    </ng-template>
 </ion-content>
+<ion-header  *ngIf="showheader">
+  <div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
+    <app-footer-designer ></app-footer-designer>
+  </div>
+  <ng-template #otherfooter>
+    <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
+  </ng-template>
+</ion-header>

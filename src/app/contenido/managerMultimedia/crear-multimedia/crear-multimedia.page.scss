@@ -1,7 +1,16 @@
 ion-content {
-  --background: linear-gradient(0deg, #f0f3f7, #f2f3f8);
+  --background: linear-gradient(0deg, #f0f3f7, #ffffff);
   height: 100vh;
   overflow: hidden;
+}
+ion-header{
+  background: transparent;
+  box-shadow: none;
+}
+ion-header::after{
+  //height: 0px;
+  box-shadow: none;
+  background: transparent;
 }
 
 .toolbar-header{
@@ -559,6 +568,7 @@ ion-content {
     overflow-x: scroll; /* Establece el desplazamiento horizontal solo cuando sea necesario */
     white-space: nowrap; /* Establece el desplazamiento horizontal solo cuando sea necesario */
     height: 7%;
+    padding-left: 3%;
     .filter-text-icon{
       background-color: #f2f3f8;
       position: sticky; /* Fija la posición del elemento */

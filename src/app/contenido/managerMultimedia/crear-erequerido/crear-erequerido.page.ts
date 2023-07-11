@@ -30,6 +30,7 @@ export class CrearERequeridoPage implements OnInit {
   nameFile:string='';
   selectedImageUrl!:string;
 
+  showheader:boolean=true;
   constructor(private storage: Storage,
     private apiService: ApiServiceService,
     private navController: NavController,
@@ -152,6 +153,7 @@ export class CrearERequeridoPage implements OnInit {
     }
   }
   showCreateDara(){
+    this.showheader=false;
     this.mostarDialogEdit=!this.mostarDialogEdit;
     if(!this.dataERequeridoUniq){
       this.dataERequeridoUniq={};
@@ -173,6 +175,7 @@ export class CrearERequeridoPage implements OnInit {
   }
 
   cambiardateS(data:any){
+    this.showheader=false;
     const rawData = this.dataERequerido;
     this.originData = rawData.map(item => ({ ...item }));
     this.mostarDialogEdit=!this.mostarDialogEdit;
@@ -239,6 +242,7 @@ export class CrearERequeridoPage implements OnInit {
         this.mostarDialogEdit=!this.mostarDialogEdit;
         this.dataERequeridoUniq={};
         this.nameFile="";
+        this.showheader=true;
         //location.reload();
       },
       (error) => {
@@ -286,6 +290,7 @@ export class CrearERequeridoPage implements OnInit {
         this.presentCustomToast(response.message,"success");
         this.nameFile="";
         this.selectedFile = null;
+        this.showheader=true;
         this.selectedImageUrl ="";
       },
       (error) => {
@@ -304,6 +309,7 @@ export class CrearERequeridoPage implements OnInit {
         this.nameFile="";
         this.selectedFile = null;
         this.selectedImageUrl ="";
+        this.showheader=true;
         this.ionViewDidEnter();
       },
       (error) => {
@@ -313,6 +319,7 @@ export class CrearERequeridoPage implements OnInit {
   }
 
   cancelERequerido(){
+    this.showheader=true;
     if(this.originData&&this.originData[0]){
       this.dataERequerido=this.originData;
       this.dataERequeridoUniq={};

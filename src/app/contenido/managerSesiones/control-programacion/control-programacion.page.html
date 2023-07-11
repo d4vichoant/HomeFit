@@ -1,10 +1,12 @@
+<ion-header>
+  <app-toolbar-designer></app-toolbar-designer>
+</ion-header>
 <ion-content [fullscreen]="true">
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-  <app-toolbar-designer></app-toolbar-designer>
   <div class="header-up">
     <div class="up-date">
       <ion-icon name="sunny-outline"></ion-icon>
@@ -81,10 +83,12 @@
       </ion-card-content>
     </ion-card>
   </div>
+</ion-content>
+<ion-footer>
   <div *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===99;else otherfooter">
     <app-footer-designer ></app-footer-designer>
   </div>
   <ng-template #otherfooter>
     <app-footer-designer-trainer *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0] && userSesionPerfil[0].IDROLUSUARIO===2"></app-footer-designer-trainer>
   </ng-template>
-</ion-content>
+</ion-footer>

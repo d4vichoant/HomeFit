@@ -199,6 +199,20 @@ const routes: Routes = [
     path: 'data-entrenador',
     loadChildren: () => import('./contenido/managerUsers/data-entrenador/data-entrenador.module').then( m => m.DataEntrenadorPageModule)
   },
+  {
+    path: 'listar-ejercicios-all',
+    loadChildren: () => import('./contenido/managerUsers/listar-ejercicios-all/listar-ejercicios-all.module').then( m => m.ListarEjerciciosAllPageModule)
+  },  {
+    path: 'listar-rutinas-diarias',
+    loadChildren: () => import('./contenido/managerUsers/listar-rutinas-diarias/listar-rutinas-diarias.module').then( m => m.ListarRutinasDiariasPageModule)
+  },
+  {
+    path: 'listar-programas-rutinas',
+    loadChildren: () => import('./contenido/managerUsers/listar-programas-rutinas/listar-programas-rutinas.module').then( m => m.ListarProgramasRutinasPageModule)
+  },
+
+
+
 ];
 
 @NgModule({

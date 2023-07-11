@@ -1,10 +1,12 @@
+<ion-header>
+  <app-toolbar-designer></app-toolbar-designer>
+</ion-header>
 <ion-content [fullscreen]="true">
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
       <ion-spinner name="crescent"></ion-spinner>
     </div>
   </div>
-  <app-toolbar-designer></app-toolbar-designer>
   <div class="container-up">
     <input type="file" style="display: none;" id="fileInput" class="file-input" accept=".jpg, .png" (change)="handleFileInput($event)" #fileInputRef>
     <div class="icon-up-right" (click)="uploadImage()" >
@@ -171,13 +173,15 @@
         </div>
     </div>
   </div>
-   <div *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===99;else otherfooter">
-      <app-footer-designer ></app-footer-designer>
-    </div>
-    <ng-template #otherfooter >
-      <app-footer-designer-trainer *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===2;else otherfooterother"></app-footer-designer-trainer>
-    </ng-template>
-    <ng-template #otherfooterother>
-      <app-footer-designer-users *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===1"></app-footer-designer-users>
-    </ng-template>
 </ion-content>
+<ion-footer>
+  <div *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===99;else otherfooter">
+    <app-footer-designer ></app-footer-designer>
+  </div>
+  <ng-template #otherfooter >
+    <app-footer-designer-trainer *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===2;else otherfooterother"></app-footer-designer-trainer>
+  </ng-template>
+  <ng-template #otherfooterother>
+    <app-footer-designer-users *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===1"></app-footer-designer-users>
+  </ng-template>
+</ion-footer>
