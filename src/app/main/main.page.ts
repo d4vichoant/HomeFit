@@ -112,14 +112,14 @@ export class MainPage implements OnInit {
     this.storage.remove('sesion');
   }
   private chanceColorFooter(){
-    document.documentElement.style.setProperty('--activate-foot10',' #9259f9');
-    document.documentElement.style.setProperty('--activate-foot11',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot10',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot11',' #ffffff');
     document.documentElement.style.setProperty('--activate-foot20',' transparent');
-    document.documentElement.style.setProperty('--activate-foot21',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot21',' #ffffff');
     document.documentElement.style.setProperty('--activate-foot30',' transparent');
-    document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot31',' #ffffff');
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
-    document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot41',' #ffffff');
   }
 
   cargarImagenesBefores(){
