@@ -152,7 +152,7 @@ ion-header::after{
     }
   }
   .container-body{
-    height: 55vh;
+    height: 59vh;
     padding-bottom: 20%;
     overflow-x: hidden;
     overflow-y: auto;
@@ -279,7 +279,7 @@ ion-header::after{
     position: fixed;
     left: 0;
     right: 0;
-    top: 85vh;
+    bottom: 0vh;
     display: flex;
     justify-content: center;
     align-items: center;

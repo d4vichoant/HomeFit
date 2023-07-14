@@ -37,7 +37,7 @@ ion-header::after{
     border-radius: 0px 0px 15px 15px;
   }
   .card-back {
-    color: #ffffffb2;
+    color: #ffffff;
     position: absolute;
     margin: 5% 0% 0% 5%;
     top: 0;
@@ -120,10 +120,10 @@ ion-header::after{
     background-color: #949396b2;
   }
   .container-body{
-    height: 62vh;
+    height: 64.5vh;
     overflow-x: hidden;
     overflow-y: auto;
-    padding-bottom: 10%;
+    //padding-bottom: 10%;
   }
   .notification-circle {
     position: absolute;
@@ -275,3 +275,15 @@ ion-header::after{
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.192), rgba(255, 255, 255, 0.034));
     border-radius: 20%;
   }
+
+  .text-container {
+  width: 70%;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-left: 10px;
+  z-index: 9999;
+  //background-color: #00000060; /* Ajusta la opacidad y el color de fondo según tus preferencias */
+}
+

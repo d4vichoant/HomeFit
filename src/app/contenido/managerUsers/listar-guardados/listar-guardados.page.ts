@@ -54,7 +54,7 @@ export class ListarGuardadosPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.validateSesion();
+    //this.validateSesion();
     //this.test();
   }
   ionViewDidEnter() {
@@ -447,7 +447,7 @@ export class ListarGuardadosPage implements OnInit {
           const matchingRutina = this.dataRutinas.find(rutina => rutina.IDRUTINA === bookmark.IDRUTINA);
           return matchingRutina;
         });
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0) {
           this.dataRutinas = this.dataRutinas.filter(elemento =>{
             if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
               elemento.PREMIER = 'Suscripto';
@@ -463,7 +463,6 @@ export class ListarGuardadosPage implements OnInit {
           );
         } else {
           this.presentCustomToast('Error en Mostrar Rutinas','danger');
-          this.obtenerRutinas();
           //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
       },
@@ -485,7 +484,7 @@ export class ListarGuardadosPage implements OnInit {
           return matchingRutina;
         });
 
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataSesiones.length && this.dataSesiones) {
           this.dataSesiones = this.dataSesiones.filter(elemento =>{
             if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
               elemento.PREMIER = 'Suscripto';
@@ -501,7 +500,6 @@ export class ListarGuardadosPage implements OnInit {
           );
         } else {
           this.presentCustomToast('Error en Mostrar Sesiones','danger');
-          this.obtenerRutinas();
           //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
 
@@ -520,7 +518,7 @@ export class ListarGuardadosPage implements OnInit {
           const matchingRutina = this.dataEjercicio.find(rutina => rutina.IDEJERCICIO === bookmark.IDEJERCICIO);
           return matchingRutina;
         });
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
           this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
             if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
               elemento.PREMIER = 'Suscripto';
@@ -536,7 +534,6 @@ export class ListarGuardadosPage implements OnInit {
           );
         } else {
           this.presentCustomToast('Error en Mostrar Ejercicios','danger');
-          this.obtenerEjercicios();
           //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
       },

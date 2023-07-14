@@ -34,6 +34,8 @@ export class ListarParametrosPage implements OnInit {
   LikeTEjercicioState: { [key: number]: boolean } = {};
   dataLikeTEjercicio!:any[];
 
+  totalEjercicio!:any[];
+
   constructor(private navController: NavController,
   private route: ActivatedRoute,
   private apiService: ApiServiceService,
@@ -43,7 +45,7 @@ export class ListarParametrosPage implements OnInit {
   }
 
   ngOnInit() {
-    this.recuperarDatos();
+     this.recuperarDatos();
     this.validateSesion();
     this.valueNivel=-1;
     //this.test();
@@ -87,34 +89,28 @@ export class ListarParametrosPage implements OnInit {
     StatusBar.setOverlaysWebView({ overlay: true });
     StatusBar.setBackgroundColor({ color: '#ffffff' });
   }
-  validateSesion(){
-    try{
-      this.storage.get('sesion').then((sesion) => {
-        if (sesion && JSON.parse(sesion).rolUsuario == 1) {
-          this.userSesion = JSON.parse(sesion).nickname;
-          this.obtenerGetPerfilCompleto(this.userSesion);
-          this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
-            (response) => {
-              this.chanceColorFooter();
-              this.StatusBar();
-              this.obtenerLikeTEjercicio();
-              this.obtenerLikeOMuscular();
-              this.obtenerBookMarkUser();
-              this.obtenerContratoEntrenadoresUsuario();
-              //this.obtenerEjercicios();
-            },
-            (error) => {
-              this.handleError();
-            }
-          );
-        } else {
-          this.handleError();
-        }
-      });
+  async validateSesion() {
+    try {
+      const sesion = await this.storage.get('sesion'); // Esperar la respuesta de storage.get() utilizando await
+      if (sesion && JSON.parse(sesion).rolUsuario == 1) {
+        this.userSesion = JSON.parse(sesion).nickname;
+        this.obtenerGetPerfilCompleto(this.userSesion);
+        const response = await this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).toPromise(); // Convertir la respuesta a promesa con toPromise() y esperarla con await
+        this.chanceColorFooter();
+        this.StatusBar();
+        this.obtenerLikeTEjercicio();
+        this.obtenerLikeOMuscular();
+        this.obtenerBookMarkUser();
+        this.obtenerContratoEntrenadoresUsuario();
+        //this.obtenerEjercicios();
+      } else {
+        this.handleError();
+      }
     } catch (error) {
       this.handleError();
     }
   }
+
   private handleError() {
     this.loading = false;
     this.navController.navigateForward('/error-page-users-trainers');
@@ -160,6 +156,19 @@ export class ListarParametrosPage implements OnInit {
       image.src = imageUrl;
     });
   }
+
+  getBackgroundStyleAll(imageUrl: string) {
+    let gradientColor1 = '#00000060' ; // Color del primer punto del gradiente
+    let gradientColor2 = '#a576f69d'; // Color del segundo punto del gradiente
+    let backgroundImage = `linear-gradient(0deg, ${gradientColor1}, ${gradientColor2}), url('${this.ip_address}/media/${imageUrl}')`;
+
+    return {
+      'background-image': backgroundImage,
+      'background-repeat': 'no-repeat',
+      'background-size': 'cover'
+    };
+  }
+
   toggleBookmarkTEjercicio(index: number): void {
     this.loading=true;
     if (this.LikeTEjercicioState[index]) {
@@ -302,7 +311,7 @@ export class ListarParametrosPage implements OnInit {
           });
         const rawData = this.dataEjercicio;
         //this.dataEjercicioOrig = rawData.map(item => ({ ...item }));
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
           this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
             if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
               elemento.PREMIER = 'Suscripto';
@@ -318,9 +327,9 @@ export class ListarParametrosPage implements OnInit {
           );
         } else {
           this.presentCustomToast('Error en Mostrar Ejercicios','danger');
-          this.obtenerEjercicios();
           //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
         this.dataEjercicio.sort((a, b) => {
           const premierOrder: { [key: string]: number } = {
             Suscripto: 0,
@@ -331,6 +340,7 @@ export class ListarParametrosPage implements OnInit {
           const premierB = premierOrder[b.PREMIER];
           return premierA - premierB;
         });
+        }
         this.dataEjercicioOrig = rawData.map(item => ({ ...item }));
         if (this.dataEjercicio && this.dataEjercicio.length>0)
         this.cargarImagenesBefores();

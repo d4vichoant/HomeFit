@@ -37,59 +37,41 @@
      </svg>
     </div>
   </div>
-  <div class="portada-bg" style="background-image: linear-gradient(0deg, #ffffff, #ffffffd3,  #ffffff52, #ffffff2a), url('{{ip_address}}/media/perfile/portada.png')">
-    <div class="header">
+  <div class="portada-bg" style="background-image: linear-gradient(0deg, #1b1f28, #ffffff1a), url('{{ip_address}}/media/perfile/portada.jpg')">
+   <!--  <div class="header">
       <app-toolbar-designer-white></app-toolbar-designer-white>
-    </div>
+    </div> -->
     <div class="text-overlay-up">
-      <p>Entrenadores</p>
-    </div>
-    <div class="text-overlay-up-cover">
-      <p>Entrenadores</p>
+      <p><span> Entrenamiento</span><br> Personalizado</p>
     </div>
   </div>
   <div class="container-body">
-    <div class="container" *ngFor="let item of dataEntrenadores" (click)="go_page_create('data-entrenador',item)">
-      <div class="text-overlay">
-        <p>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}<br>
-          <span>{{ obtenerPrimerNombre(item.APELLDOPERSONA) }}</span></p>
-      </div>
-      <div class="container-box-container">
-        <div class="box-container">
-          <div class="square-box square1"></div>
-          <div class="square-box square2"></div>
-          <div class="square-box square3"></div>
-          <div class="square-box square4"></div>
+    <div><h2 class="subtitle" >ejercicio</h2></div>
+    <div class="image-container" (click)="go_page('listar-ejercicios-all')">
+      <img [src]="ip_address+'/media/images/mostrarEjercicios.jpg'" alt="AllEjercicios" >
+      <div class="filter-overlay-img" style=" left: 0;background: linear-gradient(0deg, #c7b4fe7e, hsla(0, 0%, 0%, 0.467));"></div>
+      <div class="text-overlay-image-first-child" style="left: 8%; text-align: start;">{{totalEjercicio && totalEjercicio[0].total_datos}} de Ejercicios para Empezar tu Entrenamietno</div>
+    </div>
+    <div><h2 class="subtitle" >rutinas</h2></div>
+    <div class="image-container" (click)="go_page('listar-rutinas-all')">
+      <img [src]="ip_address+'/media/rutinas/mostrarRutinas.jpg'" alt="AllRutinas">
+      <div class="filter-overlay-img" style="transform: scale(-1);background: linear-gradient(0deg, #00000077, #c7b4fe7e);"></div>
+      <div class="text-overlay-image-first-child" style="right: 8%;text-align: end;">Mas de {{totalRutinas && totalRutinas[0].total_datos}}  Rutinas  para Ti</div>
+    </div>
+    <div><h2 class="subtitle" >prog. de rutinas</h2></div>
+    <div class="image-container"  (click)="go_page('listar-sesiones-all')">
+      <img [src]="ip_address+'/media/sesiones/mostrarSesiones.jpg'" alt="AllSesiones">
+      <div class="filter-overlay-img"  style="transform: scale(-1);background: linear-gradient(0deg, #000000da, #c7b4fe7e);"></div>
+      <div class="text-overlay-image-first-child" style="right: 8%; text-align: end;">Más de {{totalSesiones && totalSesiones[0].total_datos}} Sesiones de Rutinas</div>
+    </div>
+    <div><h2 class="subtitle" ><span>encontrar un</span><br>entrenador</h2></div>
+    <div class="container-triner">
+      <div class="item-triner" (click)="go_page_create('data-entrenador',item)" *ngFor="let item of dataEntrenadores">
+        <img [src]="ip_address + '/media/perfile/'+item.IMAGEPERSONA" alt="Imagen 2" class="image-triner">
+        <div class="text-triner">
+          <h2>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}</h2>
+          <p>{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }}&nbsp;años</p>
         </div>
-      </div>
-      <div class="container-box-container2">
-        <div class="box-container">
-          <div class="square-box square1"></div>
-          <div class="square-box square2"></div>
-          <div class="square-box square3"></div>
-          <div class="square-box square4"></div>
-        </div>
-      </div>
-      <div class="container-detalles">
-        <div class="flex-container">
-          <div class="flex-item" *ngIf="item.FECHANACIMIENTOPERSONA">
-            <h1>{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }}&nbsp;años</h1>
-            <p>Edad</p>
-          </div>
-          <div class="flex-item" *ngIf="item.EXPERIENCIAENTRENADOR">
-            <h1>{{ item.EXPERIENCIAENTRENADOR }}&nbsp;años</h1>
-            <p>Experiencia</p>
-          </div>
-          <div class="flex-item" *ngIf="item.NUMERO_SESIONES_PROGRAMADAS || item.NUMERO_RUTINAS || item.NUMERO_EJERCICIOS">
-            <h1>{{item.NUMERO_SESIONES_PROGRAMADAS + item.NUMERO_RUTINAS + item.NUMERO_EJERCICIOS}}</h1>
-            <p>Total de Prog.</p>
-          </div>
-        </div>
-      </div>
-      <div class="overlay-square">
-        <img [src]="ip_address + '/media/perfile/'+item.IMAGEPERSONA" alt="Imagen cuadrado superior">
-      </div>
-      <div class="square">
       </div>
     </div>
   </div>

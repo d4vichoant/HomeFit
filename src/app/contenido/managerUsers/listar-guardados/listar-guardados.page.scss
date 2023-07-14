@@ -28,7 +28,7 @@ ion-header::after{
 .container-body{
   padding: 0% 0% 10% 0%;
   //background-color: #5660f5;
-  height: 80vh;
+  height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
   display: block;
@@ -100,10 +100,10 @@ ion-header::after{
 }
 
 .container-text {
+  padding: 6% 4% 0% 4%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0% 3%;
   span{
     color: #6829c793;
     font-family: Raleway-Bold;

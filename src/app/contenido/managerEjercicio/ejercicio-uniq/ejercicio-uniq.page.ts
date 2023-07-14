@@ -38,6 +38,10 @@ export class EjercicioUniqPage implements OnInit {
   previusPageMain!:any;
   variableSesiones!:any;
 
+  previusPagelistarRutinasAll!:any;
+  previusPagelistarSesionesRutinasAll!:any;
+  previusPagelistarEjercicioAll!:any;
+
   constructor(private route: ActivatedRoute,
     private apiService: ApiServiceService,
     private storage: Storage,
@@ -106,6 +110,9 @@ export class EjercicioUniqPage implements OnInit {
       this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as any || null;
       this.variableEjercicios = params['variableEjercicios'] as any ||null;
       this.variableEjerciciositem = params['variableEjerciciositem'] as number;
+      this.previusPagelistarRutinasAll= params['previusPagelistarRutinasAll'] as any || null;
+      this.previusPagelistarSesionesRutinasAll= params['previusPagelistarSesionesRutinasAll'] as any || null;;
+      this.previusPagelistarEjercicioAll= params['previusPagelistarEjercicioAll'] as any || null;;
     });
   }
   handleButtonClick(): void {
@@ -118,8 +125,14 @@ export class EjercicioUniqPage implements OnInit {
       this.go_page('listar-parametros');
     } else if (this.previusPageMain){
       this.go_page('main');
-    }else{
+    }else if(this.previusPagelistarGuardados){
       this.go_page('listar-guardados');
+    }else if(this.previusPagelistarEjercicioAll){
+      this.go_page('listar-ejercicios-all');
+    }else if(this.previusPagelistarSesionesRutinasAll){
+      this.go_page('listar-sesiones-all');
+    }else if(this.previusPagelistarRutinasAll){
+      this.go_page('listar-rutinas-all');
     }
   }
   nextEjercicio() {
@@ -217,6 +230,44 @@ export class EjercicioUniqPage implements OnInit {
           previusPagelistarGuardados:this.previusPagelistarGuardados,
           variableParametro:"",
           variableprogramarrutinas:"",
+        }
+      });
+    }else if(this.previusPagelistarEjercicioAll){
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableEjercicio: "",
+          variableRutinaDiaria:"",
+          variableSesiones:"",
+          previusPageMain :"",
+          previusPagelistarEjercicioAll:this.previusPagelistarEjercicioAll,
+          variableParametro:"",
+          variableprogramarrutinas:"",
+        }
+      });
+    }else if(this.previusPagelistarRutinasAll){
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableEjercicio: "",
+          variableRutinaDiaria:this.variableRutinaDiaria,
+          variableSesiones:this.variableSesiones,
+          previusPageMain :this.previusPageMain,
+          previusPagelistarGuardados:this.previusPagelistarGuardados,
+          variableParametro:"",
+          variableprogramarrutinas:"",
+          previusPagelistarRutinasAll:this.previusPagelistarRutinasAll,
+        }
+      });
+    }else if(this.previusPagelistarSesionesRutinasAll){
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableEjercicio: "",
+          variableRutinaDiaria:"",
+          variableSesiones:this.variableSesiones,
+          previusPageMain :this.previusPageMain,
+          previusPagelistarGuardados:this.previusPagelistarGuardados,
+          variableParametro:"",
+          variableprogramarrutinas:this.variableprogramarrutinas,
+          previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
         }
       });
     }

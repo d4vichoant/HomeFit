@@ -1,8 +1,3 @@
-ion-content {
-  --background: linear-gradient(0deg, #ffffff, #ffffff);
-  height: 100vh;
-  overflow: hidden;
-}
 ion-infinite-scroll{
   padding-bottom: 10%;
 }
@@ -88,11 +83,10 @@ ion-header::after{
   //white-space: nowrap;
 }
 
-
 .box {
   display: inline-block;
   width: 100%;
-  height: 18vh;
+  height: 20vh;
   position: relative;
   border-radius: 15px;
   box-shadow: 4px 2px 3px rgba(0, 0, 0, 0.1);
@@ -138,6 +132,15 @@ ion-header::after{
   }
 }
 
+.search{
+  padding: 0% 3%;
+}
+ion-searchbar{
+  border-radius: 20px;
+  --background: #9259f9c2; /* Cambia el color de fondo */
+  --color: #9259f9; /* Cambia el color del texto */
+  box-shadow: none;
+}
 
 .text {
   position: absolute;
@@ -167,17 +170,11 @@ ion-header::after{
   width: 100%;
   display: flex;
   justify-content: start;
-  align-items: center;
+  align-items: start;
   text-align: start;
   font-family: Raleway-SemiBold;
   font-size: 1.2rem;
   color:  #9259f9;
-  padding: 0;
-  margin: 0;
-}
-.titlesection h1{
-  padding: 0% 0% 3% 0%;
-  margin: 0;
 }
 
 .video-background {
@@ -198,4 +195,18 @@ ion-header::after{
   height: 100%;
   border-radius: 15px;
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)); /* Ajusta los valores del gradiente según tus preferencias */
+}
+
+.title-creator{
+  padding: 0;
+  margin: 0;
+  h1{
+    font-family: Raleway-ExtraBold;
+    font-size: .9rem;
+    color:  #ffffff;
+    span{
+      font-family: Raleway-Bold;
+      color: #ffffff;
+    }
+  }
 }

@@ -2,7 +2,7 @@
   <ion-toolbar class="toolbar-header">
     <ion-grid class="container-header">
       <ion-row>
-        <ion-col size="1.5" class="image-container" (click)="go_page('main')">
+        <ion-col size="1.5" class="image-container" (click)="go_pageback()">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up-double" width="30" height="30" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <path d="M13 14l-4 -4l4 -4"></path>
@@ -11,7 +11,7 @@
          </svg>
         </ion-col>
         <ion-col size="9">
-          <ion-title class="title-text">Ejercicios</ion-title>
+          <ion-title class="title-text">Prog. Rutinas</ion-title>
         </ion-col>
         <ion-col size="1.5" class="image-container" (click)="showsearchbox=!showsearchbox">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="30" height="30" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -31,31 +31,30 @@
     </ion-grid>
   </ion-toolbar>
 </ion-header>
-<ion-content >
+<ion-content>
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
   <ion-list lines="none">
-    <ion-item *ngFor="let item of dataEjercicioParcial; let index" >
-      <div class="container"  *ngIf="dataEjercicioParcial && dataEjercicioParcial.length>0">
+    <div class="search">
+      <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="onInputChange($event)"   (ionInput)="onInputChange($event)" (ionClear)="onInputChange($event)"  placeholder="Buscar"></ion-searchbar>
+    </div>
+    <ion-item *ngFor="let item of dataSesionesParcial; let index" >
+      <div class="container"  *ngIf="dataSesionesParcial && dataSesionesParcial.length>0">
         <div *ngIf="item.mostrarNivelDificultad" class="titlesection">
           <h1>{{item.tituloniveldificultadejercicio}}</h1>
         </div>
-        <div class="box" (touchstart)="onCardTouchStart($event,item)" (touchend)="onCardTouchEnd($event,item)" (click)="item.PREMIER && item.PREMIER ==='Premium' ? go_page('contrato-entrenador'):goEjercicioUniq(item,'ejercicio-uniq');" [ngStyle]="getBackgroundStyle(item.ALMACENAMIENTOMULTIMEDIA)">
-          <video autoplay *ngIf="item.viewvideo"  loop class="video-background" #videoPlayer  (loadedmetadata)="autoplayVideo($event)" >
-            <source [src]="ip_address+'/multimedia/'+item.ALMACENAMIENTOMULTIMEDIA" type="video/mp4">
-          </video>
-          <div *ngIf="item.viewvideo"  class="video-overlay"></div>
-          <div class="icon-wrapper" (click)="item.PREMIER && item.PREMIER ==='Premium' ? MessagePremium():toggleBookmarkEjercicio(item.IDEJERCICIO); $event.stopPropagation()" *ngIf="!bookmarkState[item.IDEJERCICIO]; else otherbookmarkrutinas">
+        <div class="box" (click)="item.PREMIER && item.PREMIER ==='Premium' ? go_page('contrato-entrenador'): go_programSesiones(item,'programarrutinas')" [ngStyle]="getBackgroundStyle(item.IMAGESESION)">
+          <div class="icon-wrapper" (click)="item.PREMIER && item.PREMIER ==='Premium' ? MessagePremium():toggleBookmarkOSesiones(item.IDSESION); $event.stopPropagation()" *ngIf="!bookmarkSesionesState[item.IDSESION]; else otherbookmarkrutinas">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2"></path>
            </svg>
           </div>
           <ng-template #otherbookmarkrutinas>
-            <div class="icon-wrapper" (click)="item.PREMIER && item.PREMIER ==='Premium'? MessagePremium():toggleBookmarkEjercicio(item.IDEJERCICIO); $event.stopPropagation()">
+            <div class="icon-wrapper" (click)="item.PREMIER && item.PREMIER ==='Premium'? MessagePremium():toggleBookmarkOSesiones(item.IDSESION); $event.stopPropagation()">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-filled" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                 <path d="M15 3a3 3 0 0 1 2.995 2.824l.005 .176v14a1 1 0 0 1 -1.413 .911l-.101 -.054l-4.487 -2.691l-4.485 2.691a1 1 0 0 1 -1.508 -.743l-.006 -.114v-14a3 3 0 0 1 2.824 -2.995l.176 -.005h6z" stroke-width="0" fill="currentColor"></path>
@@ -94,36 +93,29 @@
           </ng-template>
         </div>
           <div class="text non-touchable" >
-            <div *ngIf="item.ID_EQUIPOS_REQUERIDOS!==null">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-barbell" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M2 12h1"></path>
-                <path d="M6 8h-2a1 1 0 0 0 -1 1v6a1 1 0 0 0 1 1h2"></path>
-                <path d="M6 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z"></path>
-                <path d="M9 12h6"></path>
-                <path d="M15 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z"></path>
-                <path d="M18 8h2a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-2"></path>
-                <path d="M22 12h-1"></path>
-             </svg>
+            <div class="title-creator">
+              <h1>Creado por @<span>{{item.NICKNAMEPERSONA}}</span> </h1>
             </div>
-            <span class="span1 non-touchable">{{item.NOMBREEJERCICIO}}&nbsp;|&nbsp;
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh-dot" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path>
-              <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path>
-              <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-           </svg>
-           {{item.REPETICIONESEJERCICIO}}</span>
+            <span class="span1 non-touchable">{{item.NOMBRESESION}}&nbsp;|&nbsp;
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-report-off" width="20" height="20" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M5.576 5.595a2 2 0 0 0 -.576 1.405v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2m0 -4v-8a2 2 0 0 0 -2 -2h-2"></path>
+                <path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 1 1 0 4h-2"></path>
+                <path d="M3 3l18 18"></path>
+             </svg>
+           {{item.IDRUTINAS && item.IDRUTINAS.length}}&nbsp;Rut.</span>
             <span class="f non-touchable"  style="display: flex; align-items: center;">
-              {{item.TIEMPOMULTIMEDIA && formatDuracionRutina(item.TIEMPOMULTIMEDIA)}} min | {{item.CALORIASEJERCICIO}} cal. | Tip. {{item.NOMBRETIPOEJERCICIO}}</span>
+              {{item.DESCRIPCIONOBJETIVOSPERSONALES }}{{item.DESCRIPCIONPROFESION?'&nbsp;|&nbsp;Prof.':''}} {{item.DESCRIPCIONPROFESION?'&nbsp;|&nbsp;'+item.DESCRIPCIONPROFESION:''}}{{item.TituloFrecuenciaEjercicio?'&nbsp;|&nbsp;'+item.TituloFrecuenciaEjercicio:''}}</span>
           </div>
         </div>
       </div>
     </ion-item>
     <div class="boxpadding"></div>
   </ion-list>
-  <ion-infinite-scroll *ngIf="dataEjercicioParcial<dataEjercicio" (ionInfinite)="onIonInfinite($event)">
+  <ion-infinite-scroll *ngIf="dataSesionesParcial<dataSesiones" (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content  loadingText="Please wait..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>
-
+<ion-footer>
+  <app-footer-designer-users></app-footer-designer-users>
+</ion-footer>

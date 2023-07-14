@@ -34,6 +34,7 @@ export class RutinasDiariasPage implements OnInit {
 
   bookmarkRutinasState: { [key: number]: boolean } = {};
   dataBookMarkRutinas!:any[];
+  previusPagelistarRutinasAll!:any;
 
   squareWidth: number = 300; // Ancho del cuadrado
   circleRadius: number = 25; // Radio del círculo
@@ -49,7 +50,7 @@ export class RutinasDiariasPage implements OnInit {
     public toastController: ToastController) { }
 
     ngOnInit() {
-      try {
+       try {
         this.recuperarDatos();
         this.validateSesion();
         //this.test();
@@ -80,6 +81,7 @@ export class RutinasDiariasPage implements OnInit {
         this.variableSesion = params['variableSesiones'] as any;
         this.previusPageMain = params['previusPageMain'] as boolean|| false;
         this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as boolean|| false;
+        this.previusPagelistarRutinasAll= params['previusPagelistarRutinasAll'] as any || null;
       });
       this.variable.DURACIONRUTINA =this.formatDuracionRutina(this.variable.DURACIONRUTINA);
     }
@@ -88,6 +90,7 @@ export class RutinasDiariasPage implements OnInit {
       this.dataBookMark=[];
       this.navController.navigateForward('/' + name, {
         queryParams: {
+          previusPagelistarRutinasAll:this.previusPagelistarRutinasAll,
           variableEjercicio:elementoEncontrado,
           variableRutinaDiaria:this.variable,
           variableSesiones:this.variableSesion,
@@ -371,7 +374,7 @@ export class RutinasDiariasPage implements OnInit {
           this.dataEjercicio.forEach((ejercicio) => {
           ejercicio.CALORIASEJERCICIO= (this.obtenerDuracionEnMinutos(ejercicio.TIEMPOMULTIMEDIA)/60*ejercicio.METEJERCICIO*Number(this.userSesionPerfil[0].PESOUSUARIO)).toFixed(2);
           });
-          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
             this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
               if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
                 elemento.PREMIER = 'Suscripto';
@@ -387,7 +390,7 @@ export class RutinasDiariasPage implements OnInit {
             );
           } else {
             this.presentCustomToast('Error en Mostrar Ejercicios','danger');
-            this.obtenerEjercicios();
+            //this.obtenerEjercicios();
           }
           this.obtenerbookmarkrutinas();
         },

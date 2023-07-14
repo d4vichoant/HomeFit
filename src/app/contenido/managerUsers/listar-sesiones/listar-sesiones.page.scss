@@ -36,7 +36,7 @@ ion-header::after{
     border-radius: 0px 0px 15px 15px;
   }
   .card-back {
-    color: #ffffffb2;
+    color: #ffffff;
     position: absolute;
     margin: 5% 0% 0% 5%;
     top: 0;
@@ -117,7 +117,11 @@ ion-header::after{
     width: 2px;
     background-color: #949396b2;
   }
-
+  .container-body{
+    height: 65vh;
+    overflow: auto;
+    //background-color: #949396b2;
+  }
   .container {
     width: 100%;
     padding-bottom: 5%;
@@ -218,6 +222,15 @@ ion-header::after{
   color: rgb(255, 255, 255);
 }
 
+.icon-like{
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  color: #ffffff;
+}
 .tipeSuscription{
   position: absolute;
   top:  0;
@@ -271,4 +284,39 @@ ion-header::after{
     white-space: pre-line;
     line-height: 0;
   }
+}
+
+.image-container{
+  position: relative;
+  width: 94%;
+  height: 15vh;
+  margin:  0% 3% 3% 3%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-container {
+  width: 70%;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-left: 10px;
+  //background-color: #00000060; /* Ajusta la opacidad y el color de fondo según tus preferencias */
+}
+
+.text-container h1 {
+  color: #7525dc;
+  font-family: Raleway-ExtraBold;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.word {
+  padding: 2px;
+  line-height: 1.5;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.788);
 }

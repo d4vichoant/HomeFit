@@ -1,17 +1,9 @@
 ion-content {
-  --background: linear-gradient(0deg, #ffffff, #ffffff);
+  --background: linear-gradient(0deg, #00000060, #33333394), var(--background-ip-address-main)  no-repeat center center / cover;;
   height: 100vh;
   overflow: hidden;
 }
-ion-header{
-  background: transparent;
-  box-shadow: none;
-}
-ion-header::after{
-  //height: 0px;
-  box-shadow: none;
-  background: transparent;
-}
+
 //css de Spinner de cargando ...
 .loading-overlay {
   position: fixed;
@@ -26,7 +18,7 @@ ion-header::after{
   z-index: 2;
 }
 .container-body{
-  height: 89.5vh;
+  height: 89.3vh;
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 14.5%;
@@ -35,13 +27,15 @@ ion-header::after{
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-top: 3%;
   //background-color: #f0e8ff;
 }
 .subtitle{
-  font-family: Raleway-Bold;
-  font-size: 1.2rem;
-  color:  #535253;
-  padding-left: 8%;
+  padding: 0% 0% 3% 8%;
+  margin: 0;
+  font-family: Raleway-ExtraBold;
+  font-size: 1.4rem;
+  color:  #ffffff;
   //background-color: #535253;
   //border-radius: 30px;
   text-align: 0 2px 4px rgba(0, 0, 0, 0.384);
@@ -52,45 +46,109 @@ ion-header::after{
   padding-right: 8%;
   font-family: Raleway-ExtraBold;
   font-size: 1rem;
-  color:  #535253;
+  color:  #a3a3a3;
 
 }
 .container-procesosquedados {
   width: 100%;
-  height: 15vh;
+  height: 15.5vh;
+  padding-bottom: 5%;
   //padding-bottom: 2%;
   overflow-x: scroll;
+  overflow-y: hidden;
   white-space: nowrap;
   //padding-left: 3%;
   //background: #ffffff;
   //padding-top: 3%;
   //margin-left: 3%;
   //border-radius: 10px 0px 0px 10px;
-  //box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.048);
+}
+.box-procesosquedados{
+  width: 88%!important;
+  margin: 2% 6% 3% 6% !important;
+  height: 100% !important;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.5);
+
 }
 .container-entrenadores{
-  width: 100%;
-  //padding: 3% 5%;
+  width: 88%;
+  height: 15vh;
+ // background-color: #ffffff;
+  box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.5);
+  margin: 0% 6%;
+  border-radius: 15px;
+  position: relative;
 }
 .box-container-entrenadores{
   display: inline-block;
-  width: 130px;
-  height: auto;
+  width: 100%;
+  height: 100%;
   margin-right: 10px;
   padding-bottom: 3%;
   position: relative;
   //border-radius: 10px;
   box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
 }
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  border-radius: 15px;
+  opacity: 0.8; /* Ajusta la opacidad de la imagen de fondo según tus preferencias */
+  z-index: -1;
+  animation: slideAnimation 8s linear infinite alternate;
+}
+
+@keyframes slideAnimation {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 50% 10%;
+  }
+}
+
+.text-container-entrenadores{
+  display: block;
+  padding: 3% 0% 0% 3%;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  h1{
+    text-align: center;
+    backdrop-filter: blur(5px);
+    border-radius: 50px;
+    width: 50%;
+    margin: 0% 3% 6% 47%;
+    padding: 2% 0% 2% 0%;
+    //border: solid 2px #fff;
+    color: #ffffff;
+    font-family: Raleway-Medium;
+    font-size: 1.2rem;
+    box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.048);
+  }
+}
 
 .container {
-  width: 100%;
+  width: 88%;
   //padding-bottom: 2%;
   overflow-x: scroll;
+  overflow-y: hidden;
   white-space: nowrap;
   height: 15vh;
   padding: 0;
-  margin: 0;
+  margin: 0% 6%;
+  border-radius: 15px;
   //padding-left: 5%;
   //background: #f0e8ff;
   //padding-top: 3%;
@@ -103,9 +161,9 @@ ion-header::after{
   display: inline-block;
   width: 130px;
   height: 130px;
-  //margin-right: 10px;
+  margin-right: 10px;
   position: relative;
-  //border-radius: 10px;
+  border-radius: 15px;
   box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
 }
 .box-recomendacion {
@@ -114,6 +172,7 @@ ion-header::after{
   height: 100%;
   //margin-right: 10px;
   position: relative;
+  overflow-y: hidden;
   //border-radius: 15px;
   box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
 }
@@ -126,6 +185,9 @@ ion-header::after{
   color: #fff;
   text-align: left;
   overflow: hidden;
+  border-radius: 15px 0px;
+  width: 100%;
+  backdrop-filter: blur(2px);
 }
 .text-demo {
   position: absolute;
@@ -139,9 +201,10 @@ ion-header::after{
       max-height: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-family: LLGR;
+      font-family: OstrichSansInline-Regular;
+      padding: 0% 6% 6% 0%;
       font-size: 3.1rem;
-      color:  #9159f9c2;
+      color:  #ffffffc2;
       word-break: break-all;
       .spanh1{
         font-size: 3.1rem;
@@ -163,13 +226,13 @@ ion-header::after{
       max-height: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-family: LLGR;
-      font-size: 1.8rem;
-      color:  #9159f9c2;
+      font-family: OstrichSansInline-Regular;
+      font-size: 2.1rem;
+      color:  #ffffffc2;
       word-break: break-all;
       .spanh1-2{
-        font-size: 1.8rem;
-        font-family: LLGR;
+        font-size: 2.1rem;
+        font-family: OstrichSansInline-Regular;
         color:  #ffffffc2;
         word-break: break-all;
       }
@@ -231,7 +294,7 @@ ion-header::after{
 }
 
 .header-up{
-  padding: 0% 6% 0% 6%;
+  padding: 5% 3% 0% 3%;
   display: block;
   justify-content: center;
   align-items: center;
@@ -242,7 +305,7 @@ ion-header::after{
       justify-content: center;
       align-items: center;
       text-align: center;
-      color: #8c7efc;
+      color: #a3a3a3;
       margin-right: 10px;
       width: 19px;
       height: 19px;
@@ -250,27 +313,173 @@ ion-header::after{
     span{
       font-family: Raleway-bold;
       font-size: 1rem;
-      color: #8c7efc;
+      color: #a3a3a3;
     }
   }
   .header-name{
     margin: 0px;
     padding: 0px;
     h1{
-      font-family: Raleway-ExtraBold;
-      font-size: 2rem;
-      color: #535253;
+      margin: 0px;
+      padding: 2% 0% 2% 3%;
+      font-family: Raleway-Bold;
+      font-size: 1.6rem;
+      color: #ffffff;
     }
   }
 }
 
-
-.container-swiper{
-  display: flex;
-  min-width: 100%;
+.onb-container-recomendacion {
+  height: 20vh;
   width: 100%;
-  //padding: 0% 5%;
+  background-color:transparent;
+  --background: transparent;
+  //margin-top: 5%;
+  //border-radius: 15px;
+  }
+  .onb-slide-recomendacion{
+    width: 90%;
+    padding: 0% 5%;
+    margin-bottom: 0%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .slide-content-recomendacion{
+    width: 100%;
+    position: relative;
+
+    img{
+      border-radius: 15px;
+      width: 100%;
+      height: 15vh;
+      object-fit: cover;
+    }
+
+  }
+
+  .slide-content-recomendacion h2{
+    position: absolute;
+    bottom:  0;
+    left: 0;
+    width: 100%;
+    margin: 0% 0% 1% 0%;
+    border-radius: 0px 0px 15px 15px;
+    padding: 3% 0% 3% 4%;
+    z-index: 1;
+    font-family: Raleway-Bold ;
+    font-size: 1.5rem;
+    color:  #ffffff;
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.5);
+  }
+
+  .filter-overlay-recomendacion {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 97%;
+    border-radius: 15px;
+    padding-bottom: 3%;
+    background: linear-gradient(0deg, #0000008e, rgba(0, 0, 0, 0.116), #0000007c); /* Cambia el color y la opacidad según tus necesidades */
+  }
+
+  .tipeSuscription{
+    position: absolute;
+    top: 0;
+    right:  0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25%;
+    border-radius: 15px;
+    padding: 0% 2%;
+    width: 20%;
+    margin: 3% 3% 0% 0% ;
+    backdrop-filter: blur(5px);
+    border: solid .5px #ffffff38;
+  }
+
+  .tipeSuscription-svg{
+    position: absolute;
+    top: 0;
+    right:  0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25%;
+    border-radius: 15px;
+    padding: 0% 3%;
+    width: auto;
+    margin: 3% 3% 0% 0% ;
+    color: #ffffff;
+    svg{
+      padding: 0;
+      margin: 0;
+      width: 90%;
+      height: 90%;
+      margin: 0 auto;
+      z-index: 99;
+    }
+  }
+
+  .container-t-entrenamientos{
+    background-color: transparent;
+    background: transparent;
+    --background-color: transparent;
+    --background: transparent;
+    padding: 0%;
+    margin-bottom: 5%;
+    width: 94%;
+    height: 22vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .swiper-container-t-entrenamientos{
+    width: 100%;
+    margin: 0 auto;
+    ion-grid{
+      ion-row{
+        ion-col{
+          border-radius: 15px;
+          height: auto;
+          backdrop-filter: blur(5px);
+        }
+      }
+    }
+  }
+.my-div{
+  height: 20vh;
+  position: relative;
+  img{
+    border-radius: 15px;
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+    box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.5);
+  }
+  h2{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    font-family: Raleway-ExtraBold ;
+    font-size: 1rem;
+    color:  rgb(255, 255, 255);
+    backdrop-filter: blur(10px);
+    padding: 3% 0% 3% 6%;
+    margin: 0;
+    border-radius: 0px 0px 15px 15px;
+    text-align: 0px 4px 6px -2px rgba(0, 0, 0, 0.5);
+  }
 }
+
 .slide-content {
   height: 100%;
   position: relative;
@@ -283,6 +492,8 @@ ion-header::after{
   //border-radius: 15px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.247);
 }
+
+
 
 .slide-content h2{
   position: absolute;
@@ -324,7 +535,12 @@ ion-header::after{
   color: rgb(255, 255, 255);
 }
 
-
+.container-swiper{
+  display: flex;
+  min-width: 100%;
+  width: 100%;
+  //padding: 0% 5%;
+}
 
 .onb-container {
   margin: 0 auto;
@@ -335,8 +551,8 @@ ion-header::after{
   //border-radius: 15px;
 }
 .onb-container-1{
-  width: 100vw!important;
-  height: 350px;
+  width: 100%!important;
+  height: 20vh;
 }
 .onb-container-2{
   width: 100vw!important;
@@ -363,63 +579,13 @@ ion-header::after{
   background: linear-gradient(0deg, rgb(0, 0, 0), rgba(0, 0, 0, 0.055)); /* Cambia el color y la opacidad según tus necesidades */
 }
 
-.text-container-entrenadores{
-  display: block;
-  padding: 3% 0% 0% 3%;
-  margin: 0;
-  p{
-    padding: 0;
-    margin: 0;
-    font-size: 2.5rem;
-    font-family: LLGR;
-    color:  #ffffffe3;
-  }
-  h1{
-    text-align: center;
-    background-color: #ffffff9f;
-    backdrop-filter: blur(5px);
-    border-radius: 50px;
-    width: 50%;
-    margin: 0% 3% 0% 47%;
-    padding: 2% 0% 2% 0%;
-    //border: solid 2px #fff;
-    color: #9259f9;
-    font-family: Raleway-Medium;
-    font-size: 1.2rem;
-    box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.048);
-  }
-}
 
-.tipeSuscription{
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 25%;
-  border-radius: 0px 0px 15px 0px;
-  width: 60%;
-  svg{
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-  }
-  h1{
-    margin: 0 auto;
-    font-family: Raleway-BoldItalic;
-    font-size: .7rem;
-    margin-right: 10%;
-  }
-}
 
 .countEjercicios {
-  background-color: #535253;
-  height: 20vh;
+  //background-color: #535253;
+  height: 12vh;
   width: 100%;
+  //padding: 0% 3%;
   //margin-top: 3%;
   overflow-y: hidden;
   overflow-x: auto;
@@ -428,34 +594,36 @@ ion-header::after{
 .image-container {
   flex: 0 0 auto;
   width: 100%;
+  height: 10%;
+  padding: 0% 6%;
+  height: 10vh;
   position: relative;
   img{
     width: 100%;
-    height: auto;
+    height: 10vh;
+    border-radius: 15px;
+    object-fit: cover;
   }
 }
 
 .text-overlay-image-first-child{
   position: absolute;
-  top:  5%;
-  border-radius: 15px;
+  top:  0%;
   //background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  font-family: LLGR;
-  font-size: 1.1rem;
+  font-family: Raleway-Bold;
+  font-size: 1.2rem;
+  color:  #ffffff;
   padding: 10px;
   width: 50%; /* Ajusta el ancho máximo según tus necesidades */
-  span{
-    font-family: LLGR;
-    color: #7525dc;
-  }
 }
 
 .filter-overlay-img {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
+  right: 0;
+  width: 50%;
   height: 100%;
-  //border-radius: 15px;
+  margin: 0% 6%;
+  border-radius: 15px 0px 0px 15px;
+  backdrop-filter: blur(5px);
 }

@@ -309,4 +309,7 @@ export class ApiServiceService {
   obtenerContratoEntrenadoresUsuario(idUsuario:number):Observable<any>{
     return this.http.get(IP_ADDRESS+'/programacion/obtenerContratoEntrenadoresUsuario/'+idUsuario);
   }
+  obtenercontarTypes(nombreTabla:string):Observable<any>{
+    return this.http.get(IP_ADDRESS+'/programacion/contarTypes/'+nombreTabla);
+  }
 }

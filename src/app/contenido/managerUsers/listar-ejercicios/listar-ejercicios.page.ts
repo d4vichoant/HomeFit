@@ -48,7 +48,9 @@ export class ListarEjerciciosPage implements OnInit {
     //this.test();
   }
   ionViewDidEnter() {
+    document.documentElement.style.setProperty('--background-ip-address-main2','url('+IP_ADDRESS+'/media/images/backgroundMain2.jpg)');
     this.validateSesion();
+
     //this.test();
   }
 
@@ -105,13 +107,17 @@ export class ListarEjerciciosPage implements OnInit {
   }
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
-    document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
-    document.documentElement.style.setProperty('--activate-foot20',' #9259f9');
-    document.documentElement.style.setProperty('--activate-foot21',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot11',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot12',' transparent');
+    document.documentElement.style.setProperty('--activate-foot20',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot21',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot22',' #ffffff6b');
     document.documentElement.style.setProperty('--activate-foot30',' transparent');
-    document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot31',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot32',' transparent');
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
-    document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot41',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot42',' transparent');
   }
 
   cargarImagenesBefores(){
@@ -141,6 +147,8 @@ export class ListarEjerciciosPage implements OnInit {
       }
     }
 
+    const imageUrl1 = this.ip_address+'/media/images/backgroundMain2.jpg';
+    imageUrls.push(imageUrl1);
     let imagesLoaded = 0;
     //console.log(imageUrls);
     const totalImages = imageUrls.length;

@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO!==1">
   <app-toolbar-designer></app-toolbar-designer>
 </ion-header>
 <ion-content [fullscreen]="true">
@@ -7,9 +7,10 @@
       <ion-spinner name="crescent"></ion-spinner>
     </div>
   </div>
-  <div class="container-up">
+  <div *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===1"><h2 class="subtitle" ><span>mi</span>perfil</h2></div>
+  <div class="container-up" [style]="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===1?'backdrop-filter: blur(100px); ':'background-color: #eee9fe;'">
     <input type="file" style="display: none;" id="fileInput" class="file-input" accept=".jpg, .png" (change)="handleFileInput($event)" #fileInputRef>
-    <div class="icon-up-right" (click)="uploadImage()" >
+    <div class="icon-up-right" (click)="uploadImage()"  [style]="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===1?'color: #ffffff;':' color: #524f52;'">
       <svg xmlns="http://www.w3.org/2000/svg"class="icon icon-tabler icon-tabler-photo-up" width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
         <path d="M15 8h.01"></path>
@@ -37,10 +38,10 @@
       </div>
     </div>
     <div class="header-botton" (click)="togglePopup()" *ngFor="let option of dataPerfil" >
-      <div class="full-name" >
-        <ion-label style="padding-right: 10px;">{{ obtenerPrimerNombre(option.NOMBREPERSONA) }}</ion-label>
+      <div class="full-name" [style]="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===1?'color: #ffffff;':'color: #524f52;'" >
+        <ion-label style="padding-right: 10px;" >{{ obtenerPrimerNombre(option.NOMBREPERSONA) }}</ion-label>
         <ion-label >{{ obtenerPrimerNombre(option.APELLDOPERSONA) }}</ion-label>
-        <div class="full-name-icon">
+        <div class="full-name-icon"[style]="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===1?'color: #ffffff;':' color: #524f52;'">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler svg icon-tabler-edit" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
@@ -56,7 +57,7 @@
       </div>
     </div>
   </div>
-  <div class="container-body">
+  <div class="container-body" >
     <div class="container-body-list">
       <ion-list lines="none">
         <ion-item (click)="sign_off()">
@@ -70,6 +71,10 @@
         <ion-item>
           <ion-icon name="information-circle-outline"></ion-icon>
           <ion-label>Legal</ion-label>
+        </ion-item>
+        <ion-item (click)="go_page('listar-guardados')">
+          <ion-icon name="bookmarks-outline"></ion-icon>
+          <ion-label>Guardados</ion-label>
         </ion-item>
       </ion-list>
     </div>

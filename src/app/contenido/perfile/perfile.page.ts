@@ -47,14 +47,13 @@ export class PerfilePage implements OnInit {
     // this.obtenerPerfileUniq("administrador");
     // this.loading = false;
     this.StatusBar();
-    this.chanceColorFooter();
     this.validartoken();
   }
 
   ionViewDidEnter() {
     this.StatusBar();
-    this.chanceColorFooter();
     this.validartoken();
+
   }
 
   private StatusBar(){
@@ -92,14 +91,31 @@ export class PerfilePage implements OnInit {
     animation.play(); // Ejecutar la animación
   }
   private chanceColorFooter(){
-    document.documentElement.style.setProperty('--activate-foot10',' transparent');
-    document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
-    document.documentElement.style.setProperty('--activate-foot20',' transparent');
-    document.documentElement.style.setProperty('--activate-foot21',' #6b6a6b');
-    document.documentElement.style.setProperty('--activate-foot30',' transparent');
-    document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
-    document.documentElement.style.setProperty('--activate-foot40',' #9259f9');
-    document.documentElement.style.setProperty('--activate-foot41',' #9259f9');
+    if(this.dataPerfil && this.dataPerfil[0].IDROLUSUARIO===1){
+      document.documentElement.style.setProperty('--background-ip-address-perfile','linear-gradient(0deg, #00000060, #33333394),url('+IP_ADDRESS+'/media/images/backgroundMain.jpg) no-repeat center center / cover');
+      document.documentElement.style.setProperty('--activate-foot10',' transparent');
+      document.documentElement.style.setProperty('--activate-foot11',' #ffffffab');
+      document.documentElement.style.setProperty('--activate-foot12',' transparent');
+      document.documentElement.style.setProperty('--activate-foot20',' transparent');
+      document.documentElement.style.setProperty('--activate-foot21',' #ffffffab');
+      document.documentElement.style.setProperty('--activate-foot22',' transparent');
+      document.documentElement.style.setProperty('--activate-foot30',' transparent');
+      document.documentElement.style.setProperty('--activate-foot31',' #ffffffab');
+      document.documentElement.style.setProperty('--activate-foot32',' transparent');
+      document.documentElement.style.setProperty('--activate-foot40',' #ffffff');
+      document.documentElement.style.setProperty('--activate-foot41',' #ffffff');
+      document.documentElement.style.setProperty('--activate-foot42',' #ffffff6b');
+    }else{
+      document.documentElement.style.setProperty('--background-ip-address-perfile','linear-gradient(0deg, #f0f3f7, #ffffff)');
+      document.documentElement.style.setProperty('--activate-foot10',' transparent');
+      document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
+      document.documentElement.style.setProperty('--activate-foot20',' transparent');
+      document.documentElement.style.setProperty('--activate-foot21',' #6b6a6b');
+      document.documentElement.style.setProperty('--activate-foot30',' transparent');
+      document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
+      document.documentElement.style.setProperty('--activate-foot40',' #9259f9');
+      document.documentElement.style.setProperty('--activate-foot41',' #9259f9');
+    }
 
   }
 
@@ -362,6 +378,7 @@ togglePassword(passwordIndex: number) {
     this.apiService.PerfileUniq(nickname).subscribe(
       (response) => {
         this.dataPerfil=response;
+        this.chanceColorFooter();
       },
       (error) => {
         this.presentCustomToast(error.error,"danger");

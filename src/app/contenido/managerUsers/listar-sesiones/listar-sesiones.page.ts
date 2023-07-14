@@ -39,6 +39,9 @@ export class ListarSesionesPage implements OnInit {
 
   dataEntrenadorUsuarios!:any[];
 
+  totalRutinas!:any[];
+  totalSesiones!:any[];
+
   constructor(private navController: NavController,
     private route: ActivatedRoute,
     private apiService: ApiServiceService,
@@ -80,27 +83,23 @@ export class ListarSesionesPage implements OnInit {
     StatusBar.setOverlaysWebView({ overlay: true });
     StatusBar.setBackgroundColor({ color: '#ffffff' });
   }
-  validateSesion(){
-    try{
-      this.storage.get('sesion').then((sesion) => {
+  async validateSesion() {
+    try {
+      this.storage.get('sesion').then(async (sesion) => { // Marcar como async aquí
         if (sesion && JSON.parse(sesion).rolUsuario == 1) {
           this.userSesion = JSON.parse(sesion).nickname;
           this.obtenerGetPerfilCompleto(this.userSesion);
-          this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
-            (response) => {
-              this.chanceColorFooter();
-              this.StatusBar();
-              this.obtenerbookmarksesiones();
-              this.obtenerbookmarkrutinas();
-              this.obtenerLikeOPersonal();
-              this.obtenerContratoEntrenadoresUsuario();
-              //this.obtenerRutinas();
-              //this.obtenerSesiones();
-            },
-            (error) => {
-              this.handleError();
-            }
-          );
+          await this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).toPromise(); // Utilizar toPromise() para poder usar await
+          this.chanceColorFooter();
+          this.StatusBar();
+          this.totalRutinas = await this.obtenercontarTypes('rutina');
+          this.totalSesiones = await this.obtenercontarTypes('programarsesion');
+          this.obtenerbookmarksesiones();
+          this.obtenerbookmarkrutinas();
+          this.obtenerLikeOPersonal();
+          this.obtenerContratoEntrenadoresUsuario();
+          //this.obtenerRutinas();
+          //this.obtenerSesiones();
         } else {
           this.handleError();
         }
@@ -109,6 +108,7 @@ export class ListarSesionesPage implements OnInit {
       this.handleError();
     }
   }
+
   private handleError() {
     this.loading = false;
     this.navController.navigateForward('/error-page-users-trainers');
@@ -146,6 +146,7 @@ export class ListarSesionesPage implements OnInit {
     }
 
     const imageUrl = this.ip_address+'/media/objetivospersonales/'+this.variable.IMAGEOBJETIVOSPERSONALES;
+    imageUrls.push(imageUrl);
     let imagesLoaded = 0;
     const totalImages = imageUrls.length;
     const handleImageLoad = () => {
@@ -207,9 +208,10 @@ export class ListarSesionesPage implements OnInit {
     this.dataLikeOPersonal=[];
     this.navController.navigateForward('/' + name, {
       queryParams: {
-        variableSesiones: "",
+        variableSesiones: this.variable,
         previusPageMain : this.previusPageMain,
         previusPagelistarGuardados : this.previusPagelistarGuardados,
+        previusPagelistarSesiones:true,
       }
     });
   }
@@ -283,6 +285,19 @@ export class ListarSesionesPage implements OnInit {
     };
   }
 
+  getBackgroundStyleAll(imageUrl: string) {
+    let gradientColor1 = '#00000060' ; // Color del primer punto del gradiente
+    let gradientColor2 = '#a576f69d'; // Color del segundo punto del gradiente
+    let backgroundImage = `linear-gradient(0deg, ${gradientColor1}, ${gradientColor2}), url('${this.ip_address}/media/${imageUrl}')`;
+
+    return {
+      'background-image': backgroundImage,
+      'background-repeat': 'no-repeat',
+      'background-size': 'cover'
+    };
+  }
+
+
   formatDuracionRutina(duracion: string): string {
     const partes = duracion.split(':');
     if (partes.length === 3 && partes[0] === '00') {
@@ -342,7 +357,7 @@ export class ListarSesionesPage implements OnInit {
           ...objeto,
           IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
         }));
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0) {
           this.dataRutinas = this.dataRutinas.filter(elemento =>{
             if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
               elemento.PREMIER = 'Suscripto';
@@ -358,9 +373,10 @@ export class ListarSesionesPage implements OnInit {
           );
         } else {
           this.presentCustomToast('Error en Mostrar Rutinas','danger');
-          this.obtenerRutinas();
+          //this.obtenerRutinas();
           //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0) {
         this.dataRutinas.sort((a, b) => {
           const premierOrder: { [key: string]: number } = {
             Suscripto: 0,
@@ -371,6 +387,7 @@ export class ListarSesionesPage implements OnInit {
           const premierB = premierOrder[b.PREMIER];
           return premierA - premierB;
         });
+        }
         //console.log(this.dataRutinas);
         this.obtenerSesiones();
       },
@@ -389,7 +406,7 @@ export class ListarSesionesPage implements OnInit {
           IDRUTINAS: objeto.IDRUTINAS.split(",").map(Number)
         }));
 
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataSesiones && this.dataSesiones.length>0) {
           this.dataSesiones = this.dataSesiones.filter(elemento =>{
             if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
               elemento.PREMIER = 'Suscripto';
@@ -405,10 +422,9 @@ export class ListarSesionesPage implements OnInit {
           );
         } else {
           this.presentCustomToast('Error en Mostrar Rutinas','danger');
-          this.obtenerSesiones();
           //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
-
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataSesiones && this.dataSesiones.length>0) {
         this.dataSesiones.sort((a, b) => {
           const premierOrder: { [key: string]: number } = {
             Suscripto: 0,
@@ -419,6 +435,7 @@ export class ListarSesionesPage implements OnInit {
           const premierB = premierOrder[b.PREMIER];
           return premierA - premierB;
         });
+        }
         //console.log(this.dataSesiones);
         if(this.dataRutinas && this.dataSesiones && (this.dataRutinas.length>0 || this.dataSesiones.length>0)){
           this.cargarImagenesBefores();
@@ -482,5 +499,15 @@ export class ListarSesionesPage implements OnInit {
         this.presentCustomToast(error.error.error,"danger");
       }
     );
+  }
+
+  async obtenercontarTypes(nameTable:string): Promise<any[]>{
+    try {
+      const response = await this.apiService.obtenercontarTypes(nameTable).toPromise();
+      return response;
+    } catch (error) {
+      this.presentCustomToast("Sin Registro", "danger");
+      throw error;
+    }
   }
 }

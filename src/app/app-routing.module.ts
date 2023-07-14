@@ -210,6 +210,14 @@ const routes: Routes = [
     path: 'listar-programas-rutinas',
     loadChildren: () => import('./contenido/managerUsers/listar-programas-rutinas/listar-programas-rutinas.module').then( m => m.ListarProgramasRutinasPageModule)
   },
+  {
+    path: 'listar-rutinas-all',
+    loadChildren: () => import('./contenido/managerUsers/listar-rutinas-all/listar-rutinas-all.module').then( m => m.ListarRutinasAllPageModule)
+  },
+  {
+    path: 'listar-sesiones-all',
+    loadChildren: () => import('./contenido/managerUsers/listar-sesiones-all/listar-sesiones-all.module').then( m => m.ListarSesionesAllPageModule)
+  },
 
 
 

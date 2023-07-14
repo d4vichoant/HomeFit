@@ -1,7 +1,7 @@
 ion-content {
-  --background: linear-gradient(0deg, #f0f3f7, #ffffff);
+  --background:  var(--background-ip-address-perfile);
   height: 100vh;
-  overflow: auto;
+  overflow: hidden;
 }
 ion-header{
   background: transparent;
@@ -41,7 +41,6 @@ ion-header::after{
   .container-up {
     margin: 5% 6% 0% 6%;
     padding: 6% 6% 0% 6%;
-    background-color: #eee9fe;
     position: relative;
     border-radius: 10px;
     height: 30vh;
@@ -63,11 +62,11 @@ ion-header::after{
           padding: 2% 0% 3% 0%;
           font-family: Raleway-Medium;
           font-size: 1.2rem;
-          color: #524f52;
+
           text-align: center;
         }
         .full-name-icon{
-          color: #524f52;
+
           .svg{
             padding-left: 5%;
             margin-left: 5px;
@@ -104,12 +103,12 @@ ion-header::after{
 
 .container-body
 {
+  background-color: #ffffff;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
   margin: 5% 6% 0% 6%;
   padding: 6% 6% 0% 6%;
-  background-color: #ffffff;
   border-radius: 20px;
   min-height: 45vh;
   height: 45vh;
@@ -185,7 +184,7 @@ ion-header::after{
   width: 100%;
   height: 100%;
   background-color: #9762f94d; /* Color de fondo azul con transparencia */
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(100px);
   display: none;
 }
 .background.visible {
@@ -392,9 +391,22 @@ ion-header::after{
 
 
 .icon-up-right {
-  color: #524f52;
   position: absolute;
   top: 10%;
   right: 10%;
   z-index: 2;
+}
+
+.subtitle{
+  padding: 6% 0% 2% 6%;
+  margin: 0;
+  font-family: Raleway-ExtraBold;
+  font-size: 2rem;
+  color:  #ffffff;
+  //background-color: #535253;
+  //border-radius: 30px;
+  text-align: 0 2px 4px rgba(0, 0, 0, 0.384);
+  span{
+    font-family: Raleway-Light;
+  }
 }

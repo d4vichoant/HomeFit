@@ -29,6 +29,8 @@ export class ProgramarrutinasPage implements OnInit {
   previusPagelistarGuardados:boolean=false;
   public variableSesion!:any;
 
+  previusPagelistarSesionesRutinasAll!:any;
+
   visibilidadContenedores: { [key: number]: boolean } = {};
 
   bookmarkState: { [key: number]: boolean } = {};
@@ -79,6 +81,7 @@ export class ProgramarrutinasPage implements OnInit {
       this.variableSesion = params['variableSesiones'] as any;
       this.previusPageMain = params['previusPageMain'] as boolean|| false;
       this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as boolean|| false;
+      this.previusPagelistarSesionesRutinasAll= params['previusPagelistarSesionesRutinasAll'] as any || null;;
     });
   }
   goEjercicioUniq(itemName:any,name:string){
@@ -86,6 +89,7 @@ export class ProgramarrutinasPage implements OnInit {
     this.dataBookMark=[];
     this.navController.navigateForward('/' + name, {
       queryParams: {
+        previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
         variableEjercicio:elementoEncontrado,
         variableprogramarrutinas: this.variable,
         variableSesiones:this.variableSesion,
@@ -352,7 +356,7 @@ export class ProgramarrutinasPage implements OnInit {
           this.DuracionTotal=duracionTotal;
           this.DuracionTotal=this.formatDuracionRutina(this.DuracionTotal);
           }
-          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0) {
             this.dataRutinas = this.dataRutinas.filter(elemento =>{
               if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
                 elemento.PREMIER = 'Suscripto';
@@ -371,7 +375,7 @@ export class ProgramarrutinasPage implements OnInit {
             this.obtenerRutinas();
             //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
           }
-
+          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0){
           this.dataRutinas.sort((a, b) => {
             const premierOrder: { [key: string]: number } = {
               Suscripto: 0,
@@ -382,6 +386,7 @@ export class ProgramarrutinasPage implements OnInit {
             const premierB = premierOrder[b.PREMIER];
             return premierA - premierB;
           });
+          }
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -395,7 +400,7 @@ export class ProgramarrutinasPage implements OnInit {
         this.dataEjercicio.forEach((ejercicio) => {
           ejercicio.CALORIASEJERCICIO= (this.obtenerDuracionEnMinutos(ejercicio.TIEMPOMULTIMEDIA)/60*ejercicio.METEJERCICIO*Number(this.userSesionPerfil[0].PESOUSUARIO)).toFixed(2);
           });
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
           this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
             if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
               elemento.PREMIER = 'Suscripto';
@@ -411,7 +416,7 @@ export class ProgramarrutinasPage implements OnInit {
           );
         } else {
           this.presentCustomToast('Error en Mostrar Ejercicios','danger');
-          this.obtenerEjercicios();
+          //this.obtenerEjercicios();
           //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
         //this.obtenerEjercicios();

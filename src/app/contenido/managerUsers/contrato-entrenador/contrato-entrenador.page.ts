@@ -23,6 +23,11 @@ export class ContratoEntrenadorPage implements OnInit {
 
   validatehiddenDiv!:boolean;
 
+
+  totalRutinas!:any[];
+  totalSesiones!:any[];
+  totalEjercicio!:any[];
+
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
@@ -52,17 +57,20 @@ export class ContratoEntrenadorPage implements OnInit {
     StatusBar.setOverlaysWebView({ overlay: true });
     StatusBar.setBackgroundColor({ color: '#ffffff' });
   }
-  validateSesion(){
-    try{
-      this.storage.get('sesion').then((sesion) => {
+  async validateSesion() {
+    try {
+      this.storage.get('sesion').then(async (sesion) => { // Marcar como async
         if (sesion && JSON.parse(sesion).rolUsuario == 1) {
           this.userSesion = JSON.parse(sesion).nickname;
           this.obtenerGetPerfilCompleto(this.userSesion);
-          this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
-            (response) => {
+          await this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe( // Utilizar await
+            async (response) => { // Marcar como async
               this.chanceColorFooter();
               this.StatusBar();
               this.obtenerEntrenadores();
+              this.totalEjercicio = await this.obtenercontarTypes('ejercicio');
+              this.totalRutinas = await this.obtenercontarTypes('rutina');
+              this.totalSesiones = await this.obtenercontarTypes('programarsesion');
               this.loading = false;
             },
             (error) => {
@@ -78,6 +86,9 @@ export class ContratoEntrenadorPage implements OnInit {
     }
   }
 
+  go_page(name: string){
+    this.navController.navigateForward('/'+name);
+  }
   hideDiv() {
     var div = document.querySelector('.fullscreen-bg');
     div?.classList.add('hide');
@@ -90,13 +101,17 @@ export class ContratoEntrenadorPage implements OnInit {
   }
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
-    document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot11',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot12',' transparent');
     document.documentElement.style.setProperty('--activate-foot20',' transparent');
-    document.documentElement.style.setProperty('--activate-foot21',' #6b6a6b');
-    document.documentElement.style.setProperty('--activate-foot30',' #9259f9');
-    document.documentElement.style.setProperty('--activate-foot31',' #9259f9');
+    document.documentElement.style.setProperty('--activate-foot21',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot22',' transparent');
+    document.documentElement.style.setProperty('--activate-foot30',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot31',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot32',' #ffffff6b');
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
-    document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
+    document.documentElement.style.setProperty('--activate-foot41',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot42',' transparent');
   }
   cargarImagenesBefores(){
     const entrenadores = this.dataEntrenadores;
@@ -199,4 +214,13 @@ export class ContratoEntrenadorPage implements OnInit {
     return nombres[0];
   }
 
+  async obtenercontarTypes(nameTable:string): Promise<any[]>{
+    try {
+      const response = await this.apiService.obtenercontarTypes(nameTable).toPromise();
+      return response;
+    } catch (error) {
+      this.presentCustomToast("Sin Registro", "danger");
+      throw error;
+    }
+  }
 }

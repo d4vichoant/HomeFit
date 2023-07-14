@@ -1,29 +1,26 @@
-<ion-header>
-  <app-toolbar-designer></app-toolbar-designer>
-</ion-header>
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="background-content">
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-<!--   <div class="header-up">
+  <div class="header-up">
     <div class="up-date">
       <ion-icon name="sunny-outline"></ion-icon>
       <span class="date">{{ currentDate }}</span>
     </div>
     <div class="header-name">
-      <h1>Hola,
+      <h1>hola,
         <ng-container *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0].NOMBREPERSONA">
-          {{ obtenerPrimerNombre(userSesionPerfil[0].NOMBREPERSONA) }}
+          {{ convertirAMinusculas(obtenerPrimerNombre(userSesionPerfil[0].NOMBREPERSONA)) }}
         </ng-container>
       </h1>
     </div>
-  </div> -->
+  </div>
   <div class="container-body">
     <!-- <div><h2 class="subtitle" >Recomendación</h2></div> -->
     <div class="container-procesosquedados">
-      <div class="box" (click)="go_page('listar-ejercicios')"  style="width: 330px!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/retomar.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;" >
+      <div class="box box-procesosquedados" (click)="go_page('listar-ejercicios')"  style="background-image: linear-gradient(0deg,  #0000008e,#0000007c), url('{{ ip_address }}/media/images/retomar.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;" >
         <div class="text-demo" >
           <span class="span2-demo"  style="display: flex; align-items: center;">
             MÁS LEJOS</span>
@@ -34,21 +31,18 @@
         </div>
       </div>
     </div>
-    <div class="container">
-      <div class="box-recomendacion" style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/recomendacion.jpg');background-repeat: no-repeat;background-size: cover;" >
-        <div class="text-demo-left">
-          <p>RECO<span>MENDA</span>CIÓN</p>
-        </div>
-      </div>
-      <div class="box-recomendacion"   (click)="item.PREMIER && item.PREMIER ==='Premium'? MessagePremium():go_page_create_rutina(item,'rutinas-diarias')"  *ngFor="let item of dataRecomendacion"  style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/rutinas/portadasrutinas/{{item.IMAGENRUTINA}}');background-repeat: no-repeat;background-size: cover;" >
-        <div class="tipeSuscription" [style.background-color]="item.PREMIER && item.PREMIER ==='Suscripto'?'#9259f978':(item.PREMIER && item.PREMIER ==='Gratis'?'#fcd713b6':'#e27c00b6')"
-            [style.color]="item.PREMIER && item.PREMIER ==='Suscripto'?'#ffffff':(item.PREMIER && item.PREMIER ==='Gratis'?'#421d06':'#fff5c5')">
+    <div><h2 class="subtitle" style="padding: 0% 0% 0% 8%!important;" >recomendación</h2></div>
+    <swiper-container #slides class="onb-container-recomendacion"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
+      <swiper-slide class="onb-slide-recomendacion"  *ngFor="let item of dataRecomendacion" (click)="item.PREMIER && item.PREMIER ==='Premium'? MessagePremium():go_page_create_rutina(item,'rutinas-diarias')"  >
+        <div class="slide-content-recomendacion">
+          <div class="tipeSuscription">
+          </div>
+          <div class="tipeSuscription-svg">
             <ng-container *ngIf="item.PREMIER && item.PREMIER ==='Suscripto'; else otherpremium">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trophy-filled" width="30" height="30" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                 <path d="M17 3a1 1 0 0 1 .993 .883l.007 .117v2.17a3 3 0 1 1 0 5.659v.171a6.002 6.002 0 0 1 -5 5.917v2.083h3a1 1 0 0 1 .117 1.993l-.117 .007h-8a1 1 0 0 1 -.117 -1.993l.117 -.007h3v-2.083a6.002 6.002 0 0 1 -4.996 -5.692l-.004 -.225v-.171a3 3 0 0 1 -3.996 -2.653l-.003 -.176l.005 -.176a3 3 0 0 1 3.995 -2.654l-.001 -2.17a1 1 0 0 1 1 -1h10zm-12 5a1 1 0 1 0 0 2a1 1 0 0 0 0 -2zm14 0a1 1 0 1 0 0 2a1 1 0 0 0 0 -2z" stroke-width="0" fill="currentColor"></path>
-            </svg>
-              <h1>Suscrito</h1>
+              </svg>
             </ng-container>
             <ng-template #otherpremium>
               <ng-container *ngIf="item.PREMIER && item.PREMIER ==='Gratis'; else otherotherpremium">
@@ -60,86 +54,92 @@
                   <path d="M12 15v2"></path>
                   <path d="M6 6l1.5 1.5"></path>
                   <path d="M16.5 16.5l1.5 1.5"></path>
-              </svg>
-                <h1>Gratis</h1>
+                </svg>
               </ng-container>
                 <ng-template #otherotherpremium>
                   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rosette-filled" width="40" height="40" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M12.01 2.011a3.2 3.2 0 0 1 2.113 .797l.154 .145l.698 .698a1.2 1.2 0 0 0 .71 .341l.135 .008h1a3.2 3.2 0 0 1 3.195 3.018l.005 .182v1c0 .27 .092 .533 .258 .743l.09 .1l.697 .698a3.2 3.2 0 0 1 .147 4.382l-.145 .154l-.698 .698a1.2 1.2 0 0 0 -.341 .71l-.008 .135v1a3.2 3.2 0 0 1 -3.018 3.195l-.182 .005h-1a1.2 1.2 0 0 0 -.743 .258l-.1 .09l-.698 .697a3.2 3.2 0 0 1 -4.382 .147l-.154 -.145l-.698 -.698a1.2 1.2 0 0 0 -.71 -.341l-.135 -.008h-1a3.2 3.2 0 0 1 -3.195 -3.018l-.005 -.182v-1a1.2 1.2 0 0 0 -.258 -.743l-.09 -.1l-.697 -.698a3.2 3.2 0 0 1 -.147 -4.382l.145 -.154l.698 -.698a1.2 1.2 0 0 0 .341 -.71l.008 -.135v-1l.005 -.182a3.2 3.2 0 0 1 3.013 -3.013l.182 -.005h1a1.2 1.2 0 0 0 .743 -.258l.1 -.09l.698 -.697a3.2 3.2 0 0 1 2.269 -.944z" stroke-width="0" fill="currentColor"></path>
-                </svg>
-                  <h1>Premium</h1>
+                  </svg>
                 </ng-template>
-              </ng-template>
-        </div>
-        <div class="text "  >
-          <span   class="span1 ">{{item.NOMBRERUTINA}}</span>
-          <span  class="span2"  style="display: flex; align-items: center;">
-            RUTINA</span>
-        </div>
-      </div>
-    </div>
-    <div class="container-swiper">
-      <swiper-container #slides class="onb-container onb-container-1"  [loop]="true" effect="lazy" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
-        <swiper-slide class="onb-slide" *ngFor="let item of dataTEjercicioAll" (click)="selectSwiper(item,'listar-parametros')" >
-          <div class="slide-content">
-            <h2 ><span>FITNESS</span><br/>
-            {{item.NOMBRETIPOEJERCICIO}}</h2>
-            <p >{{item.DESCRIPCIONTIPOEJERCICIO}}</p>
-            <img [src]="ip_address + '/media/tipoEjercicio/' + item.IMAGETIPOEJERCICIO" />
-            <div class="filter-overlay"></div>
+            </ng-template>
           </div>
-        </swiper-slide>
-      </swiper-container>
-    </div>
+          <h2 >
+            {{item.NOMBRERUTINA}}</h2>
+          <img  [src]="ip_address + '/media/rutinas/portadasrutinas/' + item.IMAGENRUTINA" />
+          <div class="filter-overlay-recomendacion"></div>
+        </div>
+      </swiper-slide>
+    </swiper-container>
+    <div><h2 class="subtitle" >tipo de entrenamientos</h2></div>
+    <swiper-container #slides [loop]="true" effect="fade" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4" class="container-t-entrenamientos">
+      <ng-container *ngFor="let item of dataTEjercicioAll; let i = index">
+        <ng-container *ngIf="i % 2 === 0">
+          <swiper-slide  class="swiper-container-t-entrenamientos">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="6" (click)="selectSwiper(item,'listar-parametros')">
+                  <div class="my-div">
+                    <img [src]="ip_address + '/media/tipoEjercicio/' + item.IMAGETIPOEJERCICIO" />
+                    <h2>{{item.NOMBRETIPOEJERCICIO}}</h2>
+                  </div>
+                </ion-col>
+                <ion-col size="6" *ngIf="dataTEjercicioAll[i + 1]" (click)="selectSwiper(dataTEjercicioAll[i + 1],'listar-parametros')">
+                  <div class="my-div">
+                    <img [src]="ip_address + '/media/tipoEjercicio/' + dataTEjercicioAll[i + 1].IMAGETIPOEJERCICIO" />
+                    <h2>{{dataTEjercicioAll[i + 1].NOMBRETIPOEJERCICIO}}</h2>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </swiper-slide>
+        </ng-container>
+      </ng-container>
+    </swiper-container>
+    <div><h2 class="subtitle" >descubre más</h2></div>
     <div class="countEjercicios">
       <swiper-container #slides class="onb-container onb-container-1"  [loop]="true" effect="lazy" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
-        <swiper-slide >
+        <swiper-slide  (click)="go_page('listar-ejercicios-all')">
           <div class="image-container">
             <img [src]="ip_address+'/media/images/mostrarEjercicios.jpg'" alt="AllEjercicios" >
-            <div class="filter-overlay-img" style="background: linear-gradient(0deg, #c7b4fe7e, #00000077);"></div>
-            <div class="text-overlay-image-first-child" style="left: 5%; text-align: start;"><span>XX de Ejercicios </span>para Empezar tu Entrenamietno</div>
+            <div class="filter-overlay-img" style=" left: 0;background: linear-gradient(0deg, #c7b4fe7e, hsla(0, 0%, 0%, 0.467));"></div>
+            <div class="text-overlay-image-first-child" style="left: 8%; text-align: start;">{{totalEjercicio && totalEjercicio[0].total_datos}} de Ejercicios para Empezar tu Entrenamietno</div>
           </div>
         </swiper-slide>
-        <swiper-slide >
+        <swiper-slide (click)="go_page('listar-rutinas-all')">
           <div class="image-container">
             <img [src]="ip_address+'/media/rutinas/mostrarRutinas.jpg'" alt="AllRutinas">
-            <div class="filter-overlay-img" style="background: linear-gradient(0deg, #00000077, #c7b4fe7e);"></div>
-            <div class="text-overlay-image-first-child" style="right: 5%;text-align: end;">Mas de <span> XX  Rutinas</span>  para Ti</div>
+            <div class="filter-overlay-img" style="transform: scale(-1);background: linear-gradient(0deg, #00000077, #c7b4fe7e);"></div>
+            <div class="text-overlay-image-first-child" style="right: 8%;text-align: end;">Mas de {{totalRutinas && totalRutinas[0].total_datos}}  Rutinas  para Ti</div>
           </div>
         </swiper-slide>
-        <swiper-slide >
+        <swiper-slide (click)="go_page('listar-sesiones-all')" >
           <div class="image-container">
             <img [src]="ip_address+'/media/sesiones/mostrarSesiones.jpg'" alt="AllSesiones">
-            <div class="filter-overlay-img" style="background: linear-gradient(0deg, #000000da, #c7b4fe7e);"></div>
-            <div class="text-overlay-image-first-child" style="right: 5%; text-align: end;">Una Plataforma con mas de <span>XX Sesiones</span> de Rutinas</div>
+            <div class="filter-overlay-img"  style="transform: scale(-1);background: linear-gradient(0deg, #000000da, #c7b4fe7e);"></div>
+            <div class="text-overlay-image-first-child" style="right: 8%; text-align: end;">Más de {{totalSesiones && totalSesiones[0].total_datos}} Sesiones de Rutinas</div>
           </div>
         </swiper-slide>
       </swiper-container>
     </div>
-    <!-- <div><h2 class="subtitle" >Retorna donde te quedaste</h2></div> -->
+    <div><h2 class="subtitle" >entrenadores</h2></div>
     <div class="container-entrenadores">
-      <div class="box-container-entrenadores" (click)="go_page('contrato-entrenador')"  style="width: 100%!important; background-image: linear-gradient(0deg,  #000000af,#f1f3f80e), url('{{ ip_address }}/media/images/entrenadores.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;" >
+
+      <div class="box-container-entrenadores" (click)="go_page('contrato-entrenador')"  >
+        <div class="background-image"  style="width: 100%!important ; background-image: linear-gradient(0deg,  #000000af,#f1f3f80e), url('{{ ip_address }}/media/images/collage_trainers.png');
+        background-repeat: no-repeat;background-size: cover;background-position: center;"></div>
         <div class="text-container-entrenadores">
-          <p>ENTRE</p>
-          <p>NADORES</p>
           <h1>Conocer más</h1>
         </div>
       </div>
     </div>
     <div class="container-text">
-      <h2 class="subtitle">Guardados</h2>
+      <h2 class="subtitle">guardados</h2>
       <div class="right-text" (click)="go_page('listar-guardados')">
         <span>VER TODOS</span>
       </div>
     </div>
     <div class="container" style="margin-top: 0%;" *ngIf="dataRutinas && dataRutinas.length > 0 || dataSesiones && dataSesiones.length > 0 || dataOPersoales && dataOPersoales.length > 0 || dataTEjercicio && dataTEjercicio.length > 0  || dataOMusculares && dataOMusculares.length > 0 || dataEjercicio && dataEjercicio.length > 0 ">
-      <div class="box"   (click)="go_page('listar-guardados')" style="width: 300px!important; background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/media/images/guardado.jpg');background-repeat: no-repeat;background-size: cover;" >
-        <div class="text-demo" >
-          <span class="span2-demo"  style="display: flex; align-items: center;">
-            GUAR<span class="spanh1">DA</span>DOS</span>
-        </div>
-      </div>
       <div class="box"  (click)="goEjercicioUniq(item,'ejercicio-uniq')" *ngFor="let item of  (dataEjercicio?.slice(0, 3) || [])"  style="background-image: linear-gradient(0deg,  #0000009f,#f1f3f842), url('{{ ip_address }}/multimedia/{{getVideoName(item.ALMACENAMIENTOMULTIMEDIA)}}.jpg');background-repeat: no-repeat;background-size: cover;" >
         <div class="icon-wrapper" (click)="toggleBookmarkEjercicio(item.IDEJERCICIO); $event.stopPropagation()" *ngIf="!bookmarkState[item.IDEJERCICIO]; else otherbookmarkEjercicio">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

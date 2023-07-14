@@ -1,19 +1,18 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../../../constantes';
 import { ApiServiceService } from '../../../api-service.service'
 import { StatusBar } from '@capacitor/status-bar';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-listar-ejercicios-all',
-  templateUrl: './listar-ejercicios-all.page.html',
-  styleUrls: ['./listar-ejercicios-all.page.scss'],
+  selector: 'app-listar-sesiones-all',
+  templateUrl: './listar-sesiones-all.page.html',
+  styleUrls: ['./listar-sesiones-all.page.scss'],
 })
-export class ListarEjerciciosAllPage implements OnInit {
-  @ViewChild('videoPlayer') videoPlayer!: ElementRef;
-  public isPlaying = true;
+export class ListarSesionesAllPage implements OnInit {
 
   public ip_address = IP_ADDRESS;
   public userSesion!:string;
@@ -21,13 +20,12 @@ export class ListarEjerciciosAllPage implements OnInit {
 
   public loading = true;
 
-  dataEjercicio!:any[];
-  dataEjercicioParcial!:any[];
-  dataEjercicioOrig!:any[];
+  dataSesiones!:any[];
+  dataSesionesParcial!:any[];
+  dataSesionesOrig!:any[];
 
-
-  bookmarkState: { [key: number]: boolean } = {};
-  dataBookMark!:any[];
+  bookmarkSesionesState: { [key: number]: boolean } = {};
+  dataBookMarkSesiones!:any[];
 
   dividendo:number=5;
 
@@ -40,7 +38,12 @@ export class ListarEjerciciosAllPage implements OnInit {
 
   showsearchbox:boolean=false;
 
+  variableSesiones!:any;
+  previusPageMain:boolean=false;
+  previusPagelistarGuardados:boolean=false;
+  previusPagelistarSesiones:boolean=false;
   constructor(
+    private route: ActivatedRoute,
     private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
@@ -49,12 +52,22 @@ export class ListarEjerciciosAllPage implements OnInit {
 
 
   ngOnInit() {
+     this.recuperarDatos();
     this.validateSesion();
   }
   ionViewDidEnter() {
+    this.recuperarDatos();
     this.validateSesion();
   }
 
+  recuperarDatos(){
+    this.route.queryParams.subscribe(params => {
+      this.variableSesiones = params['variableSesiones'] as any;
+      this.previusPageMain = params['previusPageMain'] as boolean|| false;
+      this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as boolean|| false;
+      this.previusPagelistarSesiones  = params['previusPagelistarSesiones'] as boolean|| false;
+    });
+  }
   async validateSesion() {
     try {
       const sesion = await this.storage.get('sesion');
@@ -63,8 +76,9 @@ export class ListarEjerciciosAllPage implements OnInit {
         this.obtenerGetPerfilCompleto(this.userSesion);
         const response =
         await this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).toPromise();
-        this.obtenerBookMarkUser();
+        this.obtenerbookmarksesiones();
         this.obtenerContratoEntrenadoresUsuario();
+        this.chanceColorFooter();
         this.StatusBar();
         this.loading = false;
       } else {
@@ -80,6 +94,16 @@ export class ListarEjerciciosAllPage implements OnInit {
     this.navController.navigateForward('/error-users');
     this.storage.remove('sesion');
   }
+  private chanceColorFooter(){
+    document.documentElement.style.setProperty('--activate-foot10',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot11',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot20',' transparent');
+    document.documentElement.style.setProperty('--activate-foot21',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot30',' transparent');
+    document.documentElement.style.setProperty('--activate-foot31',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot40',' transparent');
+    document.documentElement.style.setProperty('--activate-foot41',' #ffffff');
+  }
 
   StatusBar(){
     StatusBar.hide();
@@ -88,12 +112,13 @@ export class ListarEjerciciosAllPage implements OnInit {
   }
 
   cargarImagenesBefores(){
-    const Ejercicios = this.dataEjercicio;
     const imageUrls = [];
-    if (Array.isArray(Ejercicios)) {
-      for (let i = 0; i < Ejercicios.length; i++) {
-        const nameImagen = this.getVideoName(Ejercicios[i].ALMACENAMIENTOMULTIMEDIA)+'.jpg';
-        const imageUrl = this.ip_address+'/multimedia/'+nameImagen;
+
+    const sesiones = this.dataSesiones;
+    if (Array.isArray(sesiones)) {
+      for (let i = 0; i < sesiones.length; i++) {
+        const nameImagen = sesiones[i].IMAGESESION;
+        const imageUrl = this.ip_address+'/media/sesiones/portadassesiones/'+nameImagen;
         imageUrls.push(imageUrl);
       }
     }
@@ -103,7 +128,7 @@ export class ListarEjerciciosAllPage implements OnInit {
     const handleImageLoad = () => {
       imagesLoaded++;
       if (imagesLoaded === totalImages) {
-        this.loading = false;
+          this.loading = false;
       }
     };
     imageUrls.forEach((imageUrl) => {
@@ -113,12 +138,10 @@ export class ListarEjerciciosAllPage implements OnInit {
     });
   }
 
-  getVideoName(url: string): string {
-    return url.split('.')[0];
-  }
+
 
   onIonInfinite(ev:any) {
-    if(this.dataEjercicioParcial<this.dataEjercicio){
+    if(this.dataSesionesParcial<this.dataSesiones){
       this.llenarMasDatos();
       setTimeout(() => {
         (ev as InfiniteScrollCustomEvent).target.complete();
@@ -128,26 +151,18 @@ export class ListarEjerciciosAllPage implements OnInit {
     }
 
   }
-  goEjercicioUniq(item:any,name:string){
-    this.dataBookMark=[];
-    this.navController.navigateForward('/' + name, {
-      queryParams: {
-        previusPagelistarEjercicioAll:true,
-        variableEjercicio:item,
-      }
-    });
-  }
 
-  toggleBookmarkEjercicio(index: number): void {
+
+  toggleBookmarkOSesiones(index: number): void {
     this.loading=true;
-    if (this.bookmarkState[index]) {
-      this.bookmarkState[index] = false;
-      this.updateBookMarkUser(index,this.bookmarkState[index]);
+    if (this.bookmarkSesionesState[index]) {
+      this.bookmarkSesionesState[index] = false;
+      this.updateLikeTEjercicio(index,this.bookmarkSesionesState[index],'bookmarksesiones');
     } else {
-      this.bookmarkState[index] = true;
-      this.updateBookMarkUser(index,this.bookmarkState[index]);
+      this.bookmarkSesionesState[index] = true;
+      this.updateLikeTEjercicio(index,this.bookmarkSesionesState[index],'bookmarksesiones');
     }
-    this.dataEjercicio = this.dataEjercicio.filter((element) => this.bookmarkState[element.IDEJERCICIO]);
+    this.dataSesiones = this.dataSesiones.filter((element) => this.bookmarkSesionesState[element.IDSESION]);
     setTimeout(() => {
       this.loading=false;
     }, 500);
@@ -155,59 +170,66 @@ export class ListarEjerciciosAllPage implements OnInit {
   MessagePremium(){
     this.presentCustomToast('Ejercicio Premium, Suscribase para acceder a ellos','warning');
   }
+  go_pageback(){
+    if(this.previusPagelistarSesiones){
+      const name='listar-sesiones';
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          variableSesiones: this.variableSesiones,
+          previusPageMain : this.previusPageMain,
+          previusPagelistarGuardados : this.previusPagelistarGuardados,
+          previusPagelistarSesiones:'',
+        }
+      });
+    }else{
+      const name='main';
+      this.navController.navigateForward('/'+name);
+    }
+  }
   go_page(name: string){
-    this.dataEjercicio=[];
     this.navController.navigateForward('/'+name);
+  }
+  go_programSesiones(item:any,name:string) {
+    this.go_page_create(name,item);
+  }
+  go_page_create(name: string, data: any) {
+      this.navController.navigateForward('/' + name, {
+        queryParams: {
+          previusPagelistarSesionesRutinasAll:true,
+          variableprogramarrutinas: data,
+        }
+      });
   }
   public onInputChange(event: any) {
     const currentSearchTerm = event.target.value;
     if (this.previousSearchTerm && currentSearchTerm.length < this.previousSearchTerm.length) {
-      this.dataEjercicio=this.dataEjercicioOrig;
+      this.dataSesionesParcial=this.dataSesionesOrig;
     }
     this.previousSearchTerm = currentSearchTerm;
     this.filterItems();
   }
 
-  onCardTouchStart(event: TouchEvent,data:any) {
-
-    this.touchTimeout = setTimeout(() => {
-     data.viewvideo=true;
-    }, 500);
-  }
-
-  onCardTouchEnd(event: TouchEvent,data:any) {
-    data.viewvideo=false;
-    clearTimeout(this.touchTimeout);
-  }
-
-
-
   private filterItems() {
-    this.dataEjercicioParcial = this.dataEjercicioOrig;
+    this.dataSesionesParcial = this.dataSesionesOrig;
 
     const searchTerms = this.searchTerm.toLowerCase().trim().split(' ');
     if (searchTerms.length >= 1) {
       let filteredArray: any[] = [];
       for (const term of searchTerms) {
-        const filteredItems = this.dataEjercicio.filter(item =>
-          (item.DESCRIPCIONEJERCICIO && item.DESCRIPCIONEJERCICIO.toLowerCase().includes(term)) ||
-          (item.DESCRIPCIONMULTIMEDIA && item.DESCRIPCIONMULTIMEDIA.toLowerCase().includes(term)) ||
-          (item.INTRUCCIONESEJERCICIO && item.INTRUCCIONESEJERCICIO.toLowerCase().includes(term)) ||
-          (item.NOMBREEJERCICIO && item.NOMBREEJERCICIO.toLowerCase().includes(term)) ||
-          (item.NOMBREOBJETIVOSMUSCULARES && item.NOMBREOBJETIVOSMUSCULARES.toLowerCase().includes(term)) ||
-          (item.NOMBRETIPOEJERCICIO && item.NOMBRETIPOEJERCICIO.toLowerCase().includes(term)) ||
-          (item.OBSERVACIONESEJERCICIO && item.OBSERVACIONESEJERCICIO.toLowerCase().includes(term)) ||
-          (item.OBSERVACIONMULTIMEDIA && item.OBSERVACIONMULTIMEDIA.toLowerCase().includes(term)) ||
-          (item.PESOLEVANTADOEJERCICIO && item.PESOLEVANTADOEJERCICIO.toLowerCase().includes(term)) ||
+        const filteredItems = this.dataSesiones.filter(item =>
+          (item.DESCRIPCIONOBJETIVOSPERSONALES && item.DESCRIPCIONOBJETIVOSPERSONALES.toLowerCase().includes(term)) ||
+          (item.DESCRIPCIONPROFESION && item.DESCRIPCIONPROFESION.toLowerCase().includes(term)) ||
+          (item.NICKNAMEPERSONA && item.NICKNAMEPERSONA.toLowerCase().includes(term)) ||
+          (item.NOMBRESESION && item.NOMBRESESION.toLowerCase().includes(term)) ||
+          (item.OBJETIVOSESION && item.OBJETIVOSESION.toLowerCase().includes(term)) ||
           (item.PREMIER && item.PREMIER.toLowerCase().includes(term)) ||
-          (item.TITULOMULTIMEDIA && item.TITULOMULTIMEDIA.toLowerCase().includes(term)) ||
-          (item.TITULOS_EQUIPOS_REQUERIDOS && item.TITULOS_EQUIPOS_REQUERIDOS.toLowerCase().includes(term)) ||
-          (item.tituloniveldificultadejercicio && item.tituloniveldificultadejercicio.toLowerCase().includes(term))
+          (item.TituloFrecuenciaEjercicio && item.TituloFrecuenciaEjercicio.toLowerCase().includes(term)) ||
+          (item.OBSERVACIONSESION && item.OBSERVACIONSESION.toLowerCase().includes(term))
         );
         filteredArray = filteredArray.concat(filteredItems);
       }
       // Eliminar duplicados del array filtrado
-      this.dataEjercicioParcial = Array.from(new Set(filteredArray));
+      this.dataSesionesParcial = Array.from(new Set(filteredArray));
     }
   }
 
@@ -238,7 +260,7 @@ export class ListarEjerciciosAllPage implements OnInit {
 
     let gradientColor2 = '#5f48898a' ; // Color del primer punto del gradiente
     let gradientColor1 = '#000000b3' ; // Color del segundo punto del gradiente
-    let backgroundImage = `linear-gradient(183deg, ${gradientColor1}, ${gradientColor2}), url('${this.ip_address}/multimedia/${this.getVideoName(imageUrl)}.jpg')`;
+    let backgroundImage = `linear-gradient(183deg, ${gradientColor1}, ${gradientColor2}), url('${this.ip_address}/media/sesiones/portadassesiones/${imageUrl}')`;
 
     return {
       'background-image': backgroundImage,
@@ -247,20 +269,12 @@ export class ListarEjerciciosAllPage implements OnInit {
     };
   }
 
-  autoplayVideo(event: Event) {
-    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
-    video.muted = true;
-    if (this.isPlaying) {
-      video.play();
-    }
-  }
-
   llenarMasDatos(){
-    const endIndex = Math.ceil(this.dataEjercicioParcial.length / this.dividendo);
+    const endIndex = Math.ceil(this.dataSesionesParcial.length / this.dividendo);
     const start = endIndex * this.dividendo;
     const end = endIndex * this.dividendo + this.dividendo;
-    const additionalData = this.dataEjercicio.slice(start, end > this.dataEjercicio.length ? this.dataEjercicio.length : end);
-    this.dataEjercicioParcial.push(...additionalData);
+    const additionalData = this.dataSesiones.slice(start, end > this.dataSesiones.length ? this.dataSesiones.length : end);
+    this.dataSesionesParcial.push(...additionalData);
   }
 
   async presentCustomToast(message: string, color: string) {
@@ -298,7 +312,7 @@ export class ListarEjerciciosAllPage implements OnInit {
     this.apiService.obtenerContratoEntrenadoresUsuario(this.userSesionPerfil && this.userSesionPerfil[0].IDUSUARIO).subscribe(
       (response) => {
         this.dataEntrenadorUsuarios=response;
-        this.obtenerEjercicios();
+        this.obtenerSesiones();
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -306,16 +320,16 @@ export class ListarEjerciciosAllPage implements OnInit {
     );
   }
 
-  obtenerEjercicios(){
-    this.apiService.getEjercicioActivate().subscribe(
+  obtenerSesiones(){
+    this.apiService.getSesionesActivate().subscribe(
       (response) => {
-        this.dataEjercicio=response;
-        this.dataEjercicio.forEach((ejercicio) => {
-        ejercicio.CALORIASEJERCICIO= (this.obtenerDuracionEnMinutos(ejercicio.TIEMPOMULTIMEDIA)/60*ejercicio.METEJERCICIO*Number(this.userSesionPerfil[0].PESOUSUARIO)).toFixed(2);
-        });
-
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
-          this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
+        this.dataSesiones=response;
+        this.dataSesiones = this.dataSesiones.map(objeto => ({
+          ...objeto,
+          IDRUTINAS: objeto.IDRUTINAS.split(",").map(Number)
+        }));
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          this.dataSesiones = this.dataSesiones.filter(elemento =>{
             if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
               elemento.PREMIER = 'Suscripto';
               return true;
@@ -329,36 +343,23 @@ export class ListarEjerciciosAllPage implements OnInit {
           }
           );
         } else {
-          this.presentCustomToast('Error en Mostrar Ejercicios','danger');
+          this.presentCustomToast('Error en Mostrar Rutinas','danger');
+          this.obtenerSesiones();
           //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
-        this.dataEjercicio.sort((a, b) => {
+        this.dataSesiones.sort((a, b) => {
           const premierOrder: { [key: string]: number } = {
-            Principiante: 0,
-            Intermedio: 1,
-            Avanzado: 2,
+            Gratis: 0,
+            Suscripto: 1,
+            Premium: 2,
           };
-          const premierA = premierOrder[a.tituloniveldificultadejercicio];
-          const premierB = premierOrder[b.tituloniveldificultadejercicio];
+          const premierA = premierOrder[a.PREMIER];
+          const premierB = premierOrder[b.PREMIER];
           return premierA - premierB;
         });
-        }
-        let nivelDificultadActual = "";
-        for (let i = 0; i < this.dataEjercicio.length; i++) {
-          const ejercicio = this.dataEjercicio[i];
-          const nivelDificultad = ejercicio.tituloniveldificultadejercicio;
-
-          if (nivelDificultad !== nivelDificultadActual) {
-            ejercicio.mostrarNivelDificultad = true;
-            nivelDificultadActual = nivelDificultad;
-          } else {
-            ejercicio.mostrarNivelDificultad = false;
-          }
-        }
-        this.dataEjercicioParcial=this.dataEjercicio.slice(0, this.dividendo);
-        const rawData = this.dataEjercicio;
-        this.dataEjercicioOrig = rawData.map(item => ({ ...item }));
+        this.dataSesionesParcial=this.dataSesiones.slice(0, this.dividendo);
+        const rawData = this.dataSesiones;
+        this.dataSesionesOrig = rawData.map(item => ({ ...item }));
         this.cargarImagenesBefores();
       },
       (error) => {
@@ -368,14 +369,15 @@ export class ListarEjerciciosAllPage implements OnInit {
   }
 
 
-  obtenerBookMarkUser(){
-    this.apiService.allBookmark('bookmarkpersona').subscribe(
+  obtenerbookmarksesiones(){
+    this.apiService.allBookmark('bookmarksesiones').subscribe(
       (response) => {
-        this.dataBookMark=response;
-        this.dataBookMark= this.dataBookMark.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
-        this.dataBookMark.forEach(bookmark => {
-          this.bookmarkState[bookmark.IDEJERCICIO] = true;
+        this.dataBookMarkSesiones=response;
+        this.dataBookMarkSesiones= this.dataBookMarkSesiones.filter(element=>element.IDPERSONA ===this.userSesionPerfil[0].IDPERSONA)
+        this.dataBookMarkSesiones.forEach(liketejercicio => {
+          this.bookmarkSesionesState[liketejercicio.IDSESION] = true;
         });
+        this.obtenerSesiones();
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -383,8 +385,8 @@ export class ListarEjerciciosAllPage implements OnInit {
     );
   }
 
-  updateBookMarkUser(idEjercicio:number,status:boolean){
-    this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status,'bookmarkpersona').subscribe(
+  updateLikeTEjercicio(idEjercicio:number,status:boolean,type:string){
+    this.apiService.updateBookmarkpersona( idEjercicio,this.userSesionPerfil[0].IDPERSONA,status,type).subscribe(
       (response) => {
         this.presentCustomToast(response.message,"success");
       },

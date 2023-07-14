@@ -52,56 +52,58 @@ export class MainPage implements OnInit {
 
   currentDate!: string;
 
+  totalRutinas!:any[];
+  totalSesiones!:any[];
+  totalEjercicio!:any[];
+
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
     public toastController: ToastController) { }
   ngOnInit() {
     this.validateSesion();
+    document.documentElement.style.setProperty('--background-ip-address-main','url('+IP_ADDRESS+'/media/images/backgroundMain.jpg)');
   }
   ionViewDidEnter() {
     this.validateSesion();
+    document.documentElement.style.setProperty('--background-ip-address-main','url('+IP_ADDRESS+'/media/images/backgroundMain.jpg)');
   }
   StatusBar(){
     StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
     StatusBar.setBackgroundColor({ color: '#ffffff' });
   }
-  validateSesion(){
-    try{
-      this.storage.get('sesion').then((sesion) => {
-        if (sesion && JSON.parse(sesion).rolUsuario == 1) {
-          this.userSesion = JSON.parse(sesion).nickname;
-          this.obtenerGetPerfilCompleto(this.userSesion);
-          this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
-            (response) => {
-              this.updateCurrentDate();
-              this.chanceColorFooter();
-              this.obtenerbookmarksesiones();
-              this.obtenerbookmarkrutinas();
-              this.obtenerLikeTEjercicio();
-              this.obtenerLikeOPersonal();
-              this.obtenerLikeOMuscular();
-              this.obtenerBookMarkUser();
-              this.obtenerEjercicios();
-              this.obtenerContratoEntrenadoresUsuario();
-              this.obtenerRutinas();
-              this.obtenerSesiones();
-              this.obtenerOMuscular();
-              this.obtenerOPersonales();
-              this.obtenerTEjercicios();
-              this.obtenerObjetivosPersonales();
-              this.StatusBar();
-              this.loading=false;
-            },
-            (error) => {
-              this.handleError();
-            }
-          );
-        } else {
-          this.handleError();
-        }
-      });
+  async validateSesion() {
+    try {
+      const sesion = await this.storage.get('sesion');
+      if (sesion && JSON.parse(sesion).rolUsuario == 1) {
+        this.userSesion = JSON.parse(sesion).nickname;
+        this.obtenerGetPerfilCompleto(this.userSesion);
+        const response = await this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).toPromise();
+        this.updateCurrentDate();
+        this.chanceColorFooter();
+        this.totalEjercicio = await this.obtenercontarTypes('ejercicio');
+        this.totalRutinas = await this.obtenercontarTypes('rutina');
+        this.totalSesiones = await this.obtenercontarTypes('programarsesion');
+        this.obtenerbookmarksesiones();
+        this.obtenerbookmarkrutinas();
+        this.obtenerLikeTEjercicio();
+        this.obtenerLikeOPersonal();
+        this.obtenerLikeOMuscular();
+        this.obtenerBookMarkUser();
+        this.obtenerEjercicios();
+        this.obtenerContratoEntrenadoresUsuario();
+        this.obtenerRutinas();
+        this.obtenerSesiones();
+        this.obtenerOMuscular();
+        this.obtenerOPersonales();
+        this.obtenerTEjercicios();
+        this.obtenerObjetivosPersonales();
+        this.StatusBar();
+        this.loading = false;
+      } else {
+        this.handleError();
+      }
     } catch (error) {
       this.handleError();
     }
@@ -114,13 +116,18 @@ export class MainPage implements OnInit {
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' #ffffff');
     document.documentElement.style.setProperty('--activate-foot11',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot12',' #ffffff6b');
     document.documentElement.style.setProperty('--activate-foot20',' transparent');
-    document.documentElement.style.setProperty('--activate-foot21',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot21',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot22',' transparent');
     document.documentElement.style.setProperty('--activate-foot30',' transparent');
-    document.documentElement.style.setProperty('--activate-foot31',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot31',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot32',' transparent');
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
-    document.documentElement.style.setProperty('--activate-foot41',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot41',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot42',' transparent');
   }
+
 
   cargarImagenesBefores(){
     const dataTEjercicioAll = this.dataTEjercicioAll;
@@ -145,10 +152,6 @@ export class MainPage implements OnInit {
     }
     const imageUrl2 = this.ip_address+'/media/images/retomar.jpg';
     imageUrls.push(imageUrl2);
-    const imageUrl3 = this.ip_address+'/media/images/entrenadores.jpg';
-    imageUrls.push(imageUrl3);
-    const imageUrl4 = this.ip_address+'/media/images/guardado.jpg';
-    imageUrls.push(imageUrl4);
 
     const dataEjercicio = this.dataEjercicio;
     if (Array.isArray(dataEjercicio)) {
@@ -158,6 +161,7 @@ export class MainPage implements OnInit {
         imageUrls.push(imageUrl);
       }
     }
+
 
     const dataRutinas = this.dataRutinas;
     if (Array.isArray(dataRutinas)) {
@@ -203,6 +207,10 @@ export class MainPage implements OnInit {
 
     const imageUrl5 = this.ip_address+'/media/images/guardado-blureable.jpg';
     imageUrls.push(imageUrl5);
+    const imageUrl6 = this.ip_address+'/media/images/backgroundMain.jpg';
+    imageUrls.push(imageUrl6);
+    const imageUrl7 = this.ip_address+'/media/images/collage_trainers.png';
+    imageUrls.push(imageUrl7);
     let imagesLoaded = 0;
     const totalImages = imageUrls.length;
     const handleImageLoad = () => {
@@ -221,6 +229,9 @@ export class MainPage implements OnInit {
     setTimeout(() => {
       this.loading=false;
     }, 500);
+  }
+  convertirAMinusculas(texto: string): string {
+    return texto.toLowerCase();
   }
 
   recortarPalabras(texto: string, numeroPalabras: number): string {
@@ -463,10 +474,12 @@ export class MainPage implements OnInit {
     this.apiService.getObjetivosMuscularesActivate().subscribe(
       (response) => {
         this.dataOMusculares=response;
-        this.dataOMusculares = this.dataLikeOMuscular.map(bookmark => {
-          const matchingRutina = this.dataOMusculares.find(rutina => rutina.IDOBJETIVOSMUSCULARES === bookmark.IDOBJETIVOSMUSCULARES);
-          return matchingRutina;
-        });
+        if (this.dataLikeOMuscular) {
+          this.dataOMusculares = this.dataLikeOMuscular.map(bookmark => {
+            const matchingRutina = this.dataOMusculares.find(rutina => rutina.IDOBJETIVOSMUSCULARES === bookmark.IDOBJETIVOSMUSCULARES);
+            return matchingRutina;
+          });
+        }
         //this.dataOMusculares = this.dataOMusculares.filter((element) => this.LikeOMuscularState[element.IDOBJETIVOSMUSCULARES]);
       },
       (error) => {
@@ -491,7 +504,7 @@ export class MainPage implements OnInit {
           const matchingRutina = this.dataRutinas.find(rutina => rutina.IDRUTINA === bookmark.IDRUTINA);
           return matchingRutina;
         });
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinasTotal && this.dataRutinasTotal.length>0) {
           this.dataRutinasTotal = this.dataRutinasTotal.filter(elemento =>{
             if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
               elemento.PREMIER = 'Suscripto';
@@ -507,7 +520,6 @@ export class MainPage implements OnInit {
           );
         } else {
           this.presentCustomToast('Error en Mostrar Rutinas','danger');
-          this.obtenerRutinas();
           //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
         //this.dataRutinas = this.dataRutinas.filter((element) => this.bookmarkRutinasState[element.IDRUTINA]);
@@ -686,5 +698,13 @@ export class MainPage implements OnInit {
       }
     );
   }
+  async obtenercontarTypes(nameTable:string): Promise<any[]>{
+    try {
+      const response = await this.apiService.obtenercontarTypes(nameTable).toPromise();
+      return response;
+    } catch (error) {
+      this.presentCustomToast("Sin Registro", "danger");
+      throw error;
+    }
+  }
 }
-
