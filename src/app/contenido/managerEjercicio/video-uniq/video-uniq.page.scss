@@ -5,6 +5,8 @@ ion-content {
   overflow: hidden;
 }
 #video-container {
+  overflow: hidden;
+  position: relative;
   width: 100vh; /* Ancho igual al alto de la ventana */
   height: 100vw; /* Alto igual al ancho de la ventana */
   transform-origin: top left;
@@ -12,49 +14,230 @@ ion-content {
 }
 
 #fullscreen-video {
+  overflow: hidden;
   width: 100%; /* Ancho igual al 100% del contenedor */
   height: 100%; /* Alto igual al 100% del contenedor */
   object-fit: cover; /* Escalar el video para cubrir toda el área */
 }
 
 #video-container.horizontal {
+  overflow: hidden;
   width: 100vw; /* Ancho igual al ancho de la ventana */
   height: 100vh; /* Alto igual al alto de la ventana */
   transform: none;
 }
 
-video::-webkit-media-controls-mute-button {
+video::-webkit-media-controls {
   display: none !important;
 }
 
-video::-webkit-media-controls-volume-slider {
-  display: none !important;
-}
-video::-webkit-media-controls-fullscreen-button {
-  display: none !important;
-}
-video::-webkit-media-controls-overflow-button {
-  display: none !important;
-}
-
-video::-webkit-media-controls-timeline {
-  height: 10px !important;
-}
-
-video::-webkit-media-controls-time-remaining-display {
-  font-size: 14px !important;
+.sound-acction{
+  position: absolute;
+  top: 1%;
+  right:  2%;
+  width: auto;
+  border-radius: 15px;
+  height: auto;
+  padding: 2%;
+  margin: 0;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  svg{
+    color: #ffffffc0;
+  }
 }
 
-/* Modificar el círculo de progreso */
-video::-webkit-media-controls-timeline-thumb {
-  background-color: #FF0000 !important; /* Cambia el color de fondo del círculo */
-  width: 20px !important; /* Ajusta el ancho del círculo */
-  height: 20px !important; /* Ajusta la altura del círculo */
-  border-radius: 50% !important; /* Establece la forma redondeada del círculo */
+.regresar{
+  position: absolute;
+  top: 1%;
+  left:   2%;
+  width: auto;
+  border-radius: 15px;
+  height: auto;
+  padding: 2%;
+  margin: 0;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  svg{
+    color: #ffffffc0;
+  }
 }
 
-/* Modificar la línea de progreso */
-video::-webkit-media-controls-timeline-progress-bar {
-  background-color: #00FF00 !important; /* Cambia el color de fondo de la línea de progreso */
-  height: 10px !important; /* Ajusta la altura de la línea de progreso */
+.container-all-controls{
+  height: 15vh;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 15px;
+  padding: 0% 0%;
+  margin: 0% 10% 3% 10%;
+  width: 80%;
+  backdrop-filter: blur(10px);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  transition: height 0.3s ease;
+}
+.container-text{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.inline-div {
+  display: inline-block;
+}
+.info-text{
+  position: absolute;
+  top: 0;
+  right:  0;
+  padding: 2.2% 3% 0% 0%;
+  color: rgb(255 255 255 / 52%);
+  font-family: Raleway-Light ;
+  font-size: 1rem;
+}
+.progress-bar {
+  width: 94%;
+  height: 1vh;
+  border-radius: 25px;
+  margin: 1% 3% 0% 3%;
+  background-color: #ffffff38;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.progress-line {
+  height: 80%;
+  background-color: #ffffff87;
+  padding: 0%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: 30px;
+  margin: 1px 0% 0% 1px;
+
+}
+.hide {
+  height: 0; /* Altura 0 para ocultar el elemento */
+  svg{
+    display: none;
+  }
+}
+.hiddenText{
+  div{
+    display: none;
+  }
+  display: none;
+}
+
+.container-play-pause{
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+}
+
+.container-play-pause > div {
+  flex: 1;
+}
+.atrazar{
+  position: absolute;
+  top: 50%;
+  right: 80%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  svg{
+    color: #ffffff8a;
+    width: 6vh;
+    height: auto;
+  }
+}
+.adelantar{
+  position: absolute;
+  top: 50%;
+  left: 90%;
+  transform: translate(50%, -50%);
+  display: flex;
+  svg{
+    color: #ffffff8a;
+    width: 6vh;
+    height: auto;
+  }
+}
+
+.button-pau-pla{
+  margin: 6%;
+  //background-color: #00ff00;
+  svg{
+    color: #ffffff8a;
+    width: 10vh;
+    height: auto;
+  }
+}
+
+
+@media screen and (orientation: landscape) {
+  .container-all-controls{
+    height: 30vh;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 15px;
+    padding: 0% 0%;
+    margin: 0% 10% 3% 10%;
+    width: 80%;
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    transition: height 0.3s ease;
+  }
+  .atrazar{
+    position: absolute;
+    top: 50%;
+    right: 80%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    svg{
+      color: #ffffff8a;
+      width: 10vh;
+      height: auto;
+    }
+  }
+  .adelantar{
+    position: absolute;
+    top: 50%;
+    left: 90%;
+    transform: translate(50%, -50%);
+    display: flex;
+    svg{
+      color: #ffffff8a;
+      width: 10vh;
+      height: auto;
+    }
+  }
+
+  .button-pau-pla{
+    margin: 6%;
+    //background-color: #00ff00;
+    svg{
+      color: #ffffff8a;
+      width: 25vh;
+      height: auto;
+    }
+  }
+
+  .progress-bar {
+    width: 94%;
+    height: 2.1vh;
+    border-radius: 25px;
+    margin: 1% 3% 0% 3%;
+    background-color: #ffffff38;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
 }

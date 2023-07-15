@@ -1,8 +1,82 @@
 <ion-content [fullscreen]="true">
-  <div id="video-container">
-    <video id="fullscreen-video" autoplay controls="false">
-      <!-- <source  [src]="ip_address+'/multimedia/'+variableVideosEjercicio?.ALMACENAMIENTOMULTIMEDIA"  type="video/mp4"> -->
-      <source  [src]="ip_address+'/multimedia/sentadillas_con_salto.mp4'"  type="video/mp4">
+  <div id="video-container" (mousemove)="resetTimer()" (mouseleave)="startTimer()">
+    <video id="fullscreen-video" (click)="showControls=!showControls" autoplay controls   (timeupdate)="onVideoTimeUpdate($event)">
+      <source  [src]="ip_address+'/multimedia/'+variableVideosEjercicio?.ALMACENAMIENTOMULTIMEDIA"  type="video/mp4">
+      <!-- <source  [src]="ip_address+'/multimedia/test2.mp4'"  type="video/mp4"> -->
     </video>
+    <div class="container-all-controls"  [class.hide]="!showControls" >
+      <div class="container-text">
+        <div class="info-text" [class.hiddenText]="!showControls"    >
+          <div id="duration"   class="inline-div"></div>&nbsp;/
+          <div id="currentTime"   class="inline-div"></div>
+        </div>
+        <div class="progress-bar"  (click)="onAdditionalProgressClick($event);$event.stopPropagation()">
+          <div class="progress-line" ></div>
+        </div>
+      </div>
+      <div class="container-play-pause"  >
+        <div class="atrazar" (click)="performVideoAction('retroceder');$event.stopPropagation()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-track-prev-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M20.341 4.247l-8 7a1 1 0 0 0 0 1.506l8 7c.647 .565 1.659 .106 1.659 -.753v-14c0 -.86 -1.012 -1.318 -1.659 -.753z" stroke-width="0" fill="currentColor"></path>
+            <path d="M9.341 4.247l-8 7a1 1 0 0 0 0 1.506l8 7c.647 .565 1.659 .106 1.659 -.753v-14c0 -.86 -1.012 -1.318 -1.659 -.753z" stroke-width="0" fill="currentColor"></path>
+         </svg>
+        </div>
+        <ng-container *ngIf="showButtonPause; else play" >
+          <div class="button-pau-pla"  [class.hide]="!showControls"  (click)="performVideoAction('pausar');$event.stopPropagation()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-pause-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M9 4h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h2a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2z" stroke-width="0" fill="currentColor"></path>
+              <path d="M17 4h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h2a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2z" stroke-width="0" fill="currentColor"></path>
+            </svg>
+          </div>
+        </ng-container>
+        <ng-template #play>
+          <div class="button-pau-pla"   [class.hide]="!showControls" (click)="performVideoAction('play');$event.stopPropagation()">
+            <svg xmlns="http://www.w3.org/2000/svg"  class="icon icon-tabler icon-tabler-player-play-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M6 4v16a1 1 0 0 0 1.524 .852l13 -8a1 1 0 0 0 0 -1.704l-13 -8a1 1 0 0 0 -1.524 .852z" stroke-width="0" fill="currentColor"></path>
+            </svg>
+          </div>
+        </ng-template>
+        <div class="adelantar" (click)="performVideoAction('adelantar');$event.stopPropagation()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-track-next-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M2 5v14c0 .86 1.012 1.318 1.659 .753l8 -7a1 1 0 0 0 0 -1.506l-8 -7c-.647 -.565 -1.659 -.106 -1.659 .753z" stroke-width="0" fill="currentColor"></path>
+            <path d="M13 5v14c0 .86 1.012 1.318 1.659 .753l8 -7a1 1 0 0 0 0 -1.506l-8 -7c-.647 -.565 -1.659 -.106 -1.659 .753z" stroke-width="0" fill="currentColor"></path>
+         </svg>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="showButtonSound; else sound">
+      <div class="sound-acction" (click)="performVideoAction('muted');$event.stopPropagation()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-volume" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M15 8a5 5 0 0 1 0 8"></path>
+          <path d="M17.7 5a9 9 0 0 1 0 14"></path>
+          <path d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5"></path>
+        </svg>
+      </div>
+    </ng-container>
+    <ng-template #sound>
+      <div class="sound-acction" (click)="performVideoAction('sound');$event.stopPropagation()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-volume-off" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M15 8a5 5 0 0 1 1.912 4.934m-1.377 2.602a5 5 0 0 1 -.535 .464"></path>
+          <path d="M17.7 5a9 9 0 0 1 2.362 11.086m-1.676 2.299a9 9 0 0 1 -.686 .615"></path>
+          <path d="M9.069 5.054l.431 -.554a.8 .8 0 0 1 1.5 .5v2m0 4v8a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l1.294 -1.664"></path>
+          <path d="M3 3l18 18"></path>
+        </svg>
+      </div>
+    </ng-template>
+    <div class="regresar" >
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M5 12l14 0"></path>
+        <path d="M5 12l6 6"></path>
+        <path d="M5 12l6 -6"></path>
+     </svg>
+    </div>
   </div>
+
 </ion-content>
