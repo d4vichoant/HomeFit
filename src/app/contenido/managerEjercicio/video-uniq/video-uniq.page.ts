@@ -5,6 +5,9 @@ import { ApiServiceService } from '../../../api-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ToastController } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
+import { ScreenOrientation,OrientationLockOptions } from '@capacitor/screen-orientation';
+
+
 
 @Component({
   selector: 'app-video-uniq',
@@ -44,6 +47,16 @@ export class VideoUniqPage implements OnInit {
       this.validateSesion();
       //this.test();
       window.addEventListener("orientationchange", this.onOrientationChange);
+      ScreenOrientation.unlock()
+      .then(() => {
+        const lockOptions: OrientationLockOptions = {
+          orientation: 'landscape',
+        };
+        ScreenOrientation.lock(lockOptions);
+      })
+      .catch((error) => {
+        console.error('Error setting screen orientation', error);
+      });
     } catch (error) {
       this.handleError();
     }
@@ -59,6 +72,16 @@ export class VideoUniqPage implements OnInit {
       this.validateSesion();
       //this.test();
       window.addEventListener("orientationchange", this.onOrientationChange);
+      ScreenOrientation.unlock()
+      .then(() => {
+        const lockOptions: OrientationLockOptions = {
+          orientation: 'landscape',
+        };
+        ScreenOrientation.lock(lockOptions);
+      })
+      .catch((error) => {
+        console.error('Error setting screen orientation', error);
+      });
     } catch (error) {
       this.handleError();
     }

@@ -180,6 +180,18 @@ video::-webkit-media-controls {
 
 
 @media screen and (orientation: landscape) {
+  .hide {
+    height: 0; /* Altura 0 para ocultar el elemento */
+    svg{
+      display: none;
+    }
+  }
+  .hiddenText{
+    div{
+      display: none;
+    }
+    display: none;
+  }
   .container-all-controls{
     height: 30vh;
     position: absolute;
