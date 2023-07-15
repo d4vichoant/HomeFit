@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 
 import { IP_ADDRESS } from '../constantes';
-import { ScreenOrientation, OrientationLockOptions } from '@capacitor/screen-orientation';
 
 SwiperCore.use([Pagination]);
 
@@ -52,16 +51,6 @@ export class HomePage implements OnInit {
   ) {}
   ngOnInit(){
 
-    ScreenOrientation.unlock()
-    .then(() => {
-      const lockOptions: OrientationLockOptions = {
-        orientation: 'portrait',
-      };
-      ScreenOrientation.lock(lockOptions);
-    })
-    .catch((error) => {
-      console.error('Error setting screen orientation', error);
-    });
    }
 
    private handleOrientationChange = () => {
