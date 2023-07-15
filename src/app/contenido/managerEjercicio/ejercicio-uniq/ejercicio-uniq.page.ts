@@ -26,8 +26,8 @@ export class EjercicioUniqPage implements OnInit {
   public ip_address = IP_ADDRESS;
   statussound :boolean=true;
   statuslikeup :boolean=true;
-  public isPlaying = true;
   statuslikedown :boolean=true;
+  public isPlaying = true;
   variable!:any;
   variableEjercicios!:any[];
   variableEjerciciositem!:number;
@@ -171,6 +171,17 @@ export class EjercicioUniqPage implements OnInit {
       },
     });
   }
+
+  go_next_page(){
+    const name='video-uniq';
+    this.navController.navigateForward('/' + name, {
+      queryParams: {
+        variableVideosEjercicio: this.variable,
+      }
+    });
+
+  }
+
   go_page(name: string){
     if(this.variableRutinaDiaria){
       this.navController.navigateForward('/' + name, {

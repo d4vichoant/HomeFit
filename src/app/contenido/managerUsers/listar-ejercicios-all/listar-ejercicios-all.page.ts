@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../../../constantes';
 import { ApiServiceService } from '../../../api-service.service'
 import { StatusBar } from '@capacitor/status-bar';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-listar-ejercicios-all',
@@ -40,7 +41,9 @@ export class ListarEjerciciosAllPage implements OnInit {
 
   showsearchbox:boolean=false;
 
+  previusPagecontratoEntrenador:boolean=false;
   constructor(
+    private route: ActivatedRoute,
     private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
@@ -49,10 +52,18 @@ export class ListarEjerciciosAllPage implements OnInit {
 
 
   ngOnInit() {
+    this.recuperarDatos();
     this.validateSesion();
   }
   ionViewDidEnter() {
+    this.recuperarDatos();
     this.validateSesion();
+  }
+
+  recuperarDatos(){
+    this.route.queryParams.subscribe(params => {
+      this.previusPagecontratoEntrenador = params['previusPagecontratoEntrenador'] as any;
+    });
   }
 
   async validateSesion() {
@@ -158,6 +169,16 @@ export class ListarEjerciciosAllPage implements OnInit {
   go_page(name: string){
     this.dataEjercicio=[];
     this.navController.navigateForward('/'+name);
+  }
+  go_pageback(){
+  if(this.previusPagecontratoEntrenador){
+      const name='contrato-entrenador';
+      this.navController.navigateForward('/'+name);
+    }
+    else{
+      const name='main';
+      this.navController.navigateForward('/'+name);
+    }
   }
   public onInputChange(event: any) {
     const currentSearchTerm = event.target.value;

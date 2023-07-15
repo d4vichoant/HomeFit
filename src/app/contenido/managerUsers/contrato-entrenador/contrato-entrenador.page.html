@@ -68,7 +68,7 @@
     <div class="container-triner">
       <div class="item-triner" (click)="go_page_create('data-entrenador',item)" *ngFor="let item of dataEntrenadores">
         <img [src]="ip_address + '/media/perfile/'+item.IMAGEPERSONA" alt="Imagen 2" class="image-triner">
-        <div class="text-triner">
+        <div class="text-triner"><br>
           <h2>{{ obtenerPrimerNombre(item.NOMBREPERSONA) }}</h2>
           <p>{{ calcularEdad(item.FECHANACIMIENTOPERSONA) }}&nbsp;años</p>
         </div>

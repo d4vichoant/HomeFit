@@ -4,15 +4,18 @@
       <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
     </div>
   </div>
-    <div class="container-text" (click)="go_page('main')">
-        <span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M9 14l-4 -4l4 -4"></path>
-          <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
-       </svg></span>
-       <h2 class="subtitle2">Guardados</h2>
-    </div>
+  <div class="portada-bg" (click)="go_pageback()" style="background-image: url('{{ip_address}}/media/images/guardados-all.jpg');">
+     <br>
+     <div class="text-overlay-up"  >
+       <p><span> entrenamientos</span><br>
+        <span >
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M9 14l-4 -4l4 -4"></path>
+            <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
+         </svg></span>  guardados</p>
+     </div>
+   </div>
   <div class="container-body">
     <div class="container"  >
       <div class="item-container" *ngIf="dataEjercicio && dataEjercicio.length > 0" >

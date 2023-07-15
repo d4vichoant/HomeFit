@@ -1,5 +1,5 @@
 ion-content {
-  --background: linear-gradient(0deg, #f0f3f7, #ffffff);
+  --background: linear-gradient(90deg, #cf582ce7, #6e5e69e3);
   height: 100vh;
   overflow: hidden;
 }
@@ -28,7 +28,7 @@ ion-header::after{
 .container-body{
   padding: 0% 0% 10% 0%;
   //background-color: #5660f5;
-  height: 100vh;
+  height: 77vh;
   overflow-y: auto;
   overflow-x: hidden;
   display: block;
@@ -47,7 +47,7 @@ ion-header::after{
 .box {
   margin-bottom: 10px; /* Añadido margen inferior para separar las cajas */
   display: inline-block;
-  width: 31.33%;
+  width: 31.334%;
   height: 100px;
   margin: 0% 1% auto;
   position: relative;
@@ -133,178 +133,30 @@ ion-header::after{
 
 }
 
-.item-container{
-  margin-top: 3%;
+.item-container {
   padding: 1% 0% 0% 0%;
-  //background-color: #a073e293;
-  //border-radius: 15px;
-  //box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-}
-.item-container:first-child {
-  margin: 0% 3%!important;
-  margin-top: 0%;
+  margin: 0 2%;
   //background-color: #6829c793;
-  border-radius: 15px 15px 15px 15px;
   padding: 0;
   .subtitle{
     //padding: 0%!important;
-    background-color: #f6f3ff;
-    padding: 3% 2%;
+/*     padding: 3% 2%;
     border-radius: 15px 15px 0px 15px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2); */
     span{
-      margin-left: 3%;
-      color: #621eb9;
-    }
-  }
-  .postbox{
-    padding: 2% 3%;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    background-color: #eee9fe;
-    border-radius: 15px 0px 15px 15px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-  }
-}
-.item-container:nth-child(2) {
-  margin: 0% 3%!important;
-  margin-top: 0%;
-  //background-color: #6829c793;
-  border-radius: 15px 15px 15px 15px;
-  padding: 0;
-  .subtitle{
-    //padding: 0%!important;
-    background-color: #ded5ff;
-    padding: 3% 2%;
-    border-radius: 15px 15px 0px 15px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-    span{
-      margin-left: 3%;
-      color: #621eb9;
-    }
-  }
-  .postbox{
-    padding: 2% 3%;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    background-color: #c7b4fe;
-    border-radius: 15px 0px 15px 15px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-  }
-}
-
-.item-container:nth-child(3) {
-  margin: 0% 3%!important;
-  margin-top: 0%;
-  //background-color: #6829c793;
-  border-radius: 15px 15px 15px 15px;
-  padding: 0;
-  .subtitle{
-    //padding: 0%!important;
-    background-color: #ac89fc;
-    padding: 3% 2%;
-    border-radius: 15px 15px 0px 15px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-    span{
-      margin-left: 3%;
+      margin-left: 0%;
+      font-family: Raleway-Bold;
+      font-size: 1.4rem;
       color: #ffffff;
     }
   }
   .postbox{
-    padding: 2% 3%;
+    padding: 1% 0% 0% 0%;
     justify-content: center;
     align-content: center;
     align-items: center;
-    background-color: #9259f9;
-    border-radius: 15px 0px 15px 15px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-  }
-}
-
-.item-container:nth-child(4) {
-  margin: 0% 3%!important;
-  margin-top: 0%;
-  //background-color: #6829c793;
-  border-radius: 15px 15px 15px 15px;
-  padding: 0;
-  .subtitle{
-    //padding: 0%!important;
-    background-color: #ac89fc;
-    padding: 3% 2%;
-    border-radius: 15px 15px 0px 15px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-    span{
-      margin-left: 3%;
-      color: #ffffff;
-    }
-  }
-  .postbox{
-    padding: 2% 3%;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    background-color: #c7b4fe;
-    border-radius: 15px 0px 15px 15px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-  }
-}
-
-
-.item-container:nth-child(5) {
-  margin: 0% 3%!important;
-  margin-top: 0%;
-  //background-color: #6829c793;
-  border-radius: 15px 15px 15px 15px;
-  padding: 0;
-  .subtitle{
-    //padding: 0%!important;
-    background-color: #ded5ff;
-    padding: 3% 2%;
-    border-radius: 15px 15px 0px 15px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-    span{
-      margin-left: 3%;
-      color: #621eb9;
-    }
-  }
-  .postbox{
-    padding: 2% 3%;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    background-color: #eee9fe;
-    border-radius: 15px 0px 15px 15px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-  }
-}
-
-
-.item-container:nth-child(6) {
-  margin: 0% 3%!important;
-  margin-top: 0%;
-  //background-color: #6829c793;
-  border-radius: 15px 15px 15px 15px;
-  padding: 0;
-  .subtitle{
-    //padding: 0%!important;
-    background-color: #ded5ff;
-    padding: 3% 2%;
-    border-radius: 15px 15px 0px 15px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-    span{
-      margin-left: 3%;
-      color: #621eb9;
-    }
-  }
-  .postbox{
-    padding: 2% 3%;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    background-color: #c7b4fe;
-    border-radius: 15px 0px 15px 15px;
+    background-color: #ffffff;
+    border-radius: 15px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
   }
 }
@@ -331,5 +183,50 @@ ion-header::after{
     font-family: Raleway-BoldItalic;
     font-size: .7rem;
     margin-right: 10%;
+  }
+}
+
+.portada-bg{
+  position: relative;
+  top: 0%;
+  left: 0;
+  width: 100%;
+  height: 23vh; /* Establece una altura máxima para el div */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  //border-radius: 0px 0px 30px 30px;
+  overflow: hidden;
+}
+
+.portada-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg,#cf582caf,#8c6e70a9);
+}
+.text-overlay-up {
+  position: absolute;
+  bottom: 0%;
+  right: 0%;
+  padding: 0% 6% 6% 0%;
+  backdrop-filter: blur(5px);
+  width: 100%;
+}
+
+.text-overlay-up p {
+  margin: 0;
+  text-align: end;
+  font-family: Raleway-ExtraBold;
+  font-size: 2.5rem;
+  color: #ffffff;
+  line-height: 1;
+  span{
+    color: #ffffff70;
+    font-family: Raleway-ExtraLight;
+    font-size: 2.8rem;
   }
 }

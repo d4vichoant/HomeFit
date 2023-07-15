@@ -87,7 +87,11 @@ export class ContratoEntrenadorPage implements OnInit {
   }
 
   go_page(name: string){
-    this.navController.navigateForward('/'+name);
+    this.navController.navigateForward('/' + name, {
+      queryParams: {
+        previusPagecontratoEntrenador: true,
+      }
+    });
   }
   hideDiv() {
     var div = document.querySelector('.fullscreen-bg');

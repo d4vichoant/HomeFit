@@ -218,6 +218,10 @@ const routes: Routes = [
     path: 'listar-sesiones-all',
     loadChildren: () => import('./contenido/managerUsers/listar-sesiones-all/listar-sesiones-all.module').then( m => m.ListarSesionesAllPageModule)
   },
+  {
+    path: 'video-uniq',
+    loadChildren: () => import('./contenido/managerEjercicio/video-uniq/video-uniq.module').then( m => m.VideoUniqPageModule)
+  },
 
 
 

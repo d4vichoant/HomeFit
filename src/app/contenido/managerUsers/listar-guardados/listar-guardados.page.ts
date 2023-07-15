@@ -4,6 +4,7 @@ import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { ApiServiceService } from '../../../api-service.service';
 import { StatusBar } from '@capacitor/status-bar';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-listar-guardados',
@@ -45,8 +46,9 @@ export class ListarGuardadosPage implements OnInit {
   dataBookMark!:any[];
 
   currentDate!: string;
-
+  previusPagePerfile:boolean=false;
   constructor(
+    private route: ActivatedRoute,
     private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
@@ -54,18 +56,28 @@ export class ListarGuardadosPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    //this.validateSesion();
+    this.recuperarDatos();
+    this.validateSesion();
     //this.test();
   }
   ionViewDidEnter() {
+    this.recuperarDatos();
     this.validateSesion();
-    //this.test();
+    //this.test();f
   }
   StatusBar(){
     StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
     StatusBar.setBackgroundColor({ color: '#ffffff' });
   }
+
+  recuperarDatos(){
+    this.route.queryParams.subscribe(params => {
+      this.previusPagePerfile = params['previusPagePerfile'] as any;
+    });
+  }
+
+
   validateSesion(){
     try{
       this.storage.get('sesion').then((sesion) => {
@@ -345,6 +357,16 @@ export class ListarGuardadosPage implements OnInit {
     //this.router.navigate(['/'+name], { state: { previousPage: 'crear-ejercicio' } });
     this.navController.navigateForward('/'+name);
   }
+  go_pageback(){
+    if(this.previusPagePerfile){
+        const name='perfile';
+        this.navController.navigateForward('/'+name);
+      }
+      else{
+        const name='main';
+        this.navController.navigateForward('/'+name);
+      }
+    }
 
   async presentCustomToast(message: string, color: string) {
     const toast = await this.toastController.create({

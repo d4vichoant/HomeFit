@@ -35,7 +35,7 @@
         </div>
       </ng-template>
     </div>
-    <div class="bottom-right-button" >
+    <!-- <div class="bottom-right-button" >
       <div *ngIf="statuslikedown;else otherstatuslikedown" (click)="statuslikedown=!statuslikedown"  style="transform: scaleX(-1);">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-thumb-down" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -66,7 +66,7 @@
           </svg>
         </div>
       </ng-template>
-    </div>
+    </div> -->
     <div class="bottom-left-button">
       <h1>{{variable?.NOMBREEJERCICIO}}</h1>
     </div>
@@ -132,7 +132,7 @@
       {{variable?.DESCRIPCIONEJERCICIO}}
     </div>
   </div>
-  <div class="container-button">
+  <div class="container-button" (click)="go_next_page()">
     <ion-button  expand="block" fill="clear">Comenzar Entrenamiento</ion-button>
   </div>
   <div class="button-container" *ngIf="variableEjercicios">

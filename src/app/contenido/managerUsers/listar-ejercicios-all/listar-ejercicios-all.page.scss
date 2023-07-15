@@ -1,5 +1,5 @@
 ion-content {
-  --background: linear-gradient(0deg, #ffffff, #ffffff);
+  --background: linear-gradient(0deg, #0e3055, #0e3055);
   height: 100vh;
   overflow: hidden;
 }
@@ -7,16 +7,6 @@ ion-infinite-scroll{
   padding-bottom: 10%;
 }
 
-.toolbar-header{
-  z-index: 99;
-  background: transparent;
-  padding: 5% 3% 0% 3%;
-  margin: 0;
-  --background: transparent;
-  ion-title{
-    background-color: transparent;
-  }
-}
 .onboard-top{
   padding-top: 0%;
   margin-top:0%;
@@ -140,6 +130,9 @@ ion-header::after{
 
 
 .text {
+  width: 100%;
+  backdrop-filter: blur(5px);
+  border-radius: 0px 0px 15px 15px;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -198,4 +191,73 @@ ion-header::after{
   height: 100%;
   border-radius: 15px;
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)); /* Ajusta los valores del gradiente según tus preferencias */
+}
+
+
+
+.portada-bg{
+  position: relative;
+  top: 0%;
+  left: 0;
+  width: 100%;
+  height: 23vh; /* Establece una altura máxima para el div */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  //border-radius: 0px 0px 30px 30px;
+  overflow: hidden;
+  z-index: 5;
+}
+.container-up-search{
+  position: absolute;
+  bottom: 0%;
+  left:  0;
+  padding: 0% 0% 6% 6%;
+}
+
+
+.portada-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(0deg,#0e3055,#ffffff2f);
+}
+.text-overlay-up {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  padding: 6% 6% 0% 0%;
+  width: 100%;
+}
+
+.text-overlay-up p {
+  margin: 0;
+  text-align: end;
+  font-family: Raleway-ExtraBold;
+  font-size: 2.5rem;
+  color: #ffffff;
+  line-height: 1;
+  span{
+    color: #ffffff70;
+    font-family: Raleway-ExtraLight;
+    font-size: 2.8rem;
+  }
+}
+
+ion-list{
+  background-color: #0e3055;
+  backdrop-filter: blur(10px);
+  ion-item{
+    --background: #0e3055;
+    border-radius: 15px;
+  }
+}
+
+.search{
+  padding: 0% 3%;
+  background: #0e3055;
+  margin: -3px;
 }

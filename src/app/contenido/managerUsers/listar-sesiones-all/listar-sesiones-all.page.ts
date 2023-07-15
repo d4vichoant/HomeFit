@@ -42,6 +42,8 @@ export class ListarSesionesAllPage implements OnInit {
   previusPageMain:boolean=false;
   previusPagelistarGuardados:boolean=false;
   previusPagelistarSesiones:boolean=false;
+  previusPagecontratoEntrenador:boolean=false;
+
   constructor(
     private route: ActivatedRoute,
     private navController: NavController,
@@ -66,6 +68,8 @@ export class ListarSesionesAllPage implements OnInit {
       this.previusPageMain = params['previusPageMain'] as boolean|| false;
       this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as boolean|| false;
       this.previusPagelistarSesiones  = params['previusPagelistarSesiones'] as boolean|| false;
+      this.previusPagecontratoEntrenador  = params['previusPagecontratoEntrenador'] as boolean|| false;
+
     });
   }
   async validateSesion() {
@@ -181,6 +185,9 @@ export class ListarSesionesAllPage implements OnInit {
           previusPagelistarSesiones:'',
         }
       });
+    }else if(this.previusPagecontratoEntrenador){
+      const name='contrato-entrenador';
+      this.navController.navigateForward('/'+name);
     }else{
       const name='main';
       this.navController.navigateForward('/'+name);

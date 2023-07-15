@@ -92,7 +92,7 @@ export class PerfilePage implements OnInit {
   }
   private chanceColorFooter(){
     if(this.dataPerfil && this.dataPerfil[0].IDROLUSUARIO===1){
-      document.documentElement.style.setProperty('--background-ip-address-perfile','linear-gradient(0deg, #00000060, #33333394),url('+IP_ADDRESS+'/media/images/backgroundMain.jpg) no-repeat center center / cover');
+      document.documentElement.style.setProperty('--background-ip-address-perfile','linear-gradient(0deg, #00000060, #33333394),url('+IP_ADDRESS+'/media/perfile/perfilebackground.jpg) no-repeat center center / cover');
       document.documentElement.style.setProperty('--activate-foot10',' transparent');
       document.documentElement.style.setProperty('--activate-foot11',' #ffffffab');
       document.documentElement.style.setProperty('--activate-foot12',' transparent');
@@ -157,7 +157,12 @@ export class PerfilePage implements OnInit {
 
   }
   go_page(name: string){
-    this.navController.navigateForward('/'+name);
+    this.navController.navigateForward('/' + name, {
+      queryParams: {
+        previusPagePerfile: true,
+      }
+    });
+
   }
   updateNewPassword(item :any){
     if (this.password && this.confirmPassword){

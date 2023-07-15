@@ -38,7 +38,7 @@ export class ListarRutinasAllPage implements OnInit {
   previusPageMain:boolean=false;
   previusPagelistarGuardados:boolean=false;
   previusPagelistarSesiones:boolean=false;
-
+  previusPagecontratoEntrenador:boolean=false;
   showsearchbox:boolean=false;
   constructor(
     private route: ActivatedRoute,
@@ -63,6 +63,7 @@ export class ListarRutinasAllPage implements OnInit {
       this.previusPageMain = params['previusPageMain'] as boolean|| false;
       this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as boolean|| false;
       this.previusPagelistarSesiones  = params['previusPagelistarSesiones'] as boolean|| false;
+      this.previusPagecontratoEntrenador  = params['previusPagecontratoEntrenador'] as boolean|| false;
     });
   }
 
@@ -177,7 +178,11 @@ export class ListarRutinasAllPage implements OnInit {
           previusPagelistarSesiones:'',
         }
       });
-    }else{
+    }else if(this.previusPagecontratoEntrenador){
+      const name='contrato-entrenador';
+      this.navController.navigateForward('/'+name);
+    }
+    else{
       const name='main';
       this.navController.navigateForward('/'+name);
     }

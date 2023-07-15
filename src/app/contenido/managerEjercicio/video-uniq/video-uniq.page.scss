@@ -1,0 +1,18 @@
+
+#video-container {
+  width: 100vh; /* Ancho igual al alto de la ventana */
+  height: 100vw; /* Alto igual al ancho de la ventana */
+  transform-origin: top left;
+  transform: rotate(-90deg) translateX(-100%);
+}
+
+#fullscreen-video {
+  width: 100%; /* Ancho igual al 100% del contenedor */
+  height: 100%; /* Alto igual al 100% del contenedor */
+  object-fit: cover; /* Escalar el video para cubrir toda el área */
+}
+#video-container.horizontal {
+  width: 100vw; /* Ancho igual al ancho de la ventana */
+  height: 100vh; /* Alto igual al alto de la ventana */
+  transform: none;
+}
