@@ -1,5 +1,8 @@
 <ion-content [fullscreen]="true">
-  <video id="fullscreen-video" controls autoplay >
-    <source [src]="ip_address+'/multimedia/'+variableVideosEjercicio.ALMACENAMIENTOMULTIMEDIA" type="video/mp4">
-  </video>
+  <div id="video-container">
+    <video id="fullscreen-video" autoplay controls="false">
+      <!-- <source  [src]="ip_address+'/multimedia/'+variableVideosEjercicio?.ALMACENAMIENTOMULTIMEDIA"  type="video/mp4"> -->
+      <source  [src]="ip_address+'/multimedia/sentadillas_con_salto.mp4'"  type="video/mp4">
+    </video>
+  </div>
 </ion-content>

@@ -31,8 +31,8 @@ export class VideoUniqPage implements OnInit {
   ngOnInit() {
     try {
       this.recuperarDatos();
-      this.validateSesion();
-      //this.test();
+      //this.validateSesion();
+      this.test();
       window.addEventListener("orientationchange", this.onOrientationChange);
     } catch (error) {
       this.handleError();
@@ -46,12 +46,16 @@ export class VideoUniqPage implements OnInit {
   ionViewDidEnter() {
     try {
       this.recuperarDatos();
-      this.validateSesion();
-      //this.test();
+      //this.validateSesion();
+      this.test();
       window.addEventListener("orientationchange", this.onOrientationChange);
     } catch (error) {
       this.handleError();
     }
+  }
+  test(){
+    this.StatusBar();
+    this.loading=false;
   }
 
   validateSesion(){

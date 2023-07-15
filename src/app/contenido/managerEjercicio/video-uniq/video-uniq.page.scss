@@ -1,4 +1,9 @@
 
+ion-content {
+  --background: linear-gradient(0deg, #0e3055, #0e3055);
+  height: 100vh;
+  overflow: hidden;
+}
 #video-container {
   width: 100vh; /* Ancho igual al alto de la ventana */
   height: 100vw; /* Alto igual al ancho de la ventana */
@@ -11,8 +16,45 @@
   height: 100%; /* Alto igual al 100% del contenedor */
   object-fit: cover; /* Escalar el video para cubrir toda el área */
 }
+
 #video-container.horizontal {
   width: 100vw; /* Ancho igual al ancho de la ventana */
   height: 100vh; /* Alto igual al alto de la ventana */
   transform: none;
+}
+
+video::-webkit-media-controls-mute-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-volume-slider {
+  display: none !important;
+}
+video::-webkit-media-controls-fullscreen-button {
+  display: none !important;
+}
+video::-webkit-media-controls-overflow-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-timeline {
+  height: 10px !important;
+}
+
+video::-webkit-media-controls-time-remaining-display {
+  font-size: 14px !important;
+}
+
+/* Modificar el círculo de progreso */
+video::-webkit-media-controls-timeline-thumb {
+  background-color: #FF0000 !important; /* Cambia el color de fondo del círculo */
+  width: 20px !important; /* Ajusta el ancho del círculo */
+  height: 20px !important; /* Ajusta la altura del círculo */
+  border-radius: 50% !important; /* Establece la forma redondeada del círculo */
+}
+
+/* Modificar la línea de progreso */
+video::-webkit-media-controls-timeline-progress-bar {
+  background-color: #00FF00 !important; /* Cambia el color de fondo de la línea de progreso */
+  height: 10px !important; /* Ajusta la altura de la línea de progreso */
 }
