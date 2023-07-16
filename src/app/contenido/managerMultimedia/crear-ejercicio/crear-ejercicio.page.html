@@ -187,9 +187,9 @@
                 </div>
               </div>
               <div class="item-comment-p">
-                <ion-text *ngIf="data.OBSERVACIONPROGRESO; else sinComentarios" >
+            <!--     <ion-text *ngIf="data.OBSERVACIONPROGRESO; else sinComentarios" >
                   {{ data.OBSERVACIONPROGRESO }}
-                </ion-text>
+                </ion-text> -->
 
                 <ng-template #sinComentarios>
                   <ion-text><span>*Sin Comentarios </span></ion-text>
@@ -239,9 +239,9 @@
                     </div>
                   </div>
                   <div class="item-comment-p">
-                    <ion-text *ngIf="dataComentarioporEjercicioUniq.OBSERVACIONPROGRESO; else sinComentarios">
+            <!--         <ion-text *ngIf="dataComentarioporEjercicioUniq.OBSERVACIONPROGRESO; else sinComentarios">
                       {{ dataComentarioporEjercicioUniq.OBSERVACIONPROGRESO }}
-                    </ion-text>
+                    </ion-text> -->
                     <ng-template #sinComentarios>
                       <ion-text><span>*Sin Comentarios </span></ion-text>
                     </ng-template>

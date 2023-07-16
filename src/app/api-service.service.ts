@@ -233,6 +233,9 @@ export class ApiServiceService {
   ObtenerComentarioPorEjercicio(idEjercicio:number){
     return this.http.get(IP_ADDRESS+'/multimedia/obtenerComentariosporEjercicio/'+idEjercicio);
   }
+  insertarCalificaionEjercicio(data:any){
+    return this.http.post(IP_ADDRESS+'/multimedia/insertarCalificaionEjercicio/',data);
+  }
   CreteDataRutinas(data:any): Observable<any>{
     return this.http.post(IP_ADDRESS+'/programacion/CreateDataRutina/',data );
   }
@@ -311,5 +314,8 @@ export class ApiServiceService {
   }
   obtenercontarTypes(nombreTabla:string):Observable<any>{
     return this.http.get(IP_ADDRESS+'/programacion/contarTypes/'+nombreTabla);
+  }
+  createDataProgresoUsuario(data:any): Observable<any>{
+    return this.http.post(IP_ADDRESS+'/programacion/createDataProgresoUsuario/',data );
   }
 }

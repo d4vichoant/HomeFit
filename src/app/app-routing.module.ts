@@ -222,6 +222,10 @@ const routes: Routes = [
     path: 'video-uniq',
     loadChildren: () => import('./contenido/managerEjercicio/video-uniq/video-uniq.module').then( m => m.VideoUniqPageModule)
   },
+  {
+    path: 'half-time',
+    loadChildren: () => import('./contenido/managerEjercicio/half-time/half-time.module').then( m => m.HalfTimePageModule)
+  },
 
 
 

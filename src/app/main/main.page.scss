@@ -187,7 +187,6 @@ ion-content {
   overflow: hidden;
   border-radius: 15px 0px;
   width: 100%;
-  backdrop-filter: blur(2px);
 }
 .text-demo {
   position: absolute;
@@ -272,13 +271,13 @@ ion-content {
 }
 .span1{
   font-family: Raleway-Bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color:  #ffffffaf;
   word-break: break-all;
 }
 .span2{
   font-family: Raleway-Bold;
-  font-size: 1rem;
+  font-size: .9rem;
   color:  #838284e7;
   word-break: break-all;
 }

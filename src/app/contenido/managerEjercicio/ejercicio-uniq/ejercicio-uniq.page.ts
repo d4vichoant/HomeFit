@@ -24,9 +24,6 @@ export class EjercicioUniqPage implements OnInit {
   public dataEjercicio!: any[];
 
   public ip_address = IP_ADDRESS;
-  statussound :boolean=true;
-  statuslikeup :boolean=true;
-  statuslikedown :boolean=true;
   public isPlaying = true;
   variable!:any;
   variableEjercicios!:any[];
@@ -42,14 +39,19 @@ export class EjercicioUniqPage implements OnInit {
   previusPagelistarSesionesRutinasAll!:any;
   previusPagelistarEjercicioAll!:any;
 
+  cacheBuster: number;
   constructor(private route: ActivatedRoute,
     private apiService: ApiServiceService,
     private storage: Storage,
     private navController: NavController,
     public toastController: ToastController,
-    private router: Router) { }
+    private router: Router) {
+      this.cacheBuster = Date.now();
+      this.inicio();
+    }
 
   ngOnInit() {
+    this.inicio();
     try {
       this.recuperarDatos();
       this.validateSesion();
@@ -59,6 +61,7 @@ export class EjercicioUniqPage implements OnInit {
     }
   }
   ionViewDidEnter() {
+    this.inicio();
     try {
       this.recuperarDatos();
       this.validateSesion();
@@ -143,7 +146,6 @@ export class EjercicioUniqPage implements OnInit {
       queryParams: {
         variableEjercicio: elementoEncontrado,
         variableParamentro: this.variableParamentro,
-        variableEjercicios: this.variableEjercicios,
         variableEjerciciositem: this.variableEjerciciositem,
         variableRutinaDiaria: this.variableRutinaDiaria,
         variableprogramarrutinas: this.variableprogramarrutinas,
@@ -152,6 +154,7 @@ export class EjercicioUniqPage implements OnInit {
         previusPagelistarGuardados: this.previusPagelistarGuardados,
       },
     });
+    this.inicio();
   }
   previusEjercicio() {
     this.variableEjerciciositem --;
@@ -177,6 +180,17 @@ export class EjercicioUniqPage implements OnInit {
     this.navController.navigateForward('/' + name, {
       queryParams: {
         variableVideosEjercicio: this.variable,
+        variableParametro:this.variableParamentro,
+        variableRutinaDiaria :this.variableRutinaDiaria,
+        variableprogramarrutinas:this.variableprogramarrutinas,
+        variableSesiones: this.variableSesiones,
+        previusPageMain:this.previusPageMain,
+        previusPagelistarGuardados:this.previusPagelistarGuardados,
+        variableEjercicios :this.variableEjercicios,
+        variableEjerciciositem:this.variableEjerciciositem,
+        previusPagelistarRutinasAll: this.previusPagelistarRutinasAll,
+        previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
+        previusPagelistarEjercicioAll:this.previusPagelistarEjercicioAll,
       }
     });
 
@@ -282,7 +296,23 @@ export class EjercicioUniqPage implements OnInit {
         }
       });
     }
+    this.inicio();
   }
+  inicio(){
+    // Reiniciar las variables a null
+   this.variable = {} || null ||undefined;
+   this.variableParamentro = null;
+   this.variableRutinaDiaria = null;
+   this.variableprogramarrutinas = null;
+   this.variableSesiones = null;
+   this.previusPageMain = null;
+   this.previusPagelistarGuardados = null;
+   this.variableEjercicios = [];
+   this.variableEjerciciositem = -1;
+   this.previusPagelistarRutinasAll = null;
+   this.previusPagelistarSesionesRutinasAll = null;
+   this.previusPagelistarEjercicioAll = null;
+ }
   obtenerDuracionEnMinutos(tiempo:string):number {
     const tiempoPartes = tiempo.split(":");
     const horas = parseInt(tiempoPartes[0]);
@@ -322,9 +352,7 @@ export class EjercicioUniqPage implements OnInit {
     // Mantén el formato original
     return duracion;
   }
-  chanstatussound(){
-    this.statussound=!this.statussound;
-  }
+
   StatusBar(){
     StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
