@@ -39,7 +39,14 @@ export class EjercicioUniqPage implements OnInit {
   previusPagelistarSesionesRutinasAll!:any;
   previusPagelistarEjercicioAll!:any;
 
+  IDPROGRESOUSUARIO!:any;
+
+  videoElement!: HTMLVideoElement;
+  videoSrc!:string;
   cacheBuster: number;
+
+  previousVideoSrc!: string; // Variable para almacenar la URL anterior del video
+
   constructor(private route: ActivatedRoute,
     private apiService: ApiServiceService,
     private storage: Storage,
@@ -55,6 +62,7 @@ export class EjercicioUniqPage implements OnInit {
     try {
       this.recuperarDatos();
       this.validateSesion();
+      this.videoSrc=this.ip_address+'/multimedia/'+this.variable?.ALMACENAMIENTOMULTIMEDIA;
       //this.test();
     } catch (error) {
       this.handleError();
@@ -65,6 +73,8 @@ export class EjercicioUniqPage implements OnInit {
     try {
       this.recuperarDatos();
       this.validateSesion();
+      this.videoSrc=this.ip_address+'/multimedia/'+this.variable?.ALMACENAMIENTOMULTIMEDIA;
+
       //this.test();
     } catch (error) {
       this.handleError();
@@ -102,7 +112,7 @@ export class EjercicioUniqPage implements OnInit {
     this.storage.remove('sesion');
   }
 
-  recuperarDatos(){
+    recuperarDatos(){
     this.route.queryParams.subscribe(params => {
       this.variable = params['variableEjercicio'] as any || null;
       this.variableParamentro = params['variableParametro'] as any || null;
@@ -115,7 +125,8 @@ export class EjercicioUniqPage implements OnInit {
       this.variableEjerciciositem = params['variableEjerciciositem'] as number;
       this.previusPagelistarRutinasAll= params['previusPagelistarRutinasAll'] as any || null;
       this.previusPagelistarSesionesRutinasAll= params['previusPagelistarSesionesRutinasAll'] as any || null;;
-      this.previusPagelistarEjercicioAll= params['previusPagelistarEjercicioAll'] as any || null;;
+      this.previusPagelistarEjercicioAll= params['previusPagelistarEjercicioAll'] as any || null;
+      this.IDPROGRESOUSUARIO= params['IDPROGRESOUSUARIO'] as any || null;
     });
   }
   handleButtonClick(): void {
@@ -141,17 +152,21 @@ export class EjercicioUniqPage implements OnInit {
   nextEjercicio() {
     this.variableEjerciciositem ++;
     const elementoEncontrado = this.dataEjercicio.find(item => item.IDEJERCICIO === this.variableEjercicios[this.variableEjerciciositem]);
-    this.router.navigate(['.'], {
-      relativeTo: this.route,
+    this.navController.navigateRoot('/ejercicio-uniq', {
       queryParams: {
         variableEjercicio: elementoEncontrado,
-        variableParamentro: this.variableParamentro,
-        variableEjerciciositem: this.variableEjerciciositem,
+        variableParametro: this.variableParamentro,
         variableRutinaDiaria: this.variableRutinaDiaria,
         variableprogramarrutinas: this.variableprogramarrutinas,
         variableSesiones: this.variableSesiones,
         previusPageMain: this.previusPageMain,
         previusPagelistarGuardados: this.previusPagelistarGuardados,
+        variableEjercicios: this.variableEjercicios,
+        variableEjerciciositem:this.variableEjerciciositem,
+        previusPagelistarRutinasAll: this.previusPagelistarRutinasAll,
+        previusPagelistarSesionesRutinasAll: this.previusPagelistarSesionesRutinasAll,
+        previusPagelistarEjercicioAll: this.previusPagelistarEjercicioAll,
+        IDPROGRESOUSUARIO:this.IDPROGRESOUSUARIO,
       },
     });
     this.inicio();
@@ -159,26 +174,31 @@ export class EjercicioUniqPage implements OnInit {
   previusEjercicio() {
     this.variableEjerciciositem --;
     const elementoEncontrado = this.dataEjercicio.find(item => item.IDEJERCICIO === this.variableEjercicios[this.variableEjerciciositem]);
-    this.router.navigate(['.'], {
-      relativeTo: this.route,
+    this.navController.navigateRoot('/ejercicio-uniq' , {
       queryParams: {
         variableEjercicio: elementoEncontrado,
-        variableParamentro: this.variableParamentro,
-        variableEjercicios: this.variableEjercicios,
-        variableEjerciciositem: this.variableEjerciciositem,
-        variableRutinaDiaria: this.variableRutinaDiaria,
-        variableprogramarrutinas: this.variableprogramarrutinas,
-        variableSesiones: this.variableSesiones,
-        previusPageMain: this.previusPageMain,
-        previusPagelistarGuardados: this.previusPagelistarGuardados,
+        variableParametro:this.variableParamentro,
+        variableRutinaDiaria:this.variableRutinaDiaria,
+        variableprogramarrutinas:this.variableprogramarrutinas,
+        variableSesiones:this.variableSesiones,
+        previusPageMain:this.previusPageMain,
+        previusPagelistarGuardados:this.previusPagelistarGuardados,
+        variableEjercicios:this.variableEjercicios,
+        variableEjerciciositem:this.variableEjerciciositem,
+        previusPagelistarRutinasAll:this.previusPagelistarRutinasAll,
+        previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
+        previusPagelistarEjercicioAll:this.previusPagelistarEjercicioAll,
+        IDPROGRESOUSUARIO:this.IDPROGRESOUSUARIO,
       },
     });
+    this.inicio();
   }
 
   go_next_page(){
     const name='video-uniq';
     this.navController.navigateForward('/' + name, {
       queryParams: {
+        variableEjercicio:this.variable,
         variableVideosEjercicio: this.variable,
         variableParametro:this.variableParamentro,
         variableRutinaDiaria :this.variableRutinaDiaria,
@@ -191,6 +211,7 @@ export class EjercicioUniqPage implements OnInit {
         previusPagelistarRutinasAll: this.previusPagelistarRutinasAll,
         previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
         previusPagelistarEjercicioAll:this.previusPagelistarEjercicioAll,
+        IDPROGRESOUSUARIO:this.IDPROGRESOUSUARIO,
       }
     });
 
@@ -207,6 +228,7 @@ export class EjercicioUniqPage implements OnInit {
           previusPagelistarGuardados:this.previusPagelistarGuardados,
           variableParametro:"",
           variableprogramarrutinas:"",
+          IDPROGRESOUSUARIO:"",
         }
       });
     }else if (this.variableParamentro){
@@ -219,6 +241,7 @@ export class EjercicioUniqPage implements OnInit {
           previusPagelistarGuardados:this.previusPagelistarGuardados,
           variableParametro:this.variableParamentro,
           variableprogramarrutinas:"",
+          IDPROGRESOUSUARIO:"",
         }
       });
     }else if(this.variableprogramarrutinas){
@@ -231,6 +254,7 @@ export class EjercicioUniqPage implements OnInit {
           previusPagelistarGuardados:this.previusPagelistarGuardados,
           variableParametro:"",
           variableprogramarrutinas:this.variableprogramarrutinas,
+          IDPROGRESOUSUARIO:"",
         }
       });
     }else if(this.previusPageMain){
@@ -243,6 +267,7 @@ export class EjercicioUniqPage implements OnInit {
           previusPagelistarGuardados:"",
           variableParametro:"",
           variableprogramarrutinas:"",
+          IDPROGRESOUSUARIO:"",
         }
       });
     }else if(this.previusPagelistarGuardados){
@@ -255,6 +280,7 @@ export class EjercicioUniqPage implements OnInit {
           previusPagelistarGuardados:this.previusPagelistarGuardados,
           variableParametro:"",
           variableprogramarrutinas:"",
+          IDPROGRESOUSUARIO:"",
         }
       });
     }else if(this.previusPagelistarEjercicioAll){
@@ -267,6 +293,7 @@ export class EjercicioUniqPage implements OnInit {
           previusPagelistarEjercicioAll:this.previusPagelistarEjercicioAll,
           variableParametro:"",
           variableprogramarrutinas:"",
+          IDPROGRESOUSUARIO:"",
         }
       });
     }else if(this.previusPagelistarRutinasAll){
@@ -280,6 +307,7 @@ export class EjercicioUniqPage implements OnInit {
           variableParametro:"",
           variableprogramarrutinas:"",
           previusPagelistarRutinasAll:this.previusPagelistarRutinasAll,
+          IDPROGRESOUSUARIO:"",
         }
       });
     }else if(this.previusPagelistarSesionesRutinasAll){
@@ -293,6 +321,7 @@ export class EjercicioUniqPage implements OnInit {
           variableParametro:"",
           variableprogramarrutinas:this.variableprogramarrutinas,
           previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
+          IDPROGRESOUSUARIO:"",
         }
       });
     }
@@ -323,13 +352,23 @@ export class EjercicioUniqPage implements OnInit {
 
     return parseFloat(duracionMinutos.toFixed(4));
   }
-  autoplayVideo(event: Event) {
-    const video: HTMLVideoElement = this.videoPlayer.nativeElement;
-    video.muted = true;
-    if (this.isPlaying) {
-      video.play();
+
+
+  onVideoTimeUpdate(event: Event): void {
+    const video = event.target as HTMLVideoElement;
+    this.videoElement = video;
+
+    const newVideoSrc = this.ip_address + '/multimedia/' + this.variable?.ALMACENAMIENTOMULTIMEDIA;
+
+    if (newVideoSrc !== this.previousVideoSrc) {
+      this.videoSrc = newVideoSrc;
+      this.videoElement.muted=true;
+      this.videoElement.loop=true;
+      this.videoElement.load();
+      this.previousVideoSrc = newVideoSrc;
     }
   }
+
   toggleBookmark(index: number): void {
     this.loading=true;
     if (this.bookmarkState[index]) {

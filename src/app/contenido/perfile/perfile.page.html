@@ -1,4 +1,4 @@
-<ion-header *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO!==1">
+<ion-header *ngIf="!loading && dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO!==1">
   <app-toolbar-designer></app-toolbar-designer>
 </ion-header>
 <ion-content [fullscreen]="true">
@@ -179,7 +179,7 @@
     </div>
   </div>
 </ion-content>
-<ion-footer>
+<ion-footer *ngIf="!loading">
   <div *ngIf="dataPerfil && dataPerfil.length > 0 && dataPerfil[0].IDROLUSUARIO===99;else otherfooter">
     <app-footer-designer ></app-footer-designer>
   </div>

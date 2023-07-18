@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
-      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
+      <app-loading></app-loading>
     </div>
   </div>
   <div class="fullscreen-bg" *ngIf="!validatehiddenDiv" style="background-image:linear-gradient(0deg,  #0000006b,#9159f9a4), url('{{ip_address}}/media/perfile/background.png')">

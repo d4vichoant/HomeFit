@@ -1,8 +1,6 @@
 <ion-content [fullscreen]="true">
-    <div class="loading-overlay" *ngIf="loading">
-    <div class="loading-spinner">
-      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
-    </div>
+  <div class="loading-overlay" *ngIf="loading">
+    <app-loading></app-loading>
   </div>
   <!-- <app-toolbar-designer></app-toolbar-designer> -->
   <div class="header">

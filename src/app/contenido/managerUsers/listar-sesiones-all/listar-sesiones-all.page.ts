@@ -335,24 +335,25 @@ export class ListarSesionesAllPage implements OnInit {
           ...objeto,
           IDRUTINAS: objeto.IDRUTINAS.split(",").map(Number)
         }));
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
-          this.dataSesiones = this.dataSesiones.filter(elemento =>{
-            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
-              elemento.PREMIER = 'Suscripto';
-              return true;
-            }else if(elemento.IDROLUSUARIO===99){
-              elemento.PREMIER = 'Gratis';
-              return true;
-            }else{
-              elemento.PREMIER = 'Premium';
-              return true;
+
+        try {
+          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+            this.dataSesiones = this.dataSesiones.filter(elemento =>{
+              if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+                elemento.PREMIER = 'Suscripto';
+                return true;
+              }else if(elemento.IDROLUSUARIO===99){
+                elemento.PREMIER = 'Gratis';
+                return true;
+              }else{
+                elemento.PREMIER = 'Premium';
+                return true;
+              }
             }
+            );
           }
-          );
-        } else {
+        } catch (error) {
           this.presentCustomToast('Error en Mostrar Rutinas','danger');
-          this.obtenerSesiones();
-          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
         this.dataSesiones.sort((a, b) => {
           const premierOrder: { [key: string]: number } = {

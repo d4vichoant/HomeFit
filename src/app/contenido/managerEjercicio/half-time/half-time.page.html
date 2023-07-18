@@ -1,7 +1,142 @@
+
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">half-time</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <app-toolbar-designer-white></app-toolbar-designer-white>
+  <div class="loading-overlay" *ngIf="loading">
+      <app-loading></app-loading>
+  </div>
+  <div class="confetti">
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+  </div>
+
+  <div class="container">
+    <div class="box-up">
+      <ng-container *ngIf="userSesionPerfil && userSesionPerfil[0]?.IDGENERO === 0; else otherImagen">
+        <img  [src]="ip_address+'/media/images/corona-fem.png'" alt="corona">
+      </ng-container>
+      <ng-template #otherImagen>
+        <ng-container *ngIf="userSesionPerfil && userSesionPerfil[0]?.IDGENERO === 1; else otherotherImagen">
+          <img  [src]="ip_address+'/media/images/corona-mas.png'" alt="corona">
+        </ng-container>
+        <ng-template #otherotherImagen>
+          <img  [src]="ip_address+'/media/images/corona-other.png'" alt="corona">
+        </ng-template>
+      </ng-template>
+    </div>
+    <div class="box-down">
+      <img  [src]="ip_address+'/media/perfile/'+userSesionPerfil?.[0]?.IMAGEPERSONA" alt="ImagenPerfil">
+      <!-- Círculos en la parte derecha -->
+      <div class="circle right-circles circle-1 slide"></div>
+      <div class="circle right-circles circle-2 slide"></div>
+      <div class="circle right-circles circle-3 shake"></div>
+      <div class="circle right-circles-2 circle-4 slide"></div>
+      <div class="circle right-circles-2 circle-5 bounce"></div>
+      <div class="circle right-circles-2 circle-6 slide"></div>
+      <div class="circle right-circles-2 circle-7 shake"></div>
+      <div class="circle right-circles circle-8 slide"></div>
+      <div class="circle right-circles circle-9 bounce"></div>
+      <div class="circle right-circles circle-10 slide"></div>
+      <div class="circle right-circles circle-11 bounce"></div>
+      <div class="circle right-circles circle-12 slide"></div>
+      <div class="circle right-circles circle-13 bounce"></div>
+      <div class="circle right-circles circle-14 shake"></div>
+      <div class="circle right-circles circle-15 slide"></div>
+      <div class="circle right-circles circle-16 shake"></div>
+      <div class="circle right-circles circle-17 slide"></div>
+      <div class="circle right-circles circle-18 shake"></div>
+      <div class="circle right-circles circle-19 slide"></div>
+      <div class="circle right-circles circle-20 slide"></div>
+      <div class="circle right-circles circle-21 shake"></div>
+      <div class="circle right-circles circle-22 bounce"></div>
+      <div class="circle right-circles circle-23 shake"></div>
+      <div class="circle right-circles circle-24 slide"></div>
+      <div class="circle right-circles circle-25 shake"></div>
+      <div class="circle right-circles circle-26 slide"></div>
+      <div class="circle right-circles circle-27 shake"></div>
+      <div class="circle right-circles circle-28 bounce"></div>
+      <div class="circle right-circles circle-29 slide"></div>
+      <div class="circle right-circles circle-30 shake"></div>
+      <div class="circle right-circles circle-31 bounce"></div>
+      <div class="circle right-circles circle-32 slide"></div>
+      <!-- Agrega los otros círculos en la parte derecha -->
+
+      <!-- Círculos en la parte izquierda -->
+      <div class="circle left-circles circle-1 slide"></div>
+      <div class="circle left-circles circle-2 bounce"></div>
+      <div class="circle left-circles circle-3 slide"></div>
+      <div class="circle left-circles-2 circle-4 bounce"></div>
+      <div class="circle left-circles-2 circle-6 slide"></div>
+      <div class="circle left-circles-2 circle-7 bounce"></div>
+      <div class="circle left-circles circle-8 slide"></div>
+      <div class="circle left-circles circle-9 shake"></div>
+      <div class="circle left-circles circle-10 slide"></div>
+      <div class="circle left-circles circle-11 bounce"></div>
+      <div class="circle left-circles circle-12 slide"></div>
+      <div class="circle left-circles circle-13 bounce"></div>
+      <div class="circle left-circles circle-14 slide"></div>
+      <div class="circle left-circles circle-15 slide"></div>
+      <div class="circle left-circles circle-16 slide" ></div>
+      <div class="circle left-circles circle-17 bounce"></div>
+      <div class="circle left-circles circle-18 shake"></div>
+      <div class="circle left-circles circle-19 bounce"></div>
+      <div class="circle left-circles circle-20 shake"></div>
+      <div class="circle left-circles circle-21 slide"></div>
+    </div>
+  </div>
+  <div class="text-container">
+    <h1>¡En hora buena!</h1>
+    <p>{{obtenerPrimerNombre(userSesionPerfil && userSesionPerfil[0].NOMBREPERSONA)}}&nbsp;{{obtenerPrimerNombre(userSesionPerfil && userSesionPerfil[0].APELLDOPERSONA)}}</p>
+    <p>@{{userSesionPerfil && userSesionPerfil[0].NICKNAMEPERSONA}}</p>
+  </div>
+  <div class="text-descanso" *ngIf="variableEjercicios && variableEjercicios.length>0">
+    <h1>Descanso</h1>
+    <p>{{cronometro}}</p>
+    <div class="buttons-descanso">
+      <div style="background-color: #996ee9;" (click)="agregarTiempo()">
+        <p>+20s</p>
+      </div>
+      <div style="border: #996ee9 solid 2px;" (click)="this.nextEjercicio()">
+        <p>Omitir</p>
+      </div>
+    </div>
+  </div>
+  <div class="regresar-button" (click)="go_page('ejercicio-uniq')">
+    <h1>Regresar</h1>
+  </div>
 </ion-content>

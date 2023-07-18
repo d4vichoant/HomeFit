@@ -5,11 +5,11 @@ import { FooterDesignerTrainerComponent } from './contenido/footer-designer-trai
 import { FooterDesignerUsersComponent } from './contenido/footer-designer-users/footer-designer-users.component';
 import { ToolbarDesignerComponent } from './contenido/toolbar-designer/toolbar-designer.component';
 import { ToolbarDesignerWhiteComponent } from './contenido/toolbar-designer-white/toolbar-designer-white.component';
-
+import {  LoadingComponent} from './contenido/loading/loading.component';
 @NgModule({
-  declarations: [FooterDesignerComponent,ToolbarDesignerComponent,FooterDesignerTrainerComponent,FooterDesignerUsersComponent,ToolbarDesignerWhiteComponent],
+  declarations: [FooterDesignerComponent,ToolbarDesignerComponent,FooterDesignerTrainerComponent,FooterDesignerUsersComponent,ToolbarDesignerWhiteComponent,LoadingComponent],
   imports: [CommonModule],
-  exports: [FooterDesignerComponent,ToolbarDesignerComponent,FooterDesignerTrainerComponent,FooterDesignerUsersComponent,ToolbarDesignerWhiteComponent],
+  exports: [FooterDesignerComponent,ToolbarDesignerComponent,FooterDesignerTrainerComponent,FooterDesignerUsersComponent,ToolbarDesignerWhiteComponent,LoadingComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SharedModule {}

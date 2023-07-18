@@ -19,11 +19,11 @@ ion-header::after{
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgb(255, 255, 255); /* Fondo semitransparente */
+  background-color: #212121; /* Fondo semitransparente */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  z-index: 99999;
 }
 
 .header {

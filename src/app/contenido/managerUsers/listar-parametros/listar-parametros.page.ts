@@ -311,23 +311,24 @@ export class ListarParametrosPage implements OnInit {
           });
         const rawData = this.dataEjercicio;
         //this.dataEjercicioOrig = rawData.map(item => ({ ...item }));
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
-          this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
-            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
-              elemento.PREMIER = 'Suscripto';
-              return true;
-            }else if(elemento.IDROLUSUARIO===99){
-              elemento.PREMIER = 'Gratis';
-              return true;
-            }else{
-              elemento.PREMIER = 'Premium';
-              return true;
+        try {
+          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
+            this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
+              if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+                elemento.PREMIER = 'Suscripto';
+                return true;
+              }else if(elemento.IDROLUSUARIO===99){
+                elemento.PREMIER = 'Gratis';
+                return true;
+              }else{
+                elemento.PREMIER = 'Premium';
+                return true;
+              }
             }
+            );
           }
-          );
-        } else {
+        } catch (error) {
           this.presentCustomToast('Error en Mostrar Ejercicios','danger');
-          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
         if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
         this.dataEjercicio.sort((a, b) => {

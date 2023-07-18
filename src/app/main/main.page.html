@@ -1,8 +1,6 @@
 <ion-content [fullscreen]="true" class="background-content">
   <div class="loading-overlay" *ngIf="loading">
-    <div class="loading-spinner">
-      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
-    </div>
+      <app-loading></app-loading>
   </div>
   <div class="header-up">
     <div class="up-date">
@@ -19,8 +17,9 @@
   </div>
   <div class="container-body">
     <!-- <div><h2 class="subtitle" >Recomendación</h2></div> -->
+    <div><h2 class="subtitle" *ngIf="dataprocesosQuedados && dataprocesosQuedados.length>0">Continua donde lo dejaste</h2></div>
     <div class="container-procesosquedados">
-      <div class="box box-procesosquedados" (click)="go_page('listar-ejercicios')"  style="background-image: linear-gradient(0deg,  #0000008e,#0000007c), url('{{ ip_address }}/media/images/retomar.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;" >
+      <div class="box box-procesosquedados" *ngIf="dataprocesosQuedados && dataprocesosQuedados.length===0" (click)="go_page('listar-ejercicios')"  style="background-image: linear-gradient(0deg,  #0000008e,#0000007c), url('{{ ip_address }}/media/images/retomar.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;" >
         <div class="text-demo" >
           <span class="span2-demo"  style="display: flex; align-items: center;">
             MÁS LEJOS</span>
@@ -28,6 +27,22 @@
         <div class="text-demo-2" >
           <span class="span2-demo-2"  style="display: flex; align-items: center;">
             LLEVA TUS&nbsp;<span class="spanh1-2">LIMITES</span></span>
+        </div>
+      </div>
+      <div class="box box-procesosquedados" *ngFor="let item of dataprocesosQuedados" (click)="go_page('listar-ejercicios')" [style.background-image]="'linear-gradient(0deg, #0000008e, #0000007c), url(' + ip_address + '/' + (item.IDSESION ? 'media/sesiones/portadassesiones/' + item.IMAGESESION : (item.IDRUTINA ? 'media/rutinas/portadasrutinas/' + item.IMAGENRUTINA : 'multimedia/' + getVideoName(item.ALMACENAMIENTOMULTIMEDIA) + '.jpg')) + ')'"
+      style="background-repeat: no-repeat;background-size: cover;background-position: center;">
+        <div class="container-porcentaje" >
+          <div [style.width.%]="item.progress_percentage">
+          </div>
+          <p> {{redondearNumero(item.progress_percentage)}} %</p>
+        </div>
+        <div class="text-demo" >
+          <span class="span2-demo-rigth-2"  >
+            {{item.IDSESION?item.NOMBRESESION:(item.IDRUTINA?item.NOMBRERUTINA:item.NOMBREEJERCICIO)}}</span>
+        </div>
+        <div class="text-demo-2" >
+          <span class="span2-demo-rigth"  style="display: flex; align-items: center;">
+            {{item.IDSESION?'Prog.Rutinas':(item.IDRUTINA?'Rutinas':'Ejercicio')}}</span>
         </div>
       </div>
     </div>
@@ -276,6 +291,6 @@
     </div>
   </div>
 </ion-content>
-<ion-footer>
+<ion-footer *ngIf="!loading">
   <app-footer-designer-users></app-footer-designer-users>
 </ion-footer>

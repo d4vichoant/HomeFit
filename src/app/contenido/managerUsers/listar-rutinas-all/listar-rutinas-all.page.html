@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="!loading">
     <div class="portada-bg" (click)="go_pageback()" style="background-image: url('{{ip_address}}/media/rutinas/rutiasAll.jpg');">
       <br>
       <div class="text-overlay-up"  >
@@ -25,7 +25,7 @@
 <ion-content>
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-spinner">
-      <img src="../../../../assets/spinner_loading.gif" alt="Loading Spinner">
+      <app-loading></app-loading>
     </div>
   </div>
   <ion-list lines="none">

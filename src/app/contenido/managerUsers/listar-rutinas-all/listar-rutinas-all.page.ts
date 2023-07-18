@@ -327,24 +327,24 @@ export class ListarRutinasAllPage implements OnInit {
           ...objeto,
           IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
         }));
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
-          this.dataRutinas = this.dataRutinas.filter(elemento =>{
-            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
-              elemento.PREMIER = 'Suscripto';
-              return true;
-            }else if(elemento.IDROLUSUARIO===99){
-              elemento.PREMIER = 'Gratis';
-              return true;
-            }else{
-              elemento.PREMIER = 'Premium';
-              return true;
+        try {
+          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+            this.dataRutinas = this.dataRutinas.filter(elemento =>{
+              if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+                elemento.PREMIER = 'Suscripto';
+                return true;
+              }else if(elemento.IDROLUSUARIO===99){
+                elemento.PREMIER = 'Gratis';
+                return true;
+              }else{
+                elemento.PREMIER = 'Premium';
+                return true;
+              }
             }
+            );
           }
-          );
-        } else {
+        } catch (error) {
           this.presentCustomToast('Error en Mostrar Rutinas','danger');
-          this.obtenerRutinas();
-          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
         this.dataRutinas.sort((a, b) => {
           const premierOrder: { [key: string]: number } = {

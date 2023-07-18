@@ -5,6 +5,8 @@ import { ApiServiceService } from '../../../api-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ToastController } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
+import { Observable } from 'rxjs';
+import { map, catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-video-uniq',
@@ -40,6 +42,9 @@ export class VideoUniqPage implements OnInit {
   previusPagelistarSesionesRutinasAll!:any;
   previusPagelistarEjercicioAll!:any;
 
+  videoSrc!:string;
+  previousVideoSrc!: string
+
   timer: any;
   inactivityThreshold: number = 1500;
 
@@ -68,6 +73,7 @@ export class VideoUniqPage implements OnInit {
   currentTime: number = 0;
   currentPercentage: number = 0;
 
+  IDPROGRESOUSUARIO!:number;
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiServiceService,
@@ -97,7 +103,9 @@ export class VideoUniqPage implements OnInit {
       this.recuperarDatos();
       this.validateSesion();
       //this.test();
+      this.videoSrc=this.ip_address + '/multimedia/' + this.variableVideosEjercicio?.ALMACENAMIENTOMULTIMEDIA;
       window.addEventListener("orientationchange", this.onOrientationChange);
+      this.performVideoAction('reset');
     } catch (error) {
       this.handleError();
     }
@@ -115,7 +123,9 @@ export class VideoUniqPage implements OnInit {
       this.recuperarDatos();
       this.validateSesion();
       //this.test();
+      this.videoSrc=this.ip_address + '/multimedia/' + this.variableVideosEjercicio?.ALMACENAMIENTOMULTIMEDIA;
       window.addEventListener("orientationchange", this.onOrientationChange);
+      this.performVideoAction('reset');
     } catch (error) {
       this.handleError();
     }
@@ -135,6 +145,7 @@ export class VideoUniqPage implements OnInit {
             (response) => {
               this.StatusBar();
               this.loading=false;
+
             },
             (error) => {
               this.handleError();
@@ -174,7 +185,6 @@ export class VideoUniqPage implements OnInit {
       this.variableVideosEjercicio.INTRUCCIONESEJERCICIO = this.procesarTexto(this.variableVideosEjercicio.INTRUCCIONESEJERCICIO);
       this.activatevariableVideosEjercicio=true;
     }
-    //console.log(this.variableVideosEjercicio);
   }
 
   StatusBar(){
@@ -208,6 +218,15 @@ export class VideoUniqPage implements OnInit {
     this.videoElement = video;
     this.currentTime = video.currentTime;
     const duration = video.duration;
+
+    const newVideoSrc = this.ip_address + '/multimedia/' + this.variableVideosEjercicio?.ALMACENAMIENTOMULTIMEDIA;
+
+    if (newVideoSrc !== this.previousVideoSrc) {
+      this.videoSrc = newVideoSrc;
+      this.videoElement.load();
+      this.performVideoAction('play');
+      this.previousVideoSrc = newVideoSrc;
+    }
 
     if (duration > 0) {
       this.currentPercentage = (this.currentTime / duration) * 100;
@@ -365,19 +384,28 @@ export class VideoUniqPage implements OnInit {
     }
   }
 
-  go_page(name:string){
+  async go_page(name:string){
+    this.loading=true;
+    if(name!=='half-time'){
+      this.performVideoAction('reset');
+    }
     this.performVideoAction('pausar');
-    this.performVideoAction('reset');
     this.EjercicioTerminador();
     let progress_show=true;
-    if(this.currentPercentage>=90){
-      progress_show
-      =false;
+    console.log(this.currentPercentage);
+    if(this.variableEjercicios && this.variableEjercicios.length>0){
+      this.currentPercentage=(this.currentPercentage/100)*((this.variableEjerciciositem+1)/this.variableEjercicios.length)*100;
     }
-    this.createDataProgresoUsuario(this.variableVideosEjercicio.IDEJERCICIO,this.userSesionPerfil[0].IDUSUARIO,this.elapsedTime.hours +':'+this.elapsedTime.minutes+':'+this.elapsedTime.seconds,this.currentPercentage,progress_show);
+    if(this.currentPercentage>=90){
+      progress_show=false;
+    }
+    this.IDPROGRESOUSUARIO= await this.createDataProgresoUsuario(this.IDPROGRESOUSUARIO ,this.variableVideosEjercicio && this.variableVideosEjercicio.IDEJERCICIO, this.variableRutinaDiaria && this.variableRutinaDiaria.IDRUTINA, this.variableprogramarrutinas && this.variableprogramarrutinas.IDSESION, this.variableEjerciciositem, null, this.userSesionPerfil[0].IDUSUARIO,
+      this.elapsedTime.hours + ':' + this.elapsedTime.minutes + ':' + this.elapsedTime.seconds,
+      this.currentPercentage, progress_show);
     this.navController.navigateForward('/' + name, {
       queryParams: {
-        variableEjercicio: this.variableVideosEjercicio,
+        variableEjercicio: this.variable,
+        variableVideosEjercicio:this.variableVideosEjercicio,
         variableParametro:this.variableParamentro,
         variableRutinaDiaria :this.variableRutinaDiaria,
         variableprogramarrutinas:this.variableprogramarrutinas,
@@ -389,8 +417,15 @@ export class VideoUniqPage implements OnInit {
         previusPagelistarRutinasAll: this.previusPagelistarRutinasAll,
         previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
         previusPagelistarEjercicioAll:this.previusPagelistarEjercicioAll,
+        IDPROGRESOUSUARIO:this.IDPROGRESOUSUARIO,
       }
     });
+      this.inicio();
+      this.loading=false;
+/*     this.IDPROGRESOUSUARIO = this.createDataProgresoUsuario(this.variableVideosEjercicio && this.variableVideosEjercicio.IDEJERCICIO,this.variableRutinaDiaria && this.variableRutinaDiaria.IDRUTINA,this.variableprogramarrutinas && this.variableprogramarrutinas.IDSESION,this.variableEjerciciositem,null,this.userSesionPerfil[0].IDUSUARIO,
+      this.elapsedTime.hours +':'+this.elapsedTime.minutes+':'+this.elapsedTime.seconds,
+    this.currentPercentage,progress_show); */
+
   }
   inicio(){
     this.currentPercentage=0;
@@ -464,7 +499,6 @@ export class VideoUniqPage implements OnInit {
   }
 
   insertarEvaluacionEjercicio(){
-    //console.log(this.evaluateComment-2);
     const data={
       IDEJERCICIO:this.variableVideosEjercicio.IDEJERCICIO,
       IDUSUARIO:this.userSesionPerfil[0].IDUSUARIO,
@@ -625,28 +659,35 @@ padZero(value: number): string {
     this.apiService.connsultPerfilUsuarioCompleto(nickname).subscribe(
       (response) => {
         this.userSesionPerfil=response;
-        //console.log(this.userSesionPerfil);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
       }
     );
   }
-  createDataProgresoUsuario(IDEJERCICIO:number,IDUSUARIO:number,progress_seconds:string,progress_percentage:number,progress_show:boolean){
-    const data={
-      IDEJERCICIO:IDEJERCICIO,
-      IDUSUARIO:IDUSUARIO,
-      progress_seconds:progress_seconds,
-      progress_percentage:progress_percentage,
-      progress_show:progress_show
-    }
-    this.apiService.createDataProgresoUsuario(data).subscribe(
-      (response) => {
-        //console.log(this.dataComentarioporEjercicio);
-      },
-      (error) => {
-        this.presentCustomToast(error.error.error,"danger");
+
+
+
+  async createDataProgresoUsuario(IDPROGRESOUSUARIO:any,IDEJERCICIO: any, IDRUTINA: any, IDSESION: any, progress_numeroEjercicio: any,
+    progress_numeroRutina: any, IDUSUARIO: number, progress_seconds: string, progress_percentage: number, progress_show: boolean): Promise<number>{
+    try {
+      const data = {
+        IDPROGRESOUSUARIO: parseInt(IDPROGRESOUSUARIO),
+        IDEJERCICIO: parseInt(IDEJERCICIO),
+        IDRUTINA: parseInt(IDRUTINA),
+        IDSESION: parseInt(IDSESION),
+        IDUSUARIO: IDUSUARIO,
+        progress_seconds: progress_seconds,
+        progress_percentage: progress_percentage,
+        progress_show: progress_show,
+        progress_numeroEjercicio: parseInt(progress_numeroEjercicio),
+        progress_numeroRutina: parseInt(progress_numeroRutina)
       }
-    );
+      const response = await this.apiService.createDataProgresoUsuario(data).toPromise();
+      return response.IDPROGRESOUSUARIO;
+    } catch (error) {
+      this.presentCustomToast("Sin Registro", "danger");
+      throw error;
+    }
   }
 }

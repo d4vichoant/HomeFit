@@ -357,25 +357,27 @@ export class ListarSesionesPage implements OnInit {
           ...objeto,
           IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
         }));
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0) {
-          this.dataRutinas = this.dataRutinas.filter(elemento =>{
-            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
-              elemento.PREMIER = 'Suscripto';
-              return true;
-            }else if(elemento.IDROLUSUARIO===99){
-              elemento.PREMIER = 'Gratis';
-              return true;
-            }else{
-              elemento.PREMIER = 'Premium';
-              return true;
+
+        try {
+          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0) {
+            this.dataRutinas = this.dataRutinas.filter(elemento =>{
+              if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+                elemento.PREMIER = 'Suscripto';
+                return true;
+              }else if(elemento.IDROLUSUARIO===99){
+                elemento.PREMIER = 'Gratis';
+                return true;
+              }else{
+                elemento.PREMIER = 'Premium';
+                return true;
+              }
             }
+            );
           }
-          );
-        } else {
+        } catch (error) {
           this.presentCustomToast('Error en Mostrar Rutinas','danger');
-          //this.obtenerRutinas();
-          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
+
         if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0) {
         this.dataRutinas.sort((a, b) => {
           const premierOrder: { [key: string]: number } = {
@@ -406,23 +408,24 @@ export class ListarSesionesPage implements OnInit {
           IDRUTINAS: objeto.IDRUTINAS.split(",").map(Number)
         }));
 
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataSesiones && this.dataSesiones.length>0) {
-          this.dataSesiones = this.dataSesiones.filter(elemento =>{
-            if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
-              elemento.PREMIER = 'Suscripto';
-              return true;
-            }else if(elemento.IDROLUSUARIO===99){
-              elemento.PREMIER = 'Gratis';
-              return true;
-            }else{
-              elemento.PREMIER = 'Premium';
-              return true;
+        try {
+          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataSesiones && this.dataSesiones.length>0) {
+            this.dataSesiones = this.dataSesiones.filter(elemento =>{
+              if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
+                elemento.PREMIER = 'Suscripto';
+                return true;
+              }else if(elemento.IDROLUSUARIO===99){
+                elemento.PREMIER = 'Gratis';
+                return true;
+              }else{
+                elemento.PREMIER = 'Premium';
+                return true;
+              }
             }
+            );
           }
-          );
-        } else {
+        } catch (error) {
           this.presentCustomToast('Error en Mostrar Rutinas','danger');
-          //console.log('this.dataEntrenadorUsuarios no está definido o no contiene elementos.');
         }
         if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataSesiones && this.dataSesiones.length>0) {
         this.dataSesiones.sort((a, b) => {
