@@ -101,6 +101,7 @@ ion-content {
   color: #ffffff;
   overflow-x: hidden;
   overflow-y: auto;
+  height: 20vh;
 }
 .item-container{
   margin: 0 auto;
@@ -129,12 +130,12 @@ ion-content {
 
 .container-button{
   ion-button{
-    background-color: #ffffff; /* Cambiar el color de fondo */
-    border-radius: 30px; /* Agregar bordes redondeados */
-    height: 55px; /* Aumentar la altura */
-    padding: 10px 20px; /* Agregar padding */
-    margin: 0% 10%;
-    color: #232123; /* Cambiar el color del texto */
+    background-color: #ffffff;
+    border-radius: 30px;
+    height: 55px;
+    padding: 10px 20px;
+    margin: -1% 7%;
+    color: #232123;
     font-family: Raleway-Medium;
     font-size: 1rem;
     box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);

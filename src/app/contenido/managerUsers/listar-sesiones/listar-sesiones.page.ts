@@ -61,7 +61,7 @@ export class ListarSesionesPage implements OnInit {
     //this.test();
   }
   test(){
-    this.chanceColorFooter();
+    //this.chanceColorFooter();
     this.StatusBar();
     this.obtenerbookmarksesiones();
     this.obtenerbookmarkrutinas();
@@ -90,7 +90,7 @@ export class ListarSesionesPage implements OnInit {
           this.userSesion = JSON.parse(sesion).nickname;
           this.obtenerGetPerfilCompleto(this.userSesion);
           await this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).toPromise(); // Utilizar toPromise() para poder usar await
-          this.chanceColorFooter();
+          //this.chanceColorFooter();
           this.StatusBar();
           this.totalRutinas = await this.obtenercontarTypes('rutina');
           this.totalSesiones = await this.obtenercontarTypes('programarsesion');
@@ -114,7 +114,7 @@ export class ListarSesionesPage implements OnInit {
     this.navController.navigateForward('/error-page-users-trainers');
     this.storage.remove('sesion');
   }
-  private chanceColorFooter(){
+/*   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
     document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
     document.documentElement.style.setProperty('--activate-foot20',' #9259f9');
@@ -124,7 +124,7 @@ export class ListarSesionesPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
     document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
   }
-
+ */
 
   cargarImagenesBefores(){
     const rutinas = this.dataRutinas;

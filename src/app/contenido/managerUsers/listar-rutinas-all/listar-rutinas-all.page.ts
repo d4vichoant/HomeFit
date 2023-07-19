@@ -77,7 +77,7 @@ export class ListarRutinasAllPage implements OnInit {
         await this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).toPromise();
         this.obtenerbookmarkrutinas();
         this.obtenerContratoEntrenadoresUsuario();
-        this.chanceColorFooter();
+        //this.chanceColorFooter();
         this.StatusBar();
         this.loading = false;
       } else {

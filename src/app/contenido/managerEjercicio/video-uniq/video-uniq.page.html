@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="true">
   <div id="video-container" (mousemove)="resetTimer()" (mouseleave)="startTimer()">
-    <video id="fullscreen-video" (click)="showControls=!showControls"  (ended)="onVideoEnded($event)" autoplay controls   (timeupdate)="onVideoTimeUpdate($event)">
+    <video #videoPlayer  videoPlayer id="fullscreen-video" (click)="showControls=!showControls"  (ended)="onVideoEnded($event)"    autoplay controls   (timeupdate)="onVideoTimeUpdate($event)">
       <!-- <source  [src]="ip_address+'/multimedia/'+variableVideosEjercicio?.ALMACENAMIENTOMULTIMEDIA"  type="video/mp4"> -->
       <!-- <source  [src]="ip_address+'/multimedia/test2.mp4'"  type="video/mp4"> -->
       <source [src]="videoSrc" type="video/mp4">

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IP_ADDRESS } from '../../../constantes';
 import { Storage } from '@ionic/storage-angular';
 import { ApiServiceService } from '../../../api-service.service';
 import { ActivatedRoute } from '@angular/router';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController, ToastController, ViewDidEnter } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
 import { Observable } from 'rxjs';
 import { map, catchError, throwError } from 'rxjs';
@@ -13,37 +13,72 @@ import { map, catchError, throwError } from 'rxjs';
   templateUrl: './video-uniq.page.html',
   styleUrls: ['./video-uniq.page.scss'],
 })
-export class VideoUniqPage implements OnInit {
-  public userSesion!:string;
-  public userSesionPerfil!:any;
-  public loading = true;
-
-  variableVideosEjercicio!:any;
-  activatevariableVideosEjercicio:boolean=false;
-  variable!:any;
-  variableEjercicios!:any[];
-  variableEjerciciositem!:number;
-  variableRutinaDiaria!:any;
-  variableprogramarrutinas!:any;
-  variableParamentro!:any;
-  previusPagelistarGuardados!:any;
-  previusPageMain!:any;
-  variableSesiones!:any;
+export class VideoUniqPage implements OnInit,OnDestroy,ViewDidEnter {
+  @ViewChild('videoPlayer', { static: false }) videoPlayer!: ElementRef;
 
   public ip_address = IP_ADDRESS;
+
+  public loading = true;
+  public userSesion!:string;
+  public userSesionPerfil!:any;
+
+
+  videoSrc!:string;
+
+  variable!:any;
+  variableVideosEjercicio!:any;
+
+  variableParamentro!:any;
+  variableSesiones!:any;
+  variableRutinaDiaria!:any;
+  variableprogramarrutinas!:any;
+
+  previusPageMain:boolean=false;
+  previusPagelistarGuardados:boolean=false;
+  previusPagelistarRutinasAll:boolean=false;
+  previusPagelistarSesionesRutinasAll:boolean=false;
+  previusPagelistarEjercicioAll:boolean=false;
+
+
+  variableEjerciciositem:number=-1;
+  variableEjercicios:any;
+
+  variableRutinasitem:number=-1;
+  variableRutinas:any;
+
+  IDPROGRESOUSUARIO:number=-1;
+
+  videoElement!: HTMLVideoElement;
 
   showControls:boolean=true;
   showButtonPause:boolean=true;
   showButtonSound:boolean=true;
 
-  mainProgress: number;
-  videoElement!: HTMLVideoElement;
-  previusPagelistarRutinasAll!:any;
-  previusPagelistarSesionesRutinasAll!:any;
-  previusPagelistarEjercicioAll!:any;
+  showmodalstars:boolean=false;
+  showmodalstarsActivate:boolean=false;
 
-  videoSrc!:string;
-  previousVideoSrc!: string
+  currentTime: number = 0;
+  currentPercentage: number = 0;
+
+  //previousVideoSrc!: string
+
+  showButtonNext:boolean=false;
+  showTextRepeticion:boolean=false;
+  showTextRepeticionAnime:boolean=false;
+  showTextInformation:boolean=false;
+
+  mainProgress:number=0;
+
+  initialTimeButtonActivated = false;
+  middleTimeButtonActivated = false;
+  finalTimeButtonActivated = false;
+
+  messageText:string='';
+  showmessageText:boolean=false;
+  showmessageTextAnimate:boolean=false;
+
+  evaluateComment:number=0;
+  validatebuttonEvaluate:boolean=false;
 
   timer: any;
   inactivityThreshold: number = 1500;
@@ -52,87 +87,48 @@ export class VideoUniqPage implements OnInit {
   elapsedTime!: { hours: number, minutes: number, seconds: number };
   buttonClickTime!: number;
 
-  showButtonNext:boolean=false;
-  showTextRepeticion:boolean=false;
-  showTextRepeticionAnime:boolean=false;
-  showTextInformation:boolean=false;
+ constructor(
+  private route: ActivatedRoute,
+  private apiService: ApiServiceService,
+  private storage: Storage,
+  private navController: NavController,
+  public toastController: ToastController,
+ ){}
+  ngOnInit()
+  {
+    this.initializePage();
+  }
+  ionViewDidEnter(){
+    this.initializePage();
+  }
 
-  initialTimeButtonActivated = false;
-  middleTimeButtonActivated = false;
-  finalTimeButtonActivated = false;
+  initializePage(){
+    this.startTime = Date.now();
+    window.addEventListener("orientationchange", this.onOrientationChange);
+    this.inicio();
+    this.recuperarDatos();
+    this.validateSesion();
 
-  showmodalstars:boolean=false;
-  showmodalstarsActivate:boolean=false;
-  evaluateComment:number=0;
-  validatebuttonEvaluate:boolean=false;
-
-  messageText!:string;
-  showmessageText:boolean=false;
-  showmessageTextAnimate:boolean=false;
-
-  currentTime: number = 0;
-  currentPercentage: number = 0;
-
-  IDPROGRESOUSUARIO!:number;
-  constructor(
-    private route: ActivatedRoute,
-    private apiService: ApiServiceService,
-    private storage: Storage,
-    private navController: NavController,
-    public toastController: ToastController,
-  ) {
-    this.mainProgress = 0;
+    const videoUrl = this.ip_address + '/multimedia/' + this.variableVideosEjercicio?.ALMACENAMIENTOMULTIMEDIA;
+    this.videoSrc = videoUrl;
+    if(this.videoSrc!==''){
+      if (this.videoPlayer && this.videoPlayer.nativeElement) {
+        this.videoPlayer.nativeElement.load();
+      }
+    }
+    this.performVideoAction('play');
     setTimeout(() => {
       this.showControls=false;
     }, 500);
-    this.showButtonNext = false;
-    this.showTextRepeticion = false;
-    this.showTextRepeticionAnime = false;
-    this.initialTimeButtonActivated = false;
-    this.middleTimeButtonActivated = false;
-    this.finalTimeButtonActivated = false;
-    this.inicio();
-  }
-
-  ngOnInit()
-  {
-    this.startTime = Date.now();
-    this.mainProgress = 0;
-    this.inicio();
-    try {
-      this.recuperarDatos();
-      this.validateSesion();
-      //this.test();
-      this.videoSrc=this.ip_address + '/multimedia/' + this.variableVideosEjercicio?.ALMACENAMIENTOMULTIMEDIA;
-      window.addEventListener("orientationchange", this.onOrientationChange);
-      this.performVideoAction('reset');
-    } catch (error) {
-      this.handleError();
-    }
   }
 
   ngOnDestroy() {
     window.removeEventListener("orientationchange", this.onOrientationChange);
-  }
-
-  ionViewDidEnter() {
-    this.mainProgress = 0;
-    this.inicio();
-    this.startTime = Date.now();
-    try {
-      this.recuperarDatos();
-      this.validateSesion();
-      //this.test();
-      this.videoSrc=this.ip_address + '/multimedia/' + this.variableVideosEjercicio?.ALMACENAMIENTOMULTIMEDIA;
-      window.addEventListener("orientationchange", this.onOrientationChange);
-      this.performVideoAction('reset');
-    } catch (error) {
-      this.handleError();
+    const videoElement = document.getElementById('videoPlayer') as HTMLVideoElement;
+    if (videoElement && !videoElement.paused) {
+      videoElement.pause();
     }
-  }
-  test(){
-    this.StatusBar();
-    this.loading=false;
+    this.inicio();
   }
 
   validateSesion(){
@@ -145,7 +141,6 @@ export class VideoUniqPage implements OnInit {
             (response) => {
               this.StatusBar();
               this.loading=false;
-
             },
             (error) => {
               this.handleError();
@@ -159,6 +154,13 @@ export class VideoUniqPage implements OnInit {
       this.handleError();
     }
   }
+
+  StatusBar(){
+    StatusBar.hide();
+    StatusBar.setOverlaysWebView({ overlay: true });
+    StatusBar.setBackgroundColor({ color: '#232123' });
+  }
+
   private handleError() {
     this.loading = false;
     this.navController.navigateForward('/error-page-users-trainers');
@@ -167,49 +169,84 @@ export class VideoUniqPage implements OnInit {
 
   recuperarDatos(){
     this.route.queryParams.subscribe(params => {
+
       this.variableVideosEjercicio = params['variableVideosEjercicio'] as any || null;
+
       this.variable = params['variableEjercicio'] as any || null;
       this.variableParamentro = params['variableParametro'] as any || null;
+      this.variableSesiones = params['variableSesiones'] as any || null;
       this.variableRutinaDiaria = params['variableRutinaDiaria'] as any || null;
       this.variableprogramarrutinas = params['variableprogramarrutinas'] as any || null;
-      this.variableSesiones = params['variableSesiones'] as any || null;
-      this.previusPageMain = params['previusPageMain'] as any || null;
-      this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as any || null;
+
+      this.previusPageMain = params['previusPageMain'] as boolean || false;
+      this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as boolean || false;
+      this.previusPagelistarRutinasAll= params['previusPagelistarRutinasAll'] as boolean || false;
+      this.previusPagelistarSesionesRutinasAll= params['previusPagelistarSesionesRutinasAll'] as boolean || false;;
+      this.previusPagelistarEjercicioAll= params['previusPagelistarEjercicioAll'] as boolean || false;
+
+      this.variableEjerciciositem = params['variableEjerciciositem'] as number || -1;
       this.variableEjercicios = params['variableEjercicios'] as any ||null;
-      this.variableEjerciciositem = params['variableEjerciciositem'] as number;
-      this.previusPagelistarRutinasAll= params['previusPagelistarRutinasAll'] as any || null;
-      this.previusPagelistarSesionesRutinasAll= params['previusPagelistarSesionesRutinasAll'] as any || null;;
-      this.previusPagelistarEjercicioAll= params['previusPagelistarEjercicioAll'] as any || null;
+
+      this.variableRutinasitem = params['variableRutinasitem'] as number || -1;
+      this.variableRutinas = params['variableRutinas'] as any ||null;
+
+      this.IDPROGRESOUSUARIO= params['IDPROGRESOUSUARIO'] as number || -1;
+
     });
-    if(!this.activatevariableVideosEjercicio){
+    if(this.variableVideosEjercicio){
       this.variableVideosEjercicio.INTRUCCIONESEJERCICIO = this.procesarTexto(this.variableVideosEjercicio.INTRUCCIONESEJERCICIO);
-      this.activatevariableVideosEjercicio=true;
     }
   }
 
-  StatusBar(){
-    StatusBar.hide();
-    StatusBar.setOverlaysWebView({ overlay: true });
-    StatusBar.setBackgroundColor({ color: '#232123' });
-  }
+  inicio(){
+    this.videoSrc='';
 
-  onVideoEnded(event: Event): void {
-    this.showControls=false;
-    if(!this.showmodalstarsActivate){
-      this.showmodalstars=true;
-      this.showmodalstarsActivate=true;
-    }
-  }
-  onOrientationChange() {
-    const orientation = window.orientation;
-    const videoContainer = document.getElementById("video-container");
-    if (videoContainer) {
-      if (orientation === 90 || orientation === -90) {
-        videoContainer.classList.add("horizontal");
-      } else {
-        videoContainer.classList.remove("horizontal");
-      }
-    }
+    this.variable=null;
+    this.variableParamentro=null;
+    this.variableSesiones=null;
+    this.variableRutinaDiaria=null;
+    this.variableprogramarrutinas=null;
+
+    this.previusPageMain=false;
+    this.previusPagelistarGuardados=false;
+    this.previusPagelistarRutinasAll=false;
+    this.previusPagelistarSesionesRutinasAll=false;
+    this.previusPagelistarEjercicioAll=false;
+
+    this.IDPROGRESOUSUARIO=-1;
+    this.variableEjerciciositem=-1;
+    this.variableEjercicios=null;
+
+    this.variableRutinasitem=-1;
+    this.variableRutinas=null;
+
+    this.showControls=true;
+    this.showButtonPause=true;
+    this.showButtonSound=true;
+
+    this.showmodalstars=false;
+    this.showmodalstarsActivate=false;
+
+    this.currentTime= 0;
+    this.currentPercentage = 0;
+
+    this.showButtonNext=false;
+    this.showTextRepeticion=false;
+    this.showTextRepeticionAnime=false;
+    this.showTextInformation=false;
+
+    this.mainProgress=0;
+
+    this.initialTimeButtonActivated = false;
+    this.middleTimeButtonActivated = false;
+    this.finalTimeButtonActivated = false;
+
+    this.messageText='';
+    this.showmessageText=false;
+    this.showmessageTextAnimate=false;
+
+    this.evaluateComment=0;
+    this.validatebuttonEvaluate=false;
   }
 
   onVideoTimeUpdate(event: Event): void {
@@ -218,7 +255,7 @@ export class VideoUniqPage implements OnInit {
     this.videoElement = video;
     this.currentTime = video.currentTime;
     const duration = video.duration;
-
+/*
     const newVideoSrc = this.ip_address + '/multimedia/' + this.variableVideosEjercicio?.ALMACENAMIENTOMULTIMEDIA;
 
     if (newVideoSrc !== this.previousVideoSrc) {
@@ -226,7 +263,7 @@ export class VideoUniqPage implements OnInit {
       this.videoElement.load();
       this.performVideoAction('play');
       this.previousVideoSrc = newVideoSrc;
-    }
+    } */
 
     if (duration > 0) {
       this.currentPercentage = (this.currentTime / duration) * 100;
@@ -309,6 +346,13 @@ export class VideoUniqPage implements OnInit {
 
   }
 
+  onVideoEnded(event: Event): void {
+    this.showControls=false;
+    if(!this.showmodalstarsActivate){
+      this.showmodalstars=true;
+      this.showmodalstarsActivate=true;
+    }
+  }
 
   onAdditionalProgressClick(event: MouseEvent): void {
     const isLandscape = window.innerWidth > window.innerHeight;
@@ -384,152 +428,110 @@ export class VideoUniqPage implements OnInit {
     }
   }
 
-  async go_page(name:string){
-    this.loading=true;
+  onOrientationChange() {
+    const orientation = window.orientation;
+    const videoContainer = document.getElementById("video-container");
+    if (videoContainer) {
+      if (orientation === 90 || orientation === -90) {
+        videoContainer.classList.add("horizontal");
+      } else {
+        videoContainer.classList.remove("horizontal");
+      }
+    }
+  }
+
+  EjercicioTerminador(){
+    if (!this.buttonClickTime) {
+      this.buttonClickTime = Date.now() - this.startTime;
+    }
+
+    const totalSeconds = Math.floor(this.buttonClickTime / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    this.elapsedTime = {
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds
+    };
+
+  }
+
+  go_page(name:string){
+    this.EjercicioTerminador();
     if(name!=='half-time'){
       this.performVideoAction('reset');
+      this.performVideoAction('pausar');
+    }else{
+      this.performVideoAction('pausar');
     }
-    this.performVideoAction('pausar');
-    this.EjercicioTerminador();
     let progress_show=true;
-    console.log(this.currentPercentage);
-    if(this.variableEjercicios && this.variableEjercicios.length>0){
-      this.currentPercentage=(this.currentPercentage/100)*((this.variableEjerciciositem+1)/this.variableEjercicios.length)*100;
+    if(this.variableEjercicios && this.variableEjercicios.length>0 && this.variableRutinas && this.variableRutinas.length>0){
+      if(this.variableRutinasitem==-1){
+        this.variableRutinasitem=0;
+      }
+      if(this.variableEjerciciositem==-1){
+        this.variableEjerciciositem=0;
+      }
+      this.currentPercentage=(((this.variableEjerciciositem+1)/this.variableEjercicios.length)*(100/this.variableRutinas.length))+((100/this.variableRutinas.length)*this.variableRutinasitem);
+    }else if(this.variableEjercicios && this.variableEjercicios.length>0){
+      if(this.variableEjerciciositem==-1){
+        this.variableEjerciciositem=0;
+      }
+      this.currentPercentage=((this.variableEjerciciositem+1)/this.variableEjercicios.length)*100;
     }
     if(this.currentPercentage>=90){
       progress_show=false;
     }
-    this.IDPROGRESOUSUARIO= await this.createDataProgresoUsuario(this.IDPROGRESOUSUARIO ,this.variableVideosEjercicio && this.variableVideosEjercicio.IDEJERCICIO, this.variableRutinaDiaria && this.variableRutinaDiaria.IDRUTINA, this.variableprogramarrutinas && this.variableprogramarrutinas.IDSESION, this.variableEjerciciositem, null, this.userSesionPerfil[0].IDUSUARIO,
+    const data = this.createDataProgresoUsuario(this.IDPROGRESOUSUARIO ,this.variableVideosEjercicio && this.variableVideosEjercicio.IDEJERCICIO,
+      this.variableRutinaDiaria && this.variableRutinaDiaria.IDRUTINA, this.variableprogramarrutinas && this.variableprogramarrutinas.IDSESION, this.variableEjerciciositem, this.variableRutinasitem,this.userSesionPerfil[0].IDUSUARIO,
       this.elapsedTime.hours + ':' + this.elapsedTime.minutes + ':' + this.elapsedTime.seconds,
       this.currentPercentage, progress_show);
-    this.navController.navigateForward('/' + name, {
-      queryParams: {
-        variableEjercicio: this.variable,
-        variableVideosEjercicio:this.variableVideosEjercicio,
-        variableParametro:this.variableParamentro,
-        variableRutinaDiaria :this.variableRutinaDiaria,
-        variableprogramarrutinas:this.variableprogramarrutinas,
-        variableSesiones: this.variableSesiones,
-        previusPageMain:this.previusPageMain,
-        previusPagelistarGuardados:this.previusPagelistarGuardados,
-        variableEjercicios :this.variableEjercicios,
-        variableEjerciciositem:this.variableEjerciciositem,
-        previusPagelistarRutinasAll: this.previusPagelistarRutinasAll,
-        previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
-        previusPagelistarEjercicioAll:this.previusPagelistarEjercicioAll,
-        IDPROGRESOUSUARIO:this.IDPROGRESOUSUARIO,
-      }
-    });
-      this.inicio();
-      this.loading=false;
-/*     this.IDPROGRESOUSUARIO = this.createDataProgresoUsuario(this.variableVideosEjercicio && this.variableVideosEjercicio.IDEJERCICIO,this.variableRutinaDiaria && this.variableRutinaDiaria.IDRUTINA,this.variableprogramarrutinas && this.variableprogramarrutinas.IDSESION,this.variableEjerciciositem,null,this.userSesionPerfil[0].IDUSUARIO,
-      this.elapsedTime.hours +':'+this.elapsedTime.minutes+':'+this.elapsedTime.seconds,
-    this.currentPercentage,progress_show); */
+      this.apiService.createDataProgresoUsuario(data).subscribe(
+        (response) => {
+          this.IDPROGRESOUSUARIO= response.IDPROGRESOUSUARIO;
+          this.navController.navigateForward('/' + name, {
+            queryParams: {
+              variableEjercicio: this.variable,
+              //variableVideosEjercicio:this.variableVideosEjercicio,
 
-  }
-  inicio(){
-    this.currentPercentage=0;
-    this.currentTime=0;
+              variableParametro:this.variableParamentro,
+              variableRutinaDiaria :this.variableRutinaDiaria,
+              variableprogramarrutinas:this.variableprogramarrutinas,
+              variableSesiones: this.variableSesiones,
 
-    this.activatevariableVideosEjercicio=false;
+              previusPageMain:this.previusPageMain,
+              previusPagelistarGuardados:this.previusPagelistarGuardados,
+              previusPagelistarRutinasAll: this.previusPagelistarRutinasAll,
+              previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
+              previusPagelistarEjercicioAll:this.previusPagelistarEjercicioAll,
 
-    this.showButtonNext=false;
-    this.showTextRepeticion=false;
-    this.showTextRepeticionAnime=false;
-    this.showTextInformation=false;
+              variableEjercicios :this.variableEjercicios,
+              variableEjerciciositem:this.variableEjerciciositem,
 
-    this.showControls=true;
-    this.showButtonPause=true;
-    this.showButtonSound=true;
+              variableRutinasitem:this.variableRutinasitem,
+              variableRutinas:this.variableRutinas,
 
-    this.initialTimeButtonActivated = false;
-    this.middleTimeButtonActivated = false;
-    this.finalTimeButtonActivated = false;
-
-    this.mainProgress=0;
-
-    this.timer= null;
-
-    this.showmodalstars=false;
-    this.showmodalstarsActivate=false;
-    this.evaluateComment=0;
-    this.validatebuttonEvaluate=false;
-
-    this.messageText='';
-    this.showmessageText=false;
-    this.showmessageTextAnimate=false;
-
-    this.startTime=0;
-    this.buttonClickTime= 0;
-
-    this.variable=null;
-    this.variableVideosEjercicio = null;
-    this.variableParamentro = null;
-    this.variableRutinaDiaria = null;
-    this.variableprogramarrutinas = null;
-    this.variableSesiones = null;
-    this.previusPageMain = null;
-    this.previusPagelistarGuardados = null;
-    this.variableEjercicios = [];
-    this.variableEjerciciositem = -1;
-    this.previusPagelistarRutinasAll = null;
-    this.previusPagelistarSesionesRutinasAll = null;
-    this.previusPagelistarEjercicioAll = null;
-  }
-  resetTimer(): void {
-    setTimeout(() => {
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
-        if(this.showControls){
-          this.showControls=false;
+              IDPROGRESOUSUARIO:this.IDPROGRESOUSUARIO,
+            }
+          });
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error,"danger");
         }
-      }, this.inactivityThreshold);
-    }, 1500);
-  }
-
-  startTimer(): void {
-    clearTimeout(this.timer);
-  }
-
-  clearcomentarioentrenador(){
-    this.showmodalstars=false;
-    this.evaluateComment=0;
-    this.validatebuttonEvaluate=false;
-    this.showControls=true;
-  }
-
-  insertarEvaluacionEjercicio(){
-    const data={
-      IDEJERCICIO:this.variableVideosEjercicio.IDEJERCICIO,
-      IDUSUARIO:this.userSesionPerfil[0].IDUSUARIO,
-      CALIFICACIONPROGRESO:this.evaluateComment-2
-    }
-    this.apiService.insertarCalificaionEjercicio(data).subscribe(
-      (response:any) => {
-        this.messageText=response.message;
-        this.showmessageText = true;
-        this.showmessageTextAnimate=true;
-        setTimeout(() => {
-          this.showmessageTextAnimate=false;
-        }, 2000);
-
-        setTimeout(() => {
-          this.showmessageText=false;
-        }, 2400);
-
-        //this.presentCustomToast(response.message+'',"success");
-        this.clearcomentarioentrenador();
-      },
-      (error) => {
-        this.presentCustomToast(error.error.error,"danger");
-      }
     );
   }
-  changeStart(number:number){
-    this.evaluateComment=number;
-    if(!this.validatebuttonEvaluate){
-      this.validatebuttonEvaluate=true;
-    }
+
+
+  procesarTexto(texto: string): string {
+    // Reemplazar los puntos por un punto y salto de línea
+    let textoProcesado = texto.replace(/\./g, '.\n•');
+
+    // Añadir un círculo al principio del texto
+    textoProcesado = '•\n ' + textoProcesado;
+
+    return textoProcesado;
   }
 
   performVideoAction(action: string): void {
@@ -597,44 +599,72 @@ export class VideoUniqPage implements OnInit {
     }
   }
 
-  procesarTexto(texto: string): string {
-    // Reemplazar los puntos por un punto y salto de línea
-    let textoProcesado = texto.replace(/\./g, '.\n•');
-
-    // Añadir un círculo al principio del texto
-    textoProcesado = '•\n ' + textoProcesado;
-
-    return textoProcesado;
+  resetTimer(): void {
+    setTimeout(() => {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        if(this.showControls){
+          this.showControls=false;
+        }
+      }, this.inactivityThreshold);
+    }, 1500);
   }
 
-  EjercicioTerminador(){
-    if (!this.buttonClickTime) {
-      this.buttonClickTime = Date.now() - this.startTime;
+  startTimer(): void {
+    clearTimeout(this.timer);
+  }
+
+  clearcomentarioentrenador(){
+    this.showmodalstars=false;
+    this.evaluateComment=0;
+    this.validatebuttonEvaluate=false;
+    this.showControls=true;
+  }
+
+  insertarEvaluacionEjercicio(){
+    const data={
+      IDEJERCICIO:this.variableVideosEjercicio.IDEJERCICIO,
+      IDUSUARIO:this.userSesionPerfil[0].IDUSUARIO,
+      CALIFICACIONPROGRESO:this.evaluateComment-2
+    }
+    this.apiService.insertarCalificaionEjercicio(data).subscribe(
+      (response:any) => {
+        this.messageText=response.message;
+        this.showmessageText = true;
+        this.showmessageTextAnimate=true;
+        setTimeout(() => {
+          this.showmessageTextAnimate=false;
+        }, 2000);
+
+        setTimeout(() => {
+          this.showmessageText=false;
+        }, 2400);
+
+        //this.presentCustomToast(response.message+'',"success");
+        this.clearcomentarioentrenador();
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+  changeStart(number:number){
+    this.evaluateComment=number;
+    if(!this.validatebuttonEvaluate){
+      this.validatebuttonEvaluate=true;
+    }
+  }
+
+  formatTime(time: number): string {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    const formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
+    return formattedTime;
     }
 
-    const totalSeconds = Math.floor(this.buttonClickTime / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-
-    this.elapsedTime = {
-      hours: hours,
-      minutes: minutes,
-      seconds: seconds
-    };
-
-  }
-
-formatTime(time: number): string {
-  const minutes = Math.floor(time / 60);
-  const seconds = Math.floor(time % 60);
-  const formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
-  return formattedTime;
-}
-
-padZero(value: number): string {
-  return value.toString().padStart(2, '0');
-}
+    padZero(value: number): string {
+    return value.toString().padStart(2, '0');
+    }
 
   async presentCustomToast(message: string, color: string) {
     const toast = await this.toastController.create({
@@ -666,11 +696,9 @@ padZero(value: number): string {
     );
   }
 
-
-
-  async createDataProgresoUsuario(IDPROGRESOUSUARIO:any,IDEJERCICIO: any, IDRUTINA: any, IDSESION: any, progress_numeroEjercicio: any,
-    progress_numeroRutina: any, IDUSUARIO: number, progress_seconds: string, progress_percentage: number, progress_show: boolean): Promise<number>{
-    try {
+  createDataProgresoUsuario(IDPROGRESOUSUARIO:any,IDEJERCICIO: any, IDRUTINA: any, IDSESION: any, progress_numeroEjercicio: any,
+    progress_numeroRutina: any, IDUSUARIO: number, progress_seconds: string,
+     progress_percentage: number, progress_show: boolean):any{
       const data = {
         IDPROGRESOUSUARIO: parseInt(IDPROGRESOUSUARIO),
         IDEJERCICIO: parseInt(IDEJERCICIO),
@@ -683,11 +711,6 @@ padZero(value: number): string {
         progress_numeroEjercicio: parseInt(progress_numeroEjercicio),
         progress_numeroRutina: parseInt(progress_numeroRutina)
       }
-      const response = await this.apiService.createDataProgresoUsuario(data).toPromise();
-      return response.IDPROGRESOUSUARIO;
-    } catch (error) {
-      this.presentCustomToast("Sin Registro", "danger");
-      throw error;
-    }
+      return data;
   }
 }

@@ -82,7 +82,7 @@ export class ListarSesionesAllPage implements OnInit {
         await this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).toPromise();
         this.obtenerbookmarksesiones();
         this.obtenerContratoEntrenadoresUsuario();
-        this.chanceColorFooter();
+        //this.chanceColorFooter();
         this.StatusBar();
         this.loading = false;
       } else {

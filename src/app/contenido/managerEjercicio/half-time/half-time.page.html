@@ -124,7 +124,7 @@
     <p>{{obtenerPrimerNombre(userSesionPerfil && userSesionPerfil[0].NOMBREPERSONA)}}&nbsp;{{obtenerPrimerNombre(userSesionPerfil && userSesionPerfil[0].APELLDOPERSONA)}}</p>
     <p>@{{userSesionPerfil && userSesionPerfil[0].NICKNAMEPERSONA}}</p>
   </div>
-  <div class="text-descanso" *ngIf="variableEjercicios && variableEjercicios.length>0">
+  <div class="text-descanso" *ngIf="variableEjercicios && variableEjercicios.length>0 && variableEjercicios.length-1!== variableEjerciciositem">
     <h1>Descanso</h1>
     <p>{{cronometro}}</p>
     <div class="buttons-descanso">
@@ -135,6 +135,9 @@
         <p>Omitir</p>
       </div>
     </div>
+  </div>
+  <div class="circle-down" (click)="nextRutine()" *ngIf=" variableEjercicios && variableEjercicios.length-1=== variableEjerciciositem && variableRutinas && variableRutinasitem!==variableRutinas.length-1 && variableRutinas.length-1>0">
+    <span class="text">Siguiente Rutina</span>
   </div>
   <div class="regresar-button" (click)="go_page('ejercicio-uniq')">
     <h1>Regresar</h1>

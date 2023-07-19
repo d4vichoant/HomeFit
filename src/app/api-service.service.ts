@@ -144,6 +144,9 @@ export class ApiServiceService {
   getEjercicioActivate():Observable<any>{
     return this.http.get(IP_ADDRESS+'/multimedia/ejercicioActivate/');
   }
+  getEjercicioActivateIdEjercicio(idEjercicio:number):Observable<any>{
+    return this.http.get(IP_ADDRESS+'/multimedia/ejercicioActivate/'+idEjercicio);
+  }
   getPreEjercicio():Observable<any>{
     return this.http.get(IP_ADDRESS+'/multimedia/preejercicio/');
   }
@@ -254,6 +257,9 @@ export class ApiServiceService {
   getRutinasActivate():Observable<any>{
     return this.http.get(IP_ADDRESS+'/programacion/rutinasActivate/');
   }
+  getRutinasActivateIdRutinas(idRutina:number):Observable<any>{
+    return this.http.get(IP_ADDRESS+'/programacion/rutinasActivate/'+idRutina);
+  }
   getRutinasActivatebyObjetive(idObjetive:Number):Observable<any>{
     return this.http.get(IP_ADDRESS+'/programacion/rutinasActivatebyObjetive/'+idObjetive);
   }
@@ -275,6 +281,9 @@ export class ApiServiceService {
   }
   getSesionesActivate():Observable<any>{
     return this.http.get(IP_ADDRESS+'/programacion/sesionesActivate/');
+  }
+  getSesionesActivateidSesion(idSesion:number):Observable<any>{
+    return this.http.get(IP_ADDRESS+'/programacion/sesionesActivate/'+idSesion);
   }
   allBookmark(type: string): Observable<any> {
     const apiUrlWithType = this.apiUrl + '/' + type + '/';

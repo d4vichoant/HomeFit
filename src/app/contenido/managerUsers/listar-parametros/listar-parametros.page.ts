@@ -58,7 +58,7 @@ export class ListarParametrosPage implements OnInit {
     //this.test();
   }
   test(){
-    this.chanceColorFooter();
+    //this.chanceColorFooter();
     this.StatusBar();
     this.obtenerLikeTEjercicio();
     this.obtenerLikeOMuscular();
@@ -96,7 +96,7 @@ export class ListarParametrosPage implements OnInit {
         this.userSesion = JSON.parse(sesion).nickname;
         this.obtenerGetPerfilCompleto(this.userSesion);
         const response = await this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).toPromise(); // Convertir la respuesta a promesa con toPromise() y esperarla con await
-        this.chanceColorFooter();
+        //this.chanceColorFooter();
         this.StatusBar();
         this.obtenerLikeTEjercicio();
         this.obtenerLikeOMuscular();
@@ -116,7 +116,7 @@ export class ListarParametrosPage implements OnInit {
     this.navController.navigateForward('/error-page-users-trainers');
     this.storage.remove('sesion');
   }
-  private chanceColorFooter(){
+/*   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' transparent');
     document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
     document.documentElement.style.setProperty('--activate-foot20',' #9259f9');
@@ -125,7 +125,7 @@ export class ListarParametrosPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
     document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
-  }
+  } */
 
   getVideoName(url: string): string {
     return url.split('.')[0];

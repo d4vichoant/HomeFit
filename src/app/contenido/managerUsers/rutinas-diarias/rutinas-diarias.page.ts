@@ -68,7 +68,7 @@ export class RutinasDiariasPage implements OnInit {
       }
     }
     test(){
-      this.chanceColorFooter();
+      //this.chanceColorFooter();
       this.StatusBar();
       this.obtenerContratoEntrenadoresUsuario();
       this.obtenerbookmarkrutinas();
@@ -85,11 +85,15 @@ export class RutinasDiariasPage implements OnInit {
       });
       this.variable.DURACIONRUTINA =this.formatDuracionRutina(this.variable.DURACIONRUTINA);
     }
-    goEjercicioUniq(itemName:any,name:string){
+    goEjercicioUniq(itemName:any,name:string,indexVariable:number){
       const elementoEncontrado = this.dataEjercicio.find(item => item.IDEJERCICIO === itemName);
       this.dataBookMark=[];
       this.navController.navigateForward('/' + name, {
         queryParams: {
+
+          variableEjercicios: this.variable.IDEJERCICIOS,
+          variableEjerciciositem:indexVariable,
+
           previusPagelistarRutinasAll:this.previusPagelistarRutinasAll,
           variableEjercicio:elementoEncontrado,
           variableRutinaDiaria:this.variable,
@@ -124,7 +128,7 @@ export class RutinasDiariasPage implements OnInit {
             this.obtenerGetPerfilCompleto(this.userSesion);
             this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
               (response) => {
-                this.chanceColorFooter();
+                //this.chanceColorFooter();
                 this.StatusBar();
                 this.obtenerContratoEntrenadoresUsuario();
                 //this.obtenerEjercicios();
@@ -147,16 +151,7 @@ export class RutinasDiariasPage implements OnInit {
       this.navController.navigateForward('/error-page-users-trainers');
       this.storage.remove('sesion');
     }
-    private chanceColorFooter(){
-      document.documentElement.style.setProperty('--activate-foot10',' transparent');
-      document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
-      document.documentElement.style.setProperty('--activate-foot20',' #9259f9');
-      document.documentElement.style.setProperty('--activate-foot21',' #9259f9');
-      document.documentElement.style.setProperty('--activate-foot30',' transparent');
-      document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
-      document.documentElement.style.setProperty('--activate-foot40',' transparent');
-      document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
-    }
+
     cargarImagenesBefores(){
       const rutinas = this.dataEjercicio;
       const imageUrls = [];

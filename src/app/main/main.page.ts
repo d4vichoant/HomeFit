@@ -4,6 +4,7 @@ import { StatusBar } from '@capacitor/status-bar';
 import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../constantes';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -336,7 +337,11 @@ export class MainPage implements OnInit {
   }
 
   getVideoName(url: string): string {
-    return url.split('.')[0];
+    if (url !== null) {
+      return url.split('.')[0];
+    } else {
+      return '';
+    }
   }
   selectSwiper(item:any,page:string){
     this.go_page_create(page,item);
@@ -348,6 +353,106 @@ export class MainPage implements OnInit {
         previusPageMain:true,
       }
     });
+  }
+
+  goEjercicioUniqWithDates(data:any,name:string){
+    console.log(data);
+    if(data.IDSESION && data.IDRUTINA && data.IDEJERCICIO){
+      this.obtenerSesionesidSesion(data.IDSESION).subscribe(
+        (dataSesion) => {
+          this.obtenerRutinasidRutina(data.IDRUTINA).subscribe(
+            (dataRutina) => {
+              this.obtenerEjerciciosidEjercicio(data.IDEJERCICIO).subscribe(
+                (itemName) => {
+                  dataRutina = dataRutina.map((objeto:any)=> ({
+                    ...objeto,
+                    IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
+                  }));
+                  dataSesion=dataSesion.map((objeto:any) => ({
+                    ...objeto,
+                    IDRUTINAS: objeto.IDRUTINAS.split(",").map(Number)
+                  }));
+
+                  this.navController.navigateForward('/' + name, {
+                    queryParams: {
+                      variableEjercicio:itemName[0],
+                      variableEjercicios: dataRutina[0].IDEJERCICIOS,
+                      variableEjerciciositem:data.progress_numeroEjercicio,
+
+                      variableprogramarrutinas: dataSesion[0],
+                      variableRutinas:dataSesion[0].IDRUTINAS,
+                      variableRutinasitem:data.progress_numeroRutina,
+
+                      variableRutinaDiaria:dataRutina[0],
+
+                      previusPageMain: true,
+                      IDPROGRESOUSUARIO:data.IDPROGRESOUSUARIO,
+                    }
+                  });
+                },
+                (error) => {
+                  this.presentCustomToast(error.error.error, "danger");
+                }
+              );
+            },
+            (error) => {
+              this.presentCustomToast(error.error.error, "danger");
+            }
+          );
+
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error, "danger");
+        }
+      );
+    }else if(data.IDRUTINA && data.IDEJERCICIO){
+      this.obtenerRutinasidRutina(data.IDRUTINA).subscribe(
+        (dataRutina) => {
+          this.obtenerEjerciciosidEjercicio(data.IDEJERCICIO).subscribe(
+            (itemName) => {
+              dataRutina = dataRutina.map((objeto:any)=> ({
+                ...objeto,
+                IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
+              }));
+              this.navController.navigateForward('/' + name, {
+                queryParams: {
+                  variableEjercicios: dataRutina[0].IDEJERCICIOS,
+                  variableEjerciciositem:data.progress_numeroEjercicio,
+
+                  variableEjercicio:itemName[0],
+                  variableRutinaDiaria:dataRutina[0],
+
+                  previusPageMain: true,
+                  IDPROGRESOUSUARIO:data.IDPROGRESOUSUARIO,
+                }
+              });
+            },
+            (error) => {
+              this.presentCustomToast(error.error.error, "danger");
+            }
+          );
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error, "danger");
+        }
+      );
+
+    }else{
+      this.obtenerEjerciciosidEjercicio(data.IDEJERCICIO).subscribe(
+        (itemName) => {
+          this.navController.navigateForward('/' + name, {
+            queryParams: {
+              variableEjercicio: itemName[0],
+              previusPageMain: true,
+              IDPROGRESOUSUARIO:data.IDPROGRESOUSUARIO,
+            }
+          });
+        },
+        (error) => {
+          this.presentCustomToast(error.error.error, "danger");
+        }
+      );
+    }
   }
 
   go_page_create(name: string, data: any) {
@@ -602,11 +707,23 @@ export class MainPage implements OnInit {
     );
   }
 
+  obtenerEjerciciosidEjercicio(idEjercicio: number): Observable<any> {
+    return this.apiService.getEjercicioActivateIdEjercicio(idEjercicio);
+  }
+
+  obtenerRutinasidRutina(idRutina: number): Observable<any> {
+    return this.apiService.getRutinasActivateIdRutinas(idRutina);
+  }
+
+  obtenerSesionesidSesion(idSesion: number): Observable<any> {
+    return this.apiService.getSesionesActivateidSesion(idSesion);
+  }
+
   obtenerProgresousuario(){
     this.apiService.obtenerProgresousuario(this.userSesionPerfil[0].IDUSUARIO).subscribe(
       (response) => {
         this.dataprocesosQuedados=response;
-        console.log(this.dataprocesosQuedados);
+        //console.log(this.dataprocesosQuedados);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

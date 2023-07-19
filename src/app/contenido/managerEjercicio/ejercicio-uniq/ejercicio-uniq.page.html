@@ -5,7 +5,7 @@
     </div>
   </div>
   <div  class="video-container">
-    <video #videoPlayer loop autoplay muted (timeupdate)="onVideoTimeUpdate($event)">
+    <video  #videoPlayer  videoPlayer  loop autoplay muted >
       <source [src]="videoSrc" type="video/mp4">
     </video>
     <div class="image-overlay"></div>
@@ -71,7 +71,7 @@
       <h1>{{variable && variable?.NOMBREEJERCICIO}}</h1>
     </div>
   </div>
-  <div class="container-body" [style]="variableEjercicios?'height: 38vh;':'height: 42vh;'">
+  <div class="container-body" [style]="variableEjercicios|| variableRutinas?'height: 38vh;':'height: 42vh;'">
     <div class="item-container">
       <div class="item-icon align-top" >
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alarm-filled" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -136,13 +136,26 @@
     <ion-button  expand="block" fill="clear">Comenzar Entrenamiento</ion-button>
   </div>
   <div class="button-container" *ngIf="variableRutinaDiaria && variableRutinaDiaria.IDRUTINA">
-    <ion-button (click)="previusEjercicio()" *ngIf="variableEjerciciositem && variableEjerciciositem!==0" class="half-width-button" fill="clear">
+    <ion-button (click)="previusEjercicio()" *ngIf="variableEjerciciositem && variableEjerciciositem>0" class="half-width-button" fill="clear">
       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left-pipe" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
         <path d="M7 6v12"></path>
         <path d="M18 6l-6 6l6 6"></path>
      </svg>&nbsp; Atras</ion-button>
-    <ion-button (click)="nextEjercicio()" *ngIf="variableEjercicios && variableEjerciciositem!== variableEjercicios.length-1"  class="half-width-button" fill="clear">&nbsp;Siguiente
+     <ion-button (click)="previusRoutine()" style="background-color: #6069e8;border-radius: 30px;" *ngIf="variableEjerciciositem && variableEjerciciositem===-1 && variableRutinasitem>0" class="half-width-button" fill="clear">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left-pipe" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M7 6v12"></path>
+        <path d="M18 6l-6 6l6 6"></path>
+     </svg>&nbsp; Ant.Rutina</ion-button>
+    <ion-button (click)="nextEjercicio()"  *ngIf="(variableEjercicios && variableEjerciciositem !== variableEjercicios.length-1)"  class="half-width-button" fill="clear">&nbsp;Siguiente
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right-pipe" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M6 6l6 6l-6 6"></path>
+        <path d="M17 5v13"></path>
+     </svg>
+    </ion-button>
+    <ion-button (click)="nextRoutine()" style="background-color: #6069e8;border-radius: 30px;" *ngIf="(variableEjercicios && variableEjerciciositem === variableEjercicios.length-1) && (variableRutinas && variableRutinasitem!==variableRutinas.length-1 ) && variableRutinas.length-1>0"  class="half-width-button" fill="clear">&nbsp;Sig.Rutina
       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right-pipe" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
         <path d="M6 6l6 6l-6 6"></path>

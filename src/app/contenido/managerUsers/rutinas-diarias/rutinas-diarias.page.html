@@ -59,7 +59,7 @@
     <h1 class="right-aligned">Rutinas {{encontrarNumerosRepetidos(variable.IDEJERCICIOS)[0].count}} </h1>
   </div>
   <div class="container-body">
-    <div class="container" *ngFor="let item of variable.IDEJERCICIOS;"  (click)="goEjercicioUniq(item,'ejercicio-uniq'); $event.stopPropagation();">
+    <div class="container" *ngFor="let item of variable.IDEJERCICIOS;let i=index"  (click)="goEjercicioUniq(item,'ejercicio-uniq',i); $event.stopPropagation();">
       <div   class="round-section" *ngIf="encontrarNumerosRepetidos(variable.IDEJERCICIOS)[0].number===item">
         <h1>Siguiente Repetición</h1>
       </div><br>

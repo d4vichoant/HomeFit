@@ -826,3 +826,28 @@ animation-iteration-count: infinite;
     color: #ffffff;
   }
 }
+.circle-down {
+  background: linear-gradient(190deg, #6d28ed, #202020);
+  position: absolute;
+  bottom: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 6px solid #6d28ed;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: lowercase;
+  box-shadow: 1px 1px 18px 1px #7e43ede6;
+  .text{
+    font-family: 'Raleway-Light';
+    font-size: 1.9rem;
+    color: #ffffff;
+  }
+}

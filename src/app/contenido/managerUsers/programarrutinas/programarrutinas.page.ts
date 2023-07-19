@@ -42,6 +42,11 @@ export class ProgramarrutinasPage implements OnInit {
   bookmarkSesionesState: { [key: number]: boolean } = {};
   dataBookMarkSesiones!:any[];
 
+  squareWidth: number = 300; // Ancho del cuadrado
+  circleRadius: number = 25; // Radio del círculo
+  circleX: number = this.circleRadius; // Inicialmente en el centro del cuadrado
+  circleY: number = this.squareWidth / 2; // Inicialmente en
+
   constructor(private navController: NavController,
     private route: ActivatedRoute,
     private apiService: ApiServiceService,
@@ -67,7 +72,7 @@ export class ProgramarrutinasPage implements OnInit {
     }
   }
   test(){
-    this.chanceColorFooter();
+    //this.chanceColorFooter();
     this.StatusBar();
     this.obtenerbookmarksesiones();
     this.obtenerBookMarkUser();
@@ -79,21 +84,30 @@ export class ProgramarrutinasPage implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.variable = params['variableprogramarrutinas'] as any;
       this.variableSesion = params['variableSesiones'] as any;
+
       this.previusPageMain = params['previusPageMain'] as boolean|| false;
       this.previusPagelistarGuardados = params['previusPagelistarGuardados'] as boolean|| false;
       this.previusPagelistarSesionesRutinasAll= params['previusPagelistarSesionesRutinasAll'] as any || null;;
     });
   }
-  goEjercicioUniq(itemName:any,name:string){
+  goEjercicioUniq(itemName:any,name:string,indexVariable:number,idEjercicios:any,Rutina:any,IDRutina:number){
     const elementoEncontrado = this.dataEjercicio.find(item => item.IDEJERCICIO === itemName);
     this.dataBookMark=[];
     this.navController.navigateForward('/' + name, {
       queryParams: {
-        previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
         variableEjercicio:elementoEncontrado,
+        variableEjercicios: idEjercicios,
+        variableEjerciciositem:indexVariable,
+
         variableprogramarrutinas: this.variable,
+        variableRutinas:this.variable.IDRUTINAS,
+        variableRutinasitem:IDRutina,
+
+        variableRutinaDiaria:Rutina,
         variableSesiones:this.variableSesion,
-        previusPageMain:this.previusPageMain,
+
+        previusPageMain :this.previusPageMain,
+        previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
         previusPagelistarGuardados:this.previusPagelistarGuardados,
       }
     });
@@ -111,7 +125,6 @@ export class ProgramarrutinasPage implements OnInit {
           this.obtenerGetPerfilCompleto(this.userSesion);
           this.apiService.protectedRequestWithToken(JSON.parse(sesion).token).subscribe(
             (response) => {
-              this.chanceColorFooter();
               this.StatusBar();
               this.obtenerbookmarksesiones();
               this.obtenerBookMarkUser();
@@ -137,16 +150,7 @@ export class ProgramarrutinasPage implements OnInit {
     this.navController.navigateForward('/error-page-users-trainers');
     this.storage.remove('sesion');
   }
-  private chanceColorFooter(){
-    document.documentElement.style.setProperty('--activate-foot10',' transparent');
-    document.documentElement.style.setProperty('--activate-foot11',' #6b6a6b');
-    document.documentElement.style.setProperty('--activate-foot20',' #9259f9');
-    document.documentElement.style.setProperty('--activate-foot21',' #9259f9');
-    document.documentElement.style.setProperty('--activate-foot30',' transparent');
-    document.documentElement.style.setProperty('--activate-foot31',' #6b6a6b');
-    document.documentElement.style.setProperty('--activate-foot40',' transparent');
-    document.documentElement.style.setProperty('--activate-foot41',' #6b6a6b');
-  }
+
 
   toggleBookmarkOSesiones(index: number): void {
     this.loading=true;
@@ -286,6 +290,62 @@ export class ProgramarrutinasPage implements OnInit {
 
     return parseFloat(duracionMinutos.toFixed(4));
   }
+
+  onTouchMove(event: TouchEvent) {
+    const touch = event.touches[0];
+    const newPositionX = touch.clientX - this.circleRadius; // Restar el radio para ajustar la posición
+    this.updateCirclePosition(newPositionX, this.circleY);
+  }
+
+  private updateCirclePosition(x: number, y: number) {
+    // Restringir el movimiento dentro del cuadrado
+    if (x < this.circleRadius) {
+      this.circleX = this.circleRadius;
+    } else if (x > this.squareWidth - this.circleRadius) {
+      this.circleX = this.squareWidth - this.circleRadius;
+    } else {
+      this.circleX = x;
+    }
+    this.circleY = y;
+    if(this.circleX===this.squareWidth-this.circleRadius){
+      setTimeout(() => {
+        this.dataBookMark=[];
+        const elementoEncontradoRutina =  this.dataRutinas.find((elemento) => elemento.IDRUTINA === this.variable.IDRUTINAS[0]);
+        const elementoEncontrado = this.dataEjercicio.find(item => item.IDEJERCICIO === elementoEncontradoRutina.IDEJERCICIOS[0]);
+        this.navController.navigateForward('/ejercicio-uniq' , {
+          queryParams: {
+            variableEjercicio:elementoEncontrado,
+            variableEjercicios:elementoEncontradoRutina.IDEJERCICIOS,
+            variableEjerciciositem:0,
+
+            variableprogramarrutinas:this.variable,
+            variableRutinas:this.variable.IDRUTINAS,
+            variableRutinasitem:0,
+
+            variableRutinaDiaria:elementoEncontradoRutina,
+            variableSesiones:this.variableSesion,
+
+            previusPageMain :this.previusPageMain,
+            previusPagelistarSesionesRutinasAll:this.previusPagelistarSesionesRutinasAll,
+            previusPagelistarGuardados:this.previusPagelistarGuardados,
+
+          }
+        });
+      }, 150);
+    }
+  }
+  onTouchEnd() {
+    const squareCenter = this.squareWidth / 2;
+    if (this.circleX < squareCenter) {
+      this.updateCirclePosition(0, this.circleY);
+    } else {
+      this.updateCirclePosition(this.squareWidth - this.circleRadius, this.circleY);
+    }
+    setTimeout(()=>{
+      this.updateCirclePosition(0, this.circleY);
+    },400);
+  }
+
   async presentCustomToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,

@@ -418,3 +418,53 @@ ion-header::after{
       margin-right: 10%;
     }
   }
+  .wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    z-index: 5;
+  }
+  .container-desplazar {
+    position: relative;
+  }
+  .square {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .circle {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    background-color: rgba(43, 223, 73, 0.5);
+    border-radius: 50%;
+    cursor: move;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+  }
+
+  .text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Raleway-ExtraBold;
+    font-size: 1.4rem;
+    color:  #a97bfae7;
+  }
+
+  .circle svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffffb2;
+  }
