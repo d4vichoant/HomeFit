@@ -110,12 +110,15 @@ export class ContratoEntrenadorPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot20',' transparent');
     document.documentElement.style.setProperty('--activate-foot21',' #ffffffab');
     document.documentElement.style.setProperty('--activate-foot22',' transparent');
-    document.documentElement.style.setProperty('--activate-foot30',' #ffffff');
-    document.documentElement.style.setProperty('--activate-foot31',' #ffffff');
-    document.documentElement.style.setProperty('--activate-foot32',' #ffffff6b');
-    document.documentElement.style.setProperty('--activate-foot40',' transparent');
-    document.documentElement.style.setProperty('--activate-foot41',' #ffffffab');
-    document.documentElement.style.setProperty('--activate-foot42',' transparent');
+    document.documentElement.style.setProperty('--activate-foot30',' transparent');
+    document.documentElement.style.setProperty('--activate-foot31',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot32',' transparent');
+    document.documentElement.style.setProperty('--activate-foot40',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot41',' #ffffff');
+    document.documentElement.style.setProperty('--activate-foot42',' #ffffff6b');
+    document.documentElement.style.setProperty('--activate-foot50',' transparent');
+    document.documentElement.style.setProperty('--activate-foot51',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot52',' transparent');
   }
   cargarImagenesBefores(){
     const entrenadores = this.dataEntrenadores;

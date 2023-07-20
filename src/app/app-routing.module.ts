@@ -226,6 +226,10 @@ const routes: Routes = [
     path: 'half-time',
     loadChildren: () => import('./contenido/managerEjercicio/half-time/half-time.module').then( m => m.HalfTimePageModule)
   },
+  {
+    path: 'informe-usuario',
+    loadChildren: () => import('./contenido/managerInforme/informe-usuario/informe-usuario.module').then( m => m.InformeUsuarioPageModule)
+  },
 
 
 

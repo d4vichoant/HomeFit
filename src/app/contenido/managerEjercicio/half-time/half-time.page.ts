@@ -173,6 +173,7 @@ export class HalfTimePage implements OnInit,OnDestroy,ViewDidEnter {
     this.segundos = 30;
     if (this.variableEjerciciositem === -1) {
       this.variableEjerciciositem = 0;
+      this.variableEjerciciositem++;
     } else {
       this.variableEjerciciositem++;
     }

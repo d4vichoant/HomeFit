@@ -1,0 +1,115 @@
+ion-content {
+  --background: linear-gradient(0deg, #00000060, #33333394), var(--background-informe)  no-repeat center center / cover;;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #212121; /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.header-up{
+  padding: 7% 3% 0% 3%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  .up-date{
+    margin: 0px;
+    padding: 0px;
+    ion-icon{
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #a3a3a3;
+      margin-right: 10px;
+      width: 19px;
+      height: 19px;
+    }
+    span{
+      font-family: Raleway-bold;
+      font-size: 1rem;
+      color: #a3a3a3;
+    }
+  }
+  .header-name{
+    margin: 0px;
+    padding: 0px;
+    h1{
+      margin: 0px;
+      padding: 2% 0% 6% 3%;
+      font-family: Raleway-Bold;
+      font-size: 1.6rem;
+      color: #ffffff;
+    }
+  }
+}
+
+.title{
+  padding: 2% 0% 3% 2%;
+  margin: 0;
+  font-family: Raleway-ExtraBold;
+  font-size: 1.5rem;
+  color:  #ffffff;
+  width: 96%;
+  margin: 0% 3%;
+  span{
+    font-family: Raleway-Light;
+    font-size: 2.5rem;
+    color:  #ffffff69;
+  }
+  border-bottom: 1px solid #ffffff75;
+}
+
+.flex-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.flex-item {
+  flex: 1;
+  padding: 10px;
+  position: relative;
+  h1{
+    font-family: Raleway-Bold;
+    font-size: 1.5rem;
+    color:  #6069e8;
+  }
+  p{
+    font-family: Raleway-Bold;
+    font-size: .9rem;
+    color:  #6b6a6bb2;
+    text-transform: uppercase;
+  }
+
+}
+
+/* Pseudo-elemento para la línea vertical */
+.flex-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 15%; /* Ajusta el valor de top según desees */
+  bottom:15%; /* Ajusta el valor de bottom según desees */
+  right: 0;
+  width: 2px;
+  height: 50%;
+  background-color: #949396b2;
+}
+
+.top-container{
+  margin: 4% 3% 0% 3%;
+  width: 94%;
+  border-radius: 15px;
+  background-color: #ffffff;
+}

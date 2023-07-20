@@ -216,6 +216,21 @@ ion-content {
   border-radius: 15px 0px;
   width: 100%;
 }
+.clean{
+  position: absolute;
+  top:  0;
+  right:  0;
+  padding-right: 5%;
+  padding-top: 5%;
+  color: #fff;
+  text-align: right;
+  overflow: hidden;
+  z-index: 5;
+  svg{
+    height: 3vh;
+    width: auto;
+  }
+}
 .text-demo {
   position: absolute;
   bottom: 0;

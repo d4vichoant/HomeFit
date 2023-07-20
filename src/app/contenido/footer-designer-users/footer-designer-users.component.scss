@@ -102,3 +102,21 @@
   }
 
 }
+
+.active-element5 {
+  color: var(--activate-foot51)!important;
+  background-color: var(--activate-foot52)!important;
+  border-radius: 10px;
+  .notification-dot {
+    position: absolute;
+    top: 0px;
+    margin-top: 10%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--activate-foot50)!important;
+  }
+
+}

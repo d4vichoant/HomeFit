@@ -118,6 +118,9 @@ export class ListarEjerciciosPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
     document.documentElement.style.setProperty('--activate-foot41',' #ffffffab');
     document.documentElement.style.setProperty('--activate-foot42',' transparent');
+    document.documentElement.style.setProperty('--activate-foot50',' transparent');
+    document.documentElement.style.setProperty('--activate-foot51',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot52',' transparent');
   }
 
   cargarImagenesBefores(){

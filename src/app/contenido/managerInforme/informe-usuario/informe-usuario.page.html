@@ -1,0 +1,42 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <app-loading></app-loading>
+  </div>
+  <div class="header-up">
+    <div class="up-date">
+      <ion-icon name="sunny-outline"></ion-icon>
+      <span class="date">{{ currentDate }}</span>
+    </div>
+    <div class="header-name">
+      <h1>hola,
+        <ng-container *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0].NOMBREPERSONA">
+          {{ convertirAMinusculas(obtenerPrimerNombre(userSesionPerfil[0].NOMBREPERSONA)) }}
+        </ng-container>
+      </h1>
+    </div>
+    <div><h2 class="title" >
+      informe<br>
+    <span>personal</span></h2></div>
+  </div>
+  <div class="container-body">
+    <div class="top-container">
+      <div class="flex-container">
+        <div class="flex-item">
+          <h1>XX</h1>
+          <p>Ejercicio</p>
+        </div>
+        <div class="flex-item">
+          <h1>XX</h1>
+          <p>kcal</p>
+        </div>
+        <div class="flex-item">
+          <h1>XX</h1>
+          <p>Minutos</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer *ngIf="!loading">
+  <app-footer-designer-users></app-footer-designer-users>
+</ion-footer>

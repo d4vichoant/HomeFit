@@ -327,6 +327,9 @@ export class ApiServiceService {
   createDataProgresoUsuario(data:any): Observable<any>{
     return this.http.post(IP_ADDRESS+'/programacion/createDataProgresoUsuario/',data );
   }
+  changeShowProgresoUsuario(idprogresoUsuario:number,progress_show:number):Observable<any>{
+    return this.http.get(IP_ADDRESS+'/programacion/changeShowProgresoUsuario/'+idprogresoUsuario+'/'+progress_show);
+  }
   obtenerProgresousuario(IDUSUARIO:number):Observable<any>{
     return this.http.get(IP_ADDRESS+'/programacion/obtenerProgresousuario/'+IDUSUARIO);
   }

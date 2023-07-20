@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from '../api-service.service';
 import { StatusBar } from '@capacitor/status-bar';
-import { NavController, ToastController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../constantes';
 import { Observable } from 'rxjs';
@@ -64,7 +64,8 @@ export class MainPage implements OnInit {
   constructor(private navController: NavController,
     private apiService: ApiServiceService,
     private storage: Storage,
-    public toastController: ToastController) { }
+    public toastController: ToastController,
+    public alertController: AlertController) { }
   ngOnInit() {
     this.validateSesion();
     document.documentElement.style.setProperty('--background-ip-address-main','url('+IP_ADDRESS+'/media/images/backgroundMain.jpg)');
@@ -131,6 +132,9 @@ export class MainPage implements OnInit {
     document.documentElement.style.setProperty('--activate-foot40',' transparent');
     document.documentElement.style.setProperty('--activate-foot41',' #ffffffab');
     document.documentElement.style.setProperty('--activate-foot42',' transparent');
+    document.documentElement.style.setProperty('--activate-foot50',' transparent');
+    document.documentElement.style.setProperty('--activate-foot51',' #ffffffab');
+    document.documentElement.style.setProperty('--activate-foot52',' transparent');
   }
 
 
@@ -353,6 +357,32 @@ export class MainPage implements OnInit {
         previusPageMain:true,
       }
     });
+  }
+
+  async confirmcleandatahistory(data:any,index:number){
+    const alert = await this.alertController.create({
+      header: 'Confirmar Limpieza',
+      message: '¿Estás seguro que desea ocultar este proceso realizado ?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.presentCustomToast('Proceso cancelada',"danger");
+          }
+        }, {
+          text: 'Aceptar',
+          handler: () => {
+            this.changeShowProgresoUsuario(data.IDPROGRESOUSUARIO);
+            if (index >= 0 && index < this.dataprocesosQuedados.length) {
+              this.dataprocesosQuedados.splice(index, 1);
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   goEjercicioUniqWithDates(data:any,name:string){
@@ -717,6 +747,18 @@ export class MainPage implements OnInit {
 
   obtenerSesionesidSesion(idSesion: number): Observable<any> {
     return this.apiService.getSesionesActivateidSesion(idSesion);
+  }
+
+
+  changeShowProgresoUsuario(idprogresoUsuario: number){
+    this.apiService.changeShowProgresoUsuario(idprogresoUsuario,0).subscribe(
+      (response) => {
+        this.presentCustomToast(response.message,"success");
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
   }
 
   obtenerProgresousuario(){

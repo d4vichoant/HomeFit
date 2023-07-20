@@ -21,6 +21,7 @@ export class FooterDesignerUsersComponent  implements OnInit {
   public animateElement2 = false;
   public animateElement3 = false;
   public animateElement4 = false;
+  public animateElement5 = false;
   constructor(
     private navController: NavController,
     private storage: Storage,
@@ -47,6 +48,9 @@ export class FooterDesignerUsersComponent  implements OnInit {
       case 4:
         this.animateElement4 = true;
         break;
+      case 5:
+        this.animateElement5 = true;
+        break;
       default:
         break;
     }
@@ -60,6 +64,7 @@ export class FooterDesignerUsersComponent  implements OnInit {
     this.animateElement2 = false;
     this.animateElement3 = false;
     this.animateElement4 = false;
+    this.animateElement5 = false;
   }
   async presentCustomToast(message: string, color: string) {
     const toast = await this.toastController.create({

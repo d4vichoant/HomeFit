@@ -113,6 +113,8 @@ export class VideoUniqPage implements OnInit,OnDestroy,ViewDidEnter {
     this.videoSrc = videoUrl;
     if(this.videoSrc!==''){
       if (this.videoPlayer && this.videoPlayer.nativeElement) {
+        this.videoPlayer.nativeElement.muted = false;
+        this.videoPlayer.nativeElement.load();
         this.videoPlayer.nativeElement.load();
       }
     }

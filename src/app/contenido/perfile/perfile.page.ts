@@ -102,9 +102,12 @@ export class PerfilePage implements OnInit {
       document.documentElement.style.setProperty('--activate-foot30',' transparent');
       document.documentElement.style.setProperty('--activate-foot31',' #ffffffab');
       document.documentElement.style.setProperty('--activate-foot32',' transparent');
-      document.documentElement.style.setProperty('--activate-foot40',' #ffffff');
-      document.documentElement.style.setProperty('--activate-foot41',' #ffffff');
-      document.documentElement.style.setProperty('--activate-foot42',' #ffffff6b');
+      document.documentElement.style.setProperty('--activate-foot40',' transparent');
+      document.documentElement.style.setProperty('--activate-foot41',' #ffffffab');
+      document.documentElement.style.setProperty('--activate-foot42',' transparent');
+      document.documentElement.style.setProperty('--activate-foot50',' #ffffff');
+      document.documentElement.style.setProperty('--activate-foot51',' #ffffff');
+      document.documentElement.style.setProperty('--activate-foot52',' #ffffff6b');
     }else{
       document.documentElement.style.setProperty('--background-ip-address-perfile','linear-gradient(0deg, #f0f3f7, #ffffff)');
       document.documentElement.style.setProperty('--activate-foot10',' transparent');
