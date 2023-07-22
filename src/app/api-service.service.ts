@@ -333,4 +333,16 @@ export class ApiServiceService {
   obtenerProgresousuario(IDUSUARIO:number):Observable<any>{
     return this.http.get(IP_ADDRESS+'/programacion/obtenerProgresousuario/'+IDUSUARIO);
   }
+  obtenerPesoAltura(IDUSUARIO:number):Observable<any>{
+    return this.http.get(this.apiUrl+'/obtenerPesoAltura/'+IDUSUARIO);
+  }
+  actualizarPesoAltura(IDUSUARIO:number,data:any):Observable<any>{
+    return this.http.post(this.apiUrl+'/actualizarPesoAltura/'+IDUSUARIO,data);
+  }
+  obtenerPesoHistory(IDUSUARIO:number):Observable<any>{
+    return this.http.get(this.apiUrl+'/obtenerPesoHistory/'+IDUSUARIO);
+  }
+  obtenerInformeBasic(IDUSUARIO:number):Observable<any>{
+    return this.http.get(this.apiUrl+'/obtenerInformeBasic/'+IDUSUARIO);
+  }
 }

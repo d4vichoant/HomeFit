@@ -85,7 +85,7 @@ export class VideoUniqPage implements OnInit,OnDestroy,ViewDidEnter {
 
   startTime!: number;
   elapsedTime!: { hours: number, minutes: number, seconds: number };
-  buttonClickTime!: number;
+  buttonClickTime!: number | undefined;
 
  constructor(
   private route: ActivatedRoute,
@@ -99,6 +99,7 @@ export class VideoUniqPage implements OnInit,OnDestroy,ViewDidEnter {
     this.initializePage();
   }
   ionViewDidEnter(){
+    //console.log(this.elapsedTime);
     this.initializePage();
   }
 
@@ -249,6 +250,8 @@ export class VideoUniqPage implements OnInit,OnDestroy,ViewDidEnter {
 
     this.evaluateComment=0;
     this.validatebuttonEvaluate=false;
+
+    this.buttonClickTime = undefined;
   }
 
   onVideoTimeUpdate(event: Event): void {
@@ -486,6 +489,7 @@ export class VideoUniqPage implements OnInit,OnDestroy,ViewDidEnter {
     if(this.currentPercentage>=90){
       progress_show=false;
     }
+    //console.log(this.elapsedTime);
     const data = this.createDataProgresoUsuario(this.IDPROGRESOUSUARIO ,this.variableVideosEjercicio && this.variableVideosEjercicio.IDEJERCICIO,
       this.variableRutinaDiaria && this.variableRutinaDiaria.IDRUTINA, this.variableprogramarrutinas && this.variableprogramarrutinas.IDSESION, this.variableEjerciciositem, this.variableRutinasitem,this.userSesionPerfil[0].IDUSUARIO,
       this.elapsedTime.hours + ':' + this.elapsedTime.minutes + ':' + this.elapsedTime.seconds,

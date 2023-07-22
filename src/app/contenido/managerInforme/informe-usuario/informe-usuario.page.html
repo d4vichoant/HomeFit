@@ -2,7 +2,7 @@
   <div class="loading-overlay" *ngIf="loading">
     <app-loading></app-loading>
   </div>
-  <div class="header-up">
+<!--   <div class="header-up">
     <div class="up-date">
       <ion-icon name="sunny-outline"></ion-icon>
       <span class="date">{{ currentDate }}</span>
@@ -14,25 +14,124 @@
         </ng-container>
       </h1>
     </div>
-    <div><h2 class="title" >
-      informe<br>
-    <span>personal</span></h2></div>
-  </div>
+  </div> -->
+  <div><h2 class="title" >
+    informe<br>
+  <span>personal</span></h2></div>
   <div class="container-body">
     <div class="top-container">
       <div class="flex-container">
         <div class="flex-item">
-          <h1>XX</h1>
+          <h1 >{{dataInformeBasic && dataInformeBasic[0].NEjercios}}</h1>
           <p>Ejercicio</p>
         </div>
         <div class="flex-item">
-          <h1>XX</h1>
-          <p>kcal</p>
+          <h1 >{{dataInformeBasic && dataInformeBasic[0].suma_kcalEjercicio}}</h1>
+          <p>kcal <span>(apx)</span></p>
         </div>
         <div class="flex-item">
-          <h1>XX</h1>
+          <h1 >{{dataInformeBasic &&  convertirTiempoAMinutos(dataInformeBasic[0].suma_progress_seconds)}}</h1>
           <p>Minutos</p>
         </div>
+      </div>
+    </div>
+    <div class="container-grafica-body">
+      <div class="left-grafica-body">
+        <h1>Peso</h1>
+      </div>
+      <div class="right-grafica-body"  (click)="mostrarDialog('peso')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm0 6a1 1 0 0 0 -1 1v2h-2l-.117 .007a1 1 0 0 0 .117 1.993h2v2l.007 .117a1 1 0 0 0 1.993 -.117v-2h2l.117 -.007a1 1 0 0 0 -.117 -1.993h-2v-2l-.007 -.117a1 1 0 0 0 -.993 -.883z" fill="currentColor" stroke-width="0"></path>
+       </svg>
+      </div>
+    </div>
+    <div class="grafica-body">
+      <div class="containerchart-body">
+        <canvas #myChart></canvas>
+      </div>
+      <div class="info-container">
+        <div class="square"></div>
+        <p>Peso</p>
+      </div>
+    </div>
+    <div class="contenedor-padre">
+      <div class="texto-pesos">
+        <span style=" font-family: Raleway-Bold; color: #302c2c;" >Peso Actual</span>
+        <span style=" font-family: Raleway-Light; color: #9e9a9a;margin-right: 5%;" >{{pesoAlturaUsuario && pesoAlturaUsuario[0].PESOUSUARIO}} kg</span>
+      </div>
+      <div class="texto-pesos">
+        <span style=" font-family: Raleway-Bold; color: #302c2c;" >Peso máx.</span>
+        <span style=" font-family: Raleway-Light; color: #9e9a9a;margin-right: 5%;">{{pesoMax}} kg</span>
+      </div>
+      <div class="texto-pesos">
+        <span style=" font-family: Raleway-Bold; color: #302c2c;" >Peso mín.</span>
+        <span style=" font-family: Raleway-Light; color: #9e9a9a;margin-right: 5%;">{{pesoMin}} kg</span>
+      </div>
+    </div>
+    <div class="container">
+      <div class="div1">
+        <div class="container-grafica-body" style="background: transparent!important;">
+          <div class="left-grafica-body">
+            <h1>IMC(kg/m<sup>2</sup>):<span>{{calcularIMC(pesoAlturaUsuario)}}</span></h1>
+          </div>
+          <div class="right-grafica-body" (click)="mostrarDialog('alturapeso')">
+            <p>CAMBIAR</p>
+          </div>
+        </div>
+      </div>
+      <div class="div2">
+        <div>
+          <div style="flex: 15; background-color: #b0d3cd; height: 50px; width: 99.5%;margin-right: .5%;">
+            <span style="bottom: -33%;left: 0px;">15</span>
+          </div>
+          <div style="flex: 25; background-color: #4c6c93; height: 50px;  width: 99.5%;margin-right: .5%;">
+            <span style=" bottom: -33%; left: -15%; ">16</span>
+          </div>
+          <div style="flex: 39; background-color: #74dd78; height: 50px;  width: 99.5%;margin-right: .5%;">
+            <span style=" bottom: -33%; left: -15%; ">18.5</span></div>
+          <div style="flex: 29; background-color: #dce683; height: 50px;  width: 99.5%;margin-right: .5%;">
+            <span style=" bottom: -33%; left: -15%; ">25</span>
+          </div>
+          <div style="flex: 19; background-color: #feb546; height: 50px;  width: 99.5%;margin-right: .5%;">
+            <span style=" bottom: -33%; left: -15%; ">30</span>
+          </div>
+          <div style="flex: 12; background-color: #ea444e; height: 50px;">
+            <span style=" bottom: -33%; left: -40%; ">35</span>
+            <span style=" bottom: -33%; right: -8%; ">40</span>
+          </div>
+          <div id="line"  [style.left.%]="actualizarLinea(calcularIMC(pesoAlturaUsuario))" style="  position: absolute;
+          width: 2px;
+          height: 120%;
+          background-color: #807c7c;
+          top: -10%;
+          border-radius: 5px;"></div>
+        </div>
+      </div>
+      <div class="text-container" [style.color]="clasificarIMC(calcularIMC(pesoAlturaUsuario)).colorHex">{{ clasificarIMC(calcularIMC(pesoAlturaUsuario)).clasificacion}}</div>
+    </div>
+    <div class="container-grafica-body" (click)="mostrarDialog('altura')">
+      <div class="left-grafica-body">
+        <h1>Altura</h1>
+      </div>
+      <div class="right-grafica-body">
+        <p>{{pesoAlturaUsuario && pesoAlturaUsuario[0].ALTURAUSUARIO}} cm</p>
+      </div>
+    </div>
+  </div>
+
+  <div  *ngIf="showdialog" class="custom-dialog-certificados">
+    <div class="container-preselect">
+      <h2>Actualizar Datos</h2>
+      <div class="container-input">
+        <h1  *ngIf="showdialogPeso">Peso</h1>
+        <ion-input *ngIf="showdialogPeso" [(ngModel)]="pesoAlturaUsuario && pesoAlturaUsuario[0].PESOUSUARIO" type="text" placeholder="Peso"></ion-input>
+        <h1 *ngIf="showdialogAltura">Altura</h1>
+        <ion-input *ngIf="showdialogAltura" [(ngModel)]="pesoAlturaUsuario[0].ALTURAUSUARIO" type="text" placeholder="Altura"></ion-input>
+      </div>
+      <div class="buttons-tab1">
+        <div class="ion-buttons-1" (click)="cancelarDialog()">Cancelar</div>
+        <div class="ion-buttons-2" (click)="actualizarPesoAltura()">Aceptar</div>
       </div>
     </div>
   </div>

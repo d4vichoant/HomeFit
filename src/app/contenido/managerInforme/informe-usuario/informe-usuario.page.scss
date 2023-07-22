@@ -54,7 +54,7 @@ ion-content {
 }
 
 .title{
-  padding: 2% 0% 3% 2%;
+  padding: 5% 0% 3% 2%;
   margin: 0;
   font-family: Raleway-ExtraBold;
   font-size: 1.5rem;
@@ -85,6 +85,11 @@ ion-content {
     font-family: Raleway-Bold;
     font-size: 1.5rem;
     color:  #6069e8;
+    span{
+      font-family: Raleway-Light;
+      font-size: .8rem;
+      color:  #807c7c;
+    }
   }
   p{
     font-family: Raleway-Bold;
@@ -106,10 +111,233 @@ ion-content {
   height: 50%;
   background-color: #949396b2;
 }
+.container-body{
+  height: 87vh;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  padding: 0% 0% 15% 0
+}
 
 .top-container{
   margin: 4% 3% 0% 3%;
   width: 94%;
   border-radius: 15px;
   background-color: #ffffff;
+}
+
+.grafica-body{
+  margin: 4% 3% 0% 3%;
+  width: 94%;
+  height: auto;
+  border-radius: 15px;
+  background-color: #ffffff;
+  //background: linear-gradient(0deg, red, blue);
+  overflow: auto;
+
+}
+
+.container-grafica-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 94%;
+  padding: 5% 3% 5% 3%;
+  background: #ffffff;
+  margin: 3% 3% 0% 3%;
+  border: none;
+  border-radius: 15px;
+}
+
+.left-grafica-body {
+  display: flex;
+  margin-left: 3%;
+  text-align: left;
+  h1{
+    padding: 0;
+    margin: 0;
+    font-family: Raleway-Medium;
+    font-size: 1.2rem;
+    color:  #676fe9;
+    display: inline-block;
+      margin: 0;
+      span{
+        padding-left: 6px;
+        font-family: Raleway-Light;
+        font-size: .9rem;
+        display: inline-block;
+        margin: 0;
+        color:  #a3a3a3;
+      }
+  }
+
+}
+
+.right-grafica-body {
+  margin-right: 3%;
+  flex: 1;
+  text-align: right;
+  color: #a3a3a3;
+}
+
+.info-container {
+  display: flex;
+  align-items: center;
+  margin: 2% 0% 4% 5%;
+}
+
+.square {
+  width: 14px;
+  height: 14px;
+  background-color: #616ae8be;
+  margin-right: 2px;
+  border-radius: 2px;
+  margin-right: 8px;
+  border: none;
+}
+
+p {
+  margin: 0;
+  font-family: Raleway-Light;
+  font-size: .9rem;
+  color:  #a3a3a3;
+}
+
+
+.containerchart-body {
+  width: 600px;
+  height: 100%;
+  padding: 5% 0% 0% 0.5%;
+}
+
+.containerchart-body canvas {
+  max-width: 100%; /* Cambiamos max-width a 100% para que el canvas se ajuste al tamaño del contenedor */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  width: 94%;
+  margin: 3% 3% 0% 3%;
+  border-radius: 15px;
+}
+
+
+.div2 {
+  width: 94%;
+  height: auto;
+  margin: 0% 3%;
+  div{
+    position: relative;
+    display: flex;
+    width: 100%;
+    border-radius: 3px;
+    span{
+      position: absolute;
+      font-family: Raleway-Light;
+      font-size: .9rem;
+      color:  #807c7c;
+    }
+  }
+}
+
+.text-container{
+  padding-top: 6%;
+  padding-bottom: 5%;
+  text-align: center;
+  font-family: Raleway-Bold;
+  font-size: 1rem;
+}
+
+.contenedor-padre {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  width: 94%;
+  margin: 3% 3% 0% 3%;
+  border-radius: 15px;
+  padding: 3% 0% 0% 3%;
+}
+
+/* Estilo para cada clase de texto */
+.texto-pesos {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  span{
+
+    font-size: 1rem;
+  }
+}
+
+.custom-dialog-certificados {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.container-preselect {
+  background-color: #fff;
+  width: 80%;
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.buttons-tab1{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: auto;
+}
+.ion-buttons-1{
+  text-align: center;
+  padding: 20px 0px;
+  height: 100%;
+  border: 2px solid #9259f9;
+  font-family: Raleway-Medium;
+  font-size: 1.1rem;
+  color: #9259f9;
+  border-radius: 10px;
+  flex-basis: 50%;
+}
+
+.ion-buttons-2{
+  text-align: center;
+  padding: 20px 0px;
+  height: 100%;
+  border: 2px solid #9259f9;
+  background-color: #9259f9;
+  font-family: Raleway-Medium;
+  font-size: 1.1rem;
+  color: #f0f0f0;
+  border-radius: 10px;
+  flex-basis: 50%;
+  box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.container-input{
+  h1{
+    padding: 1% 0% 1% 3%;
+    margin: 0% 0% 0% 0%;
+    font-family: Raleway-Medium;
+    font-size: 1.1rem;
+    color: rgb(99, 88, 88);
+    border: 2px solid #9259f954;
+    border-radius: 10px;
+  }
+  ion-input{
+    padding: 0;
+    margin: 0;
+    font-family: Raleway-Medium;
+    font-size: 1.4rem;
+    color: #807c7c;
+    text-align: center;
+  }
 }
