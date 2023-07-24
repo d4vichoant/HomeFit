@@ -38,6 +38,9 @@ export class InformeUsuarioPage implements OnInit {
   showdialogPeso:boolean=false;
   showdialogAltura:boolean=false;
 
+  showdialogWebSite:boolean=false;
+
+  chartCreated = false;
 /*   data = [
     { fecha: '2023-07-19', peso: 50 },
     { fecha: '2023-07-20', peso: 61 },
@@ -62,9 +65,10 @@ export class InformeUsuarioPage implements OnInit {
   }
 
   inicializedPage(){
+    this.inicio();
     this.updateCurrentDate();
     this.validateSesion();
-    document.documentElement.style.setProperty('--background-informe','url('+IP_ADDRESS+'/media/images/background_informe.jpg)');
+    //document.documentElement.style.setProperty('--background-informe','url('+IP_ADDRESS+'/media/images/background_informe.jpg)');
     //this.createChart();
     this.loading=false;
   }
@@ -196,12 +200,14 @@ export class InformeUsuarioPage implements OnInit {
             },
             ticks: {
               padding: 10,
+              color: '#ffffff',
             }
           },
           y: {
             beginAtZero: true,
             ticks: {
-              precision: 1
+              precision: 1,
+              color: '#ffffff',
             }
           }
         },
@@ -216,7 +222,24 @@ export class InformeUsuarioPage implements OnInit {
     });
   }
 
+  inicio(){
+    this.pesoAlturaUsuario=null||[];
+    this.pesoAlturaUsuarioorig=null||[];
+    this.pesoUsuariohistory=null||[];
 
+    this.dataInformeBasic=null||[];
+
+    this.showdialog=false;
+    this.showdialogPeso=false;
+    this.showdialogAltura=false;
+
+    this.showdialogWebSite=false;
+
+    this.chartCreated = false;
+
+    this.pesoMax=0;
+    this.pesoMin=0;
+  }
 
   convertStringToNumber(input: string): number {
     return parseInt(input, 10) ?? 0;
@@ -323,7 +346,10 @@ export class InformeUsuarioPage implements OnInit {
     return { clasificacion, colorHex };
   }
 
-  convertirTiempoAMinutos(tiempo: string): number {
+  convertirTiempoAMinutos(tiempo: string | null | undefined): number {
+    if (tiempo === null || tiempo === undefined) {
+      return 0;
+    }
     const [horas, minutos, segundos] = tiempo.split(':').map(Number);
     return horas * 60 + minutos + Math.ceil(segundos / 60);
   }
@@ -407,6 +433,7 @@ export class InformeUsuarioPage implements OnInit {
         this.showdialog=false;
         const rawData = this.pesoAlturaUsuario;
         this.pesoAlturaUsuarioorig = rawData.map((item:any) => ({ ...item }));
+        this.dataInformeBasic=[]||null;
         this.obtenerPesoHistory();
       },
       (error) => {
@@ -418,6 +445,7 @@ export class InformeUsuarioPage implements OnInit {
     this.apiService.obtenerInformeBasic(this.userSesionPerfil[0].IDUSUARIO).subscribe(
       (response) => {
         this.dataInformeBasic=response;
+        //console.log(this.dataInformeBasic);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -444,7 +472,12 @@ export class InformeUsuarioPage implements OnInit {
         }
       }
 
-      this.createChart();
+      if (!this.chartCreated && this.pesoUsuariohistory) {
+        this.createChart();
+        this.chartCreated = true; // Actualiza la bandera para indicar que el gráfico ha sido creado
+      }else{
+        this.ionViewDidEnter();
+      }
     } catch (error:any) {
       this.presentCustomToast(error.error.error, "danger");
     }

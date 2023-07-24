@@ -9,9 +9,6 @@ import { IP_ADDRESS } from '../constantes';
 import { Storage } from '@ionic/storage-angular';
 import { sha256 } from 'crypto-hash';
 
-import {  FacebookLogin,  FacebookLoginResponse,} from '@capacitor-community/facebook-login';
-
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -25,8 +22,6 @@ export class LoginPage implements OnInit {
   keyboardHeight: number = 0;
   public ip_address = IP_ADDRESS;
 
-  FACEBOOK_APP_ID = '1017792489188521';
-
   constructor(public fb: FormBuilder,
     private apiService: ApiServiceService,
     private navController: NavController,
@@ -38,42 +33,7 @@ export class LoginPage implements OnInit {
     });
   }
 
-  async  ngOnInit() {
-    try {
-      await FacebookLogin.initialize({ appId: this.FACEBOOK_APP_ID });
-      console.log('Facebook plugin initialized successfully.');
-    } catch (error) {
-      console.error('Error initializing Facebook plugin:', error);
-    }
-  }
-
-  async loginWithFacebook() {
-    const FACEBOOK_PERMISSIONS = ['public_profile', 'email'];
-
-    try {
-      const result: FacebookLoginResponse = await FacebookLogin.login({ permissions: FACEBOOK_PERMISSIONS });
-
-      if (result.accessToken && result.accessToken.token) {
-        // El inicio de sesión fue exitoso, aquí puedes realizar las acciones necesarias con la información del usuario
-        console.log('Facebook Login Response', result);
-
-        // Obtener el token como una cadena
-        const accessToken = result.accessToken.token;
-
-        // Por ejemplo, puedes obtener información adicional del usuario haciendo una llamada a la API de Facebook
-        const userInfo = await this.getUserInfoFromFacebook(accessToken);
-        console.log('User Info from Facebook API', userInfo);
-      } else {
-        // El usuario canceló el inicio de sesión o ocurrió un error
-        console.log('Facebook Login was not successful.');
-      }
-    } catch (error) {
-      console.error('Error al iniciar sesión con Facebook', error);
-    }
-  }
-
-  async getUserInfoFromFacebook(accessToken: string) {
-    return { name: 'John Doe', email: 'john.doe@example.com' };
+  ngOnInit() {
   }
 
   async initializeApp() {

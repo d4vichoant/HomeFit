@@ -341,7 +341,7 @@ handleFileInput(event: any) {
 
   // Validar el tamaño del archivo
   if (file.size > 2 * 1024 * 1024) {
-    this.presentCustomToast("La imagen no puede ser mayor de 1MB","danger");
+    this.presentCustomToast("La imagen no puede ser mayor de 2MB","danger");
     return;
   }
 

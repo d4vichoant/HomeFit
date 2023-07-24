@@ -20,7 +20,6 @@ export class NotificationPermissionPage implements OnInit {
 
   ngOnInit() {
     var profiledat = JSON.parse(localStorage.getItem('profilesdates')!);
-    console.log(profiledat);
 
   }
   postData() {
@@ -30,12 +29,10 @@ export class NotificationPermissionPage implements OnInit {
     this.apiService.saveProfile(data).subscribe(
       (response) => {
         this.presentCustomToast(response.message,"success");
-        console.log(data);
         localStorage.removeItem('profilesdates');
         this.navController.navigateForward('/login');
       },
       (error) => {
-        console.error('Error al llamar a la API:', error);
         this.presentCustomToast(error,"danger");
       }
     );

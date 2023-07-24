@@ -24,6 +24,16 @@ ion-header::after{
   align-items: center;
   justify-content: center;
   z-index: 2;
+  animation: slideUp 10s forwards;
+}
+
+@keyframes slideUp {
+  from {
+    top: 100px; /* Posición inicial desde abajo */
+  }
+  to {
+    top: 0; /* Posición final en su posición original */
+  }
 }
 
 .loading-spinner {
@@ -144,6 +154,7 @@ ion-header::after{
   }
 }
 
+
 .overlay {
   position: fixed;
   top: 0;
@@ -164,7 +175,7 @@ ion-header::after{
 
 .popup {
   position: absolute;
-  height: 65vh;
+  height: 58vh;
   width: 100%;
   overflow: scroll;
   max-width: 5eepx;
@@ -183,8 +194,8 @@ ion-header::after{
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #9762f94d; /* Color de fondo azul con transparencia */
-  backdrop-filter: blur(100px);
+  background-color: #9762f95e; /* Color de fondo azul con transparencia */
+  //backdrop-filter: blur(100px);
   display: none;
 }
 .background.visible {
@@ -374,19 +385,19 @@ ion-header::after{
     height: 90px;
     width:  90px;
     border-radius: 50px;
-    position: relative; /* Agrega posicionamiento relativo al elemento contenedor */
+    position: relative;
   }
 }
 
 .background-image {
-  border-radius: 50px;
   width: 100%;
-  height: 100%; /* Cambia el valor fijo a 100% para ajustar automáticamente a la altura del contenedor */
-  object-fit: cover; /* Ajusta el tamaño de la imagen para que cubra todo el contenedor */
+  height: 100%;
+  object-fit: cover;
   position: relative;
   z-index: 0;
   object-fit: cover;
-  object-position: bottom;
+  object-position: top;
+  border-radius: 50%;
 }
 
 

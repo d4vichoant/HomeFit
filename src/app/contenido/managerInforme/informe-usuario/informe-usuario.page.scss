@@ -1,7 +1,11 @@
 ion-content {
-  --background: linear-gradient(0deg, #00000060, #33333394), var(--background-informe)  no-repeat center center / cover;;
+  //--background: linear-gradient(0deg, #00000060, #33333394), var(--background-informe)  no-repeat center center / cover;;
+  --background: linear-gradient(-45deg, #122825, #0e202e, #232524);
+  //filter: blur(5px);
+  z-index: -1;
   height: 100vh;
   overflow: hidden;
+  backdrop-filter: blur(10px);
 }
 
 .loading-overlay {
@@ -84,17 +88,20 @@ ion-content {
   h1{
     font-family: Raleway-Bold;
     font-size: 1.5rem;
-    color:  #6069e8;
+    color:  #ffffff;
+    //color:  #6069e8;
     span{
       font-family: Raleway-Light;
       font-size: .8rem;
-      color:  #807c7c;
+      color:  #ffffff;
+      //color:  #807c7c;
     }
   }
   p{
     font-family: Raleway-Bold;
     font-size: .9rem;
-    color:  #6b6a6bb2;
+    color:  #ffffff;
+    //color:  #6b6a6bb2;
     text-transform: uppercase;
   }
 
@@ -122,7 +129,8 @@ ion-content {
   margin: 4% 3% 0% 3%;
   width: 94%;
   border-radius: 15px;
-  background-color: #ffffff;
+  //backdrop-filter: blur(10px);
+  background: linear-gradient(-45deg, #1c2a33, #1b2932);
 }
 
 .grafica-body{
@@ -130,9 +138,11 @@ ion-content {
   width: 94%;
   height: auto;
   border-radius: 15px;
-  background-color: #ffffff;
+  background: linear-gradient(-45deg, #1c2a33, #1b2932);
+  //background-color: #ffffff;
   //background: linear-gradient(0deg, red, blue);
   overflow: auto;
+  color: #fff;
 
 }
 
@@ -142,7 +152,8 @@ ion-content {
   align-items: center;
   width: 94%;
   padding: 5% 3% 5% 3%;
-  background: #ffffff;
+  background: linear-gradient(-45deg, #1c2a33, #1b2932);
+  //background: #ffffff;
   margin: 3% 3% 0% 3%;
   border: none;
   border-radius: 15px;
@@ -157,7 +168,8 @@ ion-content {
     margin: 0;
     font-family: Raleway-Medium;
     font-size: 1.2rem;
-    color:  #676fe9;
+    color:  #ffffff;
+    //color:  #676fe9;
     display: inline-block;
       margin: 0;
       span{
@@ -166,17 +178,22 @@ ion-content {
         font-size: .9rem;
         display: inline-block;
         margin: 0;
-        color:  #a3a3a3;
+        color:  #ffffff;
+        //color:  #a3a3a3;
       }
   }
-
 }
+
 
 .right-grafica-body {
   margin-right: 3%;
   flex: 1;
   text-align: right;
-  color: #a3a3a3;
+  color:  #ffffff;
+  p{
+    color:  #ffffff;
+  }
+  //color: #a3a3a3;
 }
 
 .info-container {
@@ -199,7 +216,7 @@ p {
   margin: 0;
   font-family: Raleway-Light;
   font-size: .9rem;
-  color:  #a3a3a3;
+  color:  #ffffff;
 }
 
 
@@ -210,13 +227,15 @@ p {
 }
 
 .containerchart-body canvas {
-  max-width: 100%; /* Cambiamos max-width a 100% para que el canvas se ajuste al tamaño del contenedor */
+  max-width: 100%;
+  margin-left: 3%;/* Cambiamos max-width a 100% para que el canvas se ajuste al tamaño del contenedor */
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background: linear-gradient(-45deg, #1c2a33, #1b2932);
+  //background-color: #ffffff;
   width: 94%;
   margin: 3% 3% 0% 3%;
   border-radius: 15px;
@@ -236,7 +255,7 @@ p {
       position: absolute;
       font-family: Raleway-Light;
       font-size: .9rem;
-      color:  #807c7c;
+      color:  #ffffff;
     }
   }
 }
@@ -247,12 +266,14 @@ p {
   text-align: center;
   font-family: Raleway-Bold;
   font-size: 1rem;
+  background: linear-gradient(-45deg, #1c2a33, #1b2932);
 }
 
 .contenedor-padre {
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background: linear-gradient(-45deg, #1c2a33, #1b2932);
+  //background-color: #ffffff;
   width: 94%;
   margin: 3% 3% 0% 3%;
   border-radius: 15px;
@@ -266,11 +287,32 @@ p {
   justify-content: space-between;
   margin-bottom: 10px;
   span{
-
+    color:  #ffffff;
     font-size: 1rem;
   }
 }
-
+.custom-dialog-certificados-text{
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+  p{
+    text-align: center;
+    font-family: Raleway-Medium;
+    font-size: 2rem;
+    color:  #ffffff;
+    span{
+      font-family: Raleway-LightItalic;
+      font-size: 1.6rem;
+    }
+  }
+}
 .custom-dialog-certificados {
   position: fixed;
   top: 0;

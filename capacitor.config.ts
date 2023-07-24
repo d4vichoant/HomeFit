@@ -12,9 +12,6 @@ const config: CapacitorConfig = {
       style: KeyboardStyle.Dark,
       resizeOnFullScreen: true,
     },
-    facebookLogin:{
-      appId:1017792489188521
-    }
   },
 };
 

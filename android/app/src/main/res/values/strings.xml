@@ -4,6 +4,4 @@
     <string name="title_activity_main">HomeFitGo</string>
     <string name="package_name">io.ionic.starter</string>
     <string name="custom_url_scheme">io.ionic.starter</string>
-    <string name="facebook_app_id">1017792489188521</string>
-    <string name="facebook_client_token">b66959d14462849c54f76ab871c672a1</string>
 </resources>

@@ -22,15 +22,15 @@
     <div class="top-container">
       <div class="flex-container">
         <div class="flex-item">
-          <h1 >{{dataInformeBasic && dataInformeBasic[0].NEjercios}}</h1>
+          <h1>{{ dataInformeBasic?.[0]?.NEjercios !== null ? dataInformeBasic?.[0]?.NEjercios : 0 }}</h1>
           <p>Ejercicio</p>
         </div>
         <div class="flex-item">
-          <h1 >{{dataInformeBasic && dataInformeBasic[0].suma_kcalEjercicio}}</h1>
+          <h1>{{ dataInformeBasic?.[0]?.suma_kcalEjercicio !== null ? dataInformeBasic?.[0]?.suma_kcalEjercicio : 0 }}</h1>
           <p>kcal <span>(apx)</span></p>
         </div>
         <div class="flex-item">
-          <h1 >{{dataInformeBasic &&  convertirTiempoAMinutos(dataInformeBasic[0].suma_progress_seconds)}}</h1>
+          <h1 >{{dataInformeBasic &&  convertirTiempoAMinutos(dataInformeBasic?.[0]?.suma_progress_seconds)}}</h1>
           <p>Minutos</p>
         </div>
       </div>
@@ -57,16 +57,16 @@
     </div>
     <div class="contenedor-padre">
       <div class="texto-pesos">
-        <span style=" font-family: Raleway-Bold; color: #302c2c;" >Peso Actual</span>
-        <span style=" font-family: Raleway-Light; color: #9e9a9a;margin-right: 5%;" >{{pesoAlturaUsuario && pesoAlturaUsuario[0].PESOUSUARIO}} kg</span>
+        <span style=" font-family: Raleway-Bold; " >Peso Actual</span>
+        <span style=" font-family: Raleway-Light;margin-right: 5%;" >{{pesoAlturaUsuario && pesoAlturaUsuario?.[0]?.PESOUSUARIO}} kg</span>
       </div>
       <div class="texto-pesos">
-        <span style=" font-family: Raleway-Bold; color: #302c2c;" >Peso máx.</span>
-        <span style=" font-family: Raleway-Light; color: #9e9a9a;margin-right: 5%;">{{pesoMax}} kg</span>
+        <span style=" font-family: Raleway-Bold; " >Peso máx.</span>
+        <span style=" font-family: Raleway-Light;margin-right: 5%;">{{pesoMax}} kg</span>
       </div>
       <div class="texto-pesos">
-        <span style=" font-family: Raleway-Bold; color: #302c2c;" >Peso mín.</span>
-        <span style=" font-family: Raleway-Light; color: #9e9a9a;margin-right: 5%;">{{pesoMin}} kg</span>
+        <span style=" font-family: Raleway-Bold; " >Peso mín.</span>
+        <span style=" font-family: Raleway-Light;margin-right: 5%;">{{pesoMin}} kg</span>
       </div>
     </div>
     <div class="container">
@@ -82,28 +82,28 @@
       </div>
       <div class="div2">
         <div>
-          <div style="flex: 15; background-color: #b0d3cd; height: 50px; width: 99.5%;margin-right: .5%;">
-            <span style="bottom: -33%;left: 0px;">15</span>
+          <div style="flex: 4; background-color: #b0d3cd; height: 50px; width: 99.5%;margin-right: .5%;">
+            <span style="bottom: -33%;left: -50%;">15</span>
           </div>
-          <div style="flex: 25; background-color: #4c6c93; height: 50px;  width: 99.5%;margin-right: .5%;">
+          <div style="flex: 10; background-color: #4c6c93; height: 50px;  width: 99.5%;margin-right: .5%;">
             <span style=" bottom: -33%; left: -15%; ">16</span>
           </div>
-          <div style="flex: 39; background-color: #74dd78; height: 50px;  width: 99.5%;margin-right: .5%;">
+          <div style="flex: 26; background-color: #74dd78; height: 50px;  width: 99.5%;margin-right: .5%;">
             <span style=" bottom: -33%; left: -15%; ">18.5</span></div>
-          <div style="flex: 29; background-color: #dce683; height: 50px;  width: 99.5%;margin-right: .5%;">
+          <div style="flex: 20; background-color: #dce683; height: 50px;  width: 99.5%;margin-right: .5%;">
             <span style=" bottom: -33%; left: -15%; ">25</span>
           </div>
-          <div style="flex: 19; background-color: #feb546; height: 50px;  width: 99.5%;margin-right: .5%;">
+          <div style="flex: 20; background-color: #feb546; height: 50px;  width: 99.5%;margin-right: .6%;">
             <span style=" bottom: -33%; left: -15%; ">30</span>
           </div>
-          <div style="flex: 12; background-color: #ea444e; height: 50px;">
+          <div style="flex: 20; background-color: #ea444e; height: 50px;">
             <span style=" bottom: -33%; left: -40%; ">35</span>
             <span style=" bottom: -33%; right: -8%; ">40</span>
           </div>
           <div id="line"  [style.left.%]="actualizarLinea(calcularIMC(pesoAlturaUsuario))" style="  position: absolute;
-          width: 2px;
+          width: 2.5px;
           height: 120%;
-          background-color: #807c7c;
+          background-color: #ffffff;
           top: -10%;
           border-radius: 5px;"></div>
         </div>
@@ -115,9 +115,18 @@
         <h1>Altura</h1>
       </div>
       <div class="right-grafica-body">
-        <p>{{pesoAlturaUsuario && pesoAlturaUsuario[0].ALTURAUSUARIO}} cm</p>
+        <p>{{pesoAlturaUsuario && pesoAlturaUsuario?.[0]?.ALTURAUSUARIO}} cm</p>
       </div>
     </div>
+    <div class="container-grafica-body"  (click)="showdialogWebSite=!showdialogWebSite" >
+      <div class="left-grafica-body">
+        <h1 style="font-family: Raleway-LightItalic!important;font-size: .86rem!important;">Para una versión completa revisa la palataforma web</h1>
+      </div>
+    </div>
+  </div>
+
+  <div  *ngIf="showdialogWebSite" class="custom-dialog-certificados-text" (click)="showdialogWebSite=!showdialogWebSite">
+    <p>Ingrese a <br><span>www.pagima.com</span></p>
   </div>
 
   <div  *ngIf="showdialog" class="custom-dialog-certificados">
@@ -136,6 +145,6 @@
     </div>
   </div>
 </ion-content>
-<ion-footer *ngIf="!loading">
+<ion-footer *ngIf="!loading && !showdialogWebSite">
   <app-footer-designer-users></app-footer-designer-users>
 </ion-footer>
