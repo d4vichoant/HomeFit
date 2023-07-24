@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from '../api-service.service';
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar, StatusBarStyle } from '@capacitor/status-bar';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../constantes';
@@ -75,9 +75,10 @@ export class MainPage implements OnInit {
     document.documentElement.style.setProperty('--background-ip-address-main','url('+IP_ADDRESS+'/media/images/backgroundMain.jpg)');
   }
   StatusBar(){
-    StatusBar.hide();
+    //StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
-    StatusBar.setBackgroundColor({ color: '#ffffff' });
+    StatusBar.setBackgroundColor({color:'transparent'});
+    StatusBar.setStyle({ style: StatusBarStyle.Dark });
   }
   async validateSesion() {
     try {
@@ -119,6 +120,7 @@ export class MainPage implements OnInit {
     this.navController.navigateForward('/error-users');
     this.storage.remove('sesion');
   }
+
   private chanceColorFooter(){
     document.documentElement.style.setProperty('--activate-foot10',' #ffffff');
     document.documentElement.style.setProperty('--activate-foot11',' #ffffff');

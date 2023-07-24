@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { ApiServiceService } from '../../../api-service.service';
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar, StatusBarStyle } from '@capacitor/status-bar';
 import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../../../constantes';
@@ -66,9 +66,9 @@ export class ListarEjerciciosPage implements OnInit {
     this.loading=false;
   }
   StatusBar(){
-    StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
-    StatusBar.setBackgroundColor({ color: '#ffffff' });
+    StatusBar.setBackgroundColor({color:'transparent'});
+    StatusBar.setStyle({ style: StatusBarStyle.Dark });
   }
   validateSesion(){
     try{

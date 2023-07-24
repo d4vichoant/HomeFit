@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validator, FormBuilder, Validators} from '@angular/forms';
-import {StatusBar} from "@capacitor/status-bar";
+import {StatusBar, StatusBarStyle} from "@capacitor/status-bar";
 import { NavController, ToastController } from '@ionic/angular';
 
 import { ApiServiceService } from '../api-service.service';
@@ -42,6 +42,9 @@ export class LoginPage implements OnInit {
 
   ionViewWillEnter() {
     this.initializeApp();
+  }
+  get_into2 (){
+      this.navController.navigateForward('/main');
   }
 
   async get_into (){
@@ -115,9 +118,11 @@ export class LoginPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    StatusBar.hide();
-    StatusBar.setOverlaysWebView({overlay:true})
-    StatusBar.setBackgroundColor({color:'#ffffff'})
+    //StatusBar.hide();
+    StatusBar.setOverlaysWebView({overlay:true});
+    StatusBar.setBackgroundColor({color:'transparent'});
+    StatusBar.setStyle({ style: StatusBarStyle.Dark });
+
     const image = new Image();
     document.documentElement.style.setProperty('--background-ip-address','url('+IP_ADDRESS+'/media/login/background.jpg)');
     image.src = IP_ADDRESS+'/media/login/background.jpg';

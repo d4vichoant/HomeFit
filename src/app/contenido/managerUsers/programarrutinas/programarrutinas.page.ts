@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar, StatusBarStyle } from '@capacitor/status-bar';
 import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../../../constantes';
 import { ApiServiceService } from '../../../api-service.service';
@@ -113,9 +113,9 @@ export class ProgramarrutinasPage implements OnInit {
     });
   }
   StatusBar(){
-    StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
-    StatusBar.setBackgroundColor({ color: '#ffffff' });
+    StatusBar.setBackgroundColor({color:'transparent'});
+    StatusBar.setStyle({ style: StatusBarStyle.Light });
   }
   validateSesion(){
     try{

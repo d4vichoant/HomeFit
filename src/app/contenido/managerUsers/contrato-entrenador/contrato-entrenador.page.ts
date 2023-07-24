@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from '../../../api-service.service';
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar, StatusBarStyle } from '@capacitor/status-bar';
 import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../../../constantes';
@@ -53,13 +53,13 @@ export class ContratoEntrenadorPage implements OnInit {
     this.loading = false;
   }
   StatusBar(){
-    StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
-    StatusBar.setBackgroundColor({ color: '#ffffff' });
+    StatusBar.setBackgroundColor({color:'transparent'});
+    StatusBar.setStyle({ style: StatusBarStyle.Dark });
   }
   async validateSesion() {
     try {
-      this.storage.get('sesion').then(async (sesion) => { // Marcar como async
+      this.storage.get('sesion').then(async (sesion) => { // Marcar mo async
         if (sesion && JSON.parse(sesion).rolUsuario == 1) {
           this.userSesion = JSON.parse(sesion).nickname;
           this.obtenerGetPerfilCompleto(this.userSesion);

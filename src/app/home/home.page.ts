@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import SwiperCore, {Pagination, Swiper} from 'swiper';
-import {StatusBar} from "@capacitor/status-bar";
+import {StatusBar,StatusBarStyle} from "@capacitor/status-bar";
 import { Router } from '@angular/router';
 
 import { NavController } from '@ionic/angular';
@@ -96,9 +96,11 @@ export class HomePage implements OnInit {
   }
   ionViewDidEnter() {
     this.onboardSlides;
-    StatusBar.hide();
-    StatusBar.setOverlaysWebView({overlay:true})
-    StatusBar.setBackgroundColor({color:'#ffffff'})
+    //StatusBar.hide();
+    StatusBar.setOverlaysWebView({overlay:true});
+    StatusBar.setBackgroundColor({color:'transparent'});
+    StatusBar.setStyle({ style: StatusBarStyle.Light });
+
     const images = ['image1', 'image2', 'image3', 'image4'];
     const promises = images.map((image) => {
       return new Promise((resolve, reject) => {

@@ -4,7 +4,7 @@ import { NavController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../../../constantes';
 import { ApiServiceService } from '../../../api-service.service'
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar, StatusBarStyle } from '@capacitor/status-bar';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -110,9 +110,9 @@ export class ListarSesionesAllPage implements OnInit {
   }
 
   StatusBar(){
-    StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
-    StatusBar.setBackgroundColor({ color: '#ffffff' });
+    StatusBar.setBackgroundColor({color:'transparent'});
+    StatusBar.setStyle({ style: StatusBarStyle.Dark });
   }
 
   cargarImagenesBefores(){

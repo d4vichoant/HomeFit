@@ -1,5 +1,5 @@
 import { Component, OnInit,ElementRef,ViewChild } from '@angular/core';
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar, StatusBarStyle } from '@capacitor/status-bar';
 import { NavController, ToastController ,Animation, AnimationController } from '@ionic/angular';
 import { ApiServiceService } from '../../api-service.service';
 import { Storage } from '@ionic/storage-angular';
@@ -57,9 +57,9 @@ export class PerfilePage implements OnInit {
   }
 
   private StatusBar(){
-    StatusBar.hide();
     StatusBar.setOverlaysWebView({ overlay: true });
-    StatusBar.setBackgroundColor({ color: '#ffffff' });
+    StatusBar.setBackgroundColor({color:'transparent'});
+    StatusBar.setStyle({ style: StatusBarStyle.Dark });
   }
   private validartoken(){
     try {
