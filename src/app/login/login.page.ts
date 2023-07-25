@@ -43,9 +43,6 @@ export class LoginPage implements OnInit {
   ionViewWillEnter() {
     this.initializeApp();
   }
-  get_into2 (){
-      this.navController.navigateForward('/main');
-  }
 
   async get_into (){
     var f= this.formularioLogin.value;

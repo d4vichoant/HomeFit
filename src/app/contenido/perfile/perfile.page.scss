@@ -393,11 +393,12 @@ ion-header::after{
   width: 100%;
   height: 100%;
   object-fit: cover;
-  position: relative;
+  position: absolute;
   z-index: 0;
   object-fit: cover;
   object-position: top;
   border-radius: 50%;
+  left: 0;
 }
 
 

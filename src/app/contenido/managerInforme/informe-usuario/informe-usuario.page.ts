@@ -478,6 +478,7 @@ export class InformeUsuarioPage implements OnInit {
       }else{
         this.ionViewDidEnter();
       }
+      console.log(this.pesoUsuariohistory);
     } catch (error:any) {
       this.presentCustomToast(error.error.error, "danger");
     }

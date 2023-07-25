@@ -388,7 +388,6 @@ export class MainPage implements OnInit {
   }
 
   goEjercicioUniqWithDates(data:any,name:string){
-    console.log(data);
     if(data.IDSESION && data.IDRUTINA && data.IDEJERCICIO){
       this.obtenerSesionesidSesion(data.IDSESION).subscribe(
         (dataSesion) => {
@@ -767,7 +766,6 @@ export class MainPage implements OnInit {
     this.apiService.obtenerProgresousuario(this.userSesionPerfil[0].IDUSUARIO).subscribe(
       (response) => {
         this.dataprocesosQuedados=response;
-        //console.log(this.dataprocesosQuedados);
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");

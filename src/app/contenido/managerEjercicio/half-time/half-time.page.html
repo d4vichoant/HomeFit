@@ -60,7 +60,13 @@
       </ng-template>
     </div>
     <div class="box-down">
-      <img  [src]="ip_address+'/media/perfile/'+userSesionPerfil?.[0]?.IMAGEPERSONA" alt="ImagenPerfil">
+      <ng-container *ngIf="userSesionPerfil[0].IMAGEPERSONA; else otherImage">
+        <img  [src]="ip_address+'/media/perfile/'+userSesionPerfil?.[0]?.IMAGEPERSONA" alt="ImagenPerfil">
+      </ng-container>
+      <ng-template #otherImage>
+        <img alt="DefaultImage"  src="{{ ip_address }}/media/images/user-pg.png" />
+      </ng-template>
+
       <!-- Círculos en la parte derecha -->
       <div class="circle right-circles circle-1 slide"></div>
       <div class="circle right-circles circle-2 slide"></div>
