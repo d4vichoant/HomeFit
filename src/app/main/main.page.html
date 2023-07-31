@@ -54,7 +54,7 @@
       </div>
     </div>
     <div><h2 class="subtitle" style="padding: 0% 0% 0% 8%!important;" >recomendación</h2></div>
-    <swiper-container #slides class="onb-container-recomendacion"  [loop]="true" effect="coverflow" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
+    <swiper-container #slides class="onb-container-recomendacion"  [loop]="true" effect="cards" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4">
       <swiper-slide class="onb-slide-recomendacion"  *ngFor="let item of dataRecomendacion" (click)="item.PREMIER && item.PREMIER ==='Premium'? MessagePremium():go_page_create_rutina(item,'rutinas-diarias')"  >
         <div class="slide-content-recomendacion">
           <div class="tipeSuscription">
@@ -94,7 +94,7 @@
       </swiper-slide>
     </swiper-container>
     <div><h2 class="subtitle" >tipo de entrenamientos</h2></div>
-    <swiper-container #slides [loop]="true" effect="fade" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4" class="container-t-entrenamientos">
+    <swiper-container #slides [loop]="true" effect="cards" [autoplay]="{ delay: 1000 }" [loopAdditionalSlides]="4" class="container-t-entrenamientos">
       <ng-container *ngFor="let item of dataTEjercicioAll; let i = index">
         <ng-container *ngIf="i % 2 === 0">
           <swiper-slide  class="swiper-container-t-entrenamientos">

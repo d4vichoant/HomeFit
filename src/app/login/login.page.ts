@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validator, FormBuilder, Validators} from '@angular/forms';
 import {StatusBar, StatusBarStyle} from "@capacitor/status-bar";
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController, ToastController,Platform, isPlatform  } from '@ionic/angular';
 
 import { ApiServiceService } from '../api-service.service';
 import { IP_ADDRESS } from '../constantes';
@@ -26,14 +26,17 @@ export class LoginPage implements OnInit {
     private apiService: ApiServiceService,
     private navController: NavController,
     public toastController: ToastController,
-    private storage: Storage, ) {
+    private storage: Storage,
+    private platform: Platform) {
     this.formularioLogin = this.fb.group({
       'nickname': new FormControl("",Validators.required),
       'password':new FormControl("",Validators.required)
     });
+    this.initializeApp();
   }
 
   ngOnInit() {
+    this.initializeApp();
   }
 
   async initializeApp() {
@@ -43,6 +46,10 @@ export class LoginPage implements OnInit {
   ionViewWillEnter() {
     this.initializeApp();
   }
+
+  async googleSignIn() {
+  }
+
 
   async get_into (){
     var f= this.formularioLogin.value;
@@ -114,6 +121,10 @@ export class LoginPage implements OnInit {
     }
   }
 
+  go_page(name: string){
+    this.navController.navigateForward('/'+name);
+  }
+
   ionViewDidEnter() {
     //StatusBar.hide();
     StatusBar.setOverlaysWebView({overlay:true});
@@ -170,5 +181,4 @@ export class LoginPage implements OnInit {
         throw error;
       }
     }
-
 }

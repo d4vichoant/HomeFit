@@ -312,7 +312,7 @@ export class ListarParametrosPage implements OnInit {
         const rawData = this.dataEjercicio;
         //this.dataEjercicioOrig = rawData.map(item => ({ ...item }));
         try {
-          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
+          if (this.dataEntrenadorUsuarios  && this.dataEjercicio && this.dataEjercicio.length>0) {
             this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
               if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
                 elemento.PREMIER = 'Suscripto';
@@ -330,7 +330,7 @@ export class ListarParametrosPage implements OnInit {
         } catch (error) {
           this.presentCustomToast('Error en Mostrar Ejercicios','danger');
         }
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
+        if (this.dataEntrenadorUsuarios  && this.dataEjercicio && this.dataEjercicio.length>0) {
         this.dataEjercicio.sort((a, b) => {
           const premierOrder: { [key: string]: number } = {
             Suscripto: 0,

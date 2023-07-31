@@ -63,22 +63,39 @@
   <div class="buttons">
     <ion-button id="continueBtnPB" (click)="go_nextPage()" [disabled]="continueBtnDisabled">Continuar</ion-button>
   </div>
-  <!-- <div class="buttonNotNow">
-    <ion-button (click)="goBack()" fill="clear">Atras</ion-button>
-  </div> -->
+  <div class="buttonNotNow" *ngIf="showDialogVerificateCodeButton">
+    <ion-button (click)="showDialogVerificateCode=!showDialogVerificateCode" fill="clear">Ya tengo codigo</ion-button>
+  </div>
   <div class="buttonNotNow">
-  <div class="line-container-bottom">
-    <div class="line-bottom"></div>
-      <span class="circle-bottom">o</span>
+   <!--  <div class="line-container-bottom">
       <div class="line-bottom"></div>
-    </div>
+        <span class="circle-bottom">o</span>
+      <div class="line-bottom"></div>
+    </div> -->
     <div class="button-container">
-      <button class="button" style=" background-color: #1877f2; margin-right: 3%;" (click)="get_into_with_facebook()">
+<!--       <button class="button" style=" background-color: #1877f2; margin-right: 3%;" (click)="get_into_with_facebook()">
         <img src="../../assets/icon/facebook.png" alt="Facebook">
-      </button>
-      <button class="button" style=" background-color: #cd1f1e;  margin-left: 3%;" (click)="get_into_with_google()">
+      </button> -->
+ <!--      <button class="button" style=" background-color: #cd1f1e;  margin-left: 3%;" (click)="get_into_with_google()">
         <img src="../../assets/icon/google.png" alt="Google">
-      </button>
+      </button> -->
+    </div>
+  </div>
+  <div class="full-screen-div" *ngIf="showDialogVerificateCode">
+    <div class="container-body" *ngIf="showDialogVerificateCode">
+      <form class="otp-Form" [formGroup] = "formularioRecoverPassword">
+        <span class="mainHeading">Ingresar Código</span>
+        <p class="otpSubheading">Hemos enviado un código de verificación a su correo electronico</p>
+        <div class="inputContainer">
+          <ion-input required="required"   formControlName="input1value"  type="text" fill="clear" maxlength="1" class="otp-input ion-input" inputmode="text" (ionChange)="onInputChange($event)"></ion-input>
+          <ion-input required="required"  formControlName="input2value" type="text" fill="clear" maxlength="1" class="otp-input ion-input" inputmode="text" (ionChange)="onInputChange($event)"></ion-input>
+          <ion-input required="required" formControlName="input3value"  type="text" fill="clear" maxlength="1" class="otp-input ion-input" inputmode="text" (ionChange)="onInputChange($event)"></ion-input>
+          <ion-input required="required"  formControlName="input4value"  type="text" fill="clear" maxlength="1" class="otp-input ion-input" inputmode="text" (ionChange)="onInputChange($event)"></ion-input>
+        </div>
+          <button class="verifyButton" (click)="validateCode()">Listo</button>
+            <button class="exitBtn" (click)="showDialogVerificateCode=!showDialogVerificateCode">×</button>
+          <p class="resendNote" (click)="recuperarContrasenia()">¿No recibiste el código? <button class="resendBtn">Reenviar Código</button></p>
+      </form>
     </div>
   </div>
 </ion-content>

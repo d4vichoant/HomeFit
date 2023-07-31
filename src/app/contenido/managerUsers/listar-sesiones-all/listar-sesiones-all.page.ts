@@ -337,7 +337,7 @@ export class ListarSesionesAllPage implements OnInit {
         }));
 
         try {
-          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          if (this.dataEntrenadorUsuarios ) {
             this.dataSesiones = this.dataSesiones.filter(elemento =>{
               if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
                 elemento.PREMIER = 'Suscripto';

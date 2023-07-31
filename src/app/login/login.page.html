@@ -29,20 +29,20 @@
     </div>
     <div class="action-button ">
       <ion-button  class="login-button" (click)="get_into()">Ingresar</ion-button>
-      <p style="text-align: end;">¿Olvido la contraseña?</p>
+      <p style="text-align: end;" (click)="go_page('hash-account')">¿Olvido la contraseña?</p>
     </div>
-    <div class="line-container">
+<!--     <div class="line-container">
       <div class="line"></div>
       <span class="circle">o</span>
       <div class="line"></div>
-    </div>
+    </div> -->
     <div class="button-container">
-      <button class="button" style=" background-color: #1877f2; margin-right: 3%;" (click)="get_into_with_facebook()">
+      <!-- <button class="button" style=" background-color: #1877f2; margin-right: 3%;" (click)="get_into_with_facebook()">
         <img src="../../assets/icon/facebook.png" alt="Facebook">
-      </button>
-      <button class="button" style=" background-color: #cd1f1e;  margin-left: 3%;" (click)="get_into_with_google()">
+      </button> -->
+<!--       <button class="button" style=" background-color: #cd1f1e;  margin-left: 3%;" (click)="googleSignIn()">
         <img src="../../assets/icon/google.png" alt="Google">
-      </button>
+      </button> -->
     </div>
     <div class="action-button"  >
       <p>¿No tienes cuenta?, <a routerLink="/select">Crear Cuenta</a> </p>

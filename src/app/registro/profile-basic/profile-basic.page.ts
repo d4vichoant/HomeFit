@@ -21,6 +21,13 @@ export class ProfileBasicPage implements OnInit {
   index=0;
   myVariableChangedTime=new Date();
 
+  showValidateCode:boolean=false;
+
+  HashNumber!:any;
+  showDialogVerificateCode:boolean=false;
+  showDialogVerificateCodeButton:boolean=false;
+  formularioRecoverPassword: FormGroup;
+
   constructor(public fb: FormBuilder,
     private navController: NavController,
     private apiService: ApiServiceService,
@@ -30,6 +37,15 @@ export class ProfileBasicPage implements OnInit {
         'first_name':new FormControl("",Validators.required),
         'last_name':new FormControl("",Validators.required),
         'mail_profile':new FormControl("",Validators.required)
+      });
+
+      this.formularioRecoverPassword = this.fb.group({
+        'textUserEmail': new FormControl("",Validators.required),
+        'code':new FormControl("",Validators.required),
+        'input1value':new FormControl("",Validators.required),
+        'input2value':new FormControl("",Validators.required),
+        'input3value':new FormControl("",Validators.required),
+        'input4value':new FormControl("",Validators.required),
       });
      }
 
@@ -81,9 +97,91 @@ export class ProfileBasicPage implements OnInit {
   private verificateInputs(): void{
     const values = this.formularioProfileBasic.value;
     if (values.nickname && values.first_name && values.last_name && values.mail_profile && this.validateCorreo && this.validateUsuario) {
-      this.continueBtnDisabled = false;
+      if(this.showValidateCode){
+        this.continueBtnDisabled = false;
+      }else{
+        this.getgenerarHash();
+      }
     }else{
       this.continueBtnDisabled = true;
+    }
+  }
+
+  getgenerarHash(){
+    this.apiService.generarHashSinIDUsuario().subscribe(
+      (response) => {
+        this.HashNumber=response.hash;
+        this.recuperarContrasenia();
+        this.showDialogVerificateCodeButton=true;
+        this.showDialogVerificateCode=true;
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+
+  recuperarContrasenia(){
+    this.loading=true;
+    const values = this.formularioProfileBasic.value;
+    const data={
+      correoUsuario:values.mail_profile,
+      hashValidate:this.HashNumber,
+    }
+    this.apiService.recuperarContrasenia(data).subscribe(
+      (response) => {
+        this.presentCustomToast(response,"success");
+        this.loading=false;
+        //this.verificateInputs();
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+
+  validateCode(){
+    var f= this.formularioRecoverPassword.value;
+    var dataCode ={
+      textUserEmail:f.textUserEmail,
+      input1value:f.input1value,
+      input2value:f.input2value,
+      input3value:f.input3value,
+      input4value:f.input4value,
+    }
+    const hashCode = dataCode.input1value+dataCode.input2value+dataCode.input3value+dataCode.input4value;
+    if(dataCode.input1value!=='' && dataCode.input2value!=='' && dataCode.input3value!=='' && dataCode.input4value){
+      this.getValidateHash(hashCode);
+    }else{
+      this.presentCustomToast('Ingrese un codigo Valido',"success");
+    }
+  }
+
+  getValidateHash(hashNumber:string){
+    this.apiService.getValidateHashsinIdUsuario( hashNumber).subscribe(
+      (response) => {
+        if(response){
+          this.showValidateCode=true;
+          this.showDialogVerificateCode=false;
+          this.verificateInputs();
+          this.presentCustomToast("Correo Valido","danger");
+        }else{
+          this.presentCustomToast("Código Incorrecto","danger");
+        }
+      },
+      (error) => {
+        this.presentCustomToast(error.error.error,"danger");
+      }
+    );
+  }
+
+  onInputChange(event: any) {
+    const input = event.target as HTMLInputElement;
+    let inputValue = input.value;
+
+    if (inputValue.length > 1) {
+      inputValue = inputValue.slice(0, 1);
+      input.value = inputValue;
     }
   }
 

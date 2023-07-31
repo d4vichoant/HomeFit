@@ -1,0 +1,61 @@
+<ion-content [fullscreen]="true">
+  <div class="loading-overlay" *ngIf="loading">
+    <app-loading></app-loading>
+  </div>
+  <div class="container-body" *ngIf="showdialogPassword && !showdialogEmail">
+    <form class="otp-Form" [formGroup] = "formularioRecoverPassword">
+      <span class="mainHeading">Ingresar Código</span>
+      <p class="otpSubheading">Hemos enviado un código de verificación a su correo electronico</p>
+      <div class="inputContainer">
+        <ion-input required="required"   formControlName="input1value"  type="text" fill="clear" maxlength="1" class="otp-input ion-input" inputmode="text" (ionChange)="onInputChange($event)"></ion-input>
+        <ion-input required="required"  formControlName="input2value" type="text" fill="clear" maxlength="1" class="otp-input ion-input" inputmode="text" (ionChange)="onInputChange($event)"></ion-input>
+        <ion-input required="required" formControlName="input3value"  type="text" fill="clear" maxlength="1" class="otp-input ion-input" inputmode="text" (ionChange)="onInputChange($event)"></ion-input>
+        <ion-input required="required"  formControlName="input4value"  type="text" fill="clear" maxlength="1" class="otp-input ion-input" inputmode="text" (ionChange)="onInputChange($event)"></ion-input>
+      </div>
+        <button class="verifyButton" (click)="validateCode()">Listo</button>
+        <p class="ptext" (click)="buttonBack()">Atras</p>
+        <button class="exitBtn" (click)="go_page('login')">×</button>
+        <p class="resendNote" (click)="recuperarContrasenia()">¿No recibiste el código? <button class="resendBtn">Reenviar Código</button></p>
+    </form>
+  </div>
+  <div class="container-body" *ngIf="showdialogEmail && !showdialogPassword">
+    <form class="otp-Form" [formGroup] = "formularioRecoverPassword">
+      <span class="mainHeading">¿Has olvidado tu contraseña?</span>
+      <p class="otpSubheading">Ingrese la dirección de correo electrónico o el nombre de usuario asociado con su cuenta.</p>
+      <div class="inputContainer">
+        <ion-input required="required" formControlName="textUserEmail" type="text" class="otp-input-1" (ionChange)="onInputCompleted()" ></ion-input>
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-badge-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M13 7h-6l4 5l-4 5h6l4 -5z"></path>
+       </svg>
+      </div>
+      <div class="textEmailMostrar">
+        <ng-container *ngIf="textUserEmailShow===1; else otherMEnsaje">
+          <p>El correo asociado es {{textUserEmail[0]?.CORREOPERSONA}}</p>
+        </ng-container>
+        <ng-template #otherMEnsaje>
+          <ng-container *ngIf="textUserEmailShow===2; else elseTemplate">
+            <p>No existe niguna cuenta asociada a ese correo/username</p>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <p></p>
+          </ng-template>
+        </ng-template>
+      </div>
+      <ng-container *ngIf="showbuttonList && textUserEmail && textUserEmail.length>0; else elseTemplate">
+        <button class="verifyButton" type="submit" (click)="recuperarContrasenia()">Recuperar</button>
+      </ng-container>
+      <ng-template #elseTemplate>
+        <ng-container *ngIf="showbuttonList; else otherothertemplate">
+
+        </ng-container>
+        <ng-template #otherothertemplate >
+          <h1 class="verifyButton-1" style="text-align: center;" >¡ Enviado !</h1>
+          <p class="resendNote" (click)="recuperarContrasenia()" >¿No recibiste el código? <button class="resendBtn">Reenviar Código</button></p>
+        </ng-template>
+      </ng-template>
+      <button class="exitBtn" (click)="go_page('login')">×</button>
+    </form>
+    <p  *ngIf="!showbuttonList" class="p-next" (click)="buttonNext()">Ya tengo Codigo </p>
+  </div>
+</ion-content>

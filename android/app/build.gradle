@@ -15,6 +15,20 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            storeFile file("my-release-key.keystore")
+            storePassword "1996David@"
+            keyAlias "home-fit-go"
+            keyPassword "1996David@"
+        }
+        debug{
+            storeFile file("my-release-key.keystore")
+            storePassword "1996David@"
+            keyAlias "home-fit-go"
+            keyPassword "1996David@"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false

@@ -328,7 +328,7 @@ export class ListarRutinasAllPage implements OnInit {
           IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
         }));
         try {
-          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0) {
+          if (this.dataEntrenadorUsuarios ) {
             this.dataRutinas = this.dataRutinas.filter(elemento =>{
               if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
                 elemento.PREMIER = 'Suscripto';

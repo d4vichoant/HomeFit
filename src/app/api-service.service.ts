@@ -345,4 +345,33 @@ export class ApiServiceService {
   obtenerInformeBasic(IDUSUARIO:number):Observable<any>{
     return this.http.get(this.apiUrl+'/obtenerInformeBasic/'+IDUSUARIO);
   }
+  recuperarContrasenia(data:any):Observable<any>{
+    return this.http.post(this.apiUrl+'/recuperarContrasenia/',data);
+  }
+  getMailUsuario(usuario:string):Observable<any>{
+    return this.http.get(this.apiUrl+'/getMailUsuario/'+usuario);
+  }
+  getgenerarHash(IDPERSONA:number):Observable<any>{
+    const data={
+      IDPERSONA:IDPERSONA
+    }
+    return this.http.post(this.apiUrl+'/generarHash/',data);
+  }
+  generarHashSinIDUsuario():Observable<any>{
+    return this.http.post(this.apiUrl+'/generarHashSinIDUsuario/',{});
+  }
+  getValidateHash(IDPERSONA:number,hashNumber:string):Observable<any>{
+    const data={
+      IDPERSONA:IDPERSONA,
+      hashNumber:hashNumber,
+    }
+    return this.http.post(this.apiUrl+'/getValidateHash/',data);
+  }
+
+  getValidateHashsinIdUsuario(hashNumber:string):Observable<any>{
+    const data={
+      hashNumber:hashNumber,
+    }
+    return this.http.post(this.apiUrl+'/getValidateHashsinIdUsuario/',data);
+  }
 }

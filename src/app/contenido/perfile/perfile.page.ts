@@ -209,70 +209,70 @@ export class PerfilePage implements OnInit {
       }
     );
   }
-validatePassword(password: string): boolean {
-  const minLength = 8;
-  const symbolRegex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
-  const uppercaseRegex = /[A-Z]/;
-  const numberRegex = /\d/g;
+  validatePassword(password: string): boolean {
+    const minLength = 8;
+    const symbolRegex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+    const uppercaseRegex = /[A-Z]/;
+    const numberRegex = /\d/g;
 
-  // Verificar la longitud mínima
-  if (password.length < minLength) {
-    return false;
+    // Verificar la longitud mínima
+    if (password.length < minLength) {
+      return false;
+    }
+
+    // Verificar al menos 1 símbolo
+    if (!symbolRegex.test(password)) {
+      return false;
+    }
+
+    // Verificar al menos 1 mayúscula
+    if (!uppercaseRegex.test(password)) {
+      return false;
+    }
+
+    // Verificar más de 1 número
+    const numbersCount = (password.match(numberRegex) || []).length;
+    if (numbersCount < 2) {
+      return false;
+    }
+
+    return true;
   }
+  passwordEncode(item:any) {
+    let password = this.password;
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
 
-  // Verificar al menos 1 símbolo
-  if (!symbolRegex.test(password)) {
-    return false;
-  }
-
-  // Verificar al menos 1 mayúscula
-  if (!uppercaseRegex.test(password)) {
-    return false;
-  }
-
-  // Verificar más de 1 número
-  const numbersCount = (password.match(numberRegex) || []).length;
-  if (numbersCount < 2) {
-    return false;
-  }
-
-  return true;
-}
-passwordEncode(item:any) {
-  let password = this.password;
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-
-  window.crypto.subtle.digest('SHA-256', data)
-    .then(hashBuffer => {
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-      item.CONTRASENIAPERSONA=hashedPassword;
-      this.storage.get('sesion').then((sesionString) => {
-        if (sesionString) {
-          var profiledat = JSON.parse(sesionString);
-          item.USUARIOMODIFICACIONPERSONA = profiledat.nickname;
-          this.loading = true;
-          this.apiService.UpdatePassword(item).subscribe(
-            (response) => {
-              this.presentCustomToast(response.message, "success");
-              this.password='';
-              this.confirmPassword='';
-              this.sign_off();
-            },
-            (error) => {
-              this.presentCustomToast(error.error.error, "danger");
-            }
-          );
-        } else {
-          this.presentCustomToast('No se encontró la sesión', "danger");
-        }
+    window.crypto.subtle.digest('SHA-256', data)
+      .then(hashBuffer => {
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+        item.CONTRASENIAPERSONA=hashedPassword;
+        this.storage.get('sesion').then((sesionString) => {
+          if (sesionString) {
+            var profiledat = JSON.parse(sesionString);
+            item.USUARIOMODIFICACIONPERSONA = profiledat.nickname;
+            this.loading = true;
+            this.apiService.UpdatePassword(item).subscribe(
+              (response) => {
+                this.presentCustomToast(response.message, "success");
+                this.password='';
+                this.confirmPassword='';
+                this.sign_off();
+              },
+              (error) => {
+                this.presentCustomToast(error.error.error, "danger");
+              }
+            );
+          } else {
+            this.presentCustomToast('No se encontró la sesión', "danger");
+          }
+        });
+      })
+      .catch(error => {
+        this.presentCustomToast('Error al guardar la contraseña', "danger");
       });
-    })
-    .catch(error => {
-      this.presentCustomToast('Error al guardar la contraseña', "danger");
-    });
-}
+  }
 
   obtenerPrimerNombre(nombreCompleto: string): string {
     const nombres = nombreCompleto.split(" ");

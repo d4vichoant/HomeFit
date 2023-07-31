@@ -6,6 +6,8 @@ import { Storage } from '@ionic/storage-angular';
 import { IP_ADDRESS } from '../constantes';
 import { Observable } from 'rxjs';
 
+import { LocalNotifications, ScheduleOptions } from '@capacitor/local-notifications';
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.page.html',
@@ -119,6 +121,35 @@ export class MainPage implements OnInit {
     this.loading = false;
     this.navController.navigateForward('/error-users');
     this.storage.remove('sesion');
+  }
+
+  async scheduleNotification() {
+    // Define la hora a la que deseas que aparezca la notificación (en este caso, a las 8:00 PM).
+    const notificationTime = new Date();
+    notificationTime.setHours(19); // Hora (24 horas)
+    notificationTime.setMinutes(0); // Minutos
+    notificationTime.setSeconds(0); // Segundos
+
+    let options: ScheduleOptions = {
+      notifications: [
+        {
+          id: 111,
+          title: '¡Hora de ponerte en movimiento!',
+          body: 'Abre la app y comienza tu rutina de entrenamiento. ¡No te arrepentirás!',
+          largeBody: ' Abre la app y dedica un tiempo para ejercitarte hoy',
+          schedule: { at: notificationTime, every: 'day' },
+          /* schedule: { at: new Date(Date.now() + 500) }, */
+          summaryText: ' ¡A entrenar!',
+          smallIcon:'res://drawable/iconhomeviolet',
+        },
+      ],
+    };
+
+    try {
+      await LocalNotifications.schedule(options);
+    } catch (ex) {
+      alert(JSON.stringify(ex));
+    }
   }
 
   private chanceColorFooter(){
@@ -567,6 +598,9 @@ export class MainPage implements OnInit {
     this.apiService.connsultPerfilUsuarioCompleto(nickname).subscribe(
       (response) => {
         this.userSesionPerfil=response;
+        if(this.userSesionPerfil[0].NOTIFICACIONUSUARIO){
+          this.scheduleNotification();
+        }
       },
       (error) => {
         this.presentCustomToast(error.error.error,"danger");
@@ -649,7 +683,7 @@ export class MainPage implements OnInit {
           return matchingRutina;
         });
         try {
-          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinasTotal && this.dataRutinasTotal.length>0) {
+          if (this.dataEntrenadorUsuarios &&  this.dataRutinasTotal && this.dataRutinasTotal.length>0) {
             this.dataRutinasTotal = this.dataRutinasTotal.filter(elemento =>{
               if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
                 elemento.PREMIER = 'Suscripto';

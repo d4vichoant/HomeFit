@@ -417,7 +417,7 @@ export class ProgramarrutinasPage implements OnInit {
           this.DuracionTotal=this.formatDuracionRutina(this.DuracionTotal);
           }
           try {
-            if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0) {
+            if (this.dataEntrenadorUsuarios && this.dataRutinas && this.dataRutinas.length>0) {
               this.dataRutinas = this.dataRutinas.filter(elemento =>{
                 if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
                   elemento.PREMIER = 'Suscripto';
@@ -436,7 +436,7 @@ export class ProgramarrutinasPage implements OnInit {
             this.presentCustomToast('Error en Mostrar Rutinas','danger');
           }
 
-          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0){
+          if (this.dataEntrenadorUsuarios && this.dataRutinas && this.dataRutinas.length>0){
           this.dataRutinas.sort((a, b) => {
             const premierOrder: { [key: string]: number } = {
               Suscripto: 0,
@@ -462,7 +462,7 @@ export class ProgramarrutinasPage implements OnInit {
           ejercicio.CALORIASEJERCICIO= (this.obtenerDuracionEnMinutos(ejercicio.TIEMPOMULTIMEDIA)/60*ejercicio.METEJERCICIO*Number(this.userSesionPerfil[0].PESOUSUARIO)).toFixed(2);
           });
           try {
-            if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
+            if (this.dataEntrenadorUsuarios && this.dataEjercicio && this.dataEjercicio.length>0) {
               this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
                 if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
                   elemento.PREMIER = 'Suscripto';

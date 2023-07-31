@@ -1,0 +1,213 @@
+ion-content {
+  --background: linear-gradient(0deg, #00000060, #33333394), var(--background-ip-address-hash)  no-repeat center center / cover;
+  height: 100vh;
+  overflow: auto;
+}
+
+.container-body{
+  width: 90%;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.otp-Form {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 76%);
+  //backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3% 6%;
+  gap: 20px;
+  position: relative;
+  box-shadow:-11px 20px 5px 7px rgb(0 0 0 / 19%);
+  border-radius: 15px;
+}
+
+.mainHeading {
+  text-align: center;
+  color: #ffffff;
+  font-family: Raleway-Medium;
+  font-size: 1.8rem;
+  margin: 5% 0% 0% 0%;
+  padding: 3% 0% 0% 0%;
+}
+
+.otpSubheading {
+  line-height: 17px;
+  text-align: center;
+  color: #ffffff;
+  font-family: Raleway-Light;
+  font-size: 1.2rem;
+}
+
+.inputContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  svg{
+    color: #ffffff;
+    width: 16%;
+    height: auto;
+  }
+}
+
+.otp-input {
+  margin: 0 auto;
+  background-color: rgb(228, 228, 228);
+  width: 100%;
+  height: 7vh;
+  text-align: center;
+  border: none;
+  border-radius: 7px;
+  caret-color: rgb(127, 129, 255);
+  color: rgb(44, 44, 44);
+  outline: none;
+  color: #ffffff;
+  font-family: Raleway-Medium;
+  font-size: 2rem;
+}
+
+.otp-input:focus,
+.otp-input:valid {
+  background-color: rgba(127, 129, 255, 0.199);
+  transition-duration: .3s;
+}
+
+.otp-input-1 {
+  margin: 0 auto;
+  --background: rgba(228, 228, 228, 0.349);
+  width: 100%;
+  height: 7vh;
+  text-align: center;
+  border: none;
+  border-radius: 7px;
+  caret-color: rgb(127, 129, 255);
+  --color: rgb(44, 44, 44);
+  outline: none;
+  color: #ffffff;
+  font-family: Raleway-Medium;
+  font-size: 1.5rem;
+  --padding-start:20px;
+}
+
+.otp-input-1:focus,
+.otp-input-1:valid {
+  --background: rgba(127, 129, 255, 0.199);
+  transition-duration: .3s;
+}
+
+.verifyButton {
+  padding: 5% 0%;
+  width: 100%;
+  height: auto;
+  border: none;
+  color: white;
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  border-radius: 10px;
+  transition-duration: 0.2s;
+  font-family: Raleway-Light;
+  font-size: 1.8rem;
+  margin: 0% 0% 0% 0%;
+}
+
+.ptext{
+  padding: 0;
+  margin: 0;
+  color: white;
+  font-family: Raleway-ThinItalic;
+  font-size: 1.2rem;
+}
+.verifyButton:hover {
+  background-color: #7f81ff;
+  color: #ffffff;
+  border: none;
+  transition-duration: .2s;
+}
+
+.p-next{
+  text-align: center;
+  color: white;
+  font-family: Raleway-Bold;
+  font-size: 1.2rem;
+  background-color: #000000a8;
+  border-radius: 15px;
+  padding: 3% 0%;
+}
+
+.ion-input {
+  text-transform: uppercase;
+}
+
+.verifyButton-1{
+  text-align: center;
+  padding: 5% 0%;
+  width: 100%;
+  height: auto;
+  border: none;
+  color: white;
+  background-color: transparent;
+  //border: 2px solid #ffffff;
+  cursor: pointer;
+  border-radius: 10px;
+  transition-duration: 0.2s;
+  font-family: Raleway-Light;
+  font-size: 1.8rem;
+  margin: 0% 0% 0% 0%;
+}
+.textEmailMostrar{
+  font-family: Raleway-Light;
+  font-size: 1rem;
+  color: #ffffff;
+  text-align: center;
+}
+
+.exitBtn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: transparent;
+  //box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.171);
+  //background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  width: 7vh;
+  height: 7vh;
+  border: none;
+  color: rgb(255, 255, 255);
+  font-family: Raleway-Medium;
+  font-size: 2.3rem;
+  cursor: pointer;
+}
+
+.resendNote {
+  color: #ffffff;
+  width: 100%;
+  font-family: Raleway-Light;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.resendBtn {
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: 700;
+  z-index: 999999999;
+}
+

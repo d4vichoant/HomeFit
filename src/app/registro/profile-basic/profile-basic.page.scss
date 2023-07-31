@@ -226,7 +226,7 @@ ion-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 100%;
   height: 50px;
   border: none;
   cursor: pointer;
@@ -235,4 +235,146 @@ ion-content {
 .button img {
   max-width: 100%;
   max-height: 100%;
+}
+
+.full-screen-div {
+  backdrop-filter: blur(5px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #ffffff; /* Color del texto */
+  text-align: center; /* Alineación del texto */
+  padding: 20px; /* Espaciado interno del div */
+  z-index: 99999;
+}
+
+.container-body{
+  position: relative; /* Puedes usar 'absolute' si quieres que sea superpuesto a otros elementos */
+  width: 80%; /* O el tamaño que desees */
+  height: auto; /* O el tamaño que desees */
+  background-color: rgba(77, 98, 223, 0.5); /* Color de fondo con transparencia */
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 99;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.mainHeading {
+  text-align: center;
+  color: #ffffff;
+  font-family: Raleway-Medium;
+  font-size: 1.5rem;
+  margin: 5% 0% 0% 0%;
+  padding: 3% 0% 0% 0%;
+}
+
+.otpSubheading {
+  line-height: 17px;
+  text-align: center;
+  color: #ffffff;
+  font-family: Raleway-Light;
+  font-size: 1.2rem;
+}
+
+.inputContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  svg{
+    color: #ffffff;
+    width: 16%;
+    height: auto;
+  }
+}
+
+.otp-input {
+  margin: 0 auto;
+  background-color: rgb(228, 228, 228);
+  width: 100%;
+  height: 7vh;
+  text-align: center;
+  border: none;
+  border-radius: 7px;
+  caret-color: rgb(127, 129, 255);
+  color: rgb(44, 44, 44);
+  outline: none;
+  color: #ffffff;
+  font-family: Raleway-Medium;
+  font-size: 2rem;
+}
+
+.otp-input:focus,
+.otp-input:valid {
+  background-color: rgba(127, 129, 255, 0.199);
+  transition-duration: .3s;
+}
+
+.verifyButton {
+  padding: 5% 0%;
+  width: 100%;
+  height: auto;
+  border: none;
+  color: white;
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  border-radius: 10px;
+  transition-duration: 0.2s;
+  font-family: Raleway-Light;
+  font-size: 1.8rem;
+  margin: 8% 0% 0% 0%;
+}
+
+.ptext{
+  padding: 0;
+  margin: 0;
+  color: white;
+  font-family: Raleway-ThinItalic;
+  font-size: 1.2rem;
+}
+.verifyButton:hover {
+  background-color: #7f81ff;
+  color: #ffffff;
+  border: none;
+  transition-duration: .2s;
+}
+
+.exitBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: transparent;
+  //box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.171);
+  //background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  width: 5vh;
+  height: 5vh;
+  border: none;
+  color: rgb(255, 255, 255);
+  font-family: Raleway-Medium;
+  font-size: 2.3rem;
+  cursor: pointer;
+}
+
+.resendBtn {
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: 700;
+  z-index: 999999999;
+}
+
+.ion-input {
+  text-transform: uppercase;
 }

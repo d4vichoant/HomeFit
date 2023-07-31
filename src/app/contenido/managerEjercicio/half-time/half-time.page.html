@@ -60,8 +60,8 @@
       </ng-template>
     </div>
     <div class="box-down">
-      <ng-container *ngIf="userSesionPerfil[0].IMAGEPERSONA; else otherImage">
-        <img  [src]="ip_address+'/media/perfile/'+userSesionPerfil?.[0]?.IMAGEPERSONA" alt="ImagenPerfil">
+      <ng-container *ngIf="userSesionPerfil && userSesionPerfil.length > 0 && userSesionPerfil[0].IMAGEPERSONA; else otherImage">
+        <img [src]="ip_address+'/media/perfile/'+userSesionPerfil?.[0]?.IMAGEPERSONA" alt="ImagenPerfil">
       </ng-container>
       <ng-template #otherImage>
         <img alt="DefaultImage"  src="{{ ip_address }}/media/images/user-pg.png" />

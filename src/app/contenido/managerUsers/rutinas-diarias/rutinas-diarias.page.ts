@@ -370,7 +370,7 @@ export class RutinasDiariasPage implements OnInit {
           ejercicio.CALORIASEJERCICIO= (this.obtenerDuracionEnMinutos(ejercicio.TIEMPOMULTIMEDIA)/60*ejercicio.METEJERCICIO*Number(this.userSesionPerfil[0].PESOUSUARIO)).toFixed(2);
           });
           try {
-            if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataEjercicio && this.dataEjercicio.length>0) {
+            if (this.dataEntrenadorUsuarios  && this.dataEjercicio && this.dataEjercicio.length>0) {
               this.dataEjercicio = this.dataEjercicio.filter(elemento =>{
                 if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
                   elemento.PREMIER = 'Suscripto';

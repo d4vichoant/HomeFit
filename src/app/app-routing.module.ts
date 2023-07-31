@@ -230,6 +230,14 @@ const routes: Routes = [
     path: 'informe-usuario',
     loadChildren: () => import('./contenido/managerInforme/informe-usuario/informe-usuario.module').then( m => m.InformeUsuarioPageModule)
   },
+  {
+    path: 'hash-account',
+    loadChildren: () => import('./hash-account/hash-account.module').then( m => m.HashAccountPageModule)
+  },
+  {
+    path: 'change-password',
+    loadChildren: () => import('./change-password/change-password.module').then( m => m.ChangePasswordPageModule)
+  },
 
 
 

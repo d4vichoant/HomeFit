@@ -8,7 +8,7 @@ ion-content {
     z-index: 9999;
   }
 .login-section {
-  height: 68vh;
+  height: 57vh;
   width: 100%;
   overflow: scroll;
   max-width: 5eepx;
@@ -76,7 +76,7 @@ ion-content {
     grid-template-columns: 10fr 2fr;
   }
   .action-button{
-    padding: 3% 6% 0% 6%;
+    padding: 0% 6% 0% 6%;
     text-align: center;
     .login-button{
       --border-radius: 10px;
@@ -171,7 +171,7 @@ ion-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 1000%;
   height: 50px;
   border: none;
   cursor: pointer;

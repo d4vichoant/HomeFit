@@ -359,7 +359,7 @@ export class ListarSesionesPage implements OnInit {
         }));
 
         try {
-          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0) {
+          if (this.dataEntrenadorUsuarios && this.dataRutinas && this.dataRutinas.length>0) {
             this.dataRutinas = this.dataRutinas.filter(elemento =>{
               if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
                 elemento.PREMIER = 'Suscripto';
@@ -378,7 +378,7 @@ export class ListarSesionesPage implements OnInit {
           this.presentCustomToast('Error en Mostrar Rutinas','danger');
         }
 
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataRutinas && this.dataRutinas.length>0) {
+        if (this.dataEntrenadorUsuarios  && this.dataRutinas && this.dataRutinas.length>0) {
         this.dataRutinas.sort((a, b) => {
           const premierOrder: { [key: string]: number } = {
             Suscripto: 0,
@@ -409,7 +409,7 @@ export class ListarSesionesPage implements OnInit {
         }));
 
         try {
-          if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataSesiones && this.dataSesiones.length>0) {
+          if (this.dataEntrenadorUsuarios  && this.dataSesiones && this.dataSesiones.length>0) {
             this.dataSesiones = this.dataSesiones.filter(elemento =>{
               if(this.dataEntrenadorUsuarios.some(item => item.IDPERSONA === elemento.IDENTRENADOR )){
                 elemento.PREMIER = 'Suscripto';
@@ -427,7 +427,7 @@ export class ListarSesionesPage implements OnInit {
         } catch (error) {
           this.presentCustomToast('Error en Mostrar Rutinas','danger');
         }
-        if (this.dataEntrenadorUsuarios && this.dataEntrenadorUsuarios.length > 0 && this.dataSesiones && this.dataSesiones.length>0) {
+        if (this.dataEntrenadorUsuarios  && this.dataSesiones && this.dataSesiones.length>0) {
         this.dataSesiones.sort((a, b) => {
           const premierOrder: { [key: string]: number } = {
             Suscripto: 0,
