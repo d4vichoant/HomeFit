@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController, ToastController } from '@ionic/angular';
 
+import { Keyboard } from '@capacitor/keyboard';
 interface ValidationStatus {
   symbol: boolean;
   uppercase: boolean;
@@ -64,7 +65,24 @@ export class PasswordPage implements OnInit {
    }
 
 
+   hideshowkeyboard(){
+
+    Keyboard.addListener('keyboardWillShow', (info) => {
+      const keyboardHeight = info.keyboardHeight; // Altura del teclado
+      const buttonsDiv = document.querySelector('.container-button') as HTMLElement;
+      buttonsDiv.style.bottom = `-${keyboardHeight}px`; // Mover el elemento hacia arriba
+    });
+
+    // Escuchar el evento de cuando el teclado se oculta
+    Keyboard.addListener('keyboardWillHide', () => {
+      const buttonsDiv = document.querySelector('.container-button') as HTMLElement;
+      buttonsDiv.style.bottom = '0'; // Restaurar la posición original del elemento
+    });
+
+  }
+
   ngOnInit() {
+    this.hideshowkeyboard();
   }
   goHome(){
     this.navController.navigateForward('/home');
@@ -73,6 +91,7 @@ export class PasswordPage implements OnInit {
     this.navController.navigateForward(['/profile-basic']);
   }
   ionViewDidEnter() {
+    this.hideshowkeyboard();
     if (JSON.parse(localStorage.getItem('profilesdates')!)!=null){
     this.loading = false
     }else{

@@ -3,6 +3,7 @@ import { StatusBar } from '@capacitor/status-bar';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 
 import { IP_ADDRESS } from '../../../constantes';
+import { Keyboard } from '@capacitor/keyboard';
 
 @Component({
   selector: 'app-additional',
@@ -28,9 +29,11 @@ export class AdditionalPage implements OnInit {
 
   ngOnInit() {
     this.palabrasRestantes = 400;
+    this.hideshowkeyboard();
   }
 
   ionViewDidEnter() {
+    this.hideshowkeyboard();
     StatusBar.hide();
     StatusBar.setOverlaysWebView({overlay:true});
     StatusBar.setBackgroundColor({color:'#ffffff'});
@@ -46,6 +49,22 @@ export class AdditionalPage implements OnInit {
       localStorage.removeItem('profilesdates');
       this.navController.navigateForward('/errorpage');
     }
+  }
+
+  hideshowkeyboard(){
+
+    Keyboard.addListener('keyboardWillShow', (info) => {
+      const keyboardHeight = info.keyboardHeight; // Altura del teclado
+      const buttonsDiv = document.querySelector('.buttons') as HTMLElement;
+      buttonsDiv.style.bottom = `-${keyboardHeight}px`; // Mover el elemento hacia arriba
+    });
+
+    // Escuchar el evento de cuando el teclado se oculta
+    Keyboard.addListener('keyboardWillHide', () => {
+      const buttonsDiv = document.querySelector('.buttons') as HTMLElement;
+      buttonsDiv.style.bottom = '0'; // Restaurar la posición original del elemento
+    });
+
   }
   goHome(){
     this.navController.navigateForward('/home');

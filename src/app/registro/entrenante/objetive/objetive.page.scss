@@ -103,15 +103,20 @@ ion-content {
   justify-content: center;
   align-items: center;
 }
-
+.container-buttons{
+  position: fixed;
+  bottom: 2%;
+  left: 0;
+  width: 100%;
+}
 .buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0% 6% 0% 6%;
-  position: fixed;
-  bottom: 13%;
+  //position: fixed;
+  //bottom: 13%;
   width: 100%;
   ion-button {
     --border-radius: 10px;
@@ -130,9 +135,9 @@ ion-content {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 6% 6% 0% 6%;
-  position: fixed;
-  bottom: 6%;
+  padding: 1% 6% 0% 6%;
+  //position: fixed;
+  //bottom:2%;
   width: 100%;
   ion-button{
     width: 50%;
@@ -143,9 +148,10 @@ ion-content {
   }
 }
 .container-body{
-  margin: 6% 0% 6% 0%;
-  height: 45vh;
+  margin: 3% 0% 0% 0%;
+  height: 50vh;
   border-radius: 0px;
+  padding-bottom: 3%;
   overflow: auto;
 }
 .button-container{

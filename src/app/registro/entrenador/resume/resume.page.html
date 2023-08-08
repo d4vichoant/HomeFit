@@ -83,11 +83,13 @@
     <input type="checkbox" id="termsCheckbox" (click)="showTermsAndConditions()" [(ngModel)]="acceptTerms">
     <label for="termsCheckbox">Acepto los <a (click)="showTermsAndConditions()">Términos y Condiciones</a></label>
   </div>
-  <div class="buttons">
-    <ion-button [disabled]="!acceptTerms" (click)="go_Now()">Enviar a revisión</ion-button><br>
-  </div>
-  <div class="buttonNotNow">
-    <ion-button (click)="go_notNow()" fill="clear">Cancelar</ion-button>
+  <div class="container-button">
+    <div class="buttons">
+      <ion-button [disabled]="!acceptTerms" (click)="go_Now()">Enviar a revisión</ion-button><br>
+    </div>
+    <div class="buttonNotNow">
+      <ion-button (click)="go_notNow()" fill="clear">Cancelar</ion-button>
+    </div>
   </div>
 
 </ion-content>

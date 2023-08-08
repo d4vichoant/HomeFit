@@ -263,6 +263,12 @@ ion-content {
     text-align: right;
   }
 }
+.container-body{
+  overflow: auto;
+  height: 80vh;
+  width: 100%;
+  padding: 0% 0% 15% 0%;
+}
 
 .buttons {
   display: flex;
@@ -271,6 +277,10 @@ ion-content {
   justify-content: center;
   padding: 2% 12% 0% 12%;
   width: 100%;
+  position: fixed;
+  bottom: 1%;
+  left: 0%;
+  right: 0%;
   ion-button {
     --border-radius: 10px;
     --background:#6069e8;

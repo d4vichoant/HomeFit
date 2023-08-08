@@ -127,8 +127,8 @@ ion-content {
   align-items: center;
   justify-content: center;
   padding: 0% 6% 0% 6%;
-  position: fixed;
-  bottom: 17%;
+ // position: fixed;
+  //bottom: 17%;
   width: 100%;
   ion-button {
     --border-radius: 10px;
@@ -141,22 +141,27 @@ ion-content {
     color: #fff;
   }
 }
+.container-buttons{
+  position: fixed;
+  bottom: 2%;
+  left: 0;
+  width: 100%;
+}
 
 .buttonNotNow{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 6% 6% 0% 6%;
-  position: fixed;
-  bottom: 10%;
+  padding: 2% 6% 0% 6%;
+  //position: fixed;
+ // bottom: 3%;
   width: 100%;
   ion-button{
     width: 50%;
     font-family: Raleway-Medium;
     font-size: 90%;
     color: #535353;
-
   }
 }
 

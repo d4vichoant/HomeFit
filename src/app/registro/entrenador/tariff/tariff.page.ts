@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 
-
+import { Keyboard } from '@capacitor/keyboard';
 import { IP_ADDRESS } from '../../../constantes';
 import { StatusBar } from '@capacitor/status-bar';
 
@@ -56,6 +56,7 @@ export class TariffPage implements OnInit {
 
   ngOnInit() {
     //this.loading = false;
+    this.hideshowkeyboard();
   }
   goHome(){
     this.navController.navigateForward('/home');
@@ -86,6 +87,23 @@ export class TariffPage implements OnInit {
       localStorage.removeItem('profilesdates');
       this.navController.navigateForward('/errorpage');
     }
+    this.hideshowkeyboard();
+  }
+
+  hideshowkeyboard(){
+
+    Keyboard.addListener('keyboardWillShow', (info) => {
+      const keyboardHeight = info.keyboardHeight; // Altura del teclado
+      const buttonsDiv = document.querySelector('.buttons') as HTMLElement;
+      buttonsDiv.style.bottom = `-${keyboardHeight}px`; // Mover el elemento hacia arriba
+    });
+
+    // Escuchar el evento de cuando el teclado se oculta
+    Keyboard.addListener('keyboardWillHide', () => {
+      const buttonsDiv = document.querySelector('.buttons') as HTMLElement;
+      buttonsDiv.style.bottom = '0'; // Restaurar la posición original del elemento
+    });
+
   }
   actualizarNumero() {
       this.numeroIngresado = parseFloat(this.numeroIngresado).toFixed(2)+"";

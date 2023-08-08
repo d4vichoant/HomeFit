@@ -309,20 +309,26 @@ input[type="checkbox"]:checked + label:after {
   font-size: 1rem;
   color: #ffffff;
 }
+.container-button{
+  position: fixed;
+  bottom: 2%;
+  left: 0;
+  width: 100%;
+}
 .buttons {
-  display: flex;
+  //display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 5% 6% 0% 6%;
-  position: fixed;
-  bottom: 10%;
+  //position: fixed;
+  //bottom: 10%;
   width: 100%;
   ion-button {
     --border-radius: 10px;
     --background:#6069e8;
-    --padding-top: 7%; /* ajusta el valor de acuerdo a tu preferencia */
-    --padding-bottom: 7%;
+    --padding-top: 5%; /* ajusta el valor de acuerdo a tu preferencia */
+    --padding-bottom: 5%;
     width: 100%;
     font-family: Raleway-Light;
     font-size: 120%;
@@ -336,8 +342,8 @@ input[type="checkbox"]:checked + label:after {
   align-items: center;
   justify-content: center;
   padding: 0% 6% 0% 6%;
-  position: fixed;
-  bottom: 5%;
+  //position: fixed;
+ // bottom: 5%;
   width: 100%;
   ion-button{
     width: 100%;

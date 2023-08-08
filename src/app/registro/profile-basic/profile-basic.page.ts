@@ -6,6 +6,7 @@ import { NavController, ToastController } from '@ionic/angular';
 import { ApiServiceService } from '../../api-service.service';
 
 import { IP_ADDRESS } from '../../constantes';
+import { Keyboard } from '@capacitor/keyboard';
 
 @Component({
   selector: 'app-profile-basic',
@@ -52,12 +53,29 @@ export class ProfileBasicPage implements OnInit {
   ngOnInit() {
     StatusBar.hide();
     StatusBar.setOverlaysWebView({overlay:true})
-    StatusBar.setBackgroundColor({color:'#ffffff'})
+    StatusBar.setBackgroundColor({color:'#ffffff'});
     document.documentElement.style.setProperty('--background-ip-address','url('+ IP_ADDRESS+'/media/profile-basic/backgroundprofile-basic.jpg)');
+    this.hideshowkeyboard();
   }
 
+  hideshowkeyboard(){
+
+    Keyboard.addListener('keyboardWillShow', (info) => {
+      const keyboardHeight = info.keyboardHeight; // Altura del teclado
+      const buttonsDiv = document.querySelector('.buttons') as HTMLElement;
+      buttonsDiv.style.bottom = `-${keyboardHeight}px`; // Mover el elemento hacia arriba
+    });
+
+    // Escuchar el evento de cuando el teclado se oculta
+    Keyboard.addListener('keyboardWillHide', () => {
+      const buttonsDiv = document.querySelector('.buttons') as HTMLElement;
+      buttonsDiv.style.bottom = '0'; // Restaurar la posición original del elemento
+    });
+
+  }
 
   ionViewDidEnter() {
+    this.hideshowkeyboard();
     if (JSON.parse(localStorage.getItem('profilesdates')!)!=null){
       let imagesLoaded = 0;
       const image1 = new Image();
@@ -164,7 +182,7 @@ export class ProfileBasicPage implements OnInit {
           this.showValidateCode=true;
           this.showDialogVerificateCode=false;
           this.verificateInputs();
-          this.presentCustomToast("Correo Valido","danger");
+          this.presentCustomToast("Correo Valido","success");
         }else{
           this.presentCustomToast("Código Incorrecto","danger");
         }
