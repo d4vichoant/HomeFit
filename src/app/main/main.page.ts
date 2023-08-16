@@ -678,10 +678,12 @@ export class MainPage implements OnInit {
           ...objeto,
           IDEJERCICIOS: objeto.IDEJERCICIOS.split(",").map(Number)
         }));
-        this.dataRutinas = this.dataBookMarkRutinas.map(bookmark => {
-          const matchingRutina = this.dataRutinas.find(rutina => rutina.IDRUTINA === bookmark.IDRUTINA);
-          return matchingRutina;
-        });
+        if (this.dataBookMarkRutinas) {
+          this.dataRutinas = this.dataBookMarkRutinas.map(bookmark => {
+            const matchingRutina = this.dataRutinas.find(rutina => rutina.IDRUTINA === bookmark.IDRUTINA);
+            return matchingRutina;
+          });
+        }
         try {
           if (this.dataEntrenadorUsuarios &&  this.dataRutinasTotal && this.dataRutinasTotal.length>0) {
             this.dataRutinasTotal = this.dataRutinasTotal.filter(elemento =>{
@@ -760,10 +762,12 @@ export class MainPage implements OnInit {
     this.apiService.getEjercicioActivate().subscribe(
       (response) => {
         this.dataEjercicio=response;
-        this.dataEjercicio = this.dataBookMark.map(bookmark => {
-          const matchingRutina = this.dataEjercicio.find(rutina => rutina.IDEJERCICIO === bookmark.IDEJERCICIO);
-          return matchingRutina;
-        });
+        if (this.dataBookMark) {
+          this.dataEjercicio = this.dataBookMark.map(bookmark => {
+            const matchingRutina = this.dataEjercicio.find(rutina => rutina.IDEJERCICIO === bookmark.IDEJERCICIO);
+            return matchingRutina;
+          });
+        }
         //this.dataEjercicio = this.dataEjercicio.filter((element) => this.bookmarkState[element.IDEJERCICIO]);
       },
       (error) => {
